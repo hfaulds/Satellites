@@ -11,4 +11,9 @@ public class ShipActor extends Actor {
     this.graphic = new ShipGraphic();
   }
 
+  @Override
+  public boolean collides(Actor a) {
+    return false;
+  }
+
 }

@@ -1,16 +1,14 @@
 package Actors;
 
 import Graphics.SatelliteGraphic;
+import Math.Vector2D;
 
 public class SatelliteActor extends Actor {
   
-  public static final double G = 0.0001;
-  
   public final static double density = 50;
   
-  public double vx;
-  public double vy;
-
+  public Vector2D velocity;
+  
   private double radius;
   
   public SatelliteActor(double x, double y) {
@@ -23,8 +21,7 @@ public class SatelliteActor extends Actor {
   public SatelliteActor(double x, double y, double vx, double vy, double mass) {
     super(x, y, mass);
     
-    this.vx = vx;
-    this.vy = vy;
+    this.velocity = new Vector2D(vx, vx);
 
     this.radius = calcRadius(mass);
     this.graphic = new SatelliteGraphic(radius);
@@ -36,38 +33,16 @@ public class SatelliteActor extends Actor {
   }
   
   public void updateVelocity(Actor[] actors) {
-    double ax = 0;
-    double ay = 0;
+    Vector2D accel = new Vector2D();
   
     for(Actor actor : actors) {
-      if(actor != this)
-      {
-        /*Distance Vector Components*/
-        double dx = actor.x - this.x;
-        double dy = actor.y - this.y;
-        
-        /*Distance magnitude*/
-        double d = Math.sqrt(dx*dx + dy*dy);
-
-        if(d > radius*2) {
-          /*Normalised Distance Vectors*/
-          dx = dx/d;
-          dy = dy/d;
-          
-          /*Force Magnitude*/
-          double f = G * this.mass * actor.mass / Math.pow(d, 2);
-          
-          /*Force Vectors*/
-          double fx = dx * f;
-          double fy = dy * f;
-          
-          /*Acceleration Vectors*/
-          ax += fx / this.mass;
-          ay += fy / this.mass;
-        }else{
+      if(actor != this) {
+        if(!this.collides(actor)) {
+          /*Acelleration from gravitational pull*/
+          accel._add(gravityBetween(this, actor).divide(this.mass));
+        } else {
           /*Collision*/
-          this.vx *= 0.9;
-          this.vy *= 0.9;
+          this.velocity._multiply(0.9);
           // V = [dx dy]
           // N = 
           //Vnew = b * ( -2*(V dot N)*N + V )
@@ -76,12 +51,15 @@ public class SatelliteActor extends Actor {
     }
 
     /*Acceleration*/
-    this.vx += ax;
-    this.vy += ay;
+    this.velocity._add(accel);
   }
   
   public void updatePosition() {
-    this.x += vx;
-    this.y += vy;
+    this.position._add(velocity);
+  }
+
+  @Override
+  public boolean collides(Actor other) {
+    return other.position.distanceTo(this.position) <= radius*2;
   }
 }
