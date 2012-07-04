@@ -3,6 +3,9 @@ package Graphics;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
+import Math.Rotation;
+import Math.Vector2D;
+
 public class ShipGraphic extends Graphic {
 
   private final float[] ambientColour   = { 0.4f, 0.4f, 0.4f };
@@ -11,22 +14,23 @@ public class ShipGraphic extends Graphic {
   private final float[] lightPos        = { -30,  0.0f,  20f, 1.0f };
   
   private final double width;
+  private final double length;
   private final double height;
-  private final double depth;
 
-  public ShipGraphic(double width, double height, double depth) {
-    this.width = width;
-    this.height = height;
-    this.depth = depth;
+  public ShipGraphic(double width, double length, double height) {
+    this.width  = width;
+    this.length = length;
+    this.height  = height;
   }
 
   @Override
-  public void render(GL2 gl, GLU glu, double x, double y) {
+  public void render(GL2 gl, GLU glu, Vector2D pos, Rotation rot) {
 
     gl.glPushMatrix();
     {
       gl.glLoadIdentity();
-      gl.glTranslated(x, y, -10);
+      gl.glTranslated(pos.x, pos.y, -10);
+      gl.glRotated(rot.degrees(), rot.x, rot.y, rot.z);
 
       // Set light parameters.
       gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_POSITION, lightPos,       0);
@@ -45,40 +49,40 @@ public class ShipGraphic extends Graphic {
       gl.glBegin(GL2.GL_QUADS);
       {
         // Front-face
-        gl.glVertex3d( width,  height,  depth);
-        gl.glVertex3d(-width,  height,  depth);
-        gl.glVertex3d(-width, -height,  depth);
-        gl.glVertex3d( width, -height,  depth);
+        gl.glVertex3d( width,  length,  height);
+        gl.glVertex3d(-width,  length,  height);
+        gl.glVertex3d(-width, -length,  height);
+        gl.glVertex3d( width, -length,  height);
         
         // Back-face
-        gl.glVertex3d( width, -height, -depth);
-        gl.glVertex3d(-width, -height, -depth);
-        gl.glVertex3d(-width,  height, -depth);
-        gl.glVertex3d( width,  height, -depth);
+        gl.glVertex3d( width, -length, -height);
+        gl.glVertex3d(-width, -length, -height);
+        gl.glVertex3d(-width,  length, -height);
+        gl.glVertex3d( width,  length, -height);
         
         // Left-face
-        gl.glVertex3d(-width,  height,  depth);
-        gl.glVertex3d(-width,  height, -depth);
-        gl.glVertex3d(-width, -height, -depth);
-        gl.glVertex3d(-width, -height,  depth);
+        gl.glVertex3d(-width,  length,  height);
+        gl.glVertex3d(-width,  length, -height);
+        gl.glVertex3d(-width, -length, -height);
+        gl.glVertex3d(-width, -length,  height);
       
         // Right-face
-        gl.glVertex3d( width,  height, -depth);
-        gl.glVertex3d( width,  height,  depth);
-        gl.glVertex3d( width, -height,  depth);
-        gl.glVertex3d( width, -height, -depth);
+        gl.glVertex3d( width,  length, -height);
+        gl.glVertex3d( width,  length,  height);
+        gl.glVertex3d( width, -length,  height);
+        gl.glVertex3d( width, -length, -height);
         
         // Top-face
-        gl.glVertex3d( width,  height, -depth);
-        gl.glVertex3d(-width,  height, -depth);
-        gl.glVertex3d(-width,  height,  depth);
-        gl.glVertex3d( width,  height,  depth);
+        gl.glVertex3d( width,  length, -height);
+        gl.glVertex3d(-width,  length, -height);
+        gl.glVertex3d(-width,  length,  height);
+        gl.glVertex3d( width,  length,  height);
         
         // Bottom-face
-        gl.glVertex3d( width, -height,  depth);
-        gl.glVertex3d(-width, -height,  depth);
-        gl.glVertex3d(-width, -height, -depth);
-        gl.glVertex3d( width, -height, -depth);
+        gl.glVertex3d( width, -length,  height);
+        gl.glVertex3d(-width, -length,  height);
+        gl.glVertex3d(-width, -length, -height);
+        gl.glVertex3d( width, -length, -height);
       }
       gl.glEnd();
       

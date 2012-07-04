@@ -7,7 +7,7 @@ public class SatelliteActor extends PointGravityActor {
   
   public final static double density = 50;
   
-  public Vector2D velocity;
+  public final Vector2D velocity;
   
   private double radius;
   
@@ -34,25 +34,19 @@ public class SatelliteActor extends PointGravityActor {
   }
   
   public void updateVelocity(Actor[] actors) {
-    Vector2D accel = new Vector2D();
+    Vector2D force = new Vector2D();
   
     for(Actor actor : actors) {
       if(actor != this) {
         if(!this.collides(actor)) {
-          /*Acelleration from gravitational pull*/
-          accel._add(gravForceFrom(actor).divide(mass));
+          force._add(gravForceFrom(actor));
         } else {
-          /*Collision*/
-          this.velocity._multiply(0.9);
-          // V = [dx dy]
-          // N = 
-          //Vnew = b * ( -2*(V dot N)*N + V )
+          this.velocity._mult(0.9);
         }
       }
     }
 
-    /*Acceleration*/
-    this.velocity._add(accel);
+    this.velocity._add(force.divide(mass));
   }
   
   public void updatePosition() {

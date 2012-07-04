@@ -3,44 +3,81 @@ package Actors;
 import Graphics.ShipGraphic;
 import Math.Vector2D;
 
-public class ShipActor extends Actor {
+public class ShipActor extends PointGravityActor {
 
-  private static double MASS = 0.0001;
+  private static double MASS    = 0.0001;
   
-  private static double WIDTH = 0.1;
-  private static double HEIGHT = 0.5;
-  private static double DEPTH = 0.2;
-
-  private PointGravityActor centerGrav = new PointGravityActor(pos.x, pos.y, MASS);
+  private static double WIDTH   = 0.05;
+  private static double LENGTH  = 0.7;
+  private static double HEIGHT  = 0.1;
   
-  private PointGravityActor[] cornerGrav = new PointGravityActor[]{
-    new PointGravityActor(WIDTH /-2 + pos.x, HEIGHT / 2 + pos.y, MASS),
-    new PointGravityActor(WIDTH / 2 + pos.x, HEIGHT / 2 + pos.y, MASS),
-    new PointGravityActor(WIDTH /-2 + pos.x, HEIGHT /-2 + pos.y, MASS),
-    new PointGravityActor(WIDTH / 2 + pos.x, HEIGHT /-2 + pos.y, MASS)
+  private Vector2D[] corners = new Vector2D[]{
+    new Vector2D(WIDTH /-2, LENGTH / 2),
+    new Vector2D(WIDTH / 2, LENGTH / 2),
+    new Vector2D(WIDTH /-2, LENGTH /-2),
+    new Vector2D(WIDTH / 2, LENGTH /-2)
   };
   
+  public final Vector2D velocity;
+  public double spin;
+  
   public ShipActor(double x, double y) {
-    super(x, y, MASS );
-    this.graphic = new ShipGraphic(WIDTH, HEIGHT, DEPTH);
+    this(x, y, 0, 0);
+  }
+
+  public ShipActor(double x, double y, double vx, double vy) {
+    super(x, y, MASS);
+    this.velocity = new Vector2D(vx, vy);
+    this.spin = 0;
+    
+    this.graphic = new ShipGraphic(WIDTH, LENGTH, HEIGHT);
   }
 
   @Override
   public void updateVelocity(Actor[] actors) {
     //Calculate Force On Each Corner
-    Vector2D[] forces = new Vector2D[cornerGrav.length];
-    for(int i=0; i < forces.length; i++)
-      forces[i] = new Vector2D();
+    Vector2D   force            = new Vector2D();
+    Vector2D[] cornerForces     = new Vector2D[corners.length];
+    Vector2D[] cornerOffsets    = new Vector2D[corners.length];
     
-    for(int i=0; i < cornerGrav.length; i++) {
-      for(Actor actor : actors) {
-        if(actor != this) {
-          forces[i]._add(cornerGrav[i].gravForceFrom(actor)); 
+    for(int i=0; i < cornerForces.length; i++) {
+      cornerForces[i]   = new Vector2D();
+      cornerOffsets[i]  = corners[i]._rotate(this.rot.mag);
+    }
+    
+    for(Actor actor : actors) {
+      if(actor != this) {
+        force._add(gravForceFrom(actor));
+        
+        for(int i=0; i < corners.length; i++) {
+          cornerForces[i]._add(gravForceFrom(actor, cornerOffsets[i])); 
         }
       }
     }
+    
+    this.velocity._add(force.divide(mass));
+    
+    double torque = 0;
+    
+    for(int i=0; i < cornerForces.length; i++)
+    {
+      Vector2D F        = cornerForces[i];
+      double r          = cornerOffsets[i].magnitude();
+      
+      double theta = Math.acos(Vector2D.dot(cornerOffsets[i].normalized(), F.normalized()));
+      
+      torque -= r * F.magnitude() * Math.sin(theta);
+    }
+    
+    this.spin += torque;
   }
 
+  @Override
+  public void updatePosition() {
+    this.pos._add(velocity);
+    this.rot._add(spin);
+  }
+  
   @Override
   public boolean collides(Actor a) {
     return false;

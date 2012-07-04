@@ -3,6 +3,9 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUquadric;
 
+import Math.Rotation;
+import Math.Vector2D;
+
 
 public class SatelliteGraphic extends Graphic {
 
@@ -21,11 +24,11 @@ public class SatelliteGraphic extends Graphic {
   }
   
   @Override
-  public void render(GL2 gl, GLU glu, double x, double y) {
+  public void render(GL2 gl, GLU glu, Vector2D pos, Rotation rot) {
     
     gl.glPushMatrix();
     {
-      gl.glTranslated(x, y, -10);
+      gl.glTranslated(pos.x, pos.y, -10);
       gl.glColor3fv(ambientColour, 1);
       
       // Set light parameters.
