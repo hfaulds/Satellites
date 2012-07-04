@@ -15,15 +15,15 @@ public abstract class Actor {
   
   public final double mass;
   
-  public Vector2D position;
+  public final Vector2D pos;
   
   public Actor(double x, double y, double mass) {
-    this.position = new Vector2D(x,y);
+    this.pos = new Vector2D(x,y);
     this.mass = mass;
   }
 
   public void render(GL2 gl, GLU glu) {
-    this.graphic.render(gl, glu, position.x, position.y);
+    this.graphic.render(gl, glu, pos.x, pos.y);
   }
 
   public void updateVelocity(Actor[] actors) {}
