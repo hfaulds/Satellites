@@ -10,10 +10,16 @@ public class ShipGraphic extends Graphic {
 
   private final float[] lightPos        = { -30,  0.0f,  20f, 1.0f };
   
-  private final float width             = 0.05f;
-  private final float height            = 0.2f;
-  private final float depth             = 0.02f;
-  
+  private final float width;
+  private final float height;
+  private final float depth;
+
+  public ShipGraphic(double width, double height, double depth) {
+    this.width = width;
+    this.height = height;
+    this.depth = depth;
+  }
+
   @Override
   public void render(GL2 gl, GLU glu, double x, double y) {
 

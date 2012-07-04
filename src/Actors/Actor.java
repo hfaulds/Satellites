@@ -26,17 +26,8 @@ public abstract class Actor {
     this.graphic.render(gl, glu, position.x, position.y);
   }
 
-  public void updateVelocity(Actor[] satellites) {}
+  public void updateVelocity(Actor[] actors) {}
   public void updatePosition() {}
   
   public abstract boolean collides(Actor a);
-  
-  public static Vector2D gravityBetween(Actor a, Actor b) {
-  
-    Vector2D direction = b.position.sub(a.position);
-    
-    double f_mag = G * a.mass * b.mass / Math.pow(direction.magnitude(), 2);
-    
-    return direction._normalize().multiply(f_mag);
-  }
-}
+ }

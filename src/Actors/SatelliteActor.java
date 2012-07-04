@@ -3,7 +3,7 @@ package Actors;
 import Graphics.SatelliteGraphic;
 import Math.Vector2D;
 
-public class SatelliteActor extends Actor {
+public class SatelliteActor extends PointGravityActor {
   
   public final static double density = 50;
   
@@ -18,6 +18,7 @@ public class SatelliteActor extends Actor {
   public SatelliteActor(double x, double y, double mass) {
     this(x, y, 0, 0, mass);
   }
+  
   public SatelliteActor(double x, double y, double vx, double vy, double mass) {
     super(x, y, mass);
     
@@ -39,7 +40,7 @@ public class SatelliteActor extends Actor {
       if(actor != this) {
         if(!this.collides(actor)) {
           /*Acelleration from gravitational pull*/
-          accel._add(gravityBetween(this, actor).divide(this.mass));
+          accel._add(gravForceFrom(actor).divide(mass));
         } else {
           /*Collision*/
           this.velocity._multiply(0.9);
