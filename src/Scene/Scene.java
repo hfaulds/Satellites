@@ -1,7 +1,6 @@
 package Scene;
 
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import Actors.Actor;
 import Actors.SatelliteActor;
@@ -24,25 +23,13 @@ public class Scene extends MouseAdapter {
 
   };
   
-  private boolean mouseDown             = false;
-  protected Vector2D mousePosition      = new Vector2D();
-  
-  @Override
-  public void mousePressed(MouseEvent e) {
-    mouseDown = true;
-    mousePosition.x = e.getX() - (e.getComponent().getWidth() / 2);
-    mousePosition.y = e.getY() - (e.getComponent().getHeight() / 2);
-  }
-  
-  @Override
-  public void mouseReleased(MouseEvent e) {
-    mouseDown = false;
-  }
+  public boolean mouseDown             = false;
+  public Vector2D mousePosition      = new Vector2D();
   
   public void tick() {
     /*Need to project the player and calculate the difference from mouse to player*/
     if(mouseDown)
-      player.applyForce(mousePosition._normalize()._mult(0.000001));
+      player.applyForce(mousePosition._normalize()._mult(0.0000001));
     
     for(Actor actor : actors)
       actor.updateVelocity(actors);

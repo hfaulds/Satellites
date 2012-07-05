@@ -1,6 +1,7 @@
 package Scene;
 
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
 import javax.media.opengl.GL;
@@ -11,6 +12,7 @@ import javax.media.opengl.fixedfunc.GLLightingFunc;
 import javax.media.opengl.glu.GLU;
 
 import Actors.Actor;
+import Math.Vector2D;
 
 public class SceneRenderer extends MouseAdapter implements GLEventListener {
 
@@ -18,6 +20,10 @@ public class SceneRenderer extends MouseAdapter implements GLEventListener {
   private final Scene scene;
   
   public double zoom = 20;
+  
+  private double[] modelMatrix  = new double[16];
+  private double[] projectionMatrix = new double[16];
+  private int[] viewportMatrix = new int[4];
   
   public SceneRenderer(Scene scene) {
     this.scene = scene;
@@ -53,6 +59,11 @@ public class SceneRenderer extends MouseAdapter implements GLEventListener {
 
     gl.glMatrixMode(GL2.GL_MODELVIEW);
     gl.glLoadIdentity();
+    
+    gl.glGetIntegerv(GL2.GL_VIEWPORT, viewportMatrix, 0);
+    gl.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, modelMatrix, 0);
+    gl.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projectionMatrix, 0);
+    
 
     gl.glEnable(GL.GL_MULTISAMPLE);
 
@@ -67,10 +78,10 @@ public class SceneRenderer extends MouseAdapter implements GLEventListener {
     if (height <= 0) {
         height = 1;
     }
-    float h = (float) width / (float) height;
+    float ratio = (float) width / (float) height;
     gl.glMatrixMode(GL2.GL_PROJECTION);
     gl.glLoadIdentity();
-    glu.gluPerspective(50.0f, h, 1.0, 1000.0);
+    glu.gluPerspective(50.0f, ratio, 1.0, 1000.0);
     gl.glMatrixMode(GL2.GL_MODELVIEW);
     gl.glLoadIdentity();
   }
@@ -79,6 +90,28 @@ public class SceneRenderer extends MouseAdapter implements GLEventListener {
   public void mouseWheelMoved(MouseWheelEvent e) {
     int wheelRotation = e.getWheelRotation();
     this.zoom += wheelRotation*10;
+  }
+
+  @Override
+  public void mousePressed(MouseEvent e) {
+    Vector2D position = scene.player.position;
+    double[] coords = new double[4];
+    
+    glu.gluProject(position.x, position.y, Vector2D.Z, 
+        modelMatrix, 0,
+        projectionMatrix, 0, 
+        viewportMatrix, 0,
+        coords, 0);
+
+    int height = e.getComponent().getHeight();
+    scene.mousePosition.x = e.getX() - coords[0];
+    scene.mousePosition.y = height - e.getY() - coords[1];
+    scene.mouseDown = true;
+  }
+  
+  @Override
+  public void mouseReleased(MouseEvent e) {
+    scene.mouseDown = false;
   }
   
   @Override

@@ -28,7 +28,7 @@ public class SatelliteGraphic extends Graphic {
     
     gl.glPushMatrix();
     {
-      gl.glTranslated(pos.x, pos.y, -10);
+      gl.glTranslated(pos.x, pos.y, Vector2D.Z);
       gl.glColor3fv(ambientColour, 1);
       
       // Set light parameters.

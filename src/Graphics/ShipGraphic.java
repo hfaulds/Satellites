@@ -29,7 +29,7 @@ public class ShipGraphic extends Graphic {
     gl.glPushMatrix();
     {
       gl.glLoadIdentity();
-      gl.glTranslated(pos.x, pos.y, -10);
+      gl.glTranslated(pos.x, pos.y, Vector2D.Z);
       gl.glRotated(rot.degrees(), rot.x, rot.y, rot.z);
 
       // Set light parameters.

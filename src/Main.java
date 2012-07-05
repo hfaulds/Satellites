@@ -27,7 +27,7 @@ public class Main extends JFrame implements GLEventListener {
     canvas = new GLCanvas(capabilities);
     canvas.requestFocus();
     canvas.addGLEventListener(this);
-    canvas.addMouseListener(scene);
+    canvas.addMouseListener(renderer);
     canvas.addMouseWheelListener(renderer);
     
     this.add(canvas);

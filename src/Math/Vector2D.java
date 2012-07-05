@@ -5,7 +5,7 @@ public class Vector2D {
   
   public double x;
   public double y;
-  
+  public static double Z;
   
   /* Constructors */
   public Vector2D() {
