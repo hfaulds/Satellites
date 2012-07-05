@@ -11,11 +11,11 @@ public class Scene {
       
       //new SatelliteActor(-10, -1),
       
-     new SatelliteActor(  0,  0, 10),
-     new SatelliteActor(  0,  5, -.02,   0,  5),
-     new SatelliteActor(  0, -5,  .02 ,  0,  5),
+     new SatelliteActor(  -8,  -5, 10),
+     //new SatelliteActor(  0,  5, -.02,   0,  5),
+     //new SatelliteActor(  0, -5,  .02 ,  0,  5),
 
-     new ShipActor(5, 6, 0, -0.02)
+     new ShipActor(5, 6)
   };
   
   public void tick() {

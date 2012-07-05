@@ -7,8 +7,8 @@ public class ShipActor extends PointGravityActor {
 
   private static double MASS    = 0.0001;
   
-  private static double WIDTH   = 0.05;
-  private static double LENGTH  = 0.7;
+  private static double WIDTH   = 0.02;
+  private static double LENGTH  = 1.5;
   private static double HEIGHT  = 0.1;
   
   private Vector2D[] corners = new Vector2D[]{
@@ -58,17 +58,19 @@ public class ShipActor extends PointGravityActor {
     this.velocity._add(force.divide(mass));
     
     double torque = 0;
-    
+    System.out.println();
     for(int i=0; i < cornerForces.length; i++)
     {
       Vector2D F        = cornerForces[i];
       double r          = cornerOffsets[i].magnitude();
       
-      double theta = Math.acos(Vector2D.dot(cornerOffsets[i].normalized(), F.normalized()));
+      double theta      = Math.acos(Vector2D.dot(cornerOffsets[i].normalized(), F.normalized()));
       
-      torque -= r * F.magnitude() * Math.sin(theta);
+      double moment = r * F.magnitude() * Math.sin(theta);
+      
+      torque -= moment * 200;
     }
-    
+
     this.spin += torque;
   }
 
