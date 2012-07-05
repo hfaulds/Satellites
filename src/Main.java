@@ -2,7 +2,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
 
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
+import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 import javax.swing.JFrame;
 
@@ -14,17 +16,23 @@ import com.jogamp.opengl.util.FPSAnimator;
 public class Main extends JFrame implements GLEventListener {
   
   private static final long serialVersionUID = 1L;
-  
-  private static GLCanvas canvas = new GLCanvas();
-  private static FPSAnimator animator = new FPSAnimator(canvas, 60);
+
+  private final GLCanvas canvas;
+  private final FPSAnimator animator;
   
   private Scene scene = new Scene();
   private SceneRenderer renderer = new SceneRenderer(scene);
   
   public Main() {
-    canvas.addGLEventListener(this);
+
+    GLCapabilities capabilities = new GLCapabilities(GLProfile.getDefault());
+    capabilities.setSampleBuffers(true);
+    capabilities.setNumSamples(4);
+    canvas = new GLCanvas(capabilities);
+    
     canvas.requestFocus();
     
+    canvas.addGLEventListener(this);
     canvas.addMouseWheelListener(new MouseAdapter() {
       @Override
       public void mouseWheelMoved(MouseWheelEvent e) {
@@ -34,8 +42,10 @@ public class Main extends JFrame implements GLEventListener {
     });
     
     this.add(canvas);
-    this.setSize(640, 480);
+    this.setSize(1280 , 720);
     this.setVisible(true);
+    
+    animator = new FPSAnimator(canvas, 60);
     animator.start();
   }
 
@@ -47,6 +57,7 @@ public class Main extends JFrame implements GLEventListener {
   @Override
   public void display(GLAutoDrawable drawable) {
     scene.tick();
+    renderer.clear(drawable);
     renderer.display(drawable);
   }
 

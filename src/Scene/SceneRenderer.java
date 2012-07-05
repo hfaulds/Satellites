@@ -30,14 +30,17 @@ public class SceneRenderer implements GLEventListener {
     gl.glDepthFunc(GL.GL_LEQUAL);
     gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
   }
-
-  @Override
-  public void display(GLAutoDrawable drawable) {
+  
+  public void clear(GLAutoDrawable drawable) {
     final GL2 gl = drawable.getGL().getGL2();
     gl.glClear(GL.GL_COLOR_BUFFER_BIT);
     gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
     gl.glLoadIdentity();
-    
+  }
+  
+  @Override
+  public void display(GLAutoDrawable drawable) {
+    final GL2 gl = drawable.getGL().getGL2();
     gl.glMatrixMode(GL2.GL_PROJECTION);
     gl.glLoadIdentity();
 
@@ -47,6 +50,8 @@ public class SceneRenderer implements GLEventListener {
 
     gl.glMatrixMode(GL2.GL_MODELVIEW);
     gl.glLoadIdentity();
+
+    gl.glEnable(GL.GL_MULTISAMPLE);
 
     for(Actor satellite : scene.actors) {
       satellite.render(gl, glu);
