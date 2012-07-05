@@ -3,6 +3,7 @@ package Actors;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
+import Controllers.Controller;
 import Graphics.Graphic;
 import Math.Rotation;
 import Math.Vector2D;
@@ -12,6 +13,7 @@ public abstract class Actor {
   public static final double G = 0.0001;
   
   protected Graphic graphic;
+  public Controller<? extends Actor> controller;
   
   public final double mass;
   

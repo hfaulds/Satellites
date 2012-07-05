@@ -5,6 +5,7 @@ import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 import javax.swing.JFrame;
 
+import Controllers.PlayerController;
 import Scene.Scene;
 import Scene.SceneRenderer;
 
@@ -27,8 +28,8 @@ public class Main extends JFrame implements GLEventListener {
     canvas = new GLCanvas(capabilities);
     canvas.requestFocus();
     canvas.addGLEventListener(this);
-    canvas.addMouseListener(renderer);
     canvas.addMouseWheelListener(renderer);
+    canvas.addMouseListener((PlayerController)scene.player.controller);
     
     this.add(canvas);
     this.setSize(1280 , 720);

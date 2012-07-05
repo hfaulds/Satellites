@@ -1,9 +1,10 @@
 package Actors;
 
+import Controllers.PlayerController;
 import Graphics.ShipGraphic;
 import Math.Vector2D;
 
-public class ShipActor extends PointGravityActor {
+public class PlayerActor extends PointGravityActor {
 
   private static double MASS    = 0.0001;
   
@@ -12,19 +13,20 @@ public class ShipActor extends PointGravityActor {
   private static double HEIGHT  = 0.1;
   
   private Vector2D[] corners = new Vector2D[]{
-    new Vector2D(WIDTH /-2, LENGTH / 2),
-    new Vector2D(WIDTH / 2, LENGTH / 2),
-    new Vector2D(WIDTH /-2, LENGTH /-2),
-    new Vector2D(WIDTH / 2, LENGTH /-2)
+    new Vector2D( WIDTH /-2, LENGTH / 2),
+    new Vector2D( WIDTH / 2, LENGTH / 2),
+    new Vector2D( WIDTH /-2, LENGTH /-2),
+    new Vector2D( WIDTH / 2, LENGTH /-2)
   };
   
-  public ShipActor(double x, double y) {
+  public PlayerActor(double x, double y) {
     this(x, y, 0, 0);
   }
 
-  public ShipActor(double x, double y, double vx, double vy) {
+  public PlayerActor(double x, double y, double vx, double vy) {
     super(x, y, MASS);
-    this.graphic = new ShipGraphic(WIDTH, LENGTH, HEIGHT);
+    this.graphic        = new ShipGraphic(WIDTH, LENGTH, HEIGHT);
+    this.controller     = new PlayerController(this);
   }
 
   @Override
