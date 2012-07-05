@@ -38,17 +38,16 @@ public class PlayerController extends Controller<PlayerActor> implements MouseLi
   @Override
   public void tick(Actor[] actors) {    
     if(bMouseMove) {
-      Vector2D coords = Renderer3D.project(actor.position);
-      Vector2D direction = coords.sub(mousePosition);
-      direction.y *= -1;
+      Vector2D playerCoord  = Renderer3D.project(actor.position);
+      Vector2D controlCoord = Renderer3D.project(actor.position.add(new Vector2D(ShipControlCircle.CONTROL_RADIUS, 0)));
+      Vector2D distToMouse  = playerCoord.sub(mousePosition);
+      Vector2D distToEdge   = playerCoord.sub(controlCoord);
       
-      double magnitude = direction.magnitude();
-      
-      if(magnitude > ShipControlCircle.CONTROL_RADIUS)
+      if(distToMouse.magnitude() > distToEdge.magnitude())
         return;
       
-      Vector2D force  = direction._normalize()._mult(MOUSE_FORCE);
-      actor.applyForce(force);
+      distToMouse.y *= -1;
+      actor.applyForce(distToMouse._normalize()._mult(MOUSE_FORCE));
     }
   }
   

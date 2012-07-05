@@ -21,7 +21,7 @@ public class Scene extends MouseAdapter {
   };
   
   public final UIComponent[] ui = new UIComponent[]{
-      player.ui
+      //player.ui
   };
   
   public void tick() {

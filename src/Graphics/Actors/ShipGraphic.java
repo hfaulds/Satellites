@@ -4,6 +4,8 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import Graphics.Graphic;
+import Graphics.UI.ShipControlCircle;
+import Graphics.UI.UIComponent;
 import Math.Rotation;
 import Math.Vector2D;
 
@@ -17,6 +19,8 @@ public class ShipGraphic extends Graphic {
   private final double width;
   private final double length;
   private final double height;
+  
+  private UIComponent ui = new ShipControlCircle();
 
   public ShipGraphic(double width, double length, double height) {
     this.width  = width;
@@ -87,6 +91,7 @@ public class ShipGraphic extends Graphic {
       }
       gl.glEnd();
       
+    ui.render(gl);
       gl.glPopMatrix();
     }
   }
