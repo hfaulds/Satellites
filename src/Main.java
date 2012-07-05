@@ -58,7 +58,6 @@ public class Main extends JFrame implements GLEventListener {
   @Override
   public void display(GLAutoDrawable drawable) {
     scene.tick();
-    renderer.clear(drawable);
     renderer.display(drawable);
   }
 

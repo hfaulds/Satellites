@@ -6,13 +6,13 @@ import java.awt.event.MouseListener;
 import Actors.Actor;
 import Actors.PlayerActor;
 import Math.Vector2D;
-import Scene.SceneRenderer;
+import Renderers.Renderer3D;
 
 public class PlayerController extends Controller<PlayerActor> implements MouseListener {
 
   public static final double MOUSE_FORCE = 1e-7;
   
-  public boolean mouseDown      = false;
+  public boolean bMouseMove     = false;
   public Vector2D mousePosition = new Vector2D();
   
   public PlayerController(PlayerActor actor) {
@@ -27,20 +27,20 @@ public class PlayerController extends Controller<PlayerActor> implements MouseLi
       int height = e.getComponent().getHeight();
       mousePosition.x = e.getX();
       mousePosition.y = (height -  e.getY());
-      mouseDown = true;
+      bMouseMove = true;
     }
   }
   
   @Override
   public void mouseReleased(MouseEvent e) {
-    mouseDown = false;
+    bMouseMove = false;
   }
 
   @Override
   public void tick(Actor[] actors) {    
-    if(mouseDown) {
+    if(bMouseMove) {
       //TODO change to take into account actual screen position with a maximum force and apply torque
-      Vector2D coords = SceneRenderer.project(actor.position);
+      Vector2D coords = Renderer3D.project(actor.position);
       Vector2D force  = coords.sub(mousePosition)._normalize()._mult(MOUSE_FORCE);
       actor.applyForce(force);
     }

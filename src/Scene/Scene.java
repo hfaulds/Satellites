@@ -5,8 +5,11 @@ import java.awt.event.MouseAdapter;
 import Actors.Actor;
 import Actors.PlayerActor;
 import Actors.SatelliteActor;
+import Graphics.SceneUI;
  
 public class Scene extends MouseAdapter {
+
+  public final SceneUI ui       = new SceneUI();
   
   public final Actor player     = new PlayerActor(5, 6, 0, -0.01);
   
@@ -18,6 +21,7 @@ public class Scene extends MouseAdapter {
      new SatelliteActor(  0,  5, -.02,   0,  5),
      new SatelliteActor(  0, -5,  .02 ,  0,  5),
   };
+
   
   public void tick() {
     player.controller.tick(actors);
