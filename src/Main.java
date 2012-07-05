@@ -1,5 +1,5 @@
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseWheelEvent;
 
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
@@ -10,7 +10,6 @@ import Scene.Scene;
 import Scene.SceneRenderer;
 
 import com.jogamp.opengl.util.FPSAnimator;
-
 
 public class Main extends JFrame implements GLEventListener {
   
@@ -26,16 +25,16 @@ public class Main extends JFrame implements GLEventListener {
     canvas.addGLEventListener(this);
     canvas.requestFocus();
     
-    this.add(canvas);
-    this.setSize(640, 480);
-    this.addWindowListener(new WindowAdapter() {
-        public void windowClosing(WindowEvent e) {
-          animator.stop();
-          dispose();
-          System.exit(0);
-        }
+    canvas.addMouseWheelListener(new MouseAdapter() {
+      @Override
+      public void mouseWheelMoved(MouseWheelEvent e) {
+        int wheelRotation = e.getWheelRotation();
+        renderer.zoom += wheelRotation*10;
+      }
     });
     
+    this.add(canvas);
+    this.setSize(640, 480);
     this.setVisible(true);
     animator.start();
   }

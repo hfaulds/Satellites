@@ -14,6 +14,8 @@ public class SceneRenderer implements GLEventListener {
   private static GLU glu = new GLU();
   private final Scene scene;
   
+  public double zoom = 20;
+  
   public SceneRenderer(Scene scene) {
     this.scene = scene;
   }
@@ -41,7 +43,7 @@ public class SceneRenderer implements GLEventListener {
 
     float widthHeightRatio = (float) drawable.getWidth() / (float) drawable.getHeight();
     glu.gluPerspective(45, widthHeightRatio, 1, 1000);
-    glu.gluLookAt(0, 0, 10, 0, 0, 0, 0, 1, 0);
+    glu.gluLookAt(0, 0, zoom, 0, 0, 0, 0, 1, 0);
 
     gl.glMatrixMode(GL2.GL_MODELVIEW);
     gl.glLoadIdentity();

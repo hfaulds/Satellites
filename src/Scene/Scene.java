@@ -15,7 +15,7 @@ public class Scene {
      //new SatelliteActor(  0,  5, -.02,   0,  5),
      //new SatelliteActor(  0, -5,  .02 ,  0,  5),
 
-     new ShipActor(5, 6)
+     new ShipActor(5, 6, 0, -0.01)
   };
   
   public void tick() {
