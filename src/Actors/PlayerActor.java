@@ -2,6 +2,7 @@ package Actors;
 
 import Controllers.PlayerController;
 import Graphics.ShipGraphic;
+import Math.Rotation;
 import Math.Vector2D;
 
 public class PlayerActor extends PointGravityActor {
@@ -53,23 +54,23 @@ public class PlayerActor extends PointGravityActor {
 
     this.applyForce(force);
     
-    double torque = 0;
+    Rotation torque = new Rotation();
 
     for(int i=0; i < cornerForces.length; i++)
     {
       Vector2D F        = cornerForces[i];
-      double r          = cornerOffsets[i].magnitude();
+      Vector2D offset   = cornerOffsets[i];
+      double r          = offset.magnitude();
+      double angle      = Vector2D.angle(F, offset);
       
-      double theta      = Math.acos(Vector2D.dot(cornerOffsets[i].normalized(), F.normalized()));
+      double moment     = calcTorque(r, F.magnitude(), angle);
       
-      double moment = r * F.magnitude() * Math.sin(theta);
-      
-      torque -= moment * 300;
+      torque._add(moment);
     }
 
-    this.spin += torque;
+    this.applyTorque(torque);
   }
-  
+
   @Override
   public boolean collides(Actor a) {
     return false;

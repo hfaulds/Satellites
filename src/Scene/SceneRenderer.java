@@ -97,7 +97,7 @@ public class SceneRenderer implements GLEventListener, MouseWheelListener {
     matrixChanged = true;
   }
   
-  public static double[] project(Vector2D position) {
+  public static Vector2D project(Vector2D position) {
     double[] player = new double[4];
     
     glu.gluProject(position.x, position.y, Vector2D.Z, 
@@ -106,7 +106,7 @@ public class SceneRenderer implements GLEventListener, MouseWheelListener {
         viewportMatrix, 0,
         player, 0);
     
-    return player;
+    return new Vector2D(player[0], player[1]);
   }
   
   @Override

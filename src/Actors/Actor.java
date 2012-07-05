@@ -21,7 +21,7 @@ public abstract class Actor {
   public final Vector2D velocity;
   
   public final Rotation rotation = new Rotation();
-  public double spin = 0;
+  public final Rotation spin     = new Rotation();
   
   public Actor(double x, double y, double mass) {
     this(new Vector2D(x, y), new Vector2D(), mass);
@@ -34,7 +34,7 @@ public abstract class Actor {
   public Actor(Vector2D pos, Vector2D vel, double mass) {
     this.position = pos;
     this.velocity = vel;
-    this.mass = mass;
+    this.mass     = mass;
   }
 
   public void render(GL2 gl, GLU glu) {
@@ -54,7 +54,12 @@ public abstract class Actor {
     this.velocity._add(force.divide(mass));
   }
   
-  public void applyTorque(double torque) {
-    this.spin += torque;
+  public static double calcTorque(double r, double F, double angle) {
+    /* t = r * F * sin() */
+    return r * F * Math.sin(angle) * -200;
+  }
+  
+  public void applyTorque(Rotation torque) {
+    this.spin._add(torque);
   }
  }

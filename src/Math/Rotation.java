@@ -22,5 +22,13 @@ public class Rotation {
   public double degrees() {
     return this.mag * 180/Math.PI;
   }
+
+  public void _add(Rotation other) {
+    /* Normalize if needed*/
+    this.x      += other.x;
+    this.y      += other.y;
+    this.z      += other.z;
+    this.mag    += other.mag;
+  }
   
 }

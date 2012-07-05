@@ -10,6 +10,8 @@ import Scene.SceneRenderer;
 
 public class PlayerController extends Controller<PlayerActor> implements MouseListener {
 
+  public static final double MOUSE_FORCE = 1e-7;
+  
   public boolean mouseDown      = false;
   public Vector2D mousePosition = new Vector2D();
   
@@ -22,11 +24,9 @@ public class PlayerController extends Controller<PlayerActor> implements MouseLi
     
     if(e.getButton() == MouseEvent.BUTTON1)
     {
-      double[] player = SceneRenderer.project(actor.position);
-  
       int height = e.getComponent().getHeight();
-      mousePosition.x =           e.getX() - player[0];
-      mousePosition.y = height -  e.getY() - player[1];
+      mousePosition.x = e.getX();
+      mousePosition.y = (height -  e.getY());
       mouseDown = true;
     }
   }
@@ -37,8 +37,13 @@ public class PlayerController extends Controller<PlayerActor> implements MouseLi
   }
 
   @Override
-  public void tick(Actor[] actors) {    if(mouseDown)
-    actor.applyForce(mousePosition._normalize()._mult(0.0000001));
+  public void tick(Actor[] actors) {    
+    if(mouseDown) {
+      //TODO change to take into account actual screen position with a maximum force and apply torque
+      Vector2D coords = SceneRenderer.project(actor.position);
+      Vector2D force  = coords.sub(mousePosition)._normalize()._mult(MOUSE_FORCE);
+      actor.applyForce(force);
+    }
   }
   
   @Override

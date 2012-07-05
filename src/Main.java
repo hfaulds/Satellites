@@ -1,3 +1,6 @@
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
@@ -32,6 +35,14 @@ public class Main extends JFrame implements GLEventListener {
     canvas.addMouseListener((PlayerController)scene.player.controller);
     
     this.add(canvas);
+    this.addWindowListener(new WindowAdapter() {
+      public void windowClosing(WindowEvent e) {
+        animator.stop();
+        dispose();
+        System.exit(0);
+      }
+    });
+
     this.setSize(1280 , 720);
     this.setVisible(true);
     
