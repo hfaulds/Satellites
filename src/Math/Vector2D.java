@@ -31,14 +31,16 @@ public class Vector2D {
     return this;
   }
   
-  public void _mult(double n) {
+  public Vector2D _mult(double n) {
     this.x *= n;
     this.y *= n;
+    return this;
   }
   
-  public void _divide(double n) {
+  public Vector2D _divide(double n) {
     this.x /= n;
     this.y /= n;
+    return this;
   }
 
   public Vector2D _normalize() {

@@ -1,5 +1,8 @@
 package Scene;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseWheelEvent;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -9,7 +12,7 @@ import javax.media.opengl.glu.GLU;
 
 import Actors.Actor;
 
-public class SceneRenderer implements GLEventListener {
+public class SceneRenderer extends MouseAdapter implements GLEventListener {
 
   private static GLU glu = new GLU();
   private final Scene scene;
@@ -70,6 +73,12 @@ public class SceneRenderer implements GLEventListener {
     glu.gluPerspective(50.0f, h, 1.0, 1000.0);
     gl.glMatrixMode(GL2.GL_MODELVIEW);
     gl.glLoadIdentity();
+  }
+  
+  @Override
+  public void mouseWheelMoved(MouseWheelEvent e) {
+    int wheelRotation = e.getWheelRotation();
+    this.zoom += wheelRotation*10;
   }
   
   @Override

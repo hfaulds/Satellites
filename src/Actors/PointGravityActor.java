@@ -9,7 +9,7 @@ public class PointGravityActor extends Actor {
   }
 
   public Vector2D gravForceFrom(Actor actor, Vector2D offset) {
-    Vector2D direction = actor.pos.sub(this.pos.add(offset));
+    Vector2D direction = actor.position.sub(this.position.add(offset));
     
     double f_mag = G * this.mass * actor.mass / Math.pow(direction.magnitude(), 2);
     

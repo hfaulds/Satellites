@@ -18,18 +18,12 @@ public class ShipActor extends PointGravityActor {
     new Vector2D(WIDTH / 2, LENGTH /-2)
   };
   
-  public final Vector2D velocity;
-  public double spin;
-  
   public ShipActor(double x, double y) {
     this(x, y, 0, 0);
   }
 
   public ShipActor(double x, double y, double vx, double vy) {
     super(x, y, MASS);
-    this.velocity = new Vector2D(vx, vy);
-    this.spin = 0;
-    
     this.graphic = new ShipGraphic(WIDTH, LENGTH, HEIGHT);
   }
 
@@ -42,7 +36,7 @@ public class ShipActor extends PointGravityActor {
     
     for(int i=0; i < cornerForces.length; i++) {
       cornerForces[i]   = new Vector2D();
-      cornerOffsets[i]  = corners[i]._rotate(this.rot.mag);
+      cornerOffsets[i]  = corners[i]._rotate(this.rotation.mag);
     }
     
     for(Actor actor : actors) {
@@ -54,8 +48,8 @@ public class ShipActor extends PointGravityActor {
         }
       }
     }
-    
-    this.velocity._add(force.divide(mass));
+
+    this.applyForce(force);
     
     double torque = 0;
 
@@ -72,12 +66,6 @@ public class ShipActor extends PointGravityActor {
     }
 
     this.spin += torque;
-  }
-
-  @Override
-  public void updatePosition() {
-    this.pos._add(velocity);
-    this.rot._add(spin);
   }
   
   @Override

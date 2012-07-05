@@ -46,15 +46,11 @@ public class SatelliteActor extends PointGravityActor {
       }
     }
 
-    this.velocity._add(force.divide(mass));
-  }
-  
-  public void updatePosition() {
-    this.pos._add(velocity);
+    this.applyForce(force);
   }
 
   @Override
   public boolean collides(Actor other) {
-    return other.pos.distanceTo(this.pos) <= radius*2;
+    return other.position.distanceTo(this.position) <= radius*2;
   }
 }
