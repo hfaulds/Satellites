@@ -5,12 +5,13 @@ import java.awt.event.MouseListener;
 
 import Actors.Actor;
 import Actors.PlayerActor;
+import Graphics.UI.ShipControlCircle;
 import Math.Vector2D;
 import Renderers.Renderer3D;
 
 public class PlayerController extends Controller<PlayerActor> implements MouseListener {
 
-  public static final double MOUSE_FORCE = 1e-7;
+  public static final double MOUSE_FORCE = 1e-8;
   
   public boolean bMouseMove     = false;
   public Vector2D mousePosition = new Vector2D();
@@ -21,12 +22,10 @@ public class PlayerController extends Controller<PlayerActor> implements MouseLi
 
   @Override
   public void mousePressed(MouseEvent e) {
-    
     if(e.getButton() == MouseEvent.BUTTON1)
     {
-      int height = e.getComponent().getHeight();
       mousePosition.x = e.getX();
-      mousePosition.y = (height -  e.getY());
+      mousePosition.y = e.getY();
       bMouseMove = true;
     }
   }
@@ -39,9 +38,16 @@ public class PlayerController extends Controller<PlayerActor> implements MouseLi
   @Override
   public void tick(Actor[] actors) {    
     if(bMouseMove) {
-      //TODO change to take into account actual screen position with a maximum force and apply torque
       Vector2D coords = Renderer3D.project(actor.position);
-      Vector2D force  = coords.sub(mousePosition)._normalize()._mult(MOUSE_FORCE);
+      Vector2D direction = coords.sub(mousePosition);
+      direction.y *= -1;
+      
+      double magnitude = direction.magnitude();
+      
+      if(magnitude > ShipControlCircle.CONTROL_RADIUS)
+        return;
+      
+      Vector2D force  = direction._normalize()._mult(MOUSE_FORCE);
       actor.applyForce(force);
     }
   }

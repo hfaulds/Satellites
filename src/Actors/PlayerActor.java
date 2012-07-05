@@ -1,7 +1,8 @@
 package Actors;
 
 import Controllers.PlayerController;
-import Graphics.ShipGraphic;
+import Graphics.Actors.ShipGraphic;
+import Graphics.UI.ShipControlCircle;
 import Math.Rotation;
 import Math.Vector2D;
 
@@ -28,6 +29,7 @@ public class PlayerActor extends PointGravityActor {
     super(x, y, MASS);
     this.graphic        = new ShipGraphic(WIDTH, LENGTH, HEIGHT);
     this.controller     = new PlayerController(this);
+    this.ui             = new ShipControlCircle(this);
   }
 
   @Override

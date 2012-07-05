@@ -5,6 +5,7 @@ import javax.media.opengl.glu.GLU;
 
 import Controllers.Controller;
 import Graphics.Graphic;
+import Graphics.UI.UIComponent;
 import Math.Rotation;
 import Math.Vector2D;
 
@@ -22,6 +23,8 @@ public abstract class Actor {
   
   public final Rotation rotation = new Rotation();
   public final Rotation spin     = new Rotation();
+
+  public UIComponent ui;
   
   public Actor(double x, double y, double mass) {
     this(new Vector2D(x, y), new Vector2D(), mass);

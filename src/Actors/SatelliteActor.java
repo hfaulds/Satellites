@@ -1,6 +1,6 @@
 package Actors;
 
-import Graphics.SatelliteGraphic;
+import Graphics.Actors.SatelliteGraphic;
 import Math.Vector2D;
 
 public class SatelliteActor extends PointGravityActor {

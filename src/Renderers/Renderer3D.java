@@ -77,7 +77,7 @@ public class Renderer3D {
         viewportMatrix, 0,
         player, 0);
     
-    return new Vector2D(player[0], player[1]);
+    return new Vector2D(player[0], viewportMatrix[3] - player[1]);
   }
 
   public void render(GL2 gl, Actor[] actors) {

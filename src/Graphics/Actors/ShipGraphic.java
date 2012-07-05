@@ -1,8 +1,9 @@
-package Graphics;
+package Graphics.Actors;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
+import Graphics.Graphic;
 import Math.Rotation;
 import Math.Vector2D;
 
