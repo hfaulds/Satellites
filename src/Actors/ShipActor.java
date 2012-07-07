@@ -1,12 +1,11 @@
 package Actors;
 
-import Controllers.PlayerController;
-import Graphics.Actors.ShipGraphic;
-import Graphics.UI.ShipControlCircle;
+import Controllers.Controller;
+import Graphics.ShipGraphic;
 import Math.Rotation;
 import Math.Vector2D;
 
-public class PlayerActor extends PointGravityActor {
+public class ShipActor extends Actor {
 
   private static double MASS    = 0.0001;
   
@@ -21,15 +20,18 @@ public class PlayerActor extends PointGravityActor {
     new Vector2D( WIDTH / 2, LENGTH /-2)
   };
   
-  public PlayerActor(double x, double y) {
+  public ShipActor(double x, double y) {
     this(x, y, 0, 0);
   }
 
-  public PlayerActor(double x, double y, double vx, double vy) {
+  public ShipActor(double x, double y, double vx, double vy) {
+    this(x, y, vx, vy, null);
+  }
+
+  public ShipActor(double x, double y, double vx, double vy, Controller controller) {
     super(x, y, MASS);
-    this.graphic        = new ShipGraphic(WIDTH, LENGTH, HEIGHT);
-    this.controller     = new PlayerController(this);
-    this.ui             = new ShipControlCircle(this);
+    this.graphic = new ShipGraphic(WIDTH, LENGTH, HEIGHT);
+    this.controller = controller;
   }
 
   @Override

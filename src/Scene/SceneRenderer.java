@@ -5,12 +5,11 @@ import java.awt.event.MouseWheelListener;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLEventListener;
 
 import Renderers.Renderer2D;
 import Renderers.Renderer3D;
 
-public class SceneRenderer implements GLEventListener, MouseWheelListener {
+public class SceneRenderer implements MouseWheelListener {
 
   private static final int ZOOM_RATE    = 10;
   private static final int ZOOM_DEFAULT = 20;
@@ -25,13 +24,11 @@ public class SceneRenderer implements GLEventListener, MouseWheelListener {
     this.scene = scene;
   }
 
-  @Override
   public void init(GLAutoDrawable drawable) {
     renderer3D.init(glFromDrawable(drawable));
   }
   
-  @Override
-  public void display(GLAutoDrawable drawable) {
+  public void render(GLAutoDrawable drawable) {
     final GL2 gl = drawable.getGL().getGL2();
     
     double width = drawable.getWidth();
@@ -44,7 +41,6 @@ public class SceneRenderer implements GLEventListener, MouseWheelListener {
     renderer2D.render(gl, scene.ui);
   }
 
-  @Override
   public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
     renderer3D.reshape(glFromDrawable(drawable), x, y, width, height);
   }
@@ -58,7 +54,4 @@ public class SceneRenderer implements GLEventListener, MouseWheelListener {
   private GL2 glFromDrawable(GLAutoDrawable drawable) {
     return drawable.getGL().getGL2();
   }
-  
-  @Override
-  public void dispose(GLAutoDrawable drawable) {}
 }

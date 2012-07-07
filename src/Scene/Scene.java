@@ -3,19 +3,20 @@ package Scene;
 import java.awt.event.MouseAdapter;
 
 import Actors.Actor;
-import Actors.PlayerActor;
+import Actors.ShipActor;
 import Actors.SatelliteActor;
 import Controllers.Controller;
-import Graphics.UI.UIComponent;
+import Controllers.PlayerController;
+import Graphics.Sprite;
  
 public class Scene extends MouseAdapter {
 
-  public final Actor player   = new PlayerActor(5, 6, 0, -0.01);
+  public final Actor player = new ShipActor(5, 6, 0, -0.01);
   
-  public final Controller[] controllers = {
-    player.controller
-  };
-
+  {
+	  player.controller     = new PlayerController(player);
+  }
+  
   public final Actor[] actors = {
      player, 
      //new SatelliteActor( -5,  1),
@@ -25,7 +26,11 @@ public class Scene extends MouseAdapter {
      //new SatelliteActor(  0, -5,  .02 ,  0,  5),
   };
   
-  public final UIComponent[] ui = new UIComponent[]{
+  public final Controller[] controllers = {
+    player.controller
+  };
+  
+  public final Sprite[] ui = new Sprite[]{
       //player.ui
   };
 }

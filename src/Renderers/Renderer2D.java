@@ -2,7 +2,7 @@ package Renderers;
 
 import javax.media.opengl.GL2;
 
-import Graphics.UI.UIComponent;
+import Graphics.Sprite;
 
 public class Renderer2D {
   public void preRender(GL2 gl, double width, double height) {
@@ -15,8 +15,8 @@ public class Renderer2D {
     gl.glLoadIdentity();
   }
 
-  public void render(GL2 gl, UIComponent[] components) {
-    for(UIComponent component : components)
+  public void render(GL2 gl, Sprite[] components) {
+    for(Sprite component : components)
       component.render(gl);
   }
 }

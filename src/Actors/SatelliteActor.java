@@ -1,9 +1,9 @@
 package Actors;
 
-import Graphics.Actors.SatelliteGraphic;
+import Graphics.SatelliteGraphic;
 import Math.Vector2D;
 
-public class SatelliteActor extends PointGravityActor {
+public class SatelliteActor extends Actor {
   
   public final static double density = 50;
   

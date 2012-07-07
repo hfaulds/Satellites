@@ -5,7 +5,6 @@ import javax.media.opengl.glu.GLU;
 
 import Controllers.Controller;
 import Graphics.Graphic;
-import Graphics.UI.UIComponent;
 import Math.Rotation;
 import Math.Vector2D;
 
@@ -24,8 +23,6 @@ public abstract class Actor {
   public final Rotation rotation = new Rotation();
   public final Rotation spin     = new Rotation();
 
-  public UIComponent ui;
-  
   public Actor(double x, double y, double mass) {
     this(new Vector2D(x, y), new Vector2D(), mass);
   }
@@ -37,7 +34,7 @@ public abstract class Actor {
   public Actor(Vector2D pos, Vector2D vel, double mass) {
     this.position = pos;
     this.velocity = vel;
-    this.mass     = mass;
+    this.mass = mass;
   }
 
   public void render(GL2 gl, GLU glu) {
@@ -58,11 +55,22 @@ public abstract class Actor {
   }
   
   public static double calcTorque(double r, double F, double angle) {
-    /* t = r * F * sin() */
     return r * F * Math.sin(angle) * -200;
   }
   
   public void applyTorque(Rotation torque) {
     this.spin._add(torque);
+  }
+
+  public Vector2D gravForceFrom(Actor actor, Vector2D offset) {
+    Vector2D direction = actor.position.sub(this.position.add(offset));
+    
+    double f_mag = G * this.mass * actor.mass / Math.pow(direction.magnitude(), 2);
+    
+    return direction._normalize().mult(f_mag);
+  }
+
+  public Vector2D gravForceFrom(Actor actor) {
+	return gravForceFrom(actor, new Vector2D());
   }
  }

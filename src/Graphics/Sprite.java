@@ -1,14 +1,14 @@
-package Graphics.UI;
+package Graphics;
 
 import javax.media.opengl.GL2;
 
 import Math.Vector2D;
 
-public abstract class UIComponent {
+public abstract class Sprite {
   
   protected Vector2D position;
   
-  public UIComponent(Vector2D position) {
+  public Sprite(Vector2D position) {
     this.position = position;
   }
 

@@ -4,7 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import Actors.Actor;
-import Graphics.UI.ShipControlCircle;
+import Graphics.ShipControlSprite;
 import Math.Vector2D;
 import Renderers.Renderer3D;
 
@@ -38,7 +38,7 @@ public class PlayerController extends Controller implements MouseListener {
   public void tick(Actor[] actors) {    
     if(bMouseMove) {
       Vector2D playerCoord  = Renderer3D.project(actor.position);
-      Vector2D controlCoord = Renderer3D.project(actor.position.add(new Vector2D(ShipControlCircle.CONTROL_RADIUS, 0)));
+      Vector2D controlCoord = Renderer3D.project(actor.position.add(new Vector2D(ShipControlSprite.CONTROL_RADIUS, 0)));
       Vector2D distToMouse  = playerCoord.sub(mousePosition);
       Vector2D distToEdge   = playerCoord.sub(controlCoord);
       
