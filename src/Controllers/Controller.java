@@ -2,11 +2,11 @@ package Controllers;
 
 import Actors.Actor;
 
-public abstract class Controller<ActorType extends Actor> {
+public abstract class Controller {
 
-  public final ActorType actor;
+  public final Actor actor;
   
-  public Controller(ActorType actor) {
+  public Controller(Actor actor) {
     this.actor = actor;
   }
 

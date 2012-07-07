@@ -14,7 +14,7 @@ public abstract class Actor {
   public static final double G = 0.0001;
   
   protected Graphic graphic;
-  public Controller<? extends Actor> controller;
+  public Controller controller;
   
   public final double mass;
   

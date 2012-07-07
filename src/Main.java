@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 
 import Controllers.PlayerController;
 import Scene.Scene;
+import Scene.SceneUpdater;
 import Scene.SceneRenderer;
 
 import com.jogamp.opengl.util.FPSAnimator;
@@ -21,6 +22,7 @@ public class Main extends JFrame implements GLEventListener {
   private final FPSAnimator animator;
   
   private Scene scene = new Scene();
+  private SceneUpdater updater = new SceneUpdater(scene);
   private SceneRenderer renderer = new SceneRenderer(scene);
 
   public Main() {
@@ -57,7 +59,7 @@ public class Main extends JFrame implements GLEventListener {
   
   @Override
   public void display(GLAutoDrawable drawable) {
-    scene.tick();
+    updater.tick();
     renderer.display(drawable);
   }
 

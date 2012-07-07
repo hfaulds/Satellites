@@ -4,19 +4,18 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import Actors.Actor;
-import Actors.PlayerActor;
 import Graphics.UI.ShipControlCircle;
 import Math.Vector2D;
 import Renderers.Renderer3D;
 
-public class PlayerController extends Controller<PlayerActor> implements MouseListener {
+public class PlayerController extends Controller implements MouseListener {
 
   public static final double MOUSE_FORCE = 1e-8;
   
   public boolean bMouseMove     = false;
   public Vector2D mousePosition = new Vector2D();
   
-  public PlayerController(PlayerActor actor) {
+  public PlayerController(Actor actor) {
     super(actor);
   }
 

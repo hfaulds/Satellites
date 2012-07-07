@@ -51,7 +51,7 @@ public class SceneRenderer implements GLEventListener, MouseWheelListener {
   
   @Override
   public void mouseWheelMoved(MouseWheelEvent e) {
-    this.zoom += e.getPreciseWheelRotation() * ZOOM_RATE;
+    this.zoom += e.getWheelRotation() * ZOOM_RATE;
     renderer3D.updateMatrices();
   }
 
