@@ -61,7 +61,7 @@ public abstract class Actor {
   }
 
   public static double calcTorque(double r, double F, double angle) {
-    return r * F * Math.sin(angle) * -600;
+    return r * F * Math.sin(angle) * -400;
   }
   
   public Vector2D gravForceFrom(Actor actor, Vector2D offset) {

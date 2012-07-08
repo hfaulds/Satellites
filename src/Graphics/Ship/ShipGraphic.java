@@ -9,10 +9,7 @@ import Math.Vector2D;
 
 public class ShipGraphic extends Graphic {
 
-  private final float[] ambientColour   = { 0.4f, 0.4f, 0.4f };
-  private final float[] specularColour  = { 0.8f, 0.8f, 0.8f, 1.0f };
-
-  private final float[] lightPos        = { -30,  0.0f,  20f, 1.0f };
+  private final float[] ambientColour   = { 0.7f, 0.7f, 0.7f };
   
   private final double width;
   private final double length;
@@ -40,12 +37,6 @@ public class ShipGraphic extends Graphic {
         
         directionUI.render(gl, glu, pos, rot);
         
-        // Set light parameters.
-        gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_POSITION, lightPos,       0);
-        gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_AMBIENT,  ambientColour,  0);
-        gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_SPECULAR, specularColour, 0);
-  
-        // Enable lighting in GL.
         gl.glEnable(GL2.GL_LIGHT1);
         gl.glEnable(GL2.GL_LIGHTING);
   

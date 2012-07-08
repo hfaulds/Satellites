@@ -41,8 +41,8 @@ public class ShipActor extends Actor {
     Vector2D[] cornerOffsets    = new Vector2D[corners.length];
     
     for(int i=0; i < cornerForces.length; i++) {
-      cornerForces[i]   = new Vector2D();
-      cornerOffsets[i]  = corners[i]._rotate(this.rotation.mag);
+      cornerForces[i]  = new Vector2D();
+      cornerOffsets[i] = corners[i]._rotate(this.rotation.mag);
     }
     
     for(Actor actor : actors) {

@@ -47,7 +47,7 @@ public class SceneRenderer implements MouseWheelListener {
   
   @Override
   public void mouseWheelMoved(MouseWheelEvent e) {
-    this.zoom += e.getWheelRotation() * ZOOM_RATE;
+    this.zoom =  Math.abs(this.zoom + e.getWheelRotation() * ZOOM_RATE);
     renderer3D.updateMatrices();
   }
 
