@@ -53,8 +53,7 @@ public class SatelliteGraphic extends Graphic {
       
       glu.gluSphere(earth, radius, slices, stacks);
       glu.gluDeleteQuadric(earth);
-      
-      gl.glPopMatrix();
     }
+    gl.glPopMatrix();
   }
 }

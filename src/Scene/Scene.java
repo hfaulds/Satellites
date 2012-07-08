@@ -12,9 +12,10 @@ import Graphics.Sprite;
 public class Scene extends MouseAdapter {
 
   public final Actor player = new ShipActor(5, 6, 0, -0.01);
+  public final PlayerController playerController = new PlayerController(player);
   
   {
-	  player.controller     = new PlayerController(player);
+	  player.addController(playerController);
   }
   
   public final Actor[] actors = {
@@ -27,7 +28,7 @@ public class Scene extends MouseAdapter {
   };
   
   public final Controller[] controllers = {
-    player.controller
+    playerController
   };
   
   public final Sprite[] ui = new Sprite[]{

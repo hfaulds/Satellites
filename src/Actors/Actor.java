@@ -1,5 +1,7 @@
 package Actors;
 
+import java.util.LinkedList;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
@@ -13,7 +15,7 @@ public abstract class Actor {
   public static final double G = 0.0001;
   
   protected Graphic graphic;
-  public Controller controller;
+  public LinkedList<Controller> controllers = new LinkedList<Controller>();
   
   public final double mass;
   
@@ -54,14 +56,14 @@ public abstract class Actor {
     this.velocity._add(force.divide(mass));
   }
   
-  public static double calcTorque(double r, double F, double angle) {
-    return r * F * Math.sin(angle) * -200;
-  }
-  
   public void applyTorque(Rotation torque) {
     this.spin._add(torque);
   }
 
+  public static double calcTorque(double r, double F, double angle) {
+    return r * F * Math.sin(angle) * -600;
+  }
+  
   public Vector2D gravForceFrom(Actor actor, Vector2D offset) {
     Vector2D direction = actor.position.sub(this.position.add(offset));
     
@@ -72,5 +74,9 @@ public abstract class Actor {
 
   public Vector2D gravForceFrom(Actor actor) {
 	return gravForceFrom(actor, new Vector2D());
+  }
+  
+  public void addController(Controller controller) {
+    this.controllers.add(controller);
   }
  }

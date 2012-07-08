@@ -5,7 +5,7 @@ import Math.Vector2D;
 
 public class SatelliteActor extends Actor {
   
-  public final static double density = 50;
+  public final static double density = 0.05;
   
   public final Vector2D velocity;
   

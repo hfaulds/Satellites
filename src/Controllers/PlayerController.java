@@ -4,7 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import Actors.Actor;
-import Graphics.ShipControlSprite;
+import Graphics.Ship.ShipControlSprite;
 import Math.Vector2D;
 import Renderers.Renderer3D;
 

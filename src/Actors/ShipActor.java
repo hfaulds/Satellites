@@ -1,7 +1,7 @@
 package Actors;
 
 import Controllers.Controller;
-import Graphics.ShipGraphic;
+import Graphics.Ship.ShipGraphic;
 import Math.Rotation;
 import Math.Vector2D;
 
@@ -31,7 +31,6 @@ public class ShipActor extends Actor {
   public ShipActor(double x, double y, double vx, double vy, Controller controller) {
     super(x, y, MASS);
     this.graphic = new ShipGraphic(WIDTH, LENGTH, HEIGHT);
-    this.controller = controller;
   }
 
   @Override
