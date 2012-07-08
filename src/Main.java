@@ -33,7 +33,7 @@ public class Main extends JFrame implements GLEventListener {
     canvas.requestFocus();
     canvas.addGLEventListener(this);
     canvas.addMouseWheelListener(renderer);
-    canvas.addMouseListener(scene.playerController);
+    canvas.addKeyListener(scene.playerController);
     
     this.add(canvas);
     this.addWindowListener(new WindowAdapter() {

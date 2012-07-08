@@ -100,4 +100,12 @@ public class Vector2D {
   public static double angle(Vector2D a, Vector2D b) {
     return Math.acos(Vector2D.dot(a.normalized(), b.normalized()));
   }
+
+  public Vector2D rotate(double angle) {
+    double sin = Math.sin(angle);
+    double cos = Math.cos(angle);
+    double x = this.x*cos - this.y*sin;
+    double y = this.x*sin + this.y*cos;
+    return new Vector2D(x,y);
+  }
 }

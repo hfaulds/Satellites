@@ -21,7 +21,7 @@ public class Scene extends MouseAdapter {
   public final Actor[] actors = {
      player, 
      //new SatelliteActor( -5,  1),
-    // new SatelliteActor(-10, -1),
+     //new SatelliteActor(-10, -1),
      new SatelliteActor(  -8,  -5, 10),
      //new SatelliteActor(  0,  5, -.02,   0,  5),
      //new SatelliteActor(  0, -5,  .02 ,  0,  5),
