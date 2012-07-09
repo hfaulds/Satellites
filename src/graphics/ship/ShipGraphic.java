@@ -35,7 +35,7 @@ public class ShipGraphic extends Graphic {
 
       gl.glPushMatrix();
       {
-        gl.glRotated(rot.degrees(), rot.x, rot.y, rot.z);
+        gl.glRotated(rot.toDegrees(), rot.x, rot.y, rot.z);
         
         directionUI.render(gl, glu, pos, rot);
         

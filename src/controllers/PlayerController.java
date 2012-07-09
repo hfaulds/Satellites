@@ -2,13 +2,15 @@ package controllers;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.List;
+
 
 import math.Vector2D;
 
 import actors.Actor;
 
 
-public class KeyboardController extends Controller implements KeyListener {
+public class PlayerController extends Controller implements KeyListener {
 
   private static final double ACCELERATION = 0.0001;
   private static final double SPIN = 0.0001;
@@ -24,12 +26,12 @@ public class KeyboardController extends Controller implements KeyListener {
   private double spinMag = 0;
   private double accelMag = 0;
 
-  public KeyboardController(Actor actor) {
+  public PlayerController(Actor actor) {
     super(actor);
   }
 
   @Override
-  public void tick(Actor[] actors) {
+  public void tick(List<Actor> actors) {
     if(accelMag != 0) {
       Vector2D acceleration = startDirection.rotate(actor.rotation.mag)._mult(accelMag * ACCELERATION);
       actor.velocity._add(acceleration);

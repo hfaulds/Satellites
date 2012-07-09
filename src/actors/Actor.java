@@ -2,7 +2,7 @@ package actors;
 
 import graphics.Graphic;
 
-import java.util.LinkedList;
+import java.util.List;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
@@ -10,14 +10,11 @@ import javax.media.opengl.glu.GLU;
 import math.Rotation;
 import math.Vector2D;
 
-import controllers.Controller;
-
 public abstract class Actor {
 
   public static final double G = 0.0001;
   
   protected Graphic graphic;
-  public LinkedList<Controller> controllers = new LinkedList<Controller>();
   
   public final double mass;
   
@@ -45,7 +42,7 @@ public abstract class Actor {
     this.graphic.render(gl, glu, position, rotation);
   }
 
-  public void updateVelocity(Actor[] actors) {}
+  public void updateVelocity(List<Actor> actors) {}
   
   public void updatePosition() {
     this.position._add(velocity);
@@ -76,9 +73,5 @@ public abstract class Actor {
 
   public Vector2D gravForceFrom(Actor actor) {
 	return gravForceFrom(actor, new Vector2D());
-  }
-  
-  public void addController(Controller controller) {
-    this.controllers.add(controller);
   }
  }

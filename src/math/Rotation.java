@@ -19,7 +19,7 @@ public class Rotation {
     this.mag += n;
   }
 
-  public double degrees() {
+  public double toDegrees() {
     return this.mag * 180/Math.PI;
   }
 
@@ -29,6 +29,13 @@ public class Rotation {
     this.y      += other.y;
     this.z      += other.z;
     this.mag    += other.mag;
+  }
+
+  public void _set(Rotation other) {
+    this.x = other.x;
+    this.y = other.x;
+    this.z = other.z;
+    this.mag = other.mag;
   }
   
 }

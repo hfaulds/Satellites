@@ -1,5 +1,7 @@
 package actors;
 
+import java.util.List;
+
 import math.Rotation;
 import math.Vector2D;
 import graphics.ship.ShipGraphic;
@@ -34,7 +36,7 @@ public class ShipActor extends Actor {
   }
 
   @Override
-  public void updateVelocity(Actor[] actors) {
+  public void updateVelocity(List<Actor> actors) {
     //Calculate Force On Each Corner
     Vector2D   force            = new Vector2D();
     Vector2D[] cornerForces     = new Vector2D[corners.length];

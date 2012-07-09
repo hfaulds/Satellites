@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.List;
+
 import actors.Actor;
 
 public abstract class Controller {
@@ -10,5 +12,5 @@ public abstract class Controller {
     this.actor = actor;
   }
 
-  public abstract void tick(Actor[] actors);
+  public abstract void tick(List<Actor> actors);
 }

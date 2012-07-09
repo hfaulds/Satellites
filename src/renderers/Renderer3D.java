@@ -1,5 +1,7 @@
 package renderers;
 
+import java.util.List;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.fixedfunc.GLLightingFunc;
@@ -82,7 +84,7 @@ public class Renderer3D {
     return new Vector2D(player[0], viewportMatrix[3] - player[1]);
   }
 
-  public void render(GL2 gl, Actor[] actors) {
+  public void render(GL2 gl, List<Actor> actors) {
     for(Actor actor : actors) {
       actor.render(gl, glu);
     }

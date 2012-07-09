@@ -1,0 +1,34 @@
+package net;
+
+import scene.Scene;
+import actors.Actor;
+
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
+
+public class ServerListener extends Listener {
+
+  private final Scene scene;
+  
+  public ServerListener(Scene scene) {
+    this.scene = scene;
+  }
+  
+  @Override
+  public void connected(Connection connection) {
+    Actor actor = ((ClientConnection)connection).actor;
+    scene.addActor(actor);
+  }
+  
+  @Override
+  public void disconnected(Connection connection) {
+    
+  }
+  
+  @Override
+  public void received(Connection connection, Object object) {
+    if(object instanceof ActorInfo) {
+      
+    }
+  }
+}

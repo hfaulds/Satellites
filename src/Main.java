@@ -16,21 +16,21 @@ import javax.swing.JPanel;
 
 import scene.Camera;
 import scene.Scene;
-import scene.SceneNetSync;
+import scene.SceneNetwork;
 import scene.SceneUpdater;
 
 import com.jogamp.opengl.util.FPSAnimator;
 
 @SuppressWarnings("serial")
 public class Main extends JFrame implements GLEventListener {
-
-  private final GLCanvas canvas = createCanvas(createCapabilities());
-  private final FPSAnimator animator = new FPSAnimator(canvas, 60);
   
   private Scene scene = new Scene();
   private Camera renderer = new Camera(scene);
   private SceneUpdater updater = new SceneUpdater(scene);
-  private SceneNetSync syncroniser = new SceneNetSync(scene);
+  private SceneNetwork syncroniser = new SceneNetwork(scene);
+  
+  private final GLCanvas canvas = createCanvas(createCapabilities());
+  private final FPSAnimator animator = new FPSAnimator(canvas, 60);
   
   public Main() {
     setupFrame();
