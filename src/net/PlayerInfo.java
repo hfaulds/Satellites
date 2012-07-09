@@ -8,6 +8,10 @@ public class PlayerInfo {
   public final Vector2D velocity;
   public final Rotation spin;
 
+  public PlayerInfo() {
+    this(new Vector2D(), new Rotation());
+  }
+  
   public PlayerInfo(Vector2D velocity, Rotation spin) {
     this.velocity = velocity; 
     this.spin = spin;

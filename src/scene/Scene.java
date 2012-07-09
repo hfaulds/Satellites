@@ -1,5 +1,6 @@
 package scene;
 
+import graphics.FPSSprite;
 import graphics.Sprite;
 
 import java.awt.event.MouseAdapter;
@@ -14,7 +15,7 @@ import net.ActorInfo;
 import actors.Actor;
 import actors.ShipActor;
 import controllers.Controller;
-import controllers.PlayerInputController;
+import controllers.client.PlayerInputController;
 
 public class Scene extends MouseAdapter {
 
@@ -24,29 +25,37 @@ public class Scene extends MouseAdapter {
   public final List<Actor> actors = new ArrayList<Actor>(Arrays.asList(player));
   public final List<Controller> controllers = new ArrayList<Controller>(Arrays.asList(playerController));
   
-  public final Sprite[] ui = new Sprite[]{};
+  public final Sprite[] ui = new Sprite[]{new FPSSprite()};
 
   public void addController(Controller controller) {
     controllers.add(controller);
   }
 
   public void addActor(Actor actor) {
-    actors.add(actor);
+    synchronized(actors) {
+      actors.add(actor);
+    }
   }
 
   public void removeActor(Actor actor) {
-    actors.remove(actor);
+    synchronized(actors) {
+      actors.remove(actor);
+    }
   }
 
   public void addActors(List<ActorInfo> actorInfo) {
-    for(ActorInfo info : actorInfo)
-      try {
-        Constructor<Actor> constructor = info.actorClass.getConstructor(Vector2D.class, Rotation.class, double.class);
-        Actor actor = constructor.newInstance(info.position, info.rotation, info.mass);
-        addActor(actor);
-      } catch (Exception e) {
-        e.printStackTrace();
+    synchronized(actors) {
+      for(ActorInfo info : actorInfo) {
+        try {
+          Constructor<Actor> constructor = info.actorClass.getConstructor(Vector2D.class, Rotation.class, double.class);
+          Actor actor = constructor.newInstance(info.position, info.rotation, info.mass);
+          actor.id = info.id;
+          addActor(actor);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       }
+    }
   }
   
   public Actor findActor(int id) {

@@ -30,7 +30,7 @@ public class Main extends JFrame implements GLEventListener {
   private SceneNetwork syncroniser = new SceneNetwork(scene);
   
   private final GLCanvas canvas = createCanvas(createCapabilities());
-  private final FPSAnimator animator = new FPSAnimator(canvas, 30);
+  private final FPSAnimator animator = new FPSAnimator(canvas, 20);
   
   public Main() {
     setupFrame();

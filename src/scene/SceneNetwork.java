@@ -9,6 +9,7 @@ import math.Vector2D;
 import net.ActorInfo;
 import net.ClientConnection;
 import net.ClientListener;
+import net.PlayerInfo;
 import net.SceneInfo;
 import net.ServerListener;
 import actors.SatelliteActor;
@@ -106,11 +107,13 @@ public class SceneNetwork {
 
   private void addClasses(EndPoint endPoint) {
     Kryo kryo = endPoint.getKryo();
+    
     kryo.register(Vector2D.class);
     kryo.register(Rotation.class);
     
     kryo.register(ActorInfo.class);
     kryo.register(SceneInfo.class);
+    kryo.register(PlayerInfo.class);
     
     kryo.register(SatelliteActor.class);
     kryo.register(ShipActor.class);

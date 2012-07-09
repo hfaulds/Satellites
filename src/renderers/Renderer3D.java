@@ -11,7 +11,6 @@ import math.Vector2D;
 
 import actors.Actor;
 
-
 public class Renderer3D {
   
   private static final GLU glu = new GLU();
@@ -85,8 +84,10 @@ public class Renderer3D {
   }
 
   public void render(GL2 gl, List<Actor> actors) {
-    for(Actor actor : actors) {
-      actor.render(gl, glu);
+    synchronized(actors) {
+      for(Actor actor : actors) {
+        actor.render(gl, glu);
+      }
     }
   }
 

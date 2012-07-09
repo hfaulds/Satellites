@@ -1,8 +1,10 @@
-package controllers;
+package controllers.client;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.List;
+
+import controllers.Controller;
 
 
 import math.Vector2D;

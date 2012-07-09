@@ -7,6 +7,7 @@ import scene.Scene;
 import actors.Actor;
 
 public class SceneInfo {
+  
   public final int playerID = Actor.nextID();
   public final List<ActorInfo> actorInfoList;
   

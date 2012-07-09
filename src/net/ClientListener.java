@@ -6,17 +6,14 @@ import actors.Actor;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
+import controllers.client.ClientShipController;
+
 public class ClientListener extends Listener {
 
   private final Scene scene;
   
   public ClientListener(Scene scene) {
     this.scene = scene;
-  }
-  
-  @Override
-  public void connected(Connection connection) {
-    
   }
   
   @Override
@@ -27,8 +24,10 @@ public class ClientListener extends Listener {
   @Override
   public void received(Connection connection, Object info) {
     if(info instanceof SceneInfo) {
+      
       SceneInfo sceneInfo = (SceneInfo)info;
       scene.player.id = sceneInfo.playerID;
+      scene.addController(new ClientShipController(scene.player, connection));
       scene.addActors(sceneInfo.actorInfoList);
       
     } else if(info instanceof ActorInfo) {
