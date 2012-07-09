@@ -22,21 +22,23 @@ public class ServerSatelliteController implements Controller {
 
   @Override
   public void tick(List<Actor> actors) {
-    Vector2D force = new Vector2D();
-    
-    for(Actor other : actors) {
-      if(other != actor) {
-        if(!actor.collides(other)) {
-          force._add(actor.gravForceFrom(other));
-        } else {
-          actor.velocity._mult(0.9);
+    if(actor.id > 0) {
+      Vector2D force = new Vector2D();
+      
+      for(Actor other : actors) {
+        if(other != actor) {
+          if(!actor.collides(other)) {
+            force._add(actor.gravForceFrom(other));
+          } else {
+            actor.velocity._mult(0.9);
+          }
         }
       }
+  
+      actor.applyForce(force);
+      actor.tick();
+      server.sendToAllTCP(actor.getInfo());
     }
-
-    actor.applyForce(force);
-    actor.tick();
-    server.sendToAllTCP(actor.getInfo());
   }
 
 }

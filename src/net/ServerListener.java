@@ -1,7 +1,5 @@
 package net;
 
-import java.util.List;
-
 import scene.Scene;
 import actors.Actor;
 
@@ -18,8 +16,7 @@ public class ServerListener extends Listener {
   
   @Override
   public void connected(Connection connection) {
-    List<ActorInfo> actorInfoList = ActorInfo.actorInfoList(scene.actors);
-    connection.sendTCP(actorInfoList);
+    connection.sendTCP(new SceneInfo(scene));
     
     Actor actor = ((ClientConnection)connection).actor;
     scene.addActor(actor);

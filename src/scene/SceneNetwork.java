@@ -9,6 +9,7 @@ import math.Vector2D;
 import net.ActorInfo;
 import net.ClientConnection;
 import net.ClientListener;
+import net.SceneInfo;
 import net.ServerListener;
 import actors.SatelliteActor;
 import actors.ShipActor;
@@ -61,7 +62,7 @@ public class SceneNetwork {
         scene.addActor(sat1);
         scene.addController(new ServerSatelliteController(sat1, server));
   
-        SatelliteActor sat2 = new SatelliteActor(0, 5, 0, 0, 5);
+        SatelliteActor sat2 = new SatelliteActor(0, 5, 5);
         scene.addActor(sat2);
         scene.addController(new ServerSatelliteController(sat2, server));
         
@@ -82,10 +83,12 @@ public class SceneNetwork {
     addClasses(client);
     
     InetAddress address = client.discoverHost(UDP_PORT, TIMEOUT);
+    
     if(address == null)
       return false;
     
     System.out.println("Connecting to " + address);
+    
     try {
       client.start();
       client.connect(TIMEOUT, address, TCP_PORT, UDP_PORT);
@@ -105,10 +108,14 @@ public class SceneNetwork {
     Kryo kryo = endPoint.getKryo();
     kryo.register(Vector2D.class);
     kryo.register(Rotation.class);
+    
     kryo.register(ActorInfo.class);
-    kryo.register(ArrayList.class);
+    kryo.register(SceneInfo.class);
+    
     kryo.register(SatelliteActor.class);
     kryo.register(ShipActor.class);
+    
+    kryo.register(ArrayList.class);
     kryo.register(Class.class);
   }
   

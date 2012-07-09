@@ -21,21 +21,10 @@ public class Scene extends MouseAdapter {
   public final ShipActor player = new ShipActor(0, 0);
   public final PlayerInputController playerController = new PlayerInputController(player);
   
-  public final List<Actor> actors = new ArrayList<Actor>(Arrays.asList(
-    new Actor[]{
-       player
-      }
-    ));
+  public final List<Actor> actors = new ArrayList<Actor>(Arrays.asList(player));
+  public final List<Controller> controllers = new ArrayList<Controller>(Arrays.asList(playerController));
   
-  public final List<Controller> controllers = new ArrayList<Controller>(Arrays.asList(
-    new Controller[]{
-        playerController
-      }
-    ));
-  
-  public final Sprite[] ui = new Sprite[]{
-      //player.ui
-  };
+  public final Sprite[] ui = new Sprite[]{};
 
   public void addController(Controller controller) {
     controllers.add(controller);
@@ -59,7 +48,7 @@ public class Scene extends MouseAdapter {
         e.printStackTrace();
       }
   }
-
+  
   public Actor findActor(int id) {
     for(Actor actor : actors)
       if(actor.id == id)

@@ -14,8 +14,7 @@ public class ShipActor extends Actor {
   public static double HEIGHT  = 0.1;
 
   public ShipActor(Vector2D position, Rotation rotation, double mass) {
-    super(position, rotation, mass);
-    this.graphic = new ShipGraphic(WIDTH, LENGTH, HEIGHT);
+    super(position, rotation, mass, new ShipGraphic(WIDTH, LENGTH, HEIGHT));
   }
   
   public ShipActor(double x, double y) {
@@ -27,8 +26,7 @@ public class ShipActor extends Actor {
   }
 
   public ShipActor(double x, double y, double vx, double vy, Controller controller) {
-    super(x, y, MASS);
-    this.graphic = new ShipGraphic(WIDTH, LENGTH, HEIGHT);
+    super(x, y, MASS, new ShipGraphic(WIDTH, LENGTH, HEIGHT));
   }
 
   @Override
