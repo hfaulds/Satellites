@@ -2,14 +2,16 @@ package controllers.server;
 
 import java.util.List;
 
-import controllers.Controller;
-
 import math.Rotation;
 import math.Vector2D;
 import actors.Actor;
 import actors.ShipActor;
 
-public class ServerShipController extends Controller {
+import com.esotericsoftware.kryonet.Server;
+
+import controllers.Controller;
+
+public class ServerShipController implements Controller {
 
   private Vector2D[] corners = new Vector2D[]{
     new Vector2D( ShipActor.WIDTH /-2, ShipActor.LENGTH / 2),
@@ -18,8 +20,12 @@ public class ServerShipController extends Controller {
     new Vector2D(ShipActor. WIDTH / 2, ShipActor.LENGTH /-2)
   };
   
-  public ServerShipController(ShipActor actor) {
-    super(actor);
+  public final Actor actor;
+  private final Server server;
+  
+  public ServerShipController(Actor actor, Server server) {
+    this.actor = actor;
+    this.server = server;
   }
 
   @Override
@@ -61,6 +67,8 @@ public class ServerShipController extends Controller {
     }
 
     actor.applyTorque(torque);
+    actor.tick();
+    server.sendToAllTCP(actor.getInfo());
   }
   
   public static double calcTorque(double r, double F, double angle) {

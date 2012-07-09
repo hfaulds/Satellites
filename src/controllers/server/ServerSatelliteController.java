@@ -2,16 +2,22 @@ package controllers.server;
 
 import java.util.List;
 
+import com.esotericsoftware.kryonet.Server;
+
 import controllers.Controller;
 
 import math.Vector2D;
 
 import actors.Actor;
 
-public class ServerSatelliteController extends Controller {
+public class ServerSatelliteController implements Controller {
 
-  public ServerSatelliteController(Actor actor) {
-    super(actor);
+  public final Actor actor;
+  private final Server server;
+  
+  public ServerSatelliteController(Actor actor, Server server) {
+    this.actor = actor;
+    this.server = server;
   }
 
   @Override
@@ -29,6 +35,8 @@ public class ServerSatelliteController extends Controller {
     }
 
     actor.applyForce(force);
+    actor.tick();
+    server.sendToAllTCP(actor.getInfo());
   }
 
 }

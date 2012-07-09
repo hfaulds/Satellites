@@ -3,10 +3,14 @@ package scene;
 import graphics.Sprite;
 
 import java.awt.event.MouseAdapter;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import math.Rotation;
+import math.Vector2D;
+import net.ActorInfo;
 import actors.Actor;
 import actors.ShipActor;
 import controllers.Controller;
@@ -19,20 +23,15 @@ public class Scene extends MouseAdapter {
   
   public final List<Actor> actors = new ArrayList<Actor>(Arrays.asList(
     new Actor[]{
-       player, 
-       //new SatelliteActor( -5,  1),
-       //new SatelliteActor(-10, -1),
-       //new SatelliteActor(  -8,  -5, 10),
-       //new SatelliteActor(  0,  5, -.02,   0,  5),
-       //new SatelliteActor(  0, -5,  .02 ,  0,  5),
+       player
       }
     ));
   
   public final List<Controller> controllers = new ArrayList<Controller>(Arrays.asList(
-      new Controller[]{
-          playerController
-        }
-      ));
+    new Controller[]{
+        playerController
+      }
+    ));
   
   public final Sprite[] ui = new Sprite[]{
       //player.ui
@@ -48,5 +47,24 @@ public class Scene extends MouseAdapter {
 
   public void removeActor(Actor actor) {
     actors.remove(actor);
+  }
+
+  public void addActors(List<ActorInfo> actorInfo) {
+    for(ActorInfo info : actorInfo)
+      try {
+        Constructor<Actor> constructor = info.actorClass.getConstructor(Vector2D.class, Rotation.class, double.class);
+        Actor actor = constructor.newInstance(info.position, info.rotation, info.mass);
+        addActor(actor);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+  }
+
+  public Actor findActor(int id) {
+    for(Actor actor : actors)
+      if(actor.id == id)
+        return actor;
+    
+    return null;
   }
 }

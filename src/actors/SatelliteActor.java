@@ -1,18 +1,24 @@
 package actors;
 
-import math.Vector2D;
 import graphics.SatelliteGraphic;
+import math.Rotation;
+import math.Vector2D;
 
 public class SatelliteActor extends Actor {
-  
+
+  private static double MASS    = 0.1;
   public final static double density = 0.05;
   
-  public final Vector2D velocity;
+  private double radius = calcRadius(mass);
   
-  private double radius;
+
+  public SatelliteActor(Vector2D position, Rotation rotation, double mass) {
+    super(position, rotation, mass);
+    this.graphic = new SatelliteGraphic(radius);
+  }
   
   public SatelliteActor(double x, double y) {
-    this(x, y, 0.1);
+    this(x, y, MASS);
   }
   
   public SatelliteActor(double x, double y, double mass) {
@@ -20,11 +26,7 @@ public class SatelliteActor extends Actor {
   }
   
   public SatelliteActor(double x, double y, double vx, double vy, double mass) {
-    super(x, y, mass);
-    
-    this.velocity = new Vector2D(vx, vx);
-
-    this.radius = calcRadius(mass);
+    super(x, y, vx, vy, mass);
     this.graphic = new SatelliteGraphic(radius);
   }
 
@@ -35,6 +37,6 @@ public class SatelliteActor extends Actor {
   
   @Override
   public boolean collides(Actor other) {
-    return false;//other.position.distanceTo(this.position) <= radius*2;
+    return other.position.distanceTo(this.position) <= radius;
   }
 }

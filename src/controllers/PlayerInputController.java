@@ -10,7 +10,7 @@ import math.Vector2D;
 import actors.Actor;
 
 
-public class PlayerInputController extends Controller implements KeyListener {
+public class PlayerInputController implements Controller, KeyListener {
 
   private static final double ACCELERATION = 0.0001;
   private static final double SPIN = 0.0001;
@@ -26,8 +26,10 @@ public class PlayerInputController extends Controller implements KeyListener {
   private double spinMag = 0;
   private double accelMag = 0;
 
+  public final Actor actor;
+  
   public PlayerInputController(Actor actor) {
-    super(actor);
+    this.actor = actor;
   }
 
   @Override
