@@ -1,4 +1,3 @@
-package satellites;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,8 +16,8 @@ import javax.swing.JPanel;
 
 import scene.Camera;
 import scene.Scene;
+import scene.SceneNetSync;
 import scene.SceneUpdater;
-
 
 import com.jogamp.opengl.util.FPSAnimator;
 
@@ -31,8 +30,7 @@ public class Main extends JFrame implements GLEventListener {
   private Scene scene = new Scene();
   private Camera renderer = new Camera(scene);
   private SceneUpdater updater = new SceneUpdater(scene);
-
-  private SatellitesServerManager serverManager = new SatellitesServerManager();
+  private SceneNetSync syncroniser = new SceneNetSync(scene);
   
   public Main() {
     setupFrame();
@@ -56,7 +54,8 @@ public class Main extends JFrame implements GLEventListener {
     button.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        serverManager.connectOrHost();
+        if(!syncroniser.isOnline())
+          syncroniser.connect();
       }
     });
     return button;
@@ -84,7 +83,7 @@ public class Main extends JFrame implements GLEventListener {
     this.addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
         animator.stop();
-        serverManager.cleanup();
+        syncroniser.disconnect();
         dispose();
         System.exit(0);
       }

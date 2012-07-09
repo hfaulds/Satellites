@@ -1,21 +1,29 @@
-package satellites;
+package scene;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.List;
 
+
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Server;
 
-final class SatellitesServerManager {
+public class SceneNetSync {
   
   public static final int TIMEOUT = 5000;
   public static final int PORT = 54555;
   
   private final Client client = new Client();
   private final Server server = new Server();
+  private boolean bOnline = false;
+  
+  private final Scene scene;
       
-  public void connectOrHost() {
+  public SceneNetSync(Scene scene) {
+    this.scene = scene;
+  }
+
+  public void connect() {
     List<InetAddress> addresses = client.discoverHosts(PORT, TIMEOUT);
     if(addresses.size() > 0) {
       connectTo(client, addresses.get(0));
@@ -29,6 +37,7 @@ final class SatellitesServerManager {
     server.start();
     try {
       server.bind(PORT);
+      bOnline = true;
       System.out.println("Server creation sucessful");
     } catch (IOException e) {
       System.out.println("Server creation unsucessful");
@@ -41,6 +50,7 @@ final class SatellitesServerManager {
     client.start();
     try {
       client.connect(TIMEOUT, address, PORT);
+      bOnline = true;
       System.out.println("Connection sucessful");
     } catch (IOException e) {
       System.out.println("Connection unsucessful");
@@ -48,8 +58,13 @@ final class SatellitesServerManager {
     }
   }
   
-  public void cleanup() {
+  public void disconnect() {
     client.stop();
     server.stop();
+    bOnline = true;
+  }
+
+  public boolean isOnline() {
+    return false;
   }
 }
