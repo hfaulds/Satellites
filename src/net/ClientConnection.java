@@ -13,8 +13,8 @@ public class ClientConnection extends Connection {
   }
 
   public void updateActor(PlayerInfo info) {
-    actor.velocity._add(info.velocity);
-    actor.spin._add(info.spin);
+    actor.velocity._set(info.velocity);
+    actor.spin._set(info.spin);
   }
 
 }

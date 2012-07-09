@@ -3,19 +3,18 @@ package net;
 import java.util.ArrayList;
 import java.util.List;
 
-import scene.Scene;
-import actors.Actor;
-
 public class SceneInfo {
   
-  public final int playerID = Actor.nextID();
+  public final int playerID;
   public final List<ActorInfo> actorInfoList;
   
-  public SceneInfo(Scene scene) {
-    this.actorInfoList = ActorInfo.actorInfoList(scene.actors);
+  public SceneInfo(List<ActorInfo> actorInfoList, int playerID) {
+    this.actorInfoList = actorInfoList;
+    this.playerID = playerID;
   }
   
   public SceneInfo() {
     this.actorInfoList = new ArrayList<ActorInfo>();
+    this.playerID = -1;
   }
 }
