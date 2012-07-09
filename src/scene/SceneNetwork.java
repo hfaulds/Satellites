@@ -3,15 +3,19 @@ package scene;
 import java.io.IOException;
 import java.net.InetAddress;
 
-import net.ClientConnection;
 import net.ActorInfo;
+import net.ClientConnection;
 import net.ServerListener;
+import actors.SatelliteActor;
 import actors.ShipActor;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.esotericsoftware.kryonet.Server;
+
+import controllers.server.ServerSatelliteController;
+import controllers.server.ServerShipController;
 
 public class SceneNetwork {
   
@@ -35,7 +39,7 @@ public class SceneNetwork {
 
   private boolean createServer() {
     
-    Server server  = new Server() {
+    Server server = new Server() {
       protected Connection newConnection() {
         return new ClientConnection(new ShipActor(0,0));
       }
@@ -48,6 +52,17 @@ public class SceneNetwork {
       server.addListener(new ServerListener(scene));
       endPoint = server;
       
+      SatelliteActor sat1 = new SatelliteActor(  -8,  -5, 10);
+      scene.addActor(sat1);
+      scene.addController(new ServerSatelliteController(sat1));
+
+      SatelliteActor sat2 = new SatelliteActor(  0,  5, -.02,   0,  5);
+      scene.addActor(sat2);
+      scene.addController(new ServerSatelliteController(sat2));
+      
+      scene.addController(new ServerShipController(scene.player));
+      
+      
       System.out.println("Server creation sucessful");
       return true;
     } catch (IOException e) {
@@ -59,6 +74,9 @@ public class SceneNetwork {
   private boolean createClient() {
     Client client = new Client();
     InetAddress address = client.discoverHost(UDP_PORT, TIMEOUT);
+    if(address == null)
+      return false;
+    
     System.out.println("Connecting to " + address);
     try {
       client.start();
@@ -74,11 +92,12 @@ public class SceneNetwork {
   }
   
   public void disconnect() {
-    endPoint.stop();
+    if(endPoint != null)
+      endPoint.stop();
     endPoint = null;
   }
 
   public boolean isOnline() {
-    return endPoint == null;
+    return endPoint != null;
   }
 }

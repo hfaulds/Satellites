@@ -22,13 +22,14 @@ public class ServerListener extends Listener {
   
   @Override
   public void disconnected(Connection connection) {
-    
+    Actor actor = ((ClientConnection)connection).actor;
+    scene.removeActor(actor);
   }
   
   @Override
-  public void received(Connection connection, Object object) {
-    if(object instanceof ActorInfo) {
-      
+  public void received(Connection connection, Object info) {
+    if(info instanceof PlayerInfo) {
+      ((ClientConnection)connection).updateActor((PlayerInfo)info);
     }
   }
 }

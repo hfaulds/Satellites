@@ -20,9 +20,6 @@ public class SceneUpdater extends MouseAdapter {
       controller.tick(scene.actors);
     
     for(Actor actor : scene.actors)
-      actor.updateVelocity(scene.actors);
-    
-    for(Actor actor : scene.actors)
-      actor.updatePosition();
+      actor.tick();
   }
 }

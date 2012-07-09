@@ -2,8 +2,6 @@ package actors;
 
 import graphics.Graphic;
 
-import java.util.List;
-
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
@@ -42,9 +40,7 @@ public abstract class Actor {
     this.graphic.render(gl, glu, position, rotation);
   }
 
-  public void updateVelocity(List<Actor> actors) {}
-  
-  public void updatePosition() {
+  public void tick() {
     this.position._add(velocity);
     this.rotation._add(spin);
   }
@@ -57,10 +53,6 @@ public abstract class Actor {
   
   public void applyTorque(Rotation torque) {
     this.spin._add(torque);
-  }
-
-  public static double calcTorque(double r, double F, double angle) {
-    return r * F * Math.sin(angle) * -400;
   }
   
   public Vector2D gravForceFrom(Actor actor, Vector2D offset) {
