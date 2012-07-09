@@ -65,6 +65,6 @@ public class SceneNetSync {
   }
 
   public boolean isOnline() {
-    return false;
+    return bOnline;
   }
 }
