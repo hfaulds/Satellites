@@ -9,7 +9,7 @@ import javax.media.opengl.awt.GLCanvas;
 import javax.swing.JFrame;
 
 import Scene.Scene;
-import Scene.SceneRenderer;
+import Scene.Camera;
 import Scene.SceneUpdater;
 
 import com.jogamp.opengl.util.FPSAnimator;
@@ -22,7 +22,7 @@ public class Main extends JFrame implements GLEventListener {
   
   private Scene scene = new Scene();
   private SceneUpdater updater = new SceneUpdater(scene);
-  private SceneRenderer renderer = new SceneRenderer(scene);
+  private Camera renderer = new Camera(scene);
 
   public Main() {
     GLCapabilities capabilities = new GLCapabilities(GLProfile.getDefault());
@@ -30,9 +30,10 @@ public class Main extends JFrame implements GLEventListener {
     capabilities.setNumSamples(4);
     
     canvas = new GLCanvas(capabilities);
-    canvas.requestFocus();
     canvas.addGLEventListener(this);
+    canvas.addMouseListener(renderer);
     canvas.addMouseWheelListener(renderer);
+    canvas.addMouseMotionListener(renderer);
     canvas.addKeyListener(scene.playerController);
     
     this.add(canvas);
@@ -49,6 +50,7 @@ public class Main extends JFrame implements GLEventListener {
     
     animator = new FPSAnimator(canvas, 60);
     animator.start();
+    canvas.requestFocus();
   }
 
   @Override

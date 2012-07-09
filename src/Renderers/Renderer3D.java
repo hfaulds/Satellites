@@ -32,11 +32,11 @@ public class Renderer3D {
     gl.glLoadIdentity();
   }
   
-  public void preRender(final GL2 gl, double ratio, double zoom) {
+  public void preRender(final GL2 gl, Vector2D camera, double ratio, double zoom) {
     gl.glMatrixMode(GL2.GL_PROJECTION);
     gl.glLoadIdentity();
     glu.gluPerspective(45, ratio, 1, 1000);
-    glu.gluLookAt(0, 0, zoom, 0, 0, 0, 0, 1, 0);
+    glu.gluLookAt(camera.x, camera.y, zoom, camera.x, camera.y, 0, 0, 1, 0);
 
     if(bUpdateMatrices)
       updateMatrices(gl);

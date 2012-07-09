@@ -1,5 +1,6 @@
 package Math;
 
+import java.awt.Point;
 
 public class Vector2D {
   
@@ -15,6 +16,21 @@ public class Vector2D {
   public Vector2D(double x, double y) {
     this.x = x;
     this.y = y;
+  }
+
+  
+  /*Mutable setters*/
+  
+  public Vector2D _set(Vector2D other) {
+    this.x = other.x;
+    this.y = other.y;
+    return this;
+  }
+  
+  public Vector2D _setFromScreen(Point p) {
+    this.x = p.x;
+    this.y = -p.y;
+    return this;
   }
   
   
@@ -107,5 +123,11 @@ public class Vector2D {
     double x = this.x*cos - this.y*sin;
     double y = this.x*sin + this.y*cos;
     return new Vector2D(x,y);
+  }
+  
+  /* Utility Functions */
+  @Override
+  public String toString() {
+    return "(" + this.x + "," + this.y + ")";
   }
 }

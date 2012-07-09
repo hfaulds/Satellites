@@ -6,13 +6,13 @@ import Actors.Actor;
 import Actors.ShipActor;
 import Actors.SatelliteActor;
 import Controllers.Controller;
-import Controllers.PlayerController;
+import Controllers.KeyboardController;
 import Graphics.Sprite;
  
 public class Scene extends MouseAdapter {
 
   public final Actor player = new ShipActor(5, 6, 0, -0.01);
-  public final PlayerController playerController = new PlayerController(player);
+  public final KeyboardController playerController = new KeyboardController(player);
   
   {
 	  player.addController(playerController);
