@@ -35,7 +35,7 @@ public class ClientListener extends Listener {
       ActorInfo actorInfo = (ActorInfo) info;
       Actor actor = scene.findActor(actorInfo.id);
       
-      if(actor != null && actor != scene.player) {
+      if(actor != null) {
         actor._update(actorInfo);
       }
     }

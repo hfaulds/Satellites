@@ -22,7 +22,7 @@ import com.esotericsoftware.kryonet.EndPoint;
 import com.esotericsoftware.kryonet.Server;
 
 import controllers.server.ServerSatelliteController;
-import controllers.server.ServerShipController;
+import controllers.server.ServerPlayerController;
 
 public class SceneNetwork {
   
@@ -56,7 +56,7 @@ public class SceneNetwork {
     try {
       server.start();
       server.bind(TCP_PORT, UDP_PORT);
-      server.addListener(new ServerListener(scene));
+      server.addListener(new ServerListener(scene, server));
       
       {
         SatelliteActor sat1 = new SatelliteActor(-8, -5, 10);
@@ -67,7 +67,7 @@ public class SceneNetwork {
         scene.addActor(sat2);
         scene.addController(new ServerSatelliteController(sat2, server));
         
-        scene.addController(new ServerShipController(scene.player, server));
+        scene.addController(new ServerPlayerController(scene.player, server));
       }
 
       endPoint = server;

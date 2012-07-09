@@ -24,7 +24,7 @@ public class ClientShipController implements Controller {
   @Override
   public void tick(List<Actor> actors) {
     actor.tick();
-    connection.sendTCP(new PlayerInfo(actor.velocity, actor.spin));
+    connection.sendUDP(new PlayerInfo(actor.velocity, actor.spin));
   }
 
 }

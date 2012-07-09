@@ -5,20 +5,25 @@ import actors.Actor;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.esotericsoftware.kryonet.Server;
+
+import controllers.server.ServerPlayerController;
 
 public class ServerListener extends Listener {
 
+  private final Server server;
   private final Scene scene;
   
-  public ServerListener(Scene scene) {
+  public ServerListener(Scene scene, Server server) {
     this.scene = scene;
+    this.server = server;
   }
   
   @Override
   public void connected(Connection connection) {
     connection.sendTCP(new SceneInfo(scene));
-    
     Actor actor = ((ClientConnection)connection).actor;
+    scene.addController(new ServerPlayerController(scene.player, server));
     scene.addActor(actor);
   }
   
