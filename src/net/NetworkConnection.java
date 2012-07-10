@@ -1,14 +1,18 @@
 package net;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-import scene.Scene;
-
 import math.Rotation;
 import math.Vector2D;
+import scene.Scene;
 import actors.SatelliteActor;
 import actors.ShipActor;
 
@@ -18,8 +22,8 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.esotericsoftware.kryonet.Server;
 
-import controllers.server.ServerSatelliteController;
 import controllers.server.ServerPlayerController;
+import controllers.server.ServerSatelliteController;
 
 public class NetworkConnection {
   
@@ -36,11 +40,7 @@ public class NetworkConnection {
     this.scene = scene;
   }
 
-  public boolean connect() {
-    return createClient() || createServer();
-  }
-
-  private boolean createServer() {
+  public boolean createServer() {
     Server server = new Server() {
       protected Connection newConnection() {
         return new ClientConnection(new ShipActor(0,0));
@@ -63,8 +63,8 @@ public class NetworkConnection {
         
         scene.addController(new ServerPlayerController(scene.player, server));
       }
-
-      address = InetAddress.getLocalHost();
+      
+      address = getIP();
       endPoint = server;
       return true;
     } catch (IOException e) {
@@ -72,7 +72,23 @@ public class NetworkConnection {
     }
   }
 
-  private boolean createClient() {
+  private InetAddress getIP() {
+    try {
+      URLConnection con = new URL("http://automation.whatismyip.com/n09230945.asp").openConnection();
+      con.addRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
+      con.connect();
+      BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+      return InetAddress.getByName(in.readLine());
+    } catch (IOException e) {
+      try {
+        return InetAddress.getLocalHost();
+      } catch (UnknownHostException e1) {
+        return null;
+      }
+    }
+  }
+
+  public boolean createClient() {
     Client client = new Client();
     addClasses(client);
     
@@ -91,6 +107,7 @@ public class NetworkConnection {
       
       return true;
     } catch (IOException e) {
+      e.printStackTrace();
       return false;
     }
   }

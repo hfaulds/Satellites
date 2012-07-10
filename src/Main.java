@@ -65,24 +65,50 @@ public class Main extends JFrame implements GLEventListener {
   private JPanel createTopBar() {
     JPanel topBar = new JPanel();
     
-    final JButton button = new JButton("start/join server");
+    
+    final JButton create = new JButton("create server");
+    final JButton join = new JButton("join server");
     final JLabel label = new JLabel("offline");
-    button.addActionListener(new ActionListener() {
+    
+    create.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         if(!syncroniser.isOnline()) {
-          if(syncroniser.connect()) {
-            button.setText("disconnect");
+          if(syncroniser.createServer()) {
+            create.setText("close");
             label.setText(syncroniser.getAddress().toString());
+            join.setVisible(false);
           }
         } else {
           syncroniser.disconnect();
-          button.setText("start/join server");
+          create.setText("create server");
           label.setText("offline");
+          join.setVisible(true);
         }
       }
     });
-    topBar.add(button);
+    
+    join.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        if(!syncroniser.isOnline()) {
+          if(syncroniser.createClient()) {
+            join.setText("disconnect");
+            label.setText(syncroniser.getAddress().toString());
+            create.setVisible(false);
+          }
+        } else {
+          syncroniser.disconnect();
+          join.setText("join server");
+          label.setText("offline");
+          create.setVisible(true);
+        }
+      }
+    });
+    
+    
+    topBar.add(create);
+    topBar.add(join);
     topBar.add(label);
     return topBar;
   }
