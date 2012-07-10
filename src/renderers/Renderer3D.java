@@ -27,15 +27,16 @@ public class Renderer3D {
     gl.glShadeModel(GLLightingFunc.GL_SMOOTH);
     gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     gl.glClearDepth(1.0f);
+    
     gl.glEnable(GL.GL_DEPTH_TEST);
     gl.glDepthFunc(GL.GL_LEQUAL);
     gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
     
     for(int i=0; i < scene.lights.length; i++) {
       PointLightActor light = scene.lights[i];
-      int lightID = GL2.GL_LIGHT1 + i;
+      int lightID = GL2.GL_LIGHT0 + i;
+      gl.glLightfv(lightID, GL2.GL_DIFFUSE, light.diffuseColour, 0);
       gl.glLightfv(lightID, GL2.GL_POSITION, light.lightPos, 0);
-      gl.glLightfv(lightID, GL2.GL_AMBIENT,  light.ambientColour, 0);
       gl.glLightfv(lightID, GL2.GL_SPECULAR, light.specularColour, 0);
       gl.glEnable(lightID);
     }

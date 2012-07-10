@@ -2,6 +2,9 @@ package scene;
 
 import graphics.FPSSprite;
 import graphics.Sprite;
+import graphics.ship.ShipControlSprite;
+import graphics.ship.ShipDirectionSprite;
+import graphics.ship.ShipGraphic;
 
 import java.awt.event.MouseAdapter;
 import java.lang.reflect.Constructor;
@@ -22,6 +25,10 @@ public class Scene extends MouseAdapter {
 
   public final ShipActor player = new ShipActor(0, 0);
   public final PlayerInputController playerController = new PlayerInputController(player);
+  {
+    ((ShipGraphic)player.graphic).ui.add(new ShipControlSprite());
+    ((ShipGraphic)player.graphic).ui.add(new ShipDirectionSprite());
+  }
   
   public final List<Actor> actors = new ArrayList<Actor>(Arrays.asList(player));
   public final List<Controller> controllers = new ArrayList<Controller>(Arrays.asList(playerController));

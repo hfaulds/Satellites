@@ -32,12 +32,12 @@ public class ShipDirectionSprite implements Graphic {
     {
       gl.glPushMatrix();
       {
-        gl.glDisable(GL2.GL_LIGHT1);
         gl.glDisable(GL2.GL_LIGHTING);
+        
         gl.glColor4d(1.0, 1.0, 1.0, 1.0);
         gl.glLineWidth(LINE_WIDTH);
-        gl.glBegin(GL2.GL_LINE_STRIP);
         
+        gl.glBegin(GL2.GL_LINE_STRIP);
         for(int i=start; i < end ; i++){
           gl.glVertex3d(
               Math.cos(i * CIRCLE_INCREMENT) * CONTROL_RADIUS, 
@@ -45,8 +45,9 @@ public class ShipDirectionSprite implements Graphic {
               Vector2D.Z
             );
         }
-        
         gl.glEnd();
+
+        gl.glEnable(GL2.GL_LIGHTING);
       }
       gl.glPopMatrix();
     }
@@ -57,8 +58,13 @@ public class ShipDirectionSprite implements Graphic {
   public void render(GL2 gl, GLU glu, Vector2D pos, Rotation rot) {
     if(!init )
       init(gl, glu);
-    
-    gl.glCallList(listID);
 
+    gl.glPushMatrix();
+    {
+      gl.glTranslated(pos.x, pos.y, Vector2D.Z);
+      gl.glRotated(rot.toDegrees(), rot.x, rot.y, rot.z);
+      gl.glCallList(listID);
+    }
+    gl.glPopMatrix();
   }
 }

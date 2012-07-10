@@ -16,7 +16,7 @@ public abstract class Actor {
   private static int ID = 0;
   public int id = nextID();
   
-  private final Graphic graphic;
+  public final Graphic graphic;
   
   public final Vector2D position;
   public final Vector2D velocity;

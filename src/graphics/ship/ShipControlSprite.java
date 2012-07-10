@@ -29,8 +29,8 @@ public class ShipControlSprite implements Graphic {
     {
       gl.glPushMatrix();
       {
-        gl.glDisable(GL2.GL_LIGHT1);
         gl.glDisable(GL2.GL_LIGHTING);
+        
         drawCircle(gl, 0, 0, CONTROL_RADIUS, GL2.GL_LINE_LOOP, 1);
           
         for(int i=1; i < 4; i++) {
@@ -40,6 +40,8 @@ public class ShipControlSprite implements Graphic {
           drawCircle(gl, x, y, BUTTON_RADIUS, GL2.GL_LINE_LOOP);
           drawCircle(gl, x, y, BUTTON_RADIUS - 0.01, GL2.GL_POLYGON, 0.2);
         }
+
+        gl.glEnable(GL2.GL_LIGHTING);
       }
       gl.glPopMatrix();
     }
@@ -50,8 +52,13 @@ public class ShipControlSprite implements Graphic {
   public void render(GL2 gl, GLU glu, Vector2D pos, Rotation rot) {
     if(!init )
       init(gl, glu);
-    
-    gl.glCallList(listID);
+
+    gl.glPushMatrix();
+    {
+      gl.glTranslated(pos.x, pos.y, Vector2D.Z);
+      gl.glCallList(listID);
+    }
+    gl.glPopMatrix();
   }
 
   private void drawCircle(GL2 gl, double x, double y, double radius, int style) {

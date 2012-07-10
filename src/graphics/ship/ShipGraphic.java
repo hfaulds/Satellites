@@ -1,5 +1,8 @@
 package graphics.ship;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import graphics.Graphic;
 
 import javax.media.opengl.GL2;
@@ -16,10 +19,9 @@ public class ShipGraphic implements Graphic {
   private final double width;
   private final double length;
   private final double height;
-  
-  private Graphic controlsUI = new ShipControlSprite();
-  private Graphic directionUI = new ShipDirectionSprite();
 
+  public final List<Graphic> ui = new ArrayList<Graphic>();
+  
   private boolean init = false;
   private int listID;
 
@@ -33,7 +35,7 @@ public class ShipGraphic implements Graphic {
   public void init(GL2 gl, GLU glu) {
     listID = gl.glGenLists(1);
     gl.glNewList(listID, GL2.GL_COMPILE);
-    {
+    { 
       gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_AMBIENT,  ambientColour, 0);
       gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, ambientColour, 0);
       gl.glMaterialf(GL2.GL_FRONT, GL2.GL_SHININESS, 0.5f);
@@ -88,21 +90,13 @@ public class ShipGraphic implements Graphic {
     
     gl.glPushMatrix();
     {
-      gl.glLoadIdentity();
       gl.glTranslated(pos.x, pos.y, Vector2D.Z);
-      controlsUI.render(gl, glu, pos, rot);
-
-      gl.glPushMatrix();
-      {
-        gl.glRotated(rot.toDegrees(), rot.x, rot.y, rot.z);
-        
-        directionUI.render(gl, glu, pos, rot);
-        gl.glCallList(listID);
-      }
-      gl.glPopMatrix();
-      
+      gl.glRotated(rot.toDegrees(), rot.x, rot.y, rot.z);
+      gl.glCallList(listID);
     }
     gl.glPopMatrix();
+    
+    for(Graphic uiElem : ui)
+      uiElem.render(gl, glu, pos, rot);
   }
-
 }

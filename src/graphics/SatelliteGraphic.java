@@ -12,8 +12,8 @@ public class SatelliteGraphic implements Graphic {
 
   protected double radius;
   
-  private final float[] ambientColour  = {(float) Math.random(), (float) Math.random(), (float) Math.random()};
-  private final float[] specularColour  = {(float) Math.random(), (float) Math.random(), (float) Math.random()};
+  private float[] diffuseColour  = {(float) Math.random(), (float) Math.random(), (float) Math.random(), 1};
+  private float[] specularColour  = {(float) Math.random(), (float) Math.random(), (float) Math.random(), 1};
   
   final int slices = 32;
   final int stacks = 32;
@@ -31,9 +31,9 @@ public class SatelliteGraphic implements Graphic {
     listID = gl.glGenLists(1);
     gl.glNewList(listID, GL2.GL_COMPILE);
     {
-      gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_AMBIENT, ambientColour, 0);
+      gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_DIFFUSE, diffuseColour, 0);
       gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, specularColour, 0);
-      gl.glMaterialf(GL2.GL_FRONT, GL2.GL_SHININESS, 0.5f);
+      gl.glMaterialf(GL2.GL_FRONT, GL2.GL_SHININESS, 1.0f);
       
       GLUquadric earth = glu.gluNewQuadric();
       glu.gluQuadricDrawStyle(earth, GLU.GLU_FILL);
