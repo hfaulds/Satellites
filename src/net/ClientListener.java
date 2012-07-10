@@ -24,14 +24,13 @@ public class ClientListener extends Listener {
   @Override
   public void received(Connection connection, Object info) {
     if(info instanceof SceneInfo) {
-      
       SceneInfo sceneInfo = (SceneInfo)info;
       
       scene.player.id = sceneInfo.playerID;
       scene.addController(new ClientShipController(scene.player, connection));
-      
+
+      scene.addActor(scene.player);
       scene.addActors(sceneInfo.actorInfoList);
-      
     } else if(info instanceof ActorInfo) {
       ActorInfo actorInfo = (ActorInfo) info;
       Actor actor = scene.findActor(actorInfo.id);
@@ -40,6 +39,5 @@ public class ClientListener extends Listener {
         actor._update(actorInfo);
       }
     }
-    scene.addActor(scene.player);
   }
 }

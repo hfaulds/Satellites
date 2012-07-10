@@ -15,6 +15,13 @@ public class Rotation {
     this.mag = 0;
   }
   
+  public Rotation(Rotation other) {
+    this.x = other.x;
+    this.y = other.y;
+    this.z = other.z;
+    this.mag = other.mag;
+  }
+
   public void _add(double n) {
     this.mag += n;
   }

@@ -18,9 +18,15 @@ public class Vector2D {
     this.y = y;
   }
 
+  public Vector2D(Vector2D other) {
+    this.x = other.x;
+    this.y = other.y;
+  }
+
   
   /*Mutable setters*/
   
+
   public Vector2D _set(Vector2D other) {
     this.x = other.x;
     this.y = other.y;

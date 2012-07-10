@@ -27,8 +27,8 @@ public abstract class Actor {
   public final double mass;
 
   public Actor(Vector2D position, Rotation rotation, double mass, Graphic graphic) {
-    this.position = position;
-    this.rotation = rotation;
+    this.position = new Vector2D(position);
+    this.rotation = new Rotation(rotation);
     this.mass = mass;
     this.velocity = new Vector2D();
     this.graphic = graphic;
