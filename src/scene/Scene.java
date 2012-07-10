@@ -30,11 +30,10 @@ public class Scene extends MouseAdapter {
     ((ShipGraphic)player.graphic).ui.add(new ShipDirectionSprite());
   }
   
-  public final List<Actor> actors = new ArrayList<Actor>(Arrays.asList(player));
-  public final List<Controller> controllers = new ArrayList<Controller>(Arrays.asList(playerController));
-  public final PointLightActor[] lights = {new PointLightActor()};
-  
-  public final Sprite[] ui = new Sprite[]{new FPSSprite()};
+  public final List<Actor>          actors = new ArrayList<Actor>(Arrays.asList(player));
+  public final List<Controller>     controllers = new ArrayList<Controller>(Arrays.asList(playerController));
+  public final PointLightActor[]    lights = {new PointLightActor()};
+  public final Sprite[]             ui = new Sprite[]{new FPSSprite()};
 
   public void addController(Controller controller) {
     controllers.add(controller);
@@ -52,7 +51,7 @@ public class Scene extends MouseAdapter {
     }
   }
 
-  public void addActors(List<ActorInfo> actorInfo) {
+  public void populate(List<ActorInfo> actorInfo) {
     synchronized(actors) {
       for(ActorInfo info : actorInfo) {
         try {

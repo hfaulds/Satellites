@@ -1,17 +1,14 @@
-package scene;
+package net;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.List;
+
+import scene.Scene;
 
 import math.Rotation;
 import math.Vector2D;
-import net.ActorInfo;
-import net.ClientConnection;
-import net.ClientListener;
-import net.PlayerInfo;
-import net.SceneInfo;
-import net.ServerListener;
 import actors.SatelliteActor;
 import actors.ShipActor;
 
@@ -24,7 +21,7 @@ import com.esotericsoftware.kryonet.Server;
 import controllers.server.ServerSatelliteController;
 import controllers.server.ServerPlayerController;
 
-public class SceneNetwork {
+public class NetworkConnection {
   
   public static final int TIMEOUT = 5000;
   public static final int TCP_PORT = 54555;
@@ -33,17 +30,17 @@ public class SceneNetwork {
   private EndPoint endPoint;
   
   private final Scene scene;
+  private InetAddress address;
       
-  public SceneNetwork(Scene scene) {
+  public NetworkConnection(Scene scene) {
     this.scene = scene;
   }
 
-  public void connect() {
-    if(createClient() || createServer());
+  public boolean connect() {
+    return createClient() || createServer();
   }
 
   private boolean createServer() {
-    
     Server server = new Server() {
       protected Connection newConnection() {
         return new ClientConnection(new ShipActor(0,0));
@@ -51,13 +48,10 @@ public class SceneNetwork {
     };
     addClasses(server);
     
-    System.out.println("Starting server");
-    
     try {
       server.start();
       server.bind(TCP_PORT, UDP_PORT);
       server.addListener(new ServerListener(scene, server));
-      
       {
         SatelliteActor sat1 = new SatelliteActor(-8, -5, 10);
         scene.addActor(sat1);
@@ -70,11 +64,10 @@ public class SceneNetwork {
         scene.addController(new ServerPlayerController(scene.player, server));
       }
 
+      address = InetAddress.getLocalHost();
       endPoint = server;
-      System.out.println("Server creation sucessful");
       return true;
     } catch (IOException e) {
-      System.out.println("Server creation unsucessful");
       return false;
     }
   }
@@ -83,24 +76,21 @@ public class SceneNetwork {
     Client client = new Client();
     addClasses(client);
     
-    InetAddress address = client.discoverHost(UDP_PORT, TIMEOUT);
+    List<InetAddress> addresses = client.discoverHosts(UDP_PORT, TIMEOUT);
     
-    if(address == null)
+    if(addresses.size() == 0)
       return false;
     
-    System.out.println("Connecting to " + address);
-    
+    InetAddress address = addresses.get(0);
     try {
       client.start();
       client.connect(TIMEOUT, address, TCP_PORT, UDP_PORT);
       client.addListener(new ClientListener(scene));
       endPoint = client;
-      
-      System.out.println("Connection sucessful");
+      this.address = address;
       
       return true;
     } catch (IOException e) {
-      System.out.println("Connection unsucessful");
       return false;
     }
   }
@@ -123,12 +113,19 @@ public class SceneNetwork {
   }
   
   public void disconnect() {
-    if(endPoint != null)
+    if(endPoint != null) {
       endPoint.stop();
-    endPoint = null;
+      scene.actors.clear();
+      endPoint = null;
+      address = null;
+    }
   }
 
   public boolean isOnline() {
     return endPoint != null;
+  }
+
+  public InetAddress getAddress() {
+    return address;
   }
 }

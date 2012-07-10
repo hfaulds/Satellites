@@ -1,4 +1,5 @@
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -9,14 +10,15 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import net.NetworkConnection;
 
 import scene.Camera;
 import scene.Scene;
-import scene.SceneNetwork;
 import scene.SceneUpdater;
 
 import com.jogamp.opengl.util.FPSAnimator;
@@ -27,7 +29,7 @@ public class Main extends JFrame implements GLEventListener {
   private Scene scene = new Scene();
   private Camera renderer = new Camera(scene);
   private SceneUpdater updater = new SceneUpdater(scene);
-  private SceneNetwork syncroniser = new SceneNetwork(scene);
+  private NetworkConnection syncroniser = new NetworkConnection(scene);
   
   private final GLCanvas canvas = createCanvas(createCapabilities());
   private final FPSAnimator animator = new FPSAnimator(canvas, 20);
@@ -38,27 +40,51 @@ public class Main extends JFrame implements GLEventListener {
     canvas.requestFocus();
   }
 
+  private void setupFrame() {
+    this.add(createContent());
+    this.addWindowListener(new WindowAdapter() {
+      public void windowClosing(WindowEvent e) {
+        animator.stop();
+        syncroniser.disconnect();
+        dispose();
+        System.exit(0);
+      }
+    });
+    this.setSize(1280 , 720);
+    this.setVisible(true);
+  }
+  
   private JPanel createContent() {
-    JButton button = createConnectButton();
-    
     JPanel window = new JPanel();
-    window.setLayout(new BoxLayout(window, BoxLayout.PAGE_AXIS));
-    window.add(button);
-    window.add(canvas);
-    
+    window.setLayout(new BorderLayout());
+    window.add(createTopBar(), BorderLayout.PAGE_START);
+    window.add(canvas, BorderLayout.CENTER);
     return window;
   }
 
-  private JButton createConnectButton() {
-    JButton button = new JButton("start server");
+  private JPanel createTopBar() {
+    JPanel topBar = new JPanel();
+    
+    final JButton button = new JButton("start/join server");
+    final JLabel label = new JLabel("offline");
     button.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        if(!syncroniser.isOnline())
-          syncroniser.connect();
+        if(!syncroniser.isOnline()) {
+          if(syncroniser.connect()) {
+            button.setText("disconnect");
+            label.setText(syncroniser.getAddress().toString());
+          }
+        } else {
+          syncroniser.disconnect();
+          button.setText("start/join server");
+          label.setText("offline");
+        }
       }
     });
-    return button;
+    topBar.add(button);
+    topBar.add(label);
+    return topBar;
   }
 
   private GLCapabilities createCapabilities() {
@@ -78,19 +104,6 @@ public class Main extends JFrame implements GLEventListener {
     return canvas;
   }
 
-  private void setupFrame() {
-    this.add(createContent());
-    this.addWindowListener(new WindowAdapter() {
-      public void windowClosing(WindowEvent e) {
-        animator.stop();
-        syncroniser.disconnect();
-        dispose();
-        System.exit(0);
-      }
-    });
-    this.setSize(1280 , 720);
-    this.setVisible(true);
-  }
 
   @Override
   public void init(GLAutoDrawable drawable) {

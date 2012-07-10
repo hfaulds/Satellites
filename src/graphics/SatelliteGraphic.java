@@ -12,8 +12,8 @@ public class SatelliteGraphic implements Graphic {
 
   protected double radius;
   
-  private float[] diffuseColour  = {(float) Math.random(), (float) Math.random(), (float) Math.random(), 1};
-  private float[] specularColour  = {(float) Math.random(), (float) Math.random(), (float) Math.random(), 1};
+  private float[] diffuseColour = {(float) Math.random(), (float) Math.random(), (float) Math.random(), 1};
+  private float[] specularColour = {(float) Math.random(), (float) Math.random(), (float) Math.random(), 1};
   
   final int slices = 32;
   final int stacks = 32;

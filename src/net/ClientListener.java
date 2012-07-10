@@ -30,7 +30,7 @@ public class ClientListener extends Listener {
       scene.addController(new ClientShipController(scene.player, connection));
 
       scene.addActor(scene.player);
-      scene.addActors(sceneInfo.actorInfoList);
+      scene.populate(sceneInfo.actorInfoList);
     } else if(info instanceof ActorInfo) {
       ActorInfo actorInfo = (ActorInfo) info;
       Actor actor = scene.findActor(actorInfo.id);
