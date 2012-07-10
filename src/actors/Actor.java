@@ -37,6 +37,11 @@ public abstract class Actor {
   public Actor(double x, double y, double mass, Graphic graphic) {
     this(new Vector2D(x, y), new Rotation(), mass, graphic);
   }
+  
+  
+  public void init(GL2 gl, GLU glu) {
+    this.graphic.init(gl, glu);
+  }
 
   public void render(GL2 gl, GLU glu) {
     this.graphic.render(gl, glu, position, rotation);
@@ -82,4 +87,5 @@ public abstract class Actor {
   public static int nextID() {
     return ++ID;
   }
+
  }

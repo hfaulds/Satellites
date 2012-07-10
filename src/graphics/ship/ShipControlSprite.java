@@ -9,7 +9,7 @@ import math.Rotation;
 import math.Vector2D;
 
 
-public class ShipControlSprite extends Graphic {
+public class ShipControlSprite implements Graphic {
 
   public static final double CONTROL_RADIUS     = 2;
   public static final double BUTTON_RADIUS      = .25;
@@ -19,24 +19,39 @@ public class ShipControlSprite extends Graphic {
   
   public static final float LINE_WIDTH			    = 2f;
 
+  private int listID;
+  private boolean init = false;
+  
+  @Override
+  public void init(GL2 gl, GLU glu) {
+    listID = gl.glGenLists(1);
+    gl.glNewList(listID, GL2.GL_COMPILE);
+    {
+      gl.glPushMatrix();
+      {
+        gl.glDisable(GL2.GL_LIGHT1);
+        gl.glDisable(GL2.GL_LIGHTING);
+        drawCircle(gl, 0, 0, CONTROL_RADIUS, GL2.GL_LINE_LOOP, 1);
+          
+        for(int i=1; i < 4; i++) {
+          double x = Math.cos( (1+1.5*i) * CIRCLE_INCREMENT) * CONTROL_RADIUS;
+          double y = Math.sin( (1+1.5*i) * CIRCLE_INCREMENT) * CONTROL_RADIUS;
+        
+          drawCircle(gl, x, y, BUTTON_RADIUS, GL2.GL_LINE_LOOP);
+          drawCircle(gl, x, y, BUTTON_RADIUS - 0.01, GL2.GL_POLYGON, 0.2);
+        }
+      }
+      gl.glPopMatrix();
+    }
+    gl.glEndList();
+  }
+  
   @Override
   public void render(GL2 gl, GLU glu, Vector2D pos, Rotation rot) {
-    gl.glPushMatrix();
-    {
-      gl.glDisable(GL2.GL_LIGHT1);
-      gl.glDisable(GL2.GL_LIGHTING);
-      drawCircle(gl, 0, 0, CONTROL_RADIUS, GL2.GL_LINE_LOOP, 1);
-	    
-  	  for(int i=1; i < 4; i++) {
-  	    double x = Math.cos( (1+1.5*i) * CIRCLE_INCREMENT) * CONTROL_RADIUS;
-  	    double y = Math.sin( (1+1.5*i) * CIRCLE_INCREMENT) * CONTROL_RADIUS;
-  	  
-  	    drawCircle(gl, x, y, BUTTON_RADIUS, GL2.GL_LINE_LOOP);
-  	    drawCircle(gl, x, y, BUTTON_RADIUS - 0.01, GL2.GL_POLYGON, 0.2);
-  	  }
-    }
-    gl.glPopMatrix();
+    if(!init )
+      init(gl, glu);
     
+    gl.glCallList(listID);
   }
 
   private void drawCircle(GL2 gl, double x, double y, double radius, int style) {
@@ -59,5 +74,4 @@ public class ShipControlSprite extends Graphic {
       
       gl.glEnd();
   }
-
 }

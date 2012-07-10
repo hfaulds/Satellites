@@ -36,7 +36,7 @@ public class Camera extends MouseAdapter {
   }
 
   public void init(GLAutoDrawable drawable) {
-    renderer3D.init(glFromDrawable(drawable));
+    renderer3D.init(glFromDrawable(drawable), scene);
   }
   
   public void render(GLAutoDrawable drawable) {
@@ -51,8 +51,10 @@ public class Camera extends MouseAdapter {
     }
     
     renderer3D.clear(gl);
+    
     renderer3D.preRender(gl, cameraPos , width/height, zoom);
     renderer3D.render(gl, scene.actors);
+    
     renderer2D.preRender(gl, width, height);
     renderer2D.render(gl, scene.ui);
   }

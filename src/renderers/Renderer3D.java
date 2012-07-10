@@ -7,9 +7,12 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.fixedfunc.GLLightingFunc;
 import javax.media.opengl.glu.GLU;
 
+import scene.Scene;
+
 import math.Vector2D;
 
 import actors.Actor;
+import actors.PointLightActor;
 
 public class Renderer3D {
   
@@ -20,13 +23,24 @@ public class Renderer3D {
   private static double[] projectionMatrix = new double[16];
   private static int[] viewportMatrix      = new int[4];
 
-  public void init(GL2 gl) {
+  public void init(GL2 gl, Scene scene) {
     gl.glShadeModel(GLLightingFunc.GL_SMOOTH);
     gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     gl.glClearDepth(1.0f);
     gl.glEnable(GL.GL_DEPTH_TEST);
     gl.glDepthFunc(GL.GL_LEQUAL);
     gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
+    
+    for(int i=0; i < scene.lights.length; i++) {
+      PointLightActor light = scene.lights[i];
+      int lightID = GL2.GL_LIGHT1 + i;
+      gl.glLightfv(lightID, GL2.GL_POSITION, light.lightPos, 0);
+      gl.glLightfv(lightID, GL2.GL_AMBIENT,  light.ambientColour, 0);
+      gl.glLightfv(lightID, GL2.GL_SPECULAR, light.specularColour, 0);
+      gl.glEnable(lightID);
+    }
+
+    gl.glEnable(GL2.GL_LIGHTING);
   }
 
   public void clear(GL2 gl) {

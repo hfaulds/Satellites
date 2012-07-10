@@ -13,6 +13,7 @@ import math.Rotation;
 import math.Vector2D;
 import net.ActorInfo;
 import actors.Actor;
+import actors.PointLightActor;
 import actors.ShipActor;
 import controllers.Controller;
 import controllers.client.PlayerInputController;
@@ -24,6 +25,7 @@ public class Scene extends MouseAdapter {
   
   public final List<Actor> actors = new ArrayList<Actor>(Arrays.asList(player));
   public final List<Controller> controllers = new ArrayList<Controller>(Arrays.asList(playerController));
+  public final PointLightActor[] lights = {new PointLightActor()};
   
   public final Sprite[] ui = new Sprite[]{new FPSSprite()};
 

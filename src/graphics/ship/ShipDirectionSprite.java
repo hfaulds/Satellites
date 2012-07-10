@@ -8,8 +8,7 @@ import javax.media.opengl.glu.GLU;
 import math.Rotation;
 import math.Vector2D;
 
-
-public class ShipDirectionSprite extends Graphic {
+public class ShipDirectionSprite implements Graphic {
 
   public static final double CONTROL_RADIUS     = ShipControlSprite.CONTROL_RADIUS + ShipControlSprite.BUTTON_RADIUS;
   private static final int CIRCLE_SAMPLES       = ShipControlSprite.CIRCLE_SAMPLES;
@@ -23,26 +22,43 @@ public class ShipDirectionSprite extends Graphic {
   private final int start  = mid - CIRCLE_SAMPLES / length;
   private final int end    = mid + CIRCLE_SAMPLES / length;
   
+  private int listID;
+  private boolean init = false;
+
+  @Override
+  public void init(GL2 gl, GLU glu) {
+    listID = gl.glGenLists(1);
+    gl.glNewList(listID, GL2.GL_COMPILE);
+    {
+      gl.glPushMatrix();
+      {
+        gl.glDisable(GL2.GL_LIGHT1);
+        gl.glDisable(GL2.GL_LIGHTING);
+        gl.glColor4d(1.0, 1.0, 1.0, 1.0);
+        gl.glLineWidth(LINE_WIDTH);
+        gl.glBegin(GL2.GL_LINE_STRIP);
+        
+        for(int i=start; i < end ; i++){
+          gl.glVertex3d(
+              Math.cos(i * CIRCLE_INCREMENT) * CONTROL_RADIUS, 
+              Math.sin(i * CIRCLE_INCREMENT) * CONTROL_RADIUS,
+              Vector2D.Z
+            );
+        }
+        
+        gl.glEnd();
+      }
+      gl.glPopMatrix();
+    }
+    gl.glEndList();
+  }
+  
   @Override
   public void render(GL2 gl, GLU glu, Vector2D pos, Rotation rot) {
-    gl.glPushMatrix();
-    {
-      gl.glDisable(GL2.GL_LIGHT1);
-      gl.glDisable(GL2.GL_LIGHTING);
-      gl.glColor4d(1.0, 1.0, 1.0, 1.0);
-      gl.glLineWidth(LINE_WIDTH);
-      gl.glBegin(GL2.GL_LINE_STRIP);
-      
-      for(int i=start; i < end ; i++){
-        gl.glVertex3d(
-            Math.cos(i * CIRCLE_INCREMENT) * CONTROL_RADIUS, 
-            Math.sin(i * CIRCLE_INCREMENT) * CONTROL_RADIUS,
-            Vector2D.Z
-          );
-      }
-      
-      gl.glEnd();
-    }
-    gl.glPopMatrix();
+    if(!init )
+      init(gl, glu);
+    
+    gl.glCallList(listID);
+
   }
 }

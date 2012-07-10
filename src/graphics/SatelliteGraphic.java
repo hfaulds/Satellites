@@ -8,39 +8,31 @@ import math.Vector2D;
 
 
 
-public class SatelliteGraphic extends Graphic {
+public class SatelliteGraphic implements Graphic {
 
   protected double radius;
   
   private final float[] ambientColour  = {(float) Math.random(), (float) Math.random(), (float) Math.random()};
-  private final float[] specularColour = {(float) Math.random(), (float) Math.random(), (float) Math.random()};//{0.8f, 0.8f, 0.8f, 1.0f};
-  private final float[] lightPos       = {0, 0, 20, 1};
+  private final float[] specularColour  = {(float) Math.random(), (float) Math.random(), (float) Math.random()};
   
   final int slices = 32;
   final int stacks = 32;
+  
+  private int listID;
+
+  private boolean init = false;
   
   public SatelliteGraphic(double radius) {
     this.radius = radius;
   }
   
   @Override
-  public void render(GL2 gl, GLU glu, Vector2D pos, Rotation rot) {
-    
-    gl.glPushMatrix();
+  public void init(GL2 gl, GLU glu){
+    listID = gl.glGenLists(1);
+    gl.glNewList(listID, GL2.GL_COMPILE);
     {
-      gl.glTranslated(pos.x, pos.y, Vector2D.Z);
-      gl.glColor3fv(ambientColour, 1);
-      
-      gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_POSITION, lightPos, 0);
-      gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_AMBIENT,  ambientColour, 0);
-      gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_SPECULAR, specularColour, 0);
-
-      gl.glEnable(GL2.GL_LIGHT1);
-      gl.glEnable(GL2.GL_LIGHTING);
-
-      float[] rgba = {1f, 1f, 1f};
-      gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_AMBIENT, rgba, 0);
-      gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, rgba, 0);
+      gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_AMBIENT, ambientColour, 0);
+      gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, specularColour, 0);
       gl.glMaterialf(GL2.GL_FRONT, GL2.GL_SHININESS, 0.5f);
       
       GLUquadric earth = glu.gluNewQuadric();
@@ -50,6 +42,19 @@ public class SatelliteGraphic extends Graphic {
       
       glu.gluSphere(earth, radius, slices, stacks);
       glu.gluDeleteQuadric(earth);
+    }
+    gl.glEndList();
+  }
+  
+  @Override
+  public void render(GL2 gl, GLU glu, Vector2D pos, Rotation rot) {
+    if(!init )
+      init(gl, glu);
+    
+    gl.glPushMatrix();
+    {
+      gl.glTranslated(pos.x, pos.y, Vector2D.Z);
+      gl.glCallList(listID);
     }
     gl.glPopMatrix();
   }
