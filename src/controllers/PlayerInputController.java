@@ -35,7 +35,6 @@ public class PlayerInputController implements Controller, KeyListener {
   
   public void setActor(Actor actor) {
     this.actor = actor;
-    System.out.println("input actor set");
   }
   
   @Override

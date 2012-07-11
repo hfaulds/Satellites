@@ -1,7 +1,7 @@
 package net;
 
-import net.msg.ActorInfo;
-import net.msg.SceneInfo;
+import net.msg.ActorMsg;
+import net.msg.SceneMsg;
 import scene.Scene;
 import actors.Actor;
 
@@ -24,11 +24,11 @@ public class ClientListener extends Listener {
   
   @Override
   public void received(Connection connection, Object info) {
-    if(info instanceof SceneInfo) {
-      SceneInfo sceneInfo = (SceneInfo)info;
+    if(info instanceof SceneMsg) {
+      SceneMsg sceneInfo = (SceneMsg)info;
       scene.populate(sceneInfo.actorInfoList, sceneInfo.playerID, connection);
-    } else if(info instanceof ActorInfo) {
-      ActorInfo actorInfo = (ActorInfo) info;
+    } else if(info instanceof ActorMsg) {
+      ActorMsg actorInfo = (ActorMsg) info;
       Actor actor = scene.findActor(actorInfo.id);
       
       if(actor != null) {

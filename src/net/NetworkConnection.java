@@ -10,9 +10,9 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.msg.ActorInfo;
-import net.msg.PlayerInfo;
-import net.msg.SceneInfo;
+import net.msg.ActorMsg;
+import net.msg.PlayerMsg;
+import net.msg.SceneMsg;
 
 import math.Rotation;
 import math.Vector2D;
@@ -116,9 +116,9 @@ public class NetworkConnection {
     kryo.register(Vector2D.class);
     kryo.register(Rotation.class);
     
-    kryo.register(ActorInfo.class);
-    kryo.register(SceneInfo.class);
-    kryo.register(PlayerInfo.class);
+    kryo.register(ActorMsg.class);
+    kryo.register(SceneMsg.class);
+    kryo.register(PlayerMsg.class);
     
     kryo.register(SatelliteActor.class);
     kryo.register(ShipActor.class);

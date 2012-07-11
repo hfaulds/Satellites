@@ -10,7 +10,7 @@ import javax.media.opengl.glu.GLU;
 
 import math.Rotation;
 import math.Vector2D;
-import net.msg.ActorInfo;
+import net.msg.ActorMsg;
 
 public abstract class Actor {
 
@@ -78,11 +78,11 @@ public abstract class Actor {
   }
 
   @SuppressWarnings("unchecked")
-  public ActorInfo getInfo() {
-    return new ActorInfo(position, rotation, id, mass, (Class<Actor>) this.getClass());
+  public ActorMsg getInfo() {
+    return new ActorMsg(position, rotation, id, mass, (Class<Actor>) this.getClass());
   }
 
-  public void _update(ActorInfo info) {
+  public void _update(ActorMsg info) {
     this.position._set(info.position);
     this.rotation._set(info.rotation);
   }
@@ -91,7 +91,7 @@ public abstract class Actor {
     return ++ID;
   }
 
-  public static Actor fromInfo(ActorInfo info) {
+  public static Actor fromInfo(ActorMsg info) {
     try {
       Constructor<Actor> constructor = info.actorClass.getConstructor(Vector2D.class, Rotation.class, double.class, int.class);
       return constructor.newInstance(info.position, info.rotation, info.mass, info.id);

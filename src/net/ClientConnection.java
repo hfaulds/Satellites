@@ -1,6 +1,6 @@
 package net;
 
-import net.msg.PlayerInfo;
+import net.msg.PlayerMsg;
 import actors.Actor;
 import actors.ShipActor;
 
@@ -20,7 +20,7 @@ public class ClientConnection extends Connection {
     this.controller = new ServerShipController(actor, server);
   }
 
-  public void updateActor(PlayerInfo info) {
+  public void updateActor(PlayerMsg info) {
     actor.velocity._set(info.velocity);
     actor.spin._set(info.spin);
   }

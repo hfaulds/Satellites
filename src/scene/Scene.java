@@ -1,16 +1,17 @@
 package scene;
 
-import graphics.FPSSprite;
 import graphics.Sprite;
 import graphics.ship.ShipControlSprite;
 import graphics.ship.ShipDirectionSprite;
 import graphics.ship.ShipGraphic;
+import graphics.sprite.FPSSprite;
+import graphics.sprite.MsgSprite;
 
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.msg.ActorInfo;
+import net.msg.ActorMsg;
 import actors.Actor;
 import actors.PointLightActor;
 
@@ -27,7 +28,7 @@ public class Scene extends MouseAdapter {
   public final List<Actor>          actors = new ArrayList<Actor>();
   public final List<Controller>     controllers = new ArrayList<Controller>();
   public final PointLightActor[]    lights = {new PointLightActor()};
-  public final Sprite[]             ui = new Sprite[]{new FPSSprite()};
+  public final Sprite[]             ui = new Sprite[]{new FPSSprite(), new MsgSprite()};
 
   public void addController(Controller controller) {
     synchronized(controllers) {
@@ -61,10 +62,8 @@ public class Scene extends MouseAdapter {
     addActor(player);
   }
   
-  public void populate(List<ActorInfo> actorInfo, int playerID, Connection connection) {
-   
-    for(ActorInfo info : actorInfo) { 
-      
+  public void populate(List<ActorMsg> actorInfo, int playerID, Connection connection) {
+    for(ActorMsg info : actorInfo) {
       Actor actor = Actor.fromInfo(info);
       if(info.id == playerID) {
         addController(new ClientShipController(actor, connection));
