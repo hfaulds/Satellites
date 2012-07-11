@@ -9,20 +9,19 @@ import math.Vector2D;
 
 import actors.Actor;
 
-
 public class PlayerInputController implements Controller, KeyListener {
-
-  private static final double ACCELERATION = 0.0005;
-  private static final double SPIN = 0.0005;
 
   private static final Vector2D START_DIRECTION = new Vector2D(0, -1);
   
+  private static final double ACCELERATION = 0.0005;
+  private static final double SPIN         = 0.0005;
+
   private static final int KEY_FORWARD = 'W';
-  private static final int KEY_LEFT = 'A';
-  private static final int KEY_RIGHT = 'D';
+  private static final int KEY_LEFT    = 'A';
+  private static final int KEY_RIGHT   = 'D';
   
-  private double spinMag = 0;
   private double accelMag = 0;
+  private double spinMag  = 0;
 
   public Actor actor;
   

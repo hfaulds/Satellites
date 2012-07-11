@@ -22,6 +22,7 @@ public class ServerListener extends Listener {
   @Override
   public void connected(Connection connection) {
     ClientConnection clientConnection = (ClientConnection)connection;
+    
     scene.addActor(clientConnection.actor);
     scene.addController(clientConnection.controller);
 
