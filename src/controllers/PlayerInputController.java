@@ -1,10 +1,9 @@
 package controllers;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.List;
 
-
+import com.jogamp.newt.event.KeyEvent;
+import com.jogamp.newt.event.KeyListener;
 
 import math.Vector2D;
 
@@ -18,9 +17,9 @@ public class PlayerInputController implements Controller, KeyListener {
 
   private static final Vector2D START_DIRECTION = new Vector2D(0, -1);
   
-  private static final char KEY_FORWARD = 'w';
-  private static final char KEY_LEFT = 'a';
-  private static final char KEY_RIGHT = 'd';
+  private static final int KEY_FORWARD = 'W';
+  private static final int KEY_LEFT = 'A';
+  private static final int KEY_RIGHT = 'D';
   
   private double spinMag = 0;
   private double accelMag = 0;
@@ -43,7 +42,6 @@ public class PlayerInputController implements Controller, KeyListener {
   @Override
   public void tick(List<Actor> actors) {
     if(actor != null) {
-      System.out.println(accelMag);
       if(accelMag != 0) {
         Vector2D acceleration = START_DIRECTION.rotate(actor.rotation.mag)._mult(accelMag * ACCELERATION);
         actor.velocity._add(acceleration);
@@ -55,9 +53,13 @@ public class PlayerInputController implements Controller, KeyListener {
     }
   }
 
+
+  @Override
+  public void keyTyped(KeyEvent e) {}
+
   @Override
   public void keyPressed(KeyEvent e) {
-    switch(e.getKeyChar()) {
+    switch(e.getKeyCode()) {
       case KEY_FORWARD:
         accelMag = 1;
         break;
@@ -72,7 +74,7 @@ public class PlayerInputController implements Controller, KeyListener {
 
   @Override
   public void keyReleased(KeyEvent e) {
-    switch(e.getKeyChar()) {
+    switch(e.getKeyCode()) {
       case KEY_FORWARD:
         accelMag = 0;
         break;
@@ -86,7 +88,4 @@ public class PlayerInputController implements Controller, KeyListener {
         break;
     }
   }
-
-  @Override
-  public void keyTyped(KeyEvent arg0) {}
 }

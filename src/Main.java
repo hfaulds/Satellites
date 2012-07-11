@@ -41,7 +41,7 @@ public class Main extends JFrame implements GLEventListener {
   public Main() {
     setupFrame();
     animator.start();
-    canvas.requestFocus();
+    glWindow.requestFocus();
   }
 
   private void setupFrame() {
@@ -126,6 +126,7 @@ public class Main extends JFrame implements GLEventListener {
   private GLWindow createGLWindow(GLCapabilities capabilities) {
     GLWindow window = GLWindow.create(capabilities);
     window.addGLEventListener(this);
+    window.addKeyListener(scene.input);
     return window;
   }
 
@@ -134,7 +135,6 @@ public class Main extends JFrame implements GLEventListener {
     canvas.addMouseListener(renderer);
     canvas.addMouseWheelListener(renderer);
     canvas.addMouseMotionListener(renderer);
-    canvas.addKeyListener(scene.input);
     return canvas;
   }
 
