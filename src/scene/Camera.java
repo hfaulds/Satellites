@@ -59,10 +59,6 @@ public class Camera extends MouseAdapter {
     renderer2D.render(gl, scene.ui);
   }
 
-  public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-    renderer3D.reshape(glFromDrawable(drawable), x, y, width, height);
-  }
-  
   @Override
   public void mouseDragged(MouseEvent e) {
     endMousePos._setFromScreen(e.getPoint());

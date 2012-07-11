@@ -144,7 +144,8 @@ public class Main extends JFrame implements GLEventListener {
 
   @Override
   public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-    renderer.reshape(drawable, x, y, width, height);
+    updater.tick();
+    renderer.render(drawable);
   }
   
   @Override

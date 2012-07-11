@@ -64,16 +64,7 @@ public class Renderer3D {
     gl.glEnable(GL.GL_MULTISAMPLE);
   }
 
-  public void reshape(GL2 gl, int x, int y, int width, int height) {
-    gl.glMatrixMode(GL2.GL_PROJECTION);
-    gl.glLoadIdentity();
-    
-    float ratio = (float) width / (float) height;
-    glu.gluPerspective(50.0f, ratio, 1.0, 1000.0);
-    
-    gl.glMatrixMode(GL2.GL_MODELVIEW);
-    gl.glLoadIdentity();
-  }
+
 
   private void updateMatrices(final GL2 gl) {
       gl.glGetIntegerv(GL2.GL_VIEWPORT, viewportMatrix, 0);
@@ -105,5 +96,4 @@ public class Renderer3D {
       }
     }
   }
-
 }
