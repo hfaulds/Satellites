@@ -88,28 +88,19 @@ public class NetworkConnection {
     }
   }
 
-  public boolean createClient() {
+  public static List<InetAddress> getLANAddresses() {
+    return new Client().discoverHosts(UDP_PORT, TIMEOUT);
+  }
+  
+  public void connect(InetAddress address) throws IOException {
     Client client = new Client();
     addClasses(client);
     
-    List<InetAddress> addresses = client.discoverHosts(UDP_PORT, TIMEOUT);
-    
-    if(addresses.size() == 0)
-      return false;
-    
-    InetAddress address = addresses.get(0);
-    try {
-      client.start();
-      client.connect(TIMEOUT, address, TCP_PORT, UDP_PORT);
-      client.addListener(new ClientListener(scene));
-      endPoint = client;
-      this.address = address;
-      
-      return true;
-    } catch (IOException e) {
-      e.printStackTrace();
-      return false;
-    }
+    client.start();
+    client.connect(TIMEOUT, address, TCP_PORT, UDP_PORT);
+    client.addListener(new ClientListener(scene));
+    endPoint = client;
+    this.address = address;
   }
 
   private void addClasses(EndPoint endPoint) {

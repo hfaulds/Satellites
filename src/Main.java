@@ -1,4 +1,6 @@
 
+import gui.SelectServerDialog;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,7 +18,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.NetworkConnection;
-
 import scene.Camera;
 import scene.Scene;
 import scene.SceneUpdater;
@@ -63,8 +64,7 @@ public class Main extends JFrame implements GLEventListener {
   }
 
   private JPanel createTopBar() {
-    JPanel topBar = new JPanel();
-    
+    final JPanel topBar = new JPanel();
     
     final JButton create = new JButton("create server");
     final JButton join = new JButton("join server");
@@ -92,7 +92,7 @@ public class Main extends JFrame implements GLEventListener {
       @Override
       public void actionPerformed(ActionEvent e) {
         if(!syncroniser.isOnline()) {
-          if(syncroniser.createClient()) {
+          if(SelectServerDialog.showDialog(topBar, syncroniser)) {
             join.setText("disconnect");
             label.setText(syncroniser.getAddress().toString());
             create.setVisible(false);
