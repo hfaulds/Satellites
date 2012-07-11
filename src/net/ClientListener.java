@@ -6,8 +6,6 @@ import actors.Actor;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
-import controllers.client.ClientShipController;
-
 public class ClientListener extends Listener {
 
   private final Scene scene;
@@ -25,12 +23,7 @@ public class ClientListener extends Listener {
   public void received(Connection connection, Object info) {
     if(info instanceof SceneInfo) {
       SceneInfo sceneInfo = (SceneInfo)info;
-      
-      scene.player.id = sceneInfo.playerID;
-      scene.addController(new ClientShipController(scene.player, connection));
-
-      scene.addActor(scene.player);
-      scene.populate(sceneInfo.actorInfoList);
+      scene.populate(sceneInfo.actorInfoList, sceneInfo.player, connection);
     } else if(info instanceof ActorInfo) {
       ActorInfo actorInfo = (ActorInfo) info;
       Actor actor = scene.findActor(actorInfo.id);

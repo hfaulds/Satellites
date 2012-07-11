@@ -7,36 +7,39 @@ import graphics.ship.ShipDirectionSprite;
 import graphics.ship.ShipGraphic;
 
 import java.awt.event.MouseAdapter;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import math.Rotation;
-import math.Vector2D;
 import net.ActorInfo;
 import actors.Actor;
 import actors.PointLightActor;
-import actors.ShipActor;
+
+import com.esotericsoftware.kryonet.Connection;
+
+import controllers.ClientShipController;
 import controllers.Controller;
-import controllers.client.PlayerInputController;
+import controllers.PlayerInputController;
 
 public class Scene extends MouseAdapter {
-
-  public final ShipActor player = new ShipActor(0, 0);
-  public final PlayerInputController playerController = new PlayerInputController(player);
-  {
-    ((ShipGraphic)player.graphic).ui.add(new ShipControlSprite());
-    ((ShipGraphic)player.graphic).ui.add(new ShipDirectionSprite());
-  }
   
-  public final List<Actor>          actors = new ArrayList<Actor>(Arrays.asList(player));
-  public final List<Controller>     controllers = new ArrayList<Controller>(Arrays.asList(playerController));
+  public final PlayerInputController input = new PlayerInputController();
+  
+  public final List<Actor>          actors = new ArrayList<Actor>();
+  public final List<Controller>     controllers = new ArrayList<Controller>(Arrays.asList(input));
   public final PointLightActor[]    lights = {new PointLightActor()};
   public final Sprite[]             ui = new Sprite[]{new FPSSprite()};
 
   public void addController(Controller controller) {
-    controllers.add(controller);
+    synchronized(controllers) {
+      controllers.add(controller);
+    }
+  }
+  
+  public void removeController(Controller controller) {
+    synchronized(controllers) {
+      controllers.remove(controller);
+    }
   }
 
   public void addActor(Actor actor) {
@@ -51,19 +54,24 @@ public class Scene extends MouseAdapter {
     }
   }
 
-  public void populate(List<ActorInfo> actorInfo) {
-    synchronized(actors) {
-      for(ActorInfo info : actorInfo) {
-        try {
-          Constructor<Actor> constructor = info.actorClass.getConstructor(Vector2D.class, Rotation.class, double.class);
-          Actor actor = constructor.newInstance(info.position, info.rotation, info.mass);
-          actor.id = info.id;
-          addActor(actor);
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
+  public void addPlayer(Actor player) {
+    input.setActor(player);
+    ShipGraphic graphic = (ShipGraphic)player.graphic;
+    graphic.ui.add(new ShipControlSprite());
+    graphic.ui.add(new ShipDirectionSprite());
+    addActor(player);
+  }
+  
+  public Actor populate(List<ActorInfo> actorInfo, ActorInfo playerInfo, Connection connection) {
+    Actor player = Actor.fromInfo(playerInfo);
+    addPlayer(player);
+    addController(new ClientShipController(player, connection));
+    
+    for(ActorInfo info : actorInfo) {
+      addActor(Actor.fromInfo(info));
     }
+    
+    return player;
   }
   
   public Actor findActor(int id) {
@@ -73,4 +81,5 @@ public class Scene extends MouseAdapter {
     
     return null;
   }
+
 }

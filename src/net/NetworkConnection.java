@@ -22,8 +22,8 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.esotericsoftware.kryonet.Server;
 
-import controllers.server.ServerPlayerController;
-import controllers.server.ServerSatelliteController;
+import controllers.ServerSatelliteController;
+import controllers.ServerShipController;
 
 public class NetworkConnection {
   
@@ -43,7 +43,7 @@ public class NetworkConnection {
   public boolean createServer() {
     Server server = new Server() {
       protected Connection newConnection() {
-        return new ClientConnection(new ShipActor(0,0));
+        return new ClientConnection(this);
       }
     };
     addClasses(server);
@@ -51,8 +51,7 @@ public class NetworkConnection {
     try {
       server.start();
       server.bind(TCP_PORT, UDP_PORT);
-      server.addListener(new ServerListener(scene, server));
-      
+      server.addListener(new ServerListener(scene));
       
       {
         SatelliteActor sat1 = new SatelliteActor(-8, -5, 10);
@@ -63,7 +62,9 @@ public class NetworkConnection {
         scene.addActor(sat2);
         scene.addController(new ServerSatelliteController(sat2, server));
         
-        scene.addController(new ServerPlayerController(scene.player, server));
+        ShipActor player = new ShipActor(0,0);
+        scene.addPlayer(player);
+        scene.addController(new ServerShipController(player, server));
       }
       
       address = getIP();

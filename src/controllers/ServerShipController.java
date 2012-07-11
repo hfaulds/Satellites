@@ -1,4 +1,4 @@
-package controllers.server;
+package controllers;
 
 import java.util.List;
 
@@ -9,9 +9,8 @@ import actors.ShipActor;
 
 import com.esotericsoftware.kryonet.Server;
 
-import controllers.Controller;
 
-public class ServerPlayerController implements Controller {
+public class ServerShipController implements Controller {
 
   private Vector2D[] corners = new Vector2D[]{
     new Vector2D( ShipActor.WIDTH /-2, ShipActor.LENGTH / 2),
@@ -23,7 +22,7 @@ public class ServerPlayerController implements Controller {
   public final Actor actor;
   private final Server server;
   
-  public ServerPlayerController(Actor actor, Server server) {
+  public ServerShipController(Actor actor, Server server) {
     this.actor = actor;
     this.server = server;
   }

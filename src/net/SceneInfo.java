@@ -5,16 +5,16 @@ import java.util.List;
 
 public class SceneInfo {
   
-  public final int playerID;
+  public final ActorInfo player;
   public final List<ActorInfo> actorInfoList;
   
-  public SceneInfo(List<ActorInfo> actorInfoList, int playerID) {
+  public SceneInfo(List<ActorInfo> actorInfoList, ActorInfo player) {
     this.actorInfoList = actorInfoList;
-    this.playerID = playerID;
+    this.player = player;
   }
   
   public SceneInfo() {
     this.actorInfoList = new ArrayList<ActorInfo>();
-    this.playerID = -1;
+    this.player = null;
   }
 }

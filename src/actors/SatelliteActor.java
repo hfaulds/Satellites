@@ -10,8 +10,8 @@ public class SatelliteActor extends Actor {
   
   private double radius = calcRadius(mass);
   
-  public SatelliteActor(Vector2D position, Rotation rotation, double mass) {
-    super(position, rotation, mass, new SatelliteGraphic(calcRadius(mass)));
+  public SatelliteActor(Vector2D position, Rotation rotation, double mass, int id) {
+    super(position, rotation, mass, new SatelliteGraphic(calcRadius(mass)), id);
   }
   
   public SatelliteActor(double x, double y, double mass) {

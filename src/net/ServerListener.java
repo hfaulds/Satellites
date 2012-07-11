@@ -3,46 +3,40 @@ package net;
 import java.util.List;
 
 import scene.Scene;
-import actors.Actor;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import com.esotericsoftware.kryonet.Server;
-
-import controllers.server.ServerPlayerController;
 
 public class ServerListener extends Listener {
 
-  private final Server server;
   private final Scene scene;
   
-  public ServerListener(Scene scene, Server server) {
+  public ServerListener(Scene scene) {
     this.scene = scene;
-    this.server = server;
   }
   
   @Override
   public void connected(Connection connection) {
     List<ActorInfo> actorInfoList = ActorInfo.actorInfoList(scene.actors);
     
-    Actor actor = ((ClientConnection)connection).actor;
-    scene.addController(new ServerPlayerController(actor, server));
-    scene.addActor(actor);
+    ClientConnection clientConnection = (ClientConnection)connection;
+    scene.addController(clientConnection.controller);
+    scene.addActor(clientConnection.actor);
     
-    connection.sendTCP(new SceneInfo(actorInfoList, actor.id));
+    connection.sendTCP(new SceneInfo(actorInfoList, clientConnection.actor.getInfo()));
   }
   
   @Override
   public void disconnected(Connection connection) {
-    Actor actor = ((ClientConnection)connection).actor;
-    scene.removeActor(actor);
+    ClientConnection clientConnection = (ClientConnection)connection;
+    scene.removeController(clientConnection.controller);
+    scene.removeActor(clientConnection.actor);
   }
   
   @Override
   public void received(Connection connection, Object info) {
     if(info instanceof PlayerInfo) {
-      PlayerInfo playerInfo = (PlayerInfo)info;
-      ((ClientConnection)connection).updateActor(playerInfo);
+      ((ClientConnection)connection).updateActor((PlayerInfo)info);
     }
   }
 }

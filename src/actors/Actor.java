@@ -2,6 +2,9 @@ package actors;
 
 import graphics.Graphic;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
@@ -26,19 +29,19 @@ public abstract class Actor {
 
   public final double mass;
 
-  public Actor(Vector2D position, Rotation rotation, double mass, Graphic graphic) {
+  protected Actor(Vector2D position, Rotation rotation, double mass, Graphic graphic, int id) {
     this.position = new Vector2D(position);
     this.rotation = new Rotation(rotation);
     this.mass = mass;
     this.velocity = new Vector2D();
     this.graphic = graphic;
+    this.id = id;
   }
   
   public Actor(double x, double y, double mass, Graphic graphic) {
-    this(new Vector2D(x, y), new Rotation(), mass, graphic);
+    this(new Vector2D(x, y), new Rotation(), mass, graphic, nextID());
   }
-  
-  
+
   public void init(GL2 gl, GLU glu) {
     this.graphic.init(gl, glu);
   }
@@ -84,8 +87,20 @@ public abstract class Actor {
     this.rotation._set(info.rotation);
   }
 
-  public static int nextID() {
+  protected static int nextID() {
     return ++ID;
+  }
+
+  public static Actor fromInfo(ActorInfo info) {
+    try {
+      Constructor<Actor> constructor = info.actorClass.getConstructor(Vector2D.class, Rotation.class, double.class, int.class);
+      return constructor.newInstance(info.position, info.rotation, info.mass, info.id);
+    } catch (InstantiationException | IllegalAccessException
+        | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+      e.printStackTrace();
+      System.exit(0);
+      return null;
+    }
   }
 
  }

@@ -1,22 +1,18 @@
-package controllers.client;
+package controllers;
 
 import java.util.List;
 
 import net.PlayerInfo;
+import actors.Actor;
 
 import com.esotericsoftware.kryonet.Connection;
 
-import controllers.Controller;
-
-import actors.Actor;
-import actors.ShipActor;
-
 public class ClientShipController implements Controller {
 
-  private final ShipActor actor;
+  private final Actor actor;
   private final Connection connection;
 
-  public ClientShipController(ShipActor actor, Connection connection) {
+  public ClientShipController(Actor actor, Connection connection) {
     this.actor = actor;
     this.connection = connection;
   }

@@ -1,9 +1,9 @@
 package actors;
 
+import graphics.Graphic;
 import graphics.ship.ShipGraphic;
 import math.Rotation;
 import math.Vector2D;
-import controllers.Controller;
 
 public class ShipActor extends Actor {
 
@@ -13,22 +13,18 @@ public class ShipActor extends Actor {
   public static double LENGTH  = 1.0;
   public static double HEIGHT  = 0.1;
 
-  public ShipActor(Vector2D position, Rotation rotation, double mass) {
-    super(position, rotation, mass, new ShipGraphic(WIDTH, LENGTH, HEIGHT));
+  public ShipActor(Vector2D position, Rotation rotation, double mass, int id) {
+    super(position, rotation, mass, getGraphic(), id);
+  }
+
+  public ShipActor(double x, double y) {
+    super(x, y, MASS, getGraphic());
+  }
+
+  private static Graphic getGraphic() {
+    return new ShipGraphic(WIDTH, LENGTH, HEIGHT);
   }
   
-  public ShipActor(double x, double y) {
-    this(x, y, 0, 0);
-  }
-
-  public ShipActor(double x, double y, double vx, double vy) {
-    this(x, y, vx, vy, null);
-  }
-
-  public ShipActor(double x, double y, double vx, double vy, Controller controller) {
-    super(x, y, MASS, new ShipGraphic(WIDTH, LENGTH, HEIGHT));
-  }
-
   @Override
   public boolean collides(Actor a) {
     return false;

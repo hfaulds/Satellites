@@ -1,10 +1,9 @@
-package controllers.client;
+package controllers;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.List;
 
-import controllers.Controller;
 
 
 import math.Vector2D;
@@ -26,21 +25,31 @@ public class PlayerInputController implements Controller, KeyListener {
   private double spinMag = 0;
   private double accelMag = 0;
 
-  public final Actor actor;
+  public Actor actor;
+  
+  public PlayerInputController() {
+    
+  }
   
   public PlayerInputController(Actor actor) {
+    setActor(actor);
+  }
+  
+  public void setActor(Actor actor) {
     this.actor = actor;
   }
-
+  
   @Override
   public void tick(List<Actor> actors) {
-    if(accelMag != 0) {
-      Vector2D acceleration = START_DIRECTION.rotate(actor.rotation.mag)._mult(accelMag * ACCELERATION);
-      actor.velocity._add(acceleration);
-    }
-    if(spinMag != 0) {
-      double spin = spinMag * SPIN;
-      actor.spin._add(spin); 
+    if(actor != null) {
+      if(accelMag != 0) {
+        Vector2D acceleration = START_DIRECTION.rotate(actor.rotation.mag)._mult(accelMag * ACCELERATION);
+        actor.velocity._add(acceleration);
+      }
+      if(spinMag != 0) {
+        double spin = spinMag * SPIN;
+        actor.spin._add(spin); 
+      }
     }
   }
 

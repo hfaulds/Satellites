@@ -1,10 +1,9 @@
-package controllers.server;
+package controllers;
 
 import java.util.List;
 
 import com.esotericsoftware.kryonet.Server;
 
-import controllers.Controller;
 
 import math.Vector2D;
 
