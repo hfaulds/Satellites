@@ -2,23 +2,36 @@ package graphics.sprite;
 
 import graphics.Sprite;
 
-import java.util.Stack;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import com.jogamp.opengl.util.gl2.GLUT;
-
 import math.Vector2D;
 
+import com.jogamp.opengl.util.gl2.GLUT;
+
 public class MsgSprite extends Sprite {
+  
+  private static final int FADE_TIME = 5000;
 
   private final GLUT glut = new GLUT();
-  private final Stack<String> messagesWaiting = new Stack<String>();
+  private final List<Message> messages = new LinkedList<Message>();
   
-  private final int fadeTime = 5000;
-  
-  private String currentMessage = "test";
-  private long messageSent = System.currentTimeMillis();
+  private class Message {
+    public final String text;
+    private long sent;
+    
+    public Message(String text) {
+      this.text = text;
+      this.sent = System.currentTimeMillis();
+    }
+    
+    public boolean expired() {
+      return (System.currentTimeMillis() - sent) > FADE_TIME;
+    }
+    
+  };
   
   public MsgSprite() {
     super(new Vector2D(50, 10));
@@ -27,17 +40,18 @@ public class MsgSprite extends Sprite {
   @Override
   public void render(GL2 gl) {
     
-    if((System.currentTimeMillis() - messageSent) > fadeTime) {
-      messageSent = System.currentTimeMillis();
-      if(messagesWaiting.size() > 0) {
-        currentMessage = messagesWaiting.pop();
+    for(int i=0; i < messages.size(); i++) {
+      Message message = messages.get(i);
+      if(!message.expired()) {
+        gl.glWindowPos2d(position.x, position.y);
+        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_10, message.text);
       } else {
-        currentMessage = "";
+        //messages.remove(message);
       }
     }
-    
-    gl.glWindowPos2d(position.x, position.y);
-    glut.glutBitmapString(GLUT.BITMAP_HELVETICA_10, currentMessage);
   }
 
+  public void addMessage(String text) {
+    messages.add(new Message(text));
+  }
 }
