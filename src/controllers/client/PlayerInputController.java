@@ -14,12 +14,10 @@ import actors.Actor;
 
 public class PlayerInputController implements Controller, KeyListener {
 
-  private static final double ACCELERATION = 0.0001;
-  private static final double SPIN = 0.0001;
+  private static final double ACCELERATION = 0.0005;
+  private static final double SPIN = 0.0005;
 
-  public static final double MOUSE_FORCE = 1e-8;
-  
-  private Vector2D startDirection = new Vector2D(0, -1);
+  private static final Vector2D START_DIRECTION = new Vector2D(0, -1);
   
   private static final char KEY_FORWARD = 'w';
   private static final char KEY_LEFT = 'a';
@@ -37,7 +35,7 @@ public class PlayerInputController implements Controller, KeyListener {
   @Override
   public void tick(List<Actor> actors) {
     if(accelMag != 0) {
-      Vector2D acceleration = startDirection.rotate(actor.rotation.mag)._mult(accelMag * ACCELERATION);
+      Vector2D acceleration = START_DIRECTION.rotate(actor.rotation.mag)._mult(accelMag * ACCELERATION);
       actor.velocity._add(acceleration);
     }
     if(spinMag != 0) {

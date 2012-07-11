@@ -52,6 +52,8 @@ public class NetworkConnection {
       server.start();
       server.bind(TCP_PORT, UDP_PORT);
       server.addListener(new ServerListener(scene, server));
+      
+      
       {
         SatelliteActor sat1 = new SatelliteActor(-8, -5, 10);
         scene.addActor(sat1);
