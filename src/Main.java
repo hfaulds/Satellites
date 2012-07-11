@@ -11,17 +11,19 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLProfile;
-import javax.media.opengl.awt.GLCanvas;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import net.NetworkConnection;
 import scene.Camera;
 import scene.Scene;
 import scene.SceneUpdater;
 
+import com.jogamp.newt.awt.NewtCanvasAWT;
+import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.util.FPSAnimator;
 
 @SuppressWarnings("serial")
@@ -32,8 +34,9 @@ public class Main extends JFrame implements GLEventListener {
   private SceneUpdater updater = new SceneUpdater(scene);
   private NetworkConnection syncroniser = new NetworkConnection(scene);
   
-  private final GLCanvas canvas = createCanvas(createCapabilities());
-  private final FPSAnimator animator = new FPSAnimator(canvas, 20);
+  private GLWindow glWindow = createGLWindow(createCapabilities());
+  private final NewtCanvasAWT canvas = createCanvas(glWindow);
+  private final FPSAnimator animator = new FPSAnimator(glWindow, 20);
   
   public Main() {
     setupFrame();
@@ -120,9 +123,14 @@ public class Main extends JFrame implements GLEventListener {
     return capabilities;
   }
 
-  private GLCanvas createCanvas(GLCapabilities capabilities) {
-    GLCanvas canvas = new GLCanvas(capabilities);
-    canvas.addGLEventListener(this);
+  private GLWindow createGLWindow(GLCapabilities capabilities) {
+    GLWindow window = GLWindow.create(capabilities);
+    window.addGLEventListener(this);
+    return window;
+  }
+
+  private NewtCanvasAWT createCanvas(GLWindow window) {
+    NewtCanvasAWT canvas = new NewtCanvasAWT(window);
     canvas.addMouseListener(renderer);
     canvas.addMouseWheelListener(renderer);
     canvas.addMouseMotionListener(renderer);
@@ -152,6 +160,10 @@ public class Main extends JFrame implements GLEventListener {
   public void dispose(GLAutoDrawable drawable) {}
   
   public static void main(String[] args) {
-    new Main();
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        new Main();
+      }
+    });
   }
 }
