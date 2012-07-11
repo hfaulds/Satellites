@@ -1,5 +1,6 @@
 package net;
 
+import net.msg.PlayerInfo;
 import actors.Actor;
 import actors.ShipActor;
 
@@ -20,8 +21,8 @@ public class ClientConnection extends Connection {
   }
 
   public void updateActor(PlayerInfo info) {
-    actor.velocity._set(info.velocity);
-    actor.spin._set(info.spin);
+    actor.velocity._add(info.velocity);
+    actor.spin._add(info.spin);
   }
 
 }

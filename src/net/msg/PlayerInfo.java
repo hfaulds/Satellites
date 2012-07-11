@@ -1,4 +1,4 @@
-package net;
+package net.msg;
 
 import math.Rotation;
 import math.Vector2D;

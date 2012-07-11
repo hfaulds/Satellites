@@ -13,7 +13,11 @@ public class SceneUpdater extends MouseAdapter {
   }
 
   public void tick() {
-    for(Controller controller : scene.controllers)
-      controller.tick(scene.actors);
+    scene.input.tick(scene.actors);
+    synchronized(scene.controllers) {
+      for(Controller controller : scene.controllers) {
+        controller.tick(scene.actors);
+      }
+    }
   }
 }

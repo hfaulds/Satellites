@@ -10,7 +10,7 @@ import javax.media.opengl.glu.GLU;
 
 import math.Rotation;
 import math.Vector2D;
-import net.ActorInfo;
+import net.msg.ActorInfo;
 
 public abstract class Actor {
 

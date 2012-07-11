@@ -10,6 +10,10 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.msg.ActorInfo;
+import net.msg.PlayerInfo;
+import net.msg.SceneInfo;
+
 import math.Rotation;
 import math.Vector2D;
 import scene.Scene;

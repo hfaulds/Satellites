@@ -2,7 +2,7 @@ package controllers;
 
 import java.util.List;
 
-import net.PlayerInfo;
+import net.msg.PlayerInfo;
 import actors.Actor;
 
 import com.esotericsoftware.kryonet.Connection;

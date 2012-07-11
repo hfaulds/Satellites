@@ -34,15 +34,10 @@ public class Main extends JFrame implements GLEventListener {
   private SceneUpdater updater = new SceneUpdater(scene);
   private NetworkConnection syncroniser = new NetworkConnection(scene);
   
-<<<<<<< HEAD
   private GLWindow glWindow = createGLWindow(createCapabilities());
   private final NewtCanvasAWT canvas = createCanvas(glWindow);
   private final FPSAnimator animator = new FPSAnimator(glWindow, 20);
-=======
-  private final GLCanvas canvas = createCanvas(createCapabilities());
-  private final FPSAnimator animator = new FPSAnimator(canvas, 60);
->>>>>>> no more renderering ship at the start
-  
+
   public Main() {
     setupFrame();
     animator.start();

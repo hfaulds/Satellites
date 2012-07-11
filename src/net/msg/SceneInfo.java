@@ -1,20 +1,20 @@
-package net;
+package net.msg;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SceneInfo {
   
-  public final ActorInfo player;
+  public final int playerID;
   public final List<ActorInfo> actorInfoList;
   
-  public SceneInfo(List<ActorInfo> actorInfoList, ActorInfo player) {
+  public SceneInfo(List<ActorInfo> actorInfoList, int playerID) {
     this.actorInfoList = actorInfoList;
-    this.player = player;
+    this.playerID = playerID;
   }
   
   public SceneInfo() {
     this.actorInfoList = new ArrayList<ActorInfo>();
-    this.player = null;
+    this.playerID = 0;
   }
 }

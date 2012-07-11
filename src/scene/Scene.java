@@ -8,10 +8,9 @@ import graphics.ship.ShipGraphic;
 
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import net.ActorInfo;
+import net.msg.ActorInfo;
 import actors.Actor;
 import actors.PointLightActor;
 
@@ -26,7 +25,7 @@ public class Scene extends MouseAdapter {
   public final PlayerInputController input = new PlayerInputController();
   
   public final List<Actor>          actors = new ArrayList<Actor>();
-  public final List<Controller>     controllers = new ArrayList<Controller>(Arrays.asList(input));
+  public final List<Controller>     controllers = new ArrayList<Controller>();
   public final PointLightActor[]    lights = {new PointLightActor()};
   public final Sprite[]             ui = new Sprite[]{new FPSSprite()};
 
@@ -62,16 +61,17 @@ public class Scene extends MouseAdapter {
     addActor(player);
   }
   
-  public Actor populate(List<ActorInfo> actorInfo, ActorInfo playerInfo, Connection connection) {
-    Actor player = Actor.fromInfo(playerInfo);
-    addPlayer(player);
-    addController(new ClientShipController(player, connection));
-    
-    for(ActorInfo info : actorInfo) {
-      addActor(Actor.fromInfo(info));
+  public void populate(List<ActorInfo> actorInfo, int playerID, Connection connection) {
+   
+    for(ActorInfo info : actorInfo) { 
+      
+      Actor actor = Actor.fromInfo(info);
+      if(info.id == playerID) {
+        addController(new ClientShipController(actor, connection));
+        addPlayer(actor);
+      }
+      addActor(actor);
     }
-    
-    return player;
   }
   
   public Actor findActor(int id) {

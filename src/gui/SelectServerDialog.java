@@ -150,6 +150,7 @@ public class SelectServerDialog extends JDialog implements ActionListener, ListS
     if(address != null) {
       try {
         syncroniser.connect(address);
+        bConnected = true;
         this.setVisible(false);
       } catch (IOException e) {
         JOptionPane.showMessageDialog(this, "Connection Failed");

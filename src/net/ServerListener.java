@@ -2,6 +2,10 @@ package net;
 
 import java.util.List;
 
+import net.msg.ActorInfo;
+import net.msg.PlayerInfo;
+import net.msg.SceneInfo;
+
 import scene.Scene;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -17,13 +21,12 @@ public class ServerListener extends Listener {
   
   @Override
   public void connected(Connection connection) {
-    List<ActorInfo> actorInfoList = ActorInfo.actorInfoList(scene.actors);
-    
     ClientConnection clientConnection = (ClientConnection)connection;
-    scene.addController(clientConnection.controller);
     scene.addActor(clientConnection.actor);
-    
-    connection.sendTCP(new SceneInfo(actorInfoList, clientConnection.actor.getInfo()));
+    scene.addController(clientConnection.controller);
+
+    List<ActorInfo> actorInfoList = ActorInfo.actorInfoList(scene.actors);
+    connection.sendTCP(new SceneInfo(actorInfoList, clientConnection.actor.id));
   }
   
   @Override

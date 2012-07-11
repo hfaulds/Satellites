@@ -37,11 +37,13 @@ public class PlayerInputController implements Controller, KeyListener {
   
   public void setActor(Actor actor) {
     this.actor = actor;
+    System.out.println("input actor set");
   }
   
   @Override
   public void tick(List<Actor> actors) {
     if(actor != null) {
+      System.out.println(accelMag);
       if(accelMag != 0) {
         Vector2D acceleration = START_DIRECTION.rotate(actor.rotation.mag)._mult(accelMag * ACCELERATION);
         actor.velocity._add(acceleration);
