@@ -1,4 +1,7 @@
 
+import graphics.Sprite;
+import graphics.sprite.FPSSprite;
+import graphics.sprite.MsgSprite;
 import gui.SelectServerDialog;
 
 import java.awt.BorderLayout;
@@ -15,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import net.NetworkConnection;
@@ -23,13 +27,17 @@ import scene.Scene;
 import scene.SceneUpdater;
 
 import com.jogamp.newt.awt.NewtCanvasAWT;
+import com.jogamp.newt.event.KeyEvent;
+import com.jogamp.newt.event.KeyListener;
 import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.util.FPSAnimator;
 
 @SuppressWarnings("serial")
-public class Main extends JFrame implements GLEventListener {
+public class Satellites extends JFrame implements GLEventListener {
   
-  private Scene scene = new Scene();
+  private MsgSprite messageHandler = new MsgSprite();
+  private Scene scene = new Scene(new Sprite[]{new FPSSprite(), messageHandler});
+  
   private Camera renderer = new Camera(scene);
   private SceneUpdater updater = new SceneUpdater(scene);
   private NetworkConnection syncroniser = new NetworkConnection(scene);
@@ -38,10 +46,9 @@ public class Main extends JFrame implements GLEventListener {
   private final NewtCanvasAWT canvas = createCanvas(glWindow);
   private final FPSAnimator animator = new FPSAnimator(glWindow, 20);
 
-  public Main() {
+  public Satellites() {
     setupFrame();
     animator.start();
-    glWindow.requestFocus();
   }
 
   private void setupFrame() {
@@ -63,7 +70,71 @@ public class Main extends JFrame implements GLEventListener {
     window.setLayout(new BorderLayout());
     window.add(createTopBar(), BorderLayout.PAGE_START);
     window.add(canvas, BorderLayout.CENTER);
+    window.add(createBottomBar(), BorderLayout.PAGE_END);
+    glWindow.requestFocus();
     return window;
+  }
+
+  private JPanel createBottomBar() {
+    final JPanel bottomBar = new JPanel(new BorderLayout());
+    final JPanel chatBar = new JPanel();
+    
+    final JTextField message = new JTextField(25);
+    final JButton send = new JButton("send");
+    
+    glWindow.addKeyListener(new KeyListener() {
+      @Override
+      public void keyReleased(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+
+        if(bottomBar.isVisible()) {
+          switch(keyCode) {
+            case 10: // enter
+              send.doClick();
+              break;
+            case 27: // escape
+              bottomBar.setVisible(false);
+              break;
+            case 8: // backspace
+              String currentText = message.getText();
+              int length = currentText.length();
+              if(length > 0)
+                message.setText(currentText.substring(0, length - 1));
+              break;
+            default:
+              char character = (char)keyCode;
+              if(!e.isShiftDown())
+                character =  Character.toLowerCase(character);
+              message.setText(message.getText() + character);
+          }
+        } else {
+          if(keyCode == 'T') {
+            bottomBar.setVisible(true);
+          }
+        }
+      }
+
+      public void keyPressed(KeyEvent e) {}
+      public void keyTyped(KeyEvent e) {}
+    });
+    
+    send.setFocusable(false);
+    send.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        String text = message.getText();
+        if(!text.equals("")) {
+          message.setText("");
+          messageHandler.addMessage(text);
+        }
+      }
+    });
+    chatBar.add(message);
+    chatBar.add(send);
+    
+    bottomBar.add(chatBar, BorderLayout.WEST);
+    bottomBar.setVisible(false);
+    return bottomBar;
   }
 
   private JPanel createTopBar() {
@@ -162,7 +233,7 @@ public class Main extends JFrame implements GLEventListener {
   public static void main(String[] args) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
-        new Main();
+        new Satellites();
       }
     });
   }
