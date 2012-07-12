@@ -10,18 +10,19 @@ import com.jogamp.opengl.util.gl2.GLUT;
 
 public class FPSSprite extends Sprite {
 
+  private static final long SECOND = (long)10e9;
+  
   private final GLUT glut = new GLUT();
   private long lastTime = 0;
 
   public FPSSprite() {
-    super(new Vector2D(10, 10));
+    super(new Vector2D(10, 625));
   }
 
   @Override
   public void render(GL2 gl) {
-    long second = (long)10e9;
-    long dif = System.nanoTime() - lastTime;
-    long fps = second/dif;
+    long fps = SECOND / (System.nanoTime() - lastTime);
+    
     gl.glWindowPos2d(position.x, position.y);
     glut.glutBitmapString(GLUT.BITMAP_HELVETICA_10, String.valueOf(fps));
     lastTime = System.nanoTime();
