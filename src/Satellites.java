@@ -1,7 +1,4 @@
 
-import graphics.Sprite;
-import graphics.sprite.FPSSprite;
-import graphics.sprite.MsgSprite;
 import gui.SelectServerDialog;
 
 import java.awt.BorderLayout;
@@ -22,6 +19,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import net.NetworkConnection;
+import net.NoConnection;
+import net.client.ClientConnection;
+import net.msg.ChatMsg;
+import net.server.ServerConnection;
 import scene.Camera;
 import scene.Scene;
 import scene.SceneUpdater;
@@ -35,12 +36,11 @@ import com.jogamp.opengl.util.FPSAnimator;
 @SuppressWarnings("serial")
 public class Satellites extends JFrame implements GLEventListener {
   
-  private MsgSprite messageHandler = new MsgSprite();
-  private Scene scene = new Scene(new Sprite[]{new FPSSprite(), messageHandler});
+  private Scene scene = new Scene();
   
   private Camera renderer = new Camera(scene);
   private SceneUpdater updater = new SceneUpdater(scene);
-  private NetworkConnection syncroniser = new NetworkConnection(scene);
+  private NetworkConnection connection = new NoConnection();
   
   private GLWindow glWindow = createGLWindow(createCapabilities());
   private final NewtCanvasAWT canvas = createCanvas(glWindow);
@@ -56,7 +56,7 @@ public class Satellites extends JFrame implements GLEventListener {
     this.addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
         animator.stop();
-        syncroniser.disconnect();
+        connection.disconnect();
         dispose();
         System.exit(0);
       }
@@ -124,8 +124,9 @@ public class Satellites extends JFrame implements GLEventListener {
       public void actionPerformed(ActionEvent e) {
         String text = message.getText();
         if(!text.equals("")) {
+          scene.messageHandler.addMessage(new ChatMsg(message.getText()));
+          connection.sendMessage(new ChatMsg(message.getText()));
           message.setText("");
-          messageHandler.addMessage(text);
         }
       }
     });
@@ -147,14 +148,16 @@ public class Satellites extends JFrame implements GLEventListener {
     create.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        if(!syncroniser.isOnline()) {
-          if(syncroniser.createServer()) {
+        if(!connection.isOnline()) {
+          ServerConnection serverCon = new ServerConnection(scene);
+          if(serverCon.create()) {
             create.setText("close");
-            label.setText(syncroniser.getAddress().toString());
+            label.setText(serverCon.getAddress().toString());
             join.setVisible(false);
+            connection = serverCon;
           }
         } else {
-          syncroniser.disconnect();
+          connection.disconnect();
           create.setText("create server");
           label.setText("offline");
           join.setVisible(true);
@@ -165,21 +168,22 @@ public class Satellites extends JFrame implements GLEventListener {
     join.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        if(!syncroniser.isOnline()) {
-          if(SelectServerDialog.showDialog(topBar, syncroniser)) {
+        if(!connection.isOnline()) {
+          ClientConnection clientCon = new ClientConnection(scene);
+          if(SelectServerDialog.showDialog(topBar, clientCon)) {
             join.setText("disconnect");
-            label.setText(syncroniser.getAddress().toString());
+            label.setText(clientCon.getAddress().toString());
             create.setVisible(false);
+            connection = clientCon;
           }
         } else {
-          syncroniser.disconnect();
+          connection.disconnect();
           join.setText("join server");
           label.setText("offline");
           create.setVisible(true);
         }
       }
     });
-    
     
     topBar.add(create);
     topBar.add(join);

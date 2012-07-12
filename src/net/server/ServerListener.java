@@ -1,8 +1,9 @@
-package net;
+package net.server;
 
 import java.util.List;
 
 import net.msg.ActorMsg;
+import net.msg.ChatMsg;
 import net.msg.PlayerMsg;
 import net.msg.SceneMsg;
 
@@ -21,7 +22,7 @@ public class ServerListener extends Listener {
   
   @Override
   public void connected(Connection connection) {
-    ClientConnection clientConnection = (ClientConnection)connection;
+    PlayerConnection clientConnection = (PlayerConnection)connection;
     
     scene.addActor(clientConnection.actor);
     scene.addController(clientConnection.controller);
@@ -32,7 +33,7 @@ public class ServerListener extends Listener {
   
   @Override
   public void disconnected(Connection connection) {
-    ClientConnection clientConnection = (ClientConnection)connection;
+    PlayerConnection clientConnection = (PlayerConnection)connection;
     scene.removeController(clientConnection.controller);
     scene.removeActor(clientConnection.actor);
   }
@@ -40,7 +41,9 @@ public class ServerListener extends Listener {
   @Override
   public void received(Connection connection, Object info) {
     if(info instanceof PlayerMsg) {
-      ((ClientConnection)connection).updateActor((PlayerMsg)info);
+      ((PlayerConnection)connection).updateActor((PlayerMsg)info);
+    } else if(info instanceof ChatMsg) {
+      scene.messageHandler.addMessage((ChatMsg) info);
     }
   }
 }

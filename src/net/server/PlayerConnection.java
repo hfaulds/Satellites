@@ -1,4 +1,4 @@
-package net;
+package net.server;
 
 import net.msg.PlayerMsg;
 import actors.Actor;
@@ -10,12 +10,12 @@ import com.esotericsoftware.kryonet.Server;
 import controllers.Controller;
 import controllers.ServerShipController;
 
-public class ClientConnection extends Connection {
+public class PlayerConnection extends Connection {
 
   public final Actor actor;  
   public final Controller controller;  
 
-  public ClientConnection(Server server) {
+  public PlayerConnection(Server server) {
     this.actor = new ShipActor(0,0);
     this.controller = new ServerShipController(actor, server);
   }

@@ -30,6 +30,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.NetworkConnection;
+import net.client.ClientConnection;
+
+import com.esotericsoftware.kryonet.Client;
 
 
 @SuppressWarnings("serial")
@@ -48,10 +51,12 @@ public class SelectServerDialog extends JDialog implements ActionListener, ListS
   JButton refreshButton = new JButton("Refresh");
   JButton cancelButton = new JButton("Cancel");
   
+  private ClientConnection connection;
+  
   Runnable serverRefresher = new Runnable() {
     @Override
     public void run() {
-      List<InetAddress> lanAddresses = NetworkConnection.getLANAddresses();
+      List<InetAddress> lanAddresses = new Client().discoverHosts(NetworkConnection.UDP_PORT, NetworkConnection.TIMEOUT);
       servers.setListData(lanAddresses.toArray(new InetAddress[0]));
     }
   };
@@ -64,10 +69,10 @@ public class SelectServerDialog extends JDialog implements ActionListener, ListS
       InetAddress selectedValue = servers.getSelectedValue();
       
       if(!servers.isSelectionEmpty()){
-        connect(selectedValue);
+        attempConnection(selectedValue, connection);
       } else if(rawIP.length() > 0) {
         try {
-          connect(InetAddress.getByName(rawIP));
+          attempConnection(InetAddress.getByName(rawIP), connection);
         } catch (UnknownHostException e1) {
           return;
         }
@@ -80,13 +85,11 @@ public class SelectServerDialog extends JDialog implements ActionListener, ListS
       cancelButton.setEnabled(true);
     }
   };
-  
-  private boolean bConnected;
-  private NetworkConnection syncroniser;
 
-  public SelectServerDialog(Frame frame, NetworkConnection syncroniser) {
+
+  public SelectServerDialog(Frame frame, ClientConnection connection) {
     super(frame, TITLE, true);
-    this.syncroniser = syncroniser;
+    this.connection = connection;
     JPanel center = new JPanel();
     center.setLayout(new BoxLayout(center, BoxLayout.PAGE_AXIS));
     
@@ -146,11 +149,10 @@ public class SelectServerDialog extends JDialog implements ActionListener, ListS
     }
   }
 
-  private void connect(InetAddress address) {
+  private void attempConnection(InetAddress address, ClientConnection connection) {
     if(address != null) {
       try {
-        syncroniser.connect(address);
-        bConnected = true;
+        connection.connect(address);
         this.setVisible(false);
       } catch (IOException e) {
         JOptionPane.showMessageDialog(this, "Connection Failed");
@@ -196,13 +198,13 @@ public class SelectServerDialog extends JDialog implements ActionListener, ListS
   }
   
   public static boolean showDialog(
-      Component frameComp, NetworkConnection syncroniser) 
+      Component frameComp, ClientConnection connection) 
   {
     Frame frame = JOptionPane.getFrameForComponent(frameComp);
-    SelectServerDialog dialog = new SelectServerDialog(frame, syncroniser);
+    SelectServerDialog dialog = new SelectServerDialog(frame, connection);
     dialog.setVisible(true);
     
-    return dialog.bConnected;
+    return connection.isOnline();
   } 
 
 }
