@@ -13,6 +13,8 @@ import com.jogamp.opengl.util.gl2.GLUT;
 
 public class MsgSprite extends Sprite {
   
+  private static final int LINE_PX = 15;
+
   private static final int FADE_TIME = 10000;
 
   private final GLUT glut = new GLUT();
@@ -49,18 +51,17 @@ public class MsgSprite extends Sprite {
 
   @Override
   public void render(GL2 gl) {
-    int i = messages.size() - 1;
-    while(i > -1 && messages.size() != 0)
+    int i = 0;
+    while(i < messages.size() && messages.size() != 0)
     {
-      Message message = messages.get(i);
-      
+      Message message = messages.get((messages.size() - i - 1));
       if(!message.expired()) {
-        gl.glWindowPos2d(position.x, position.y + (messages.size() - i) * 15);
+        gl.glWindowPos2d(position.x, position.y + (i * LINE_PX));
         glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, message.text);
       } else {
         messages.remove(message);
       }
-      i--;
+      i++;
     }
   }
 
