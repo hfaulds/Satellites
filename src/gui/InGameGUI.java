@@ -54,6 +54,7 @@ public class InGameGUI extends GUI implements GLEventListener {
 
   @Override
   public void init() {
+    canvas.requestFocus();
     glWindow.requestFocus();
     animator.start();
   }

@@ -1,6 +1,9 @@
 package gui.dialog;
 
-import gui.dialog.component.RegexFormatter;
+import gui.dialog.component.IPInputField;
+import gui.dialog.component.SelectServerListener;
+import gui.dialog.component.ServerConnector;
+import gui.dialog.component.ServerListRefresher;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -10,89 +13,48 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import net.NetworkConnection;
 import net.client.ClientConnection;
 
-import com.esotericsoftware.kryonet.Client;
 
 @SuppressWarnings("serial")
-public class SelectServerDialog extends JDialog implements ActionListener, ListSelectionListener, FocusListener, DocumentListener {
+public class SelectServerDialog extends JDialog implements ActionListener, ListSelectionListener, FocusListener {
+
+  private static final String TITLE = "Server Selection";
   
   private static final int HEIGHT = 400;
   private static final int WIDTH = 300;
 
-  private static final String TITLE = "Server Selection";
-
-  private final RegexFormatter regexFormatter = new RegexFormatter("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}");
-  private final JTextField serverIP = new JFormattedTextField(regexFormatter);
-  private final JList<InetAddress> servers = new JList<InetAddress>();
-
-  private final JButton connectButton = new JButton("Connect");
-  private final JButton refreshButton = new JButton("Refresh");
-  private final JButton cancelButton = new JButton("Cancel");
+  public final JList<InetAddress> servers = new JList<InetAddress>();
+  public final IPInputField ipInputField = new IPInputField();
+  final JButton connectButton = new JButton("Connect");
+  final JButton refreshButton = new JButton("Refresh");
+  final JButton cancelButton = new JButton("Cancel");
   
-  private ClientConnection connection;
-  
-  Runnable serverRefresher = new Runnable() {
-    @Override
-    public void run() {
-      List<InetAddress> lanAddresses = new Client().discoverHosts(NetworkConnection.UDP_PORT, NetworkConnection.TIMEOUT);
-      servers.setListData(lanAddresses.toArray(new InetAddress[0]));
-    }
-  };
-  
-  Runnable serverConnector = new Runnable() {
-    @Override
-    public void run() {
-      
-      String rawIP = serverIP.getText();
-      InetAddress selectedValue = servers.getSelectedValue();
-      
-      if(!servers.isSelectionEmpty()){
-        attempConnection(selectedValue, connection);
-      } else if(rawIP.length() > 0) {
-        try {
-          attempConnection(InetAddress.getByName(rawIP), connection);
-        } catch (UnknownHostException e1) {
-          return;
-        }
-      }
-
-      servers.setEnabled(true);
-      serverIP.setEnabled(true);
-      connectButton.setEnabled(true);
-      refreshButton.setEnabled(true);
-      cancelButton.setEnabled(true);
-    }
-  };
-
+  private final Runnable serverRefresher;
+  private final Runnable serverConnector;
 
   private SelectServerDialog(Frame frame, ClientConnection connection) {
     super(frame, TITLE, true);
-    new Thread(serverRefresher).start();
-    this.connection = connection;
+    this.serverRefresher = new ServerListRefresher(this);
+    this.serverConnector = new ServerConnector(this, connection);
+    this.refreshServerList();
+    
     JPanel center = new JPanel();
     center.setLayout(new BoxLayout(center, BoxLayout.PAGE_AXIS));
     
@@ -106,10 +68,10 @@ public class SelectServerDialog extends JDialog implements ActionListener, ListS
     
     JPanel manualJoin = new JPanel();
     manualJoin.add(new JLabel("Manual IP"));
-    serverIP.setColumns(11);
-    serverIP.addFocusListener(this);
-    serverIP.getDocument().addDocumentListener(this);
-    manualJoin.add(serverIP);
+    ipInputField.setColumns(11);
+    ipInputField.addFocusListener(this);
+    ipInputField.addDocumentListener(new SelectServerListener(this));
+    manualJoin.add(ipInputField);
     center.add(manualJoin);
     
     
@@ -138,34 +100,24 @@ public class SelectServerDialog extends JDialog implements ActionListener, ListS
   public void actionPerformed(ActionEvent e) {
     Object source = e.getSource();
     if(source == connectButton) {
-      servers.setEnabled(false);
-      serverIP.setEnabled(false);
-      connectButton.setEnabled(false);
-      refreshButton.setEnabled(false);
-      cancelButton.setEnabled(false);
+      disableButtons();
       new Thread(serverConnector).start();
+      enableButtons();
     } else if(source == refreshButton) {
-      new Thread(serverRefresher).start();
+      refreshServerList();
     } else if(source == cancelButton) {
       this.setVisible(false);
     }
   }
 
-  private void attempConnection(InetAddress address, ClientConnection connection) {
-    if(address != null) {
-      try {
-        connection.connect(address);
-        this.setVisible(false);
-      } catch (IOException e) {
-        JOptionPane.showMessageDialog(this, "Connection Failed");
-      }
-    }
+  private void refreshServerList() {
+    new Thread(serverRefresher).start();
   }
 
   @Override
   public void valueChanged(ListSelectionEvent e) {
     if (e.getValueIsAdjusting() == false) {
-      connectButton.setEnabled(!(servers.isSelectionEmpty() && serverIP.getText().isEmpty()));
+      connectButton.setEnabled(!(servers.isSelectionEmpty() && ipInputField.getText().isEmpty()));
     }
   }
   
@@ -177,26 +129,31 @@ public class SelectServerDialog extends JDialog implements ActionListener, ListS
 
   @Override
   public void focusLost(FocusEvent e) {
-    connectButton.setEnabled(!(servers.isSelectionEmpty() && serverIP.getText().isEmpty()));
+    connectButton.setEnabled(!(servers.isSelectionEmpty() && ipInputField.getText().isEmpty()));
   }
   
-  @Override
-  public void changedUpdate(DocumentEvent arg0) {
-    refreshConnectButton();
+  public void refreshConnectButton() {
+    connectButton.setEnabled(ipInputField.validText(ipInputField.getText()));
+  }
+  
+  public void displayServers(List<InetAddress> lanAddresses) {
+    servers.setListData(lanAddresses.toArray(new InetAddress[0]));
   }
 
-  @Override
-  public void insertUpdate(DocumentEvent arg0) {
-    refreshConnectButton();
+  public void enableButtons() {
+    this.servers.setEnabled(true);
+    this.ipInputField.setEnabled(true);
+    this.connectButton.setEnabled(true);
+    this.refreshButton.setEnabled(true);
+    this.cancelButton.setEnabled(true);
   }
-
-  @Override
-  public void removeUpdate(DocumentEvent arg0) {
-    refreshConnectButton();
-  }
-
-  private void refreshConnectButton() {
-    connectButton.setEnabled(regexFormatter.validText(serverIP.getText()));
+  
+  private void disableButtons() {
+    servers.setEnabled(false);
+    ipInputField.setEnabled(false);
+    connectButton.setEnabled(false);
+    refreshButton.setEnabled(false);
+    cancelButton.setEnabled(false);
   }
   
   public static boolean showDialog(Component parent, ClientConnection connection) 
@@ -207,4 +164,5 @@ public class SelectServerDialog extends JDialog implements ActionListener, ListS
     
     return connection.isOnline();
   }
+
 }
