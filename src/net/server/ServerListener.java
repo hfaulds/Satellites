@@ -43,7 +43,7 @@ public class ServerListener extends Listener {
     if(info instanceof PlayerMsg) {
       ((PlayerConnection)connection).updateActor((PlayerMsg)info);
     } else if(info instanceof ChatMsg) {
-      scene.messageHandler.addMessage((ChatMsg) info);
+      scene.messageHandler.displayMessage((ChatMsg) info);
     }
   }
 }

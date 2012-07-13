@@ -40,7 +40,7 @@ public class ClientListener extends Listener {
         actor._update(actorInfo);
       }
     } else if(info instanceof ChatMsg) {
-      scene.messageHandler.addMessage((ChatMsg) info);
+      scene.messageHandler.displayMessage((ChatMsg) info);
     }
   }
   

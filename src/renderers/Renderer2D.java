@@ -14,10 +14,14 @@ public class Renderer2D {
     gl.glDisable(GL2.GL_CULL_FACE);
     gl.glMatrixMode(GL2.GL_MODELVIEW);
     gl.glLoadIdentity();
+    gl.glDisable(GL2.GL_LIGHTING);
+    gl.glScalef(1, -1, 1);
+    gl.glTranslated(0, -height, 0);
   }
 
   public void render(GL2 gl, Sprite[] components) {
     for(Sprite component : components)
       component.render(gl);
+    gl.glEnable(GL2.GL_LIGHTING);
   }
 }
