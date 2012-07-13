@@ -1,6 +1,5 @@
 package gui;
 
-import gui.components.sprites.MsgSprite;
 
 import java.awt.BorderLayout;
 
@@ -14,6 +13,7 @@ import net.msg.ChatMsg;
 import scene.Scene;
 import scene.SceneUpdater;
 import scene.render.SceneRenderer;
+import scene.ui.MsgSprite;
 
 import com.jogamp.newt.awt.NewtCanvasAWT;
 import com.jogamp.newt.event.KeyEvent;
@@ -24,8 +24,8 @@ import com.jogamp.opengl.util.FPSAnimator;
 @SuppressWarnings("serial")
 public class InGameGUI extends GUI implements GLEventListener {
   
-  private static final int WIDTH = 1280;
-  private static final int HEIGHT = 720;
+  public static final int WIDTH = 1280;
+  public static final int HEIGHT = 720;
 
   private final NetworkConnection connection;
   private final Scene scene;

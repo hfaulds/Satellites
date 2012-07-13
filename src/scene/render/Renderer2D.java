@@ -1,8 +1,9 @@
 package scene.render;
 
-import gui.components.sprites.Sprite;
 
 import javax.media.opengl.GL2;
+
+import scene.ui.Sprite;
 
 
 public class Renderer2D {

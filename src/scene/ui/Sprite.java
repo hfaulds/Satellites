@@ -1,4 +1,4 @@
-package gui.components.sprites;
+package scene.ui;
 
 import javax.media.opengl.GL2;
 

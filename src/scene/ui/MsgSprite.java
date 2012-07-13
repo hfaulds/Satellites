@@ -1,4 +1,4 @@
-package gui.components.sprites;
+package scene.ui;
 
 
 import java.awt.Font;

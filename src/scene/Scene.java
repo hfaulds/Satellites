@@ -1,8 +1,5 @@
 package scene;
 
-import gui.components.sprites.FPSSprite;
-import gui.components.sprites.MsgSprite;
-import gui.components.sprites.Sprite;
 
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
@@ -16,6 +13,9 @@ import scene.controllers.PlayerInputController;
 import scene.graphics.ship.ShipControlSprite;
 import scene.graphics.ship.ShipDirectionSprite;
 import scene.graphics.ship.ShipGraphic;
+import scene.ui.FPSSprite;
+import scene.ui.MsgSprite;
+import scene.ui.Sprite;
 
 import net.msg.ActorMsg;
 

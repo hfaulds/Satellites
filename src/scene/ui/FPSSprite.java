@@ -1,5 +1,7 @@
-package gui.components.sprites;
+package scene.ui;
 
+
+import gui.InGameGUI;
 
 import javax.media.opengl.GL2;
 
@@ -15,7 +17,7 @@ public class FPSSprite extends Sprite {
   private long lastTime = 0;
 
   public FPSSprite() {
-    super(new Vector2D(10, 625));
+    super(new Vector2D(5, InGameGUI.HEIGHT - 35));
   }
 
   @Override
@@ -25,6 +27,8 @@ public class FPSSprite extends Sprite {
     gl.glWindowPos2d(position.x, position.y);
     glut.glutBitmapString(GLUT.BITMAP_HELVETICA_10, String.valueOf(fps));
     lastTime = System.nanoTime();
+      
+    gl.glPopMatrix();
   }
 
 }
