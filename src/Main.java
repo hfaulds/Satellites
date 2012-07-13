@@ -11,16 +11,12 @@ import javax.swing.SwingUtilities;
 
 
 public class Main {
-
-  private static final int WIDTH = 1280;
-  private static final int HEIGHT = 720;
   
   private JFrame frame = new JFrame();
   private GUI gui = new PreGameGUI();
   
   public Main() {
-    frame.setSize(WIDTH , HEIGHT);
-    frame.setVisible(true);
+    this.switchGUI(new PreGameGUI());
     
     gui.addGuiChangeListener(new GUIChangeListener() {
       @Override
@@ -37,6 +33,8 @@ public class Main {
         System.exit(0);
       }
     });
+    
+    frame.setVisible(true);
   }
   
   protected void switchGUI(GUI other) {
@@ -45,8 +43,13 @@ public class Main {
     
     gui = other;
     frame.add(gui);
-    
-    frame.revalidate();
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        frame.setSize(gui.getWidth() , gui.getHeight());
+        frame.revalidate();
+        gui.init();
+      }
+    });
   }
 
   public static void main(String ... args) {

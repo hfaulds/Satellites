@@ -5,6 +5,7 @@ import gui.components.SelectServerDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -16,11 +17,8 @@ import scene.Scene;
 public class PreGameGUI extends GUI {
 
   public PreGameGUI() {
-    add(createTopBar());
-  }
-
-  private JPanel createTopBar() {
-    final JPanel topBar = new JPanel();
+    final JPanel content = new JPanel();
+    content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
     
     final JButton create = new JButton("create server");
     final JButton join = new JButton("join server");
@@ -41,19 +39,23 @@ public class PreGameGUI extends GUI {
       public void actionPerformed(ActionEvent e) {
         Scene scene = new Scene();
         ClientConnection connection = new ClientConnection(scene);
-        if(SelectServerDialog.showDialog(topBar, connection)) {
+        if(SelectServerDialog.showDialog(content, connection)) {
           fireEvent(new GUIEvent(new InGameGUI(scene, connection)));
         }
       }
     });
     
-    topBar.add(create);
-    topBar.add(join);
-    return topBar;
+    content.add(create);
+    content.add(join);
+    this.add(content);
   }
-
+  
   @Override
-  public void close() {
-    
+  public int getWidth() {
+    return 250;
+  }
+  
+  public int getHeight() {
+    return 500;
   }
 }

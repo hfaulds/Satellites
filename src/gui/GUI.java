@@ -21,6 +21,9 @@ public abstract class GUI extends JPanel {
     }
   }
   
-  public abstract void close();
+  public abstract int getWidth();
+  public abstract int getHeight();
 
+  public void init() {};
+  public void close() {};
 }

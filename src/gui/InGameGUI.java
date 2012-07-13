@@ -23,6 +23,9 @@ import com.jogamp.opengl.util.FPSAnimator;
 
 @SuppressWarnings("serial")
 public class InGameGUI extends GUI implements GLEventListener {
+  
+  private static final int WIDTH = 1280;
+  private static final int HEIGHT = 720;
 
   private final NetworkConnection connection;
   private final Scene scene;
@@ -46,9 +49,11 @@ public class InGameGUI extends GUI implements GLEventListener {
     
     this.setLayout(new BorderLayout());
     this.add(canvas, BorderLayout.CENTER);
-    
     this.setupChat();
-    
+  }
+
+  @Override
+  public void init() {
     glWindow.requestFocus();
     animator.start();
   }
@@ -147,5 +152,15 @@ public class InGameGUI extends GUI implements GLEventListener {
   public void close() {
     animator.stop();
     connection.disconnect();
+  }
+
+  @Override
+  public int getWidth() {
+    return WIDTH;
+  }
+
+  @Override
+  public int getHeight() {
+    return HEIGHT;
   }
 }
