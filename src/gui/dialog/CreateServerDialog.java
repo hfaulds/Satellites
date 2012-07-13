@@ -1,11 +1,13 @@
 package gui.dialog;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -19,7 +21,7 @@ import net.server.ServerConnection;
 @SuppressWarnings("serial")
 public class CreateServerDialog extends JDialog {
 
-  private static final int HEIGHT = 150;
+  private static final int HEIGHT = 200;
   private static final int WIDTH = 300;
   
   private static final String TITLE = "Server Creation";
@@ -31,17 +33,29 @@ public class CreateServerDialog extends JDialog {
     this.add(createContent());
     this.setLocation(new Point((frame.getWidth() - WIDTH)/2, (frame.getHeight() - HEIGHT)/2));
     this.setSize(WIDTH, HEIGHT);
+    this.setLocationRelativeTo(null);
+    this.setVisible(true);
   }
 
   private JPanel createContent() {
     JPanel content = new JPanel();
     content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
+    content.add(Box.createVerticalStrut(5));
+    content.add(createTitleLabel());
+    content.add(Box.createVerticalStrut(5));
     content.add(createLabel("Server Name"));
     content.add(createTextField());
     content.add(createLabel("Player Name"));
     content.add(createTextField());
     content.add(createButtons());
     return content;
+  }
+
+  private JLabel createTitleLabel() {
+    final JLabel  title = new JLabel("Create Server");
+    title.setFont(new Font("Helvetica", Font.BOLD, 24));
+    title.setAlignmentX(Component.CENTER_ALIGNMENT);
+    return title;
   }
 
   private JLabel createLabel(String name) {
@@ -92,9 +106,7 @@ public class CreateServerDialog extends JDialog {
   public static boolean showDialog(Component parent, ServerConnection connection) 
   {
     Frame frame = JOptionPane.getFrameForComponent(parent);
-    CreateServerDialog dialog = new CreateServerDialog(frame, connection);
-    dialog.setVisible(true);
-    
+    new CreateServerDialog(frame, connection);
     return connection.isOnline();
   }
 }

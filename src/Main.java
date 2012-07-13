@@ -29,7 +29,7 @@ public class Main {
         close();
       }
     });
-    
+
     frame.add(gui);
     frame.addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
@@ -37,6 +37,8 @@ public class Main {
       }
     });
     
+    frame.pack();
+    frame.setLocationRelativeTo(null);
     frame.setVisible(true);
   }
   

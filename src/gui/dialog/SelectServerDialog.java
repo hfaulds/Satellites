@@ -5,8 +5,8 @@ import gui.dialog.component.SelectServerListener;
 import gui.dialog.component.ServerConnector;
 import gui.dialog.component.ServerListRefresher;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -16,6 +16,7 @@ import java.awt.event.FocusListener;
 import java.net.InetAddress;
 import java.util.List;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -24,6 +25,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -42,6 +44,7 @@ public class SelectServerDialog extends JDialog implements ActionListener, ListS
 
   public final JList<InetAddress> servers = new JList<InetAddress>();
   public final IPInputField ipInputField = new IPInputField();
+  
   final JButton connectButton = new JButton("Connect");
   final JButton refreshButton = new JButton("Refresh");
   final JButton cancelButton = new JButton("Cancel");
@@ -55,45 +58,79 @@ public class SelectServerDialog extends JDialog implements ActionListener, ListS
     this.serverConnector = new ServerConnector(this, connection);
     this.refreshServerList();
     
+    JPanel window = new JPanel();
+    window.setLayout(new BoxLayout(window, BoxLayout.PAGE_AXIS));
+    window.setBorder(new EmptyBorder(10, 10, 10, 10));
+    window.add(Box.createVerticalStrut(5));
+    window.add(createTitleLabel());
+    window.add(Box.createVerticalStrut(5));
+    window.add(createPlayerNameInput());
+    window.add(createServerSelection());
+    window.add(createButtons());
+    
+    this.add(window);
+    this.setLocation(new Point((frame.getWidth() - WIDTH)/2, (frame.getHeight() - HEIGHT)/2));
+    this.setSize(WIDTH, HEIGHT);
+    this.setLocationRelativeTo(null);
+    this.setVisible(true);
+  }
+
+  private JLabel createTitleLabel() {
+    final JLabel  title = new JLabel("Join Server");
+    title.setFont(new Font("Helvetica", Font.BOLD, 24));
+    title.setAlignmentX(Component.CENTER_ALIGNMENT);
+    return title;
+  }
+
+  private JPanel createPlayerNameInput() {
+    JPanel playerName = new JPanel();
+    playerName.add(new JLabel("Username "));
+    playerName.add(new JTextField(8));
+    playerName.setAlignmentX(Component.CENTER_ALIGNMENT);
+    return playerName;
+  }
+
+  private JPanel createServerSelection() {
     JPanel center = new JPanel();
     center.setLayout(new BoxLayout(center, BoxLayout.PAGE_AXIS));
-    
     center.add(new JLabel("Server List"));
-    
+    center.add(createServersList());
+    center.add(createManualInput(center));
+    center.setAlignmentX(Component.CENTER_ALIGNMENT);
+    return center;
+  }
+
+  private JScrollPane createServersList() {
     servers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     servers.addListSelectionListener(this);
     servers.setVisibleRowCount(5);
     JScrollPane serversPanel = new JScrollPane(servers);
-    center.add(serversPanel);
-    
+    serversPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    return serversPanel;
+  }
+
+  private JPanel createManualInput(JPanel center) {
     JPanel manualJoin = new JPanel();
     manualJoin.add(new JLabel("Manual IP"));
     ipInputField.setColumns(11);
     ipInputField.addFocusListener(this);
     ipInputField.addDocumentListener(new SelectServerListener(this));
     manualJoin.add(ipInputField);
-    center.add(manualJoin);
-    
-    
+    manualJoin.setAlignmentX(Component.CENTER_ALIGNMENT);
+    return manualJoin;
+  }
+
+  private JPanel createButtons() {
     JPanel bottom = new JPanel();
-    connectButton.addActionListener(this);
     connectButton.setEnabled(false);
-    bottom.add(connectButton);
+    connectButton.addActionListener(this);
     refreshButton.addActionListener(this);
-    bottom.add(refreshButton);
     cancelButton.addActionListener(this);
+    bottom.add(connectButton);
+    bottom.add(refreshButton);
     bottom.add(cancelButton);
-    
-    
-    JPanel window = new JPanel();
-    window.setLayout(new BorderLayout());
-    window.setBorder(new EmptyBorder(10, 10, 10, 10));
-    window.add(center, BorderLayout.CENTER);
-    window.add(bottom, BorderLayout.PAGE_END);
-    
-    add(window);
-    setLocation(new Point((frame.getWidth() - WIDTH)/2, (frame.getHeight() - HEIGHT)/2));
-    setSize(WIDTH, HEIGHT);
+    bottom.setAlignmentX(Component.CENTER_ALIGNMENT);
+    return bottom;
   }
 
   @Override
@@ -159,9 +196,7 @@ public class SelectServerDialog extends JDialog implements ActionListener, ListS
   public static boolean showDialog(Component parent, ClientConnection connection) 
   {
     Frame frame = JOptionPane.getFrameForComponent(parent);
-    SelectServerDialog dialog = new SelectServerDialog(frame, connection);
-    dialog.setVisible(true);
-    
+    new SelectServerDialog(frame, connection);
     return connection.isOnline();
   }
 
