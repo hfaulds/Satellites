@@ -1,4 +1,4 @@
-package gui.components;
+package gui.dialog;
 
 import java.awt.Component;
 import java.awt.Frame;

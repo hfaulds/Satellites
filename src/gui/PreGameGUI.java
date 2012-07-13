@@ -1,7 +1,7 @@
 package gui;
 
-import gui.components.CreateServerDialog;
-import gui.components.SelectServerDialog;
+import gui.dialog.CreateServerDialog;
+import gui.dialog.SelectServerDialog;
 import gui.event.GUIEvent;
 
 import java.awt.Component;

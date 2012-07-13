@@ -1,4 +1,6 @@
-package gui.components;
+package gui.dialog;
+
+import gui.dialog.component.RegexFormatter;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
