@@ -11,7 +11,7 @@ import javax.media.opengl.GLProfile;
 
 import net.NetworkConnection;
 import net.msg.ChatMsg;
-import scene.Camera;
+import renderers.SceneRenderer;
 import scene.Scene;
 import scene.SceneUpdater;
 
@@ -30,7 +30,7 @@ public class InGameGUI extends GUI implements GLEventListener {
   private final NetworkConnection connection;
   private final Scene scene;
   
-  private final Camera renderer;
+  private final SceneRenderer renderer;
   private final SceneUpdater updater;
   
   private final GLWindow glWindow;
@@ -39,7 +39,7 @@ public class InGameGUI extends GUI implements GLEventListener {
 
   public InGameGUI(Scene scene, NetworkConnection connection) {
     this.scene = scene;
-    this.renderer = new Camera(scene);
+    this.renderer = new SceneRenderer(scene);
     this.updater = new SceneUpdater(scene);
     this.connection = connection;
     

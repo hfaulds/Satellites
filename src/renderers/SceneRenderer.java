@@ -1,4 +1,4 @@
-package scene;
+package renderers;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -7,13 +7,12 @@ import java.awt.event.MouseWheelEvent;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
-import renderers.Renderer2D;
-import renderers.Renderer3D;
+import scene.Scene;
 
 import math.Vector2D;
 
 
-public class Camera extends MouseAdapter {
+public class SceneRenderer extends MouseAdapter {
 
   private static final int ZOOM_RATE    = 10;
   private static final int ZOOM_DEFAULT = 20;
@@ -31,7 +30,7 @@ public class Camera extends MouseAdapter {
   private Vector2D endMousePos = new Vector2D();
   private boolean bPanning = false;
   
-  public Camera(Scene scene) {
+  public SceneRenderer(Scene scene) {
     this.scene = scene;
   }
 
