@@ -27,7 +27,7 @@ public class MsgSprite extends Sprite {
   private final GLUT glut = new GLUT();
   private final List<ChatMsg> messages = new LinkedList<ChatMsg>();
   
-  public boolean inputting = false;
+  private boolean open = false;
   private String input = "";
 
   private final Vector2D messagesPos = position.add(new Vector2D(2, MESSAGE_HEIGHT + 5));
@@ -38,7 +38,7 @@ public class MsgSprite extends Sprite {
 
   @Override
   public void render(GL2 gl) {
-    if(inputting) {
+    if(open) {
       gl.glPushMatrix();
       
       gl.glColor4d(1.0, 1.0, 1.0, 1.0);
@@ -68,7 +68,7 @@ public class MsgSprite extends Sprite {
       ChatMsg message = messages.get((messages.size() - i - 1));
       if(!message.expired()) {
         gl.glWindowPos2d(messagesPos.x, messagesPos.y + MESSAGE_HEIGHT * i);
-        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, message.owner + ": " + message.text);
+        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, message.username + ": " + message.text);
       } else {
         messages.remove(message);
       }
@@ -104,5 +104,18 @@ public class MsgSprite extends Sprite {
 
   public void clearInput() {
     input = "";
+  }
+
+  public void closeInput() {
+    clearInput();
+    open = false;
+  }
+
+  public void openInput() {
+    open = true;
+  }
+
+  public boolean isOpen() {
+    return open;
   }
 }

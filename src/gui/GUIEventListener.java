@@ -1,6 +1,7 @@
-package gui.event;
+package gui;
+
 
 public interface GUIEventListener {
-  public void change(GUIEvent e);
+  public void change(GUI gui);
   public void exit();
 }

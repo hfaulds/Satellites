@@ -36,7 +36,6 @@ public class InGameGUI extends GUI implements GLEventListener {
   private final GLWindow glWindow;
   private final NewtCanvasAWT canvas;
   private final FPSAnimator animator;
-
   public InGameGUI(Scene scene, NetworkConnection connection) {
     this.scene = scene;
     this.renderer = new SceneRenderer(scene);
@@ -67,19 +66,18 @@ public class InGameGUI extends GUI implements GLEventListener {
 
         MsgSprite messageHandler = scene.messageHandler;
         
-        if(messageHandler.inputting) {
+        if(messageHandler.isOpen()) {
           switch(keyCode) {
             case 10: // enter
               if(messageHandler.getInput().length() > 0) {
-                ChatMsg msg = new ChatMsg(messageHandler.getInput());
+                ChatMsg msg = new ChatMsg(messageHandler.getInput(), scene.username);
                 messageHandler.displayMessage(msg);
                 connection.sendMessage(msg);
               }
-              messageHandler.clearInput();
+              messageHandler.closeInput();
               break;
             case 27: // escape
-              messageHandler.clearInput();
-              messageHandler.inputting = false;
+              messageHandler.closeInput();
               break;
             case 8: // backspace
               messageHandler.backSpace();
@@ -92,7 +90,7 @@ public class InGameGUI extends GUI implements GLEventListener {
           }
         } else {
           if(keyCode == 'T') {
-            messageHandler.inputting = true;
+            messageHandler.openInput();
           }
         }
       }

@@ -32,6 +32,12 @@ public class Scene extends MouseAdapter {
 
   public final MsgSprite messageHandler = new MsgSprite();
   public final Sprite[] ui = new Sprite[]{new FPSSprite(), messageHandler};
+
+  public final String username;
+  
+  public Scene(String username) {
+    this.username = username;
+  }
   
   public void addController(Controller controller) {
     synchronized(controllers) {

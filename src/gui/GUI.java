@@ -1,7 +1,5 @@
 package gui;
 
-import gui.event.GUIEvent;
-import gui.event.GUIEventListener;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,9 +16,9 @@ public abstract class GUI extends JPanel {
     listeners.add(listener);
   }
   
-  protected void switchGUI(GUIEvent e) {
+  protected void switchGUI(GUI gui) {
     for(GUIEventListener listener : listeners) {
-      listener.change(e);
+      listener.change(gui);
     }
   }
   

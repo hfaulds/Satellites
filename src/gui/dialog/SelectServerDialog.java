@@ -25,7 +25,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -61,10 +60,9 @@ public class SelectServerDialog extends JDialog implements ActionListener, ListS
     JPanel window = new JPanel();
     window.setLayout(new BoxLayout(window, BoxLayout.PAGE_AXIS));
     window.setBorder(new EmptyBorder(10, 10, 10, 10));
-    window.add(Box.createVerticalStrut(5));
+    window.add(Box.createVerticalStrut(10));
     window.add(createTitleLabel());
     window.add(Box.createVerticalStrut(5));
-    window.add(createPlayerNameInput());
     window.add(createServerSelection());
     window.add(createButtons());
     
@@ -82,19 +80,12 @@ public class SelectServerDialog extends JDialog implements ActionListener, ListS
     return title;
   }
 
-  private JPanel createPlayerNameInput() {
-    JPanel playerName = new JPanel();
-    playerName.add(new JLabel("Username "));
-    playerName.add(new JTextField(8));
-    playerName.setAlignmentX(Component.CENTER_ALIGNMENT);
-    return playerName;
-  }
-
   private JPanel createServerSelection() {
     JPanel center = new JPanel();
     center.setLayout(new BoxLayout(center, BoxLayout.PAGE_AXIS));
     center.add(new JLabel("Server List"));
     center.add(createServersList());
+    center.add(Box.createVerticalStrut(10));
     center.add(createManualInput(center));
     center.setAlignmentX(Component.CENTER_ALIGNMENT);
     return center;

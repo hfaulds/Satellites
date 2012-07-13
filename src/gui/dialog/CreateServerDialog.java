@@ -21,7 +21,7 @@ import net.server.ServerConnection;
 @SuppressWarnings("serial")
 public class CreateServerDialog extends JDialog {
 
-  private static final int HEIGHT = 200;
+  private static final int HEIGHT = 150;
   private static final int WIDTH = 300;
   
   private static final String TITLE = "Server Creation";
@@ -44,8 +44,6 @@ public class CreateServerDialog extends JDialog {
     content.add(createTitleLabel());
     content.add(Box.createVerticalStrut(5));
     content.add(createLabel("Server Name"));
-    content.add(createTextField());
-    content.add(createLabel("Player Name"));
     content.add(createTextField());
     content.add(createButtons());
     return content;

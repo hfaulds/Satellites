@@ -4,16 +4,16 @@ public class ChatMsg {
   
   static final int FADE_TIME = 10000;
 
-  public final String owner;
+  public final String username;
   public final String text;
   public final long sent;
 
   public ChatMsg() {
-    this("");
+    this("", "");
   }
   
-  public ChatMsg(String text) {
-    this.owner = "Bob";
+  public ChatMsg(String text, String username) {
+    this.username = username;
     this.text = text;
     this.sent = System.currentTimeMillis();
   }
