@@ -1,8 +1,5 @@
 package scene;
 
-import graphics.ship.ShipControlSprite;
-import graphics.ship.ShipDirectionSprite;
-import graphics.ship.ShipGraphic;
 import gui.components.sprites.FPSSprite;
 import gui.components.sprites.MsgSprite;
 import gui.components.sprites.Sprite;
@@ -11,15 +8,19 @@ import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import scene.actors.Actor;
+import scene.actors.PointLightActor;
+import scene.controllers.ClientShipController;
+import scene.controllers.Controller;
+import scene.controllers.PlayerInputController;
+import scene.graphics.ship.ShipControlSprite;
+import scene.graphics.ship.ShipDirectionSprite;
+import scene.graphics.ship.ShipGraphic;
+
 import net.msg.ActorMsg;
-import actors.Actor;
-import actors.PointLightActor;
 
 import com.esotericsoftware.kryonet.Connection;
 
-import controllers.ClientShipController;
-import controllers.Controller;
-import controllers.PlayerInputController;
 
 public class Scene extends MouseAdapter {
 

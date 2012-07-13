@@ -1,4 +1,4 @@
-package renderers;
+package scene.render;
 
 import java.util.List;
 
@@ -8,11 +8,11 @@ import javax.media.opengl.fixedfunc.GLLightingFunc;
 import javax.media.opengl.glu.GLU;
 
 import scene.Scene;
+import scene.actors.Actor;
+import scene.actors.PointLightActor;
 
 import math.Vector2D;
 
-import actors.Actor;
-import actors.PointLightActor;
 
 public class Renderer3D {
   

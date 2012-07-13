@@ -1,6 +1,6 @@
-package actors;
+package scene.actors;
 
-import graphics.SatelliteGraphic;
+import scene.graphics.SatelliteGraphic;
 import math.Rotation;
 import math.Vector2D;
 

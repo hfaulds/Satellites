@@ -9,14 +9,15 @@ import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import scene.actors.SatelliteActor;
+import scene.actors.ShipActor;
+
 import math.Rotation;
 import math.Vector2D;
 import net.msg.ActorMsg;
 import net.msg.PlayerMsg;
 import net.msg.SceneMsg;
 import net.msg.ChatMsg;
-import actors.SatelliteActor;
-import actors.ShipActor;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;

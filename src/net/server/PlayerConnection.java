@@ -1,14 +1,14 @@
 package net.server;
 
+import scene.actors.Actor;
+import scene.actors.ShipActor;
+import scene.controllers.Controller;
+import scene.controllers.ServerShipController;
 import net.msg.PlayerMsg;
-import actors.Actor;
-import actors.ShipActor;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 
-import controllers.Controller;
-import controllers.ServerShipController;
 
 public class PlayerConnection extends Connection {
 

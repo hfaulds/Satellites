@@ -1,4 +1,4 @@
-package renderers;
+package scene.render;
 
 import gui.components.sprites.Sprite;
 

@@ -2,7 +2,8 @@ package scene;
 
 import java.awt.event.MouseAdapter;
 
-import controllers.Controller;
+import scene.controllers.Controller;
+
 
 public class SceneUpdater extends MouseAdapter {
 

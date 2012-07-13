@@ -1,11 +1,12 @@
-package controllers;
+package scene.controllers;
 
 import java.util.List;
 
+import scene.actors.Actor;
+import scene.actors.ShipActor;
+
 import math.Rotation;
 import math.Vector2D;
-import actors.Actor;
-import actors.ShipActor;
 
 import com.esotericsoftware.kryonet.Server;
 

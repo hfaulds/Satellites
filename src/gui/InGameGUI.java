@@ -11,9 +11,9 @@ import javax.media.opengl.GLProfile;
 
 import net.NetworkConnection;
 import net.msg.ChatMsg;
-import renderers.SceneRenderer;
 import scene.Scene;
 import scene.SceneUpdater;
+import scene.render.SceneRenderer;
 
 import com.jogamp.newt.awt.NewtCanvasAWT;
 import com.jogamp.newt.event.KeyEvent;

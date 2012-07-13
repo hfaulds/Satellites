@@ -1,13 +1,14 @@
-package controllers;
+package scene.controllers;
 
 import java.util.List;
+
+import scene.actors.Actor;
 
 import com.esotericsoftware.kryonet.Server;
 
 
 import math.Vector2D;
 
-import actors.Actor;
 
 public class ServerSatelliteController implements Controller {
 

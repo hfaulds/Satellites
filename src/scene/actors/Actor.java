@@ -1,12 +1,13 @@
-package actors;
+package scene.actors;
 
-import graphics.Graphic;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
+
+import scene.graphics.Graphic;
 
 import math.Rotation;
 import math.Vector2D;

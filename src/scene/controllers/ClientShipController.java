@@ -1,9 +1,10 @@
-package controllers;
+package scene.controllers;
 
 import java.util.List;
 
+import scene.actors.Actor;
+
 import net.msg.PlayerMsg;
-import actors.Actor;
 
 import com.esotericsoftware.kryonet.Connection;
 

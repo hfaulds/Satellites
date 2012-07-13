@@ -4,7 +4,7 @@ import net.msg.ActorMsg;
 import net.msg.ChatMsg;
 import net.msg.SceneMsg;
 import scene.Scene;
-import actors.Actor;
+import scene.actors.Actor;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;

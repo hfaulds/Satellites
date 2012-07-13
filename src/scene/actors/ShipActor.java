@@ -1,7 +1,7 @@
-package actors;
+package scene.actors;
 
-import graphics.Graphic;
-import graphics.ship.ShipGraphic;
+import scene.graphics.Graphic;
+import scene.graphics.ship.ShipGraphic;
 import math.Rotation;
 import math.Vector2D;
 

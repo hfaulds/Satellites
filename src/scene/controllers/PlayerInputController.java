@@ -1,13 +1,14 @@
-package controllers;
+package scene.controllers;
 
 import java.util.List;
+
+import scene.actors.Actor;
 
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.KeyListener;
 
 import math.Vector2D;
 
-import actors.Actor;
 
 public class PlayerInputController implements Controller, KeyListener {
 

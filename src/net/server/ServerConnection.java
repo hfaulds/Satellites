@@ -6,14 +6,14 @@ import net.NetworkConnection;
 import net.msg.ChatMsg;
 
 import scene.Scene;
-import actors.SatelliteActor;
-import actors.ShipActor;
+import scene.actors.SatelliteActor;
+import scene.actors.ShipActor;
+import scene.controllers.ServerSatelliteController;
+import scene.controllers.ServerShipController;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 
-import controllers.ServerSatelliteController;
-import controllers.ServerShipController;
 
 public class ServerConnection extends NetworkConnection {
 

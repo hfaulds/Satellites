@@ -3,9 +3,10 @@ package net.msg;
 import java.util.ArrayList;
 import java.util.List;
 
+import scene.actors.Actor;
+
 import math.Rotation;
 import math.Vector2D;
-import actors.Actor;
 
 public class ActorMsg {
 
