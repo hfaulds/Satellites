@@ -14,7 +14,7 @@ public class ShipDirectionSprite implements Graphic {
   private static final int CIRCLE_SAMPLES       = ShipControlSprite.CIRCLE_SAMPLES;
   private static final double CIRCLE_INCREMENT  = ShipControlSprite.CIRCLE_INCREMENT;
   
-  private static final float LINE_WIDTH			    = ShipControlSprite.LINE_WIDTH;
+  private static final float LINE_WIDTH			= ShipControlSprite.LINE_WIDTH;
   private static final double LINE_LENGTH       = .1;
 
   private final int length = (int)(1 / LINE_LENGTH);

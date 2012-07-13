@@ -1,4 +1,5 @@
 
+import graphics.sprite.MsgSprite;
 import gui.SelectServerDialog;
 
 import java.awt.BorderLayout;
@@ -15,7 +16,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import net.NetworkConnection;
@@ -70,72 +70,59 @@ public class Satellites extends JFrame implements GLEventListener {
     window.setLayout(new BorderLayout());
     window.add(createTopBar(), BorderLayout.PAGE_START);
     window.add(canvas, BorderLayout.CENTER);
-    window.add(createBottomBar(), BorderLayout.PAGE_END);
+    setupChat();
     glWindow.requestFocus();
     return window;
   }
 
-  private JPanel createBottomBar() {
-    final JPanel bottomBar = new JPanel(new BorderLayout());
-    final JPanel chatBar = new JPanel();
-    
-    final JTextField message = new JTextField(25);
-    final JButton send = new JButton("send");
-    
+  private void setupChat() {
     glWindow.addKeyListener(new KeyListener() {
       @Override
       public void keyReleased(KeyEvent e) {
         int keyCode = e.getKeyCode();
 
-        if(bottomBar.isVisible()) {
+        MsgSprite messageHandler = scene.messageHandler;
+        
+        if(messageHandler.inputting) {
           switch(keyCode) {
             case 10: // enter
-              send.doClick();
+              if(messageHandler.getInput().length() > 0) {
+                ChatMsg msg = new ChatMsg(messageHandler.getInput());
+                messageHandler.addMessage(msg);
+                connection.sendMessage(msg);
+              }
+              messageHandler.setInput("");
               break;
             case 27: // escape
-              bottomBar.setVisible(false);
+              messageHandler.setInput("");
+              messageHandler.inputting = false;
               break;
             case 8: // backspace
-              String currentText = message.getText();
-              int length = currentText.length();
+              int length = messageHandler.getInput().length();
               if(length > 0)
-                message.setText(currentText.substring(0, length - 1));
+                messageHandler.setInput(messageHandler.getInput().substring(0, length - 1));
               break;
             default:
               char character = (char)keyCode;
               if(!e.isShiftDown())
                 character =  Character.toLowerCase(character);
-              message.setText(message.getText() + character);
+              messageHandler.setInput(messageHandler.getInput() + character);
           }
         } else {
           if(keyCode == 'T') {
-            bottomBar.setVisible(true);
+            System.out.println("open");
+            messageHandler.inputting = true;
           }
         }
       }
 
-      public void keyPressed(KeyEvent e) {}
-      public void keyTyped(KeyEvent e) {}
-    });
-    
-    send.setFocusable(false);
-    send.addActionListener(new ActionListener() {
       @Override
-      public void actionPerformed(ActionEvent e) {
-        String text = message.getText();
-        if(!text.equals("")) {
-          scene.messageHandler.addMessage(new ChatMsg(message.getText()));
-          connection.sendMessage(new ChatMsg(message.getText()));
-          message.setText("");
-        }
-      }
+      public void keyPressed(KeyEvent arg0) {}
+      @Override
+      public void keyTyped(KeyEvent arg0) {}
+
     });
-    chatBar.add(message);
-    chatBar.add(send);
     
-    bottomBar.add(chatBar, BorderLayout.WEST);
-    bottomBar.setVisible(false);
-    return bottomBar;
   }
 
   private JPanel createTopBar() {
