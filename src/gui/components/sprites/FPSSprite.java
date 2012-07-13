@@ -1,6 +1,5 @@
-package graphics.sprite;
+package gui.components.sprites;
 
-import graphics.Sprite;
 
 import javax.media.opengl.GL2;
 

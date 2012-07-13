@@ -1,6 +1,6 @@
 package renderers;
 
-import graphics.Sprite;
+import gui.components.sprites.Sprite;
 
 import javax.media.opengl.GL2;
 

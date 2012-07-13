@@ -1,4 +1,4 @@
-package gui;
+package gui.components;
 import java.text.ParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

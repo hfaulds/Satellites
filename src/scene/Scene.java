@@ -1,11 +1,11 @@
 package scene;
 
-import graphics.Sprite;
 import graphics.ship.ShipControlSprite;
 import graphics.ship.ShipDirectionSprite;
 import graphics.ship.ShipGraphic;
-import graphics.sprite.FPSSprite;
-import graphics.sprite.MsgSprite;
+import gui.components.sprites.FPSSprite;
+import gui.components.sprites.MsgSprite;
+import gui.components.sprites.Sprite;
 
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;

@@ -1,6 +1,5 @@
-package graphics.sprite;
+package gui.components.sprites;
 
-import graphics.Sprite;
 
 import java.awt.Font;
 import java.util.LinkedList;
