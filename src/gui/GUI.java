@@ -1,5 +1,8 @@
 package gui;
 
+import gui.event.GUIEvent;
+import gui.event.GUIEventListener;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,15 +12,21 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public abstract class GUI extends JPanel {
 
-  private List<GUIChangeListener> listeners = new LinkedList<GUIChangeListener>();
+  private List<GUIEventListener> listeners = new LinkedList<GUIEventListener>();
   
-  public void addGuiChangeListener(GUIChangeListener listener) {
+  public void addGuiChangeListener(GUIEventListener listener) {
     listeners.add(listener);
   }
   
-  protected void fireEvent(GUIEvent e) {
-    for(GUIChangeListener listener : listeners) {
-      listener.changedGUI(e);
+  protected void switchGUI(GUIEvent e) {
+    for(GUIEventListener listener : listeners) {
+      listener.change(e);
+    }
+  }
+  
+  protected void exit() {
+    for(GUIEventListener listener : listeners) {
+      listener.exit();
     }
   }
   

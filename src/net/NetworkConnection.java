@@ -32,7 +32,7 @@ public abstract class NetworkConnection {
 
   public abstract void disconnect();
 
-  public abstract boolean  isOnline();
+  public abstract boolean isOnline();
 
   public abstract void sendMessage(ChatMsg message);
 
@@ -75,7 +75,7 @@ public abstract class NetworkConnection {
   }
   
   protected void setAddress() {
-    setAddress(getIP());
+    this.setAddress(getIP());
   }
   
   protected void setAddress(InetAddress address) {

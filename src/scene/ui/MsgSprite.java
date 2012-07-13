@@ -30,20 +30,10 @@ public class MsgSprite extends Sprite {
   public boolean inputting = false;
   private String input = "";
 
-  private final Vector2D messagesPos;
+  private final Vector2D messagesPos = position.add(new Vector2D(2, MESSAGE_HEIGHT + 5));
   
   public MsgSprite() {
     super(new Vector2D(15, 10));
-    messagesPos = position.add(new Vector2D(2, MESSAGE_HEIGHT + 5));
-    try {
-      messages.add(new ChatMsg("Hello"));
-      Thread.sleep(1000);
-      messages.add(new ChatMsg("Hi"));
-      Thread.sleep(1000);
-      messages.add(new ChatMsg("Screw You!"));
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
   }
 
   @Override

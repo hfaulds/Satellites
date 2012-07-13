@@ -1,7 +1,7 @@
 import gui.GUI;
-import gui.GUIChangeListener;
-import gui.GUIEvent;
 import gui.PreGameGUI;
+import gui.event.GUIEvent;
+import gui.event.GUIEventListener;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -18,19 +18,22 @@ public class Main {
   public Main() {
     this.switchGUI(new PreGameGUI());
     
-    gui.addGuiChangeListener(new GUIChangeListener() {
+    gui.addGuiChangeListener(new GUIEventListener() {
       @Override
-      public void changedGUI(GUIEvent e) {
+      public void change(GUIEvent e) {
         switchGUI(e.gui);
+      }
+
+      @Override
+      public void exit() {
+        close();
       }
     });
     
     frame.add(gui);
     frame.addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
-        gui.close();
-        frame.dispose();
-        System.exit(0);
+        close();
       }
     });
     
@@ -50,6 +53,12 @@ public class Main {
         gui.init();
       }
     });
+  }
+
+  private void close() {
+    gui.close();
+    frame.dispose();
+    System.exit(0);
   }
 
   public static void main(String ... args) {

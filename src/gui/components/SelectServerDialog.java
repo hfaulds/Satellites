@@ -1,4 +1,5 @@
 package gui.components;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Frame;
@@ -34,22 +35,21 @@ import net.client.ClientConnection;
 
 import com.esotericsoftware.kryonet.Client;
 
-
 @SuppressWarnings("serial")
 public class SelectServerDialog extends JDialog implements ActionListener, ListSelectionListener, FocusListener, DocumentListener {
   
   private static final int HEIGHT = 400;
   private static final int WIDTH = 300;
 
-  private static final String TITLE = "Server selection";
+  private static final String TITLE = "Server Selection";
 
   private final RegexFormatter regexFormatter = new RegexFormatter("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}");
   private final JTextField serverIP = new JFormattedTextField(regexFormatter);
   private final JList<InetAddress> servers = new JList<InetAddress>();
 
-  JButton connectButton = new JButton("Connect");
-  JButton refreshButton = new JButton("Refresh");
-  JButton cancelButton = new JButton("Cancel");
+  private final JButton connectButton = new JButton("Connect");
+  private final JButton refreshButton = new JButton("Refresh");
+  private final JButton cancelButton = new JButton("Cancel");
   
   private ClientConnection connection;
   
@@ -87,8 +87,9 @@ public class SelectServerDialog extends JDialog implements ActionListener, ListS
   };
 
 
-  public SelectServerDialog(Frame frame, ClientConnection connection) {
+  private SelectServerDialog(Frame frame, ClientConnection connection) {
     super(frame, TITLE, true);
+    new Thread(serverRefresher).start();
     this.connection = connection;
     JPanel center = new JPanel();
     center.setLayout(new BoxLayout(center, BoxLayout.PAGE_AXIS));
@@ -122,14 +123,13 @@ public class SelectServerDialog extends JDialog implements ActionListener, ListS
     
     JPanel window = new JPanel();
     window.setLayout(new BorderLayout());
-    window.setBorder(new EmptyBorder(10, 10, 10, 10) );
+    window.setBorder(new EmptyBorder(10, 10, 10, 10));
     window.add(center, BorderLayout.CENTER);
     window.add(bottom, BorderLayout.PAGE_END);
     
     add(window);
     setLocation(new Point((frame.getWidth() - WIDTH)/2, (frame.getHeight() - HEIGHT)/2));
     setSize(WIDTH, HEIGHT);
-    new Thread(serverRefresher).start();
   }
 
   @Override
@@ -197,14 +197,12 @@ public class SelectServerDialog extends JDialog implements ActionListener, ListS
     connectButton.setEnabled(regexFormatter.validText(serverIP.getText()));
   }
   
-  public static boolean showDialog(
-      Component frameComp, ClientConnection connection) 
+  public static boolean showDialog(Component parent, ClientConnection connection) 
   {
-    Frame frame = JOptionPane.getFrameForComponent(frameComp);
+    Frame frame = JOptionPane.getFrameForComponent(parent);
     SelectServerDialog dialog = new SelectServerDialog(frame, connection);
     dialog.setVisible(true);
     
     return connection.isOnline();
-  } 
-
+  }
 }

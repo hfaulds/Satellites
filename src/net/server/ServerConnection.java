@@ -19,6 +19,7 @@ public class ServerConnection extends NetworkConnection {
 
   private final Scene scene;
   private final Server server = createServer();
+  private boolean online = false;
   
   public ServerConnection(Scene scene) {
     this.scene = scene;
@@ -33,6 +34,7 @@ public class ServerConnection extends NetworkConnection {
       populateScene(scene);
       
       super.setAddress();
+      online = true;
       return true;
     } catch (IOException e) {
       return false;
@@ -69,7 +71,7 @@ public class ServerConnection extends NetworkConnection {
 
   @Override
   public boolean isOnline() {
-    return server != null;
+    return online;
   }
 
   @Override

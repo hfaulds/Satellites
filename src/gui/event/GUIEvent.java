@@ -1,4 +1,6 @@
-package gui;
+package gui.event;
+
+import gui.GUI;
 
 public class GUIEvent {
   
