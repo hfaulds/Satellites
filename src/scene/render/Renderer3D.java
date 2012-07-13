@@ -40,7 +40,14 @@ public class Renderer3D {
       gl.glLightfv(lightID, GL2.GL_SPECULAR, light.specularColour, 0);
       gl.glEnable(lightID);
     }
-
+    
+    synchronized(scene.actors) {
+      for(Actor actor : scene.actors) {
+        gl.glPushMatrix();
+        actor.init(gl, glu);
+        gl.glPopMatrix();
+      }
+    }
     gl.glEnable(GL2.GL_LIGHTING);
   }
 
@@ -92,7 +99,9 @@ public class Renderer3D {
   public void render(GL2 gl, List<Actor> actors) {
     synchronized(actors) {
       for(Actor actor : actors) {
+        gl.glPushMatrix();
         actor.render(gl, glu);
+        gl.glPopMatrix();
       }
     }
   }

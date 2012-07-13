@@ -3,14 +3,12 @@ package scene.graphics.ship;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
-import scene.graphics.Graphic;
-
 import math.Rotation;
 import math.Vector2D;
+import scene.graphics.Graphic;
 
 
 public class ShipGraphic implements Graphic {
@@ -23,7 +21,6 @@ public class ShipGraphic implements Graphic {
 
   public final List<Graphic> ui = new ArrayList<Graphic>();
   
-  private boolean init = false;
   private int listID;
 
   public ShipGraphic(double width, double length, double height) {
@@ -36,7 +33,7 @@ public class ShipGraphic implements Graphic {
   public void init(GL2 gl, GLU glu) {
     listID = gl.glGenLists(1);
     gl.glNewList(listID, GL2.GL_COMPILE);
-    { 
+    {
       gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_AMBIENT,  ambientColour, 0);
       gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, ambientColour, 0);
       gl.glMaterialf(GL2.GL_FRONT, GL2.GL_SHININESS, 0.5f);
@@ -82,22 +79,24 @@ public class ShipGraphic implements Graphic {
       gl.glEnd();
     }
     gl.glEndList();
+
+    for(Graphic uiElem : ui) {
+      gl.glPushMatrix();
+      uiElem.init(gl, glu);
+      gl.glPopMatrix();
+    }
   }
   
   @Override
   public void render(GL2 gl, GLU glu, Vector2D pos, Rotation rot) {
-    if(!init)
-      init(gl, glu);
-    
-    gl.glPushMatrix();
-    {
-      gl.glTranslated(pos.x, pos.y, Vector2D.Z);
-      gl.glRotated(rot.toDegrees(), rot.x, rot.y, rot.z);
-      gl.glCallList(listID);
-    }
-    gl.glPopMatrix();
-    
-    for(Graphic uiElem : ui)
+    for(Graphic uiElem : ui) {
+      gl.glPushMatrix();
       uiElem.render(gl, glu, pos, rot);
+      gl.glPopMatrix();
+    }
+    
+    gl.glTranslated(pos.x, pos.y, Vector2D.Z);
+    gl.glRotated(rot.toDegrees(), rot.x, rot.y, rot.z);
+    gl.glCallList(listID);
   }
 }

@@ -17,7 +17,7 @@ public class FPSSprite extends Sprite {
   private long lastTime = 0;
 
   public FPSSprite() {
-    super(new Vector2D(5, InGameGUI.HEIGHT - 35));
+    super(new Vector2D(5, InGameGUI.HEIGHT - 50));
   }
 
   @Override

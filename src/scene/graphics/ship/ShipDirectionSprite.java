@@ -14,17 +14,14 @@ public class ShipDirectionSprite implements Graphic {
   public static final double CONTROL_RADIUS     = ShipControlSprite.CONTROL_RADIUS + ShipControlSprite.BUTTON_RADIUS;
   private static final int CIRCLE_SAMPLES       = ShipControlSprite.CIRCLE_SAMPLES;
   private static final double CIRCLE_INCREMENT  = ShipControlSprite.CIRCLE_INCREMENT;
-  
-  private static final float LINE_WIDTH			= ShipControlSprite.LINE_WIDTH;
+  private static final float LINE_WIDTH			= 1.7f;
   private static final double LINE_LENGTH       = .1;
 
-  private final int length = (int)(1 / LINE_LENGTH);
   private final int mid    =     - CIRCLE_SAMPLES / 4;
-  private final int start  = mid - CIRCLE_SAMPLES / length;
-  private final int end    = mid + CIRCLE_SAMPLES / length;
+  private final int start  = mid - (int)(CIRCLE_SAMPLES * LINE_LENGTH);
+  private final int end    = mid + (int)(CIRCLE_SAMPLES * LINE_LENGTH);
   
   private int listID;
-  private boolean init = false;
 
   @Override
   public void init(GL2 gl, GLU glu) {
@@ -57,15 +54,8 @@ public class ShipDirectionSprite implements Graphic {
   
   @Override
   public void render(GL2 gl, GLU glu, Vector2D pos, Rotation rot) {
-    if(!init )
-      init(gl, glu);
-
-    gl.glPushMatrix();
-    {
-      gl.glTranslated(pos.x, pos.y, Vector2D.Z);
-      gl.glRotated(rot.toDegrees(), rot.x, rot.y, rot.z);
-      gl.glCallList(listID);
-    }
-    gl.glPopMatrix();
+    gl.glTranslated(pos.x, pos.y, Vector2D.Z);
+    gl.glRotated(rot.toDegrees(), rot.x, rot.y, rot.z);
+    gl.glCallList(listID);
   }
 }

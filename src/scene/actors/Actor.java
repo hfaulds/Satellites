@@ -43,17 +43,17 @@ public abstract class Actor {
     this(new Vector2D(x, y), new Rotation(), mass, graphic, nextID());
   }
 
+  public void tick() {
+    this.position._add(velocity);
+    this.rotation._add(spin);
+  }
+  
   public void init(GL2 gl, GLU glu) {
     this.graphic.init(gl, glu);
   }
 
   public void render(GL2 gl, GLU glu) {
     this.graphic.render(gl, glu, position, rotation);
-  }
-
-  public void tick() {
-    this.position._add(velocity);
-    this.rotation._add(spin);
   }
   
   public abstract boolean collides(Actor a);

@@ -1,14 +1,11 @@
 package scene.graphics.ship;
 
-
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
-import scene.graphics.Graphic;
-
 import math.Rotation;
 import math.Vector2D;
-
+import scene.graphics.Graphic;
 
 public class ShipControlSprite implements Graphic {
 
@@ -18,10 +15,9 @@ public class ShipControlSprite implements Graphic {
   public static final int CIRCLE_SAMPLES        = 40;
   public static final double CIRCLE_INCREMENT   = 2*Math.PI/CIRCLE_SAMPLES;
   
-  public static final float LINE_WIDTH			    = 2f;
+  public static final float LINE_WIDTH			= 2f;
 
   private int listID;
-  private boolean init = false;
   
   @Override
   public void init(GL2 gl, GLU glu) {
@@ -33,16 +29,6 @@ public class ShipControlSprite implements Graphic {
         gl.glDisable(GL2.GL_LIGHTING);
         
         drawCircle(gl, 0, 0, CONTROL_RADIUS, GL2.GL_LINE_LOOP, 1);
-          
-        for(int i=1; i < 4; i++) {
-          double x = Math.cos( (1+1.5*i) * CIRCLE_INCREMENT) * CONTROL_RADIUS;
-          double y = Math.sin( (1+1.5*i) * CIRCLE_INCREMENT) * CONTROL_RADIUS;
-        
-          drawCircle(gl, x, y, BUTTON_RADIUS, GL2.GL_LINE_LOOP);
-          drawCircle(gl, x, y, BUTTON_RADIUS - 0.01, GL2.GL_POLYGON, 0.2);
-        }
-
-        gl.glEnable(GL2.GL_LIGHTING);
       }
       gl.glPopMatrix();
     }
@@ -51,19 +37,8 @@ public class ShipControlSprite implements Graphic {
   
   @Override
   public void render(GL2 gl, GLU glu, Vector2D pos, Rotation rot) {
-    if(!init )
-      init(gl, glu);
-
-    gl.glPushMatrix();
-    {
-      gl.glTranslated(pos.x, pos.y, Vector2D.Z);
-      gl.glCallList(listID);
-    }
-    gl.glPopMatrix();
-  }
-
-  private void drawCircle(GL2 gl, double x, double y, double radius, int style) {
-    this.drawCircle(gl, x, y, radius, style, 1.0);
+    gl.glTranslated(pos.x, pos.y, Vector2D.Z);
+    gl.glCallList(listID);
   }
   
   private void drawCircle(GL2 gl, double x, double y, double radius, int style, double shade) {

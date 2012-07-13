@@ -1,12 +1,11 @@
 package scene.graphics;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUquadric;
 
 import math.Rotation;
 import math.Vector2D;
-
-
 
 public class SatelliteGraphic implements Graphic {
 
@@ -19,8 +18,6 @@ public class SatelliteGraphic implements Graphic {
   final int stacks = 32;
   
   private int listID;
-
-  private boolean init = false;
   
   public SatelliteGraphic(double radius) {
     this.radius = radius;
@@ -48,14 +45,7 @@ public class SatelliteGraphic implements Graphic {
   
   @Override
   public void render(GL2 gl, GLU glu, Vector2D pos, Rotation rot) {
-    if(!init )
-      init(gl, glu);
-    
-    gl.glPushMatrix();
-    {
-      gl.glTranslated(pos.x, pos.y, Vector2D.Z);
-      gl.glCallList(listID);
-    }
-    gl.glPopMatrix();
+    gl.glTranslated(pos.x, pos.y, Vector2D.Z);
+    gl.glCallList(listID);
   }
 }

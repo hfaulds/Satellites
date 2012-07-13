@@ -25,13 +25,13 @@ import com.esotericsoftware.kryonet.Connection;
 public class Scene extends MouseAdapter {
 
   public final PlayerInputController input = new PlayerInputController();
-
-  public final List<Actor>          actors = new ArrayList<Actor>();
-  public final List<Controller>     controllers = new ArrayList<Controller>();
-  public final PointLightActor[]    lights = {new PointLightActor()};
-
   public final MsgSprite messageHandler = new MsgSprite();
-  public final Sprite[] ui = new Sprite[]{new FPSSprite(), messageHandler};
+
+  public final List<Actor>       actors = new ArrayList<Actor>();
+  public final List<Controller>  controllers = new ArrayList<Controller>();
+  public final PointLightActor[] lights = {new PointLightActor()};
+  public final Sprite[]          ui = new Sprite[]{new FPSSprite(), messageHandler};
+
 
   public final String username;
   
