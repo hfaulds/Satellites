@@ -1,4 +1,5 @@
 
+
 import graphics.sprite.MsgSprite;
 import gui.SelectServerDialog;
 
@@ -35,7 +36,10 @@ import com.jogamp.opengl.util.FPSAnimator;
 
 @SuppressWarnings("serial")
 public class Satellites extends JFrame implements GLEventListener {
-  
+
+  public static final int WIDTH = 1280;
+  public static final int HEIGHT = 720;
+
   private Scene scene = new Scene();
   
   private Camera renderer = new Camera(scene);
@@ -61,7 +65,7 @@ public class Satellites extends JFrame implements GLEventListener {
         System.exit(0);
       }
     });
-    this.setSize(1280 , 720);
+    this.setSize(WIDTH , HEIGHT);
     this.setVisible(true);
   }
   
@@ -88,29 +92,26 @@ public class Satellites extends JFrame implements GLEventListener {
             case 10: // enter
               if(messageHandler.getInput().length() > 0) {
                 ChatMsg msg = new ChatMsg(messageHandler.getInput());
-                messageHandler.addMessage(msg);
+                messageHandler.displayMessage(msg);
                 connection.sendMessage(msg);
               }
-              messageHandler.setInput("");
+              messageHandler.clearInput();
               break;
             case 27: // escape
-              messageHandler.setInput("");
+              messageHandler.clearInput();
               messageHandler.inputting = false;
               break;
             case 8: // backspace
-              int length = messageHandler.getInput().length();
-              if(length > 0)
-                messageHandler.setInput(messageHandler.getInput().substring(0, length - 1));
+              messageHandler.backSpace();
               break;
             default:
               char character = (char)keyCode;
               if(!e.isShiftDown())
                 character =  Character.toLowerCase(character);
-              messageHandler.setInput(messageHandler.getInput() + character);
+              messageHandler.addChar(character);
           }
         } else {
           if(keyCode == 'T') {
-            System.out.println("open");
             messageHandler.inputting = true;
           }
         }
