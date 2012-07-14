@@ -58,6 +58,7 @@ public class ShipHealthGraphic implements Graphic {
     }
 
     
+    
     {
       gl.glColor3fv(Colour.WHITE.toFloat(), 0);
       this.drawSegment(gl, startShield - 1, startShield + SEGMENTS/4+1 , HEALTH_WIDTH * 2.2);
@@ -65,15 +66,15 @@ public class ShipHealthGraphic implements Graphic {
  
     {
       gl.glColor3fv(Colour.BLACK.toFloat(), 0);
-      int start = this.startShield + (actor.shield / SEGMENT_RATIO);
-      int end = this.startShield + (ShipActor.MAX_SHIELD / SEGMENT_RATIO);
-      this.drawSegment(gl, start, end, HEALTH_WIDTH);
+      int end = startShield + SEGMENTS/4 - (actor.shield / SEGMENT_RATIO);
+      this.drawSegment(gl, startShield, end, HEALTH_WIDTH);
     }
     
     {
       gl.glColor3fv(SHIELD_COLOUR.toFloat(), 0);
-      int end = startShield + (actor.shield / SEGMENT_RATIO);
-      this.drawSegment(gl, startShield, end, HEALTH_WIDTH);
+      int start = startShield + SEGMENTS/4 - (actor.shield / SEGMENT_RATIO);
+      int end = startShield + SEGMENTS/4;
+      this.drawSegment(gl, start, end, HEALTH_WIDTH);
     }
    
     

@@ -16,8 +16,8 @@ public class ShipActor extends Actor {
   public static double LENGTH  = 1.0;
   public static double HEIGHT  = 0.1;
 
-  public int health = MAX_HEALTH;
-  public int shield = MAX_SHIELD;
+  public int health = MAX_HEALTH - 300;
+  public int shield = MAX_SHIELD - 300;
 
   public ShipActor(Vector2D position, Rotation rotation, double mass, int id) {
     super(position, rotation, mass, getGraphic(), id);
