@@ -27,7 +27,7 @@ public class ShipGraphic implements Graphic {
   public ShipGraphic(double width, double length, double height) {
 
     try {
-      this.mesh = MeshLoader.loadOBJ("ship-normals.obj");
+      this.mesh = MeshLoader.loadOBJ("ship.obj");
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
@@ -43,7 +43,6 @@ public class ShipGraphic implements Graphic {
       gl.glMaterialf(GL2.GL_FRONT, GL2.GL_SHININESS, 0.5f);
     
       mesh.render(gl);
-      
     }
     gl.glEndList();
 

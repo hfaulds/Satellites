@@ -33,29 +33,4 @@ public class Mesh {
     }
     gl.glEnd();
   }
-  /*
-  public Mesh _smoothNormals() {
-    for(Vector3D vert : this.vertices)
-      vert.normal = new Vector3D();
-    
-    for (Triangle triangle : triangles) {
-      Vector3D[] verts = triangle.vertices;
-      
-      Vector3D avec = verts[0].subtract(verts[1]);
-      Vector3D bvec = verts[0].subtract(verts[2]);
-      
-      Vector3D triangleNormal = avec.crossProduct(bvec);
-      
-
-      for(Vector3D vert : verts)
-      {
-        vert.normal = vert.normal.add(triangleNormal);
-      }
-    }
-    
-    for(Vector3D vert : this.vertices)
-      vert.normal._normalize();
-    
-    return this;
-  }*/
 }

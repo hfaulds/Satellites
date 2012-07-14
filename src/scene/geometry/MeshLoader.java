@@ -26,7 +26,7 @@ public class MeshLoader {
   private static Mesh loadOBJ(BufferedReader file, String filename)
       throws FileNotFoundException {
     Vector<Vector3D> vertices = new Vector<Vector3D>();
-    Vector<Vector3D> uvwCoords = new Vector<Vector3D>();
+    Vector<Vector3D> uvws = new Vector<Vector3D>();
     Vector<Vector3D> normals = new Vector<Vector3D>();
     Vector<Triangle> triangles = new Vector<Triangle>();
 
@@ -51,7 +51,7 @@ public class MeshLoader {
           } else if (data.equalsIgnoreCase("vt")) {
             
             /**New Texture Coordinate**/
-            uvwCoords.add(nextVector(st));
+            uvws.add(nextVector(st));
             
           } else if (data.equalsIgnoreCase("f")) {
             
@@ -66,7 +66,7 @@ public class MeshLoader {
               StringTokenizer subTokenizer = new StringTokenizer(nextToken, "/");
               
               localverts[i] = vertices.elementAt(nextInt(subTokenizer));
-              localuvws[i] = uvwCoords.get(nextInt(subTokenizer));
+              localuvws[i] = uvws.get(nextInt(subTokenizer));
               localnormals[i] = normals.elementAt(nextInt(subTokenizer));
             }
             
@@ -77,7 +77,10 @@ public class MeshLoader {
 
       file.close();
 
-      return new Mesh(vertices.toArray(new Vector3D[0]), triangles.toArray(new Triangle[0]));
+      Vector3D[] vertexArray = vertices.toArray(new Vector3D[0]);
+      Triangle[] triangleArray = triangles.toArray(new Triangle[0]);
+      
+      return new Mesh(vertexArray, triangleArray);
 
     } catch (IOException e) {
       System.out.println(e);
