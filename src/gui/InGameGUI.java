@@ -36,6 +36,7 @@ public class InGameGUI extends GUI implements GLEventListener {
   private final GLWindow glWindow;
   private final NewtCanvasAWT canvas;
   private final FPSAnimator animator;
+  
   public InGameGUI(Scene scene, NetworkConnection connection) {
     this.scene = scene;
     this.renderer = new SceneRenderer(scene);
