@@ -15,7 +15,7 @@ public class ShipControlGraphic implements Graphic {
   public static final int CIRCLE_SAMPLES        = 40;
   public static final double CIRCLE_INCREMENT   = 2*Math.PI/CIRCLE_SAMPLES;
   
-  public static final float LINE_WIDTH			= 2f;
+  public static final float LINE_WIDTH			= 3.5f;
 
   private int listID;
   

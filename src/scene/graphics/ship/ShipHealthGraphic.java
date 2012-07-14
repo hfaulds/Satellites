@@ -12,14 +12,16 @@ import scene.material.Colour;
 public class ShipHealthGraphic implements Graphic {
 
   private static final double HEALTH_RADIUS     = ShipControlGraphic.CONTROL_RADIUS + .2;
-  private static final int HEALTH_RATIO         = 10;
-  private static final double HEALTH_WIDTH      = 0.15;
+  private static final int SEGMENT_RATIO         = 10;
+  private static final double HEALTH_WIDTH      = 0.2;
   private static final Colour HEALTH_COLOUR     = new Colour(1,0,0);
+  private static final Colour SHIELD_COLOUR     = new Colour(0,0,1);
   
-  private static final int SEGMENTS             = ShipActor.MAX_HEALTH * 4 / HEALTH_RATIO;
+  private static final int SEGMENTS             = ShipActor.MAX_HEALTH * 4 / SEGMENT_RATIO;
   private static final double SEGMENT_INCREMENT = 2 * Math.PI / SEGMENTS;
 
-  private final int start = SEGMENTS * 7 / 8;
+  private final int startHealth = SEGMENTS * 7 / 8;
+  private final int startShield = SEGMENTS * 3 / 8;
   
   private final ShipActor actor;
 
@@ -39,20 +41,39 @@ public class ShipHealthGraphic implements Graphic {
     
     {
       gl.glColor3fv(Colour.WHITE.toFloat(), 0);
-      this.drawSegment(gl, start - 1, start + SEGMENTS/4+1 , HEALTH_WIDTH * 2);
+      this.drawSegment(gl, startHealth - 1, startHealth + SEGMENTS/4+1 , HEALTH_WIDTH * 2.2);
     }
  
     {
       gl.glColor3fv(Colour.BLACK.toFloat(), 0);
-      int start = this.start + (actor.health / HEALTH_RATIO);
-      int end = this.start + (ShipActor.MAX_HEALTH / HEALTH_RATIO);
+      int start = this.startHealth + (actor.health / SEGMENT_RATIO);
+      int end = this.startHealth + (ShipActor.MAX_HEALTH / SEGMENT_RATIO);
       this.drawSegment(gl, start, end, HEALTH_WIDTH);
     }
     
     {
       gl.glColor3fv(HEALTH_COLOUR.toFloat(), 0);
-      int end = start + (actor.health / HEALTH_RATIO);
+      int end = startHealth + (actor.health / SEGMENT_RATIO);
+      this.drawSegment(gl, startHealth, end, HEALTH_WIDTH);
+    }
+
+    
+    {
+      gl.glColor3fv(Colour.WHITE.toFloat(), 0);
+      this.drawSegment(gl, startShield - 1, startShield + SEGMENTS/4+1 , HEALTH_WIDTH * 2.2);
+    }
+ 
+    {
+      gl.glColor3fv(Colour.BLACK.toFloat(), 0);
+      int start = this.startShield + (actor.shield / SEGMENT_RATIO);
+      int end = this.startShield + (ShipActor.MAX_SHIELD / SEGMENT_RATIO);
       this.drawSegment(gl, start, end, HEALTH_WIDTH);
+    }
+    
+    {
+      gl.glColor3fv(SHIELD_COLOUR.toFloat(), 0);
+      int end = startShield + (actor.shield / SEGMENT_RATIO);
+      this.drawSegment(gl, startShield, end, HEALTH_WIDTH);
     }
    
     
