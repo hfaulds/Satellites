@@ -4,21 +4,15 @@ import java.io.IOException;
 
 import net.NetworkConnection;
 import net.msg.ChatMsg;
-
 import scene.Scene;
-import scene.actors.SatelliteActor;
-import scene.actors.ShipActor;
-import scene.controllers.ServerSatelliteController;
-import scene.controllers.ServerShipController;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 
-
 public class ServerConnection extends NetworkConnection {
 
-  private final Scene scene;
-  private final Server server = createServer();
+  public final Scene scene;
+  public final Server server = createServer();
   private boolean online = false;
   
   public ServerConnection(Scene scene) {
@@ -31,7 +25,6 @@ public class ServerConnection extends NetworkConnection {
       server.start();
       server.bind(TCP_PORT, UDP_PORT);
       server.addListener(new ServerListener(scene));
-      populateScene(scene);
       
       super.setAddress();
       online = true;
@@ -39,20 +32,6 @@ public class ServerConnection extends NetworkConnection {
     } catch (IOException e) {
       return false;
     }
-  }
-
-  private void populateScene(Scene scene) {
-    SatelliteActor sat1 = new SatelliteActor(-8, -5, 10);
-    scene.addActor(sat1);
-    scene.addController(new ServerSatelliteController(sat1, server));
- 
-    SatelliteActor sat2 = new SatelliteActor(0, 5, 5);
-    scene.addActor(sat2);
-    scene.addController(new ServerSatelliteController(sat2, server));
-    
-    ShipActor player = new ShipActor(0,0);
-    scene.addPlayer(player);
-    scene.addController(new ServerShipController(player, server));
   }
 
   private Server createServer() {

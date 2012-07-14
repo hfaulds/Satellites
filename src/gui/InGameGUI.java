@@ -44,7 +44,7 @@ public class InGameGUI extends GUI implements GLEventListener {
     
     this.glWindow = createGLWindow(createCapabilities(), scene);
     this.canvas = createCanvas(glWindow);
-    this.animator = new FPSAnimator(glWindow, 20);
+    this.animator = new FPSAnimator(glWindow, 40);
     
     this.setLayout(new BorderLayout());
     this.add(canvas, BorderLayout.CENTER);
