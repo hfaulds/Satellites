@@ -39,30 +39,19 @@ public class MeshLoader {
           String data = st.nextToken();
           
           if (data.equalsIgnoreCase("v")) {
+            
             /**New Vertex**/
-            vertices.add(new Vector3D(
-                nextDouble(st), 
-                nextDouble(st),
-                nextDouble(st)
-                ));
+            vertices.add(nextVector(st));
             
           } else if (data.equalsIgnoreCase("vn")) {
             
             /**New Normal**/
-            normals.add(new Vector3D(
-                nextDouble(st), 
-                nextDouble(st),
-                nextDouble(st)
-                ));
+            normals.add(nextVector(st));
             
           } else if (data.equalsIgnoreCase("vt")) {
             
             /**New Texture Coordinate**/
-            uvwCoords.add(new Vector3D(
-                nextDouble(st), 
-                nextDouble(st), 
-                nextDouble(st)
-                ));
+            uvwCoords.add(nextVector(st));
             
           } else if (data.equalsIgnoreCase("f")) {
             
@@ -95,6 +84,14 @@ public class MeshLoader {
       return null;
     }
 
+  }
+
+  private static Vector3D nextVector(StringTokenizer st) {
+    return new Vector3D(
+        nextDouble(st), 
+        nextDouble(st),
+        nextDouble(st)
+        );
   }
 
   private static int nextInt(StringTokenizer tokenizer) {
