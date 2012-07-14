@@ -7,12 +7,14 @@ import java.util.List;
 
 import scene.actors.Actor;
 import scene.actors.PointLightActor;
+import scene.actors.ShipActor;
 import scene.controllers.ClientShipController;
 import scene.controllers.Controller;
 import scene.controllers.PlayerInputController;
-import scene.graphics.ship.ShipControlSprite;
-import scene.graphics.ship.ShipDirectionSprite;
+import scene.graphics.ship.ShipControlGraphic;
+import scene.graphics.ship.ShipDirectionGraphic;
 import scene.graphics.ship.ShipGraphic;
+import scene.graphics.ship.ShipHealthGraphic;
 import scene.ui.FPSSprite;
 import scene.ui.MsgSprite;
 import scene.ui.Sprite;
@@ -63,11 +65,12 @@ public class Scene extends MouseAdapter {
     }
   }
 
-  public void addPlayer(Actor player) {
+  public void addPlayer(ShipActor player) {
     input.setActor(player);
     ShipGraphic graphic = (ShipGraphic)player.graphic;
-    graphic.ui.add(new ShipControlSprite());
-    graphic.ui.add(new ShipDirectionSprite());
+    graphic.ui.add(new ShipControlGraphic());
+    graphic.ui.add(new ShipDirectionGraphic());
+    graphic.ui.add(new ShipHealthGraphic(player));
     addActor(player);
   }
   
@@ -76,7 +79,7 @@ public class Scene extends MouseAdapter {
       Actor actor = Actor.fromInfo(info);
       if(info.id == playerID) {
         addController(new ClientShipController(actor, connection));
-        addPlayer(actor);
+        addPlayer((ShipActor)actor);
       }
       addActor(actor);
     }

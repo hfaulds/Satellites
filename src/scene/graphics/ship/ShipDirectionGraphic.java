@@ -9,12 +9,12 @@ import scene.graphics.Graphic;
 import math.Rotation;
 import math.Vector2D;
 
-public class ShipDirectionSprite implements Graphic {
+public class ShipDirectionGraphic implements Graphic {
 
-  public static final double CONTROL_RADIUS     = ShipControlSprite.CONTROL_RADIUS + ShipControlSprite.BUTTON_RADIUS;
-  private static final int CIRCLE_SAMPLES       = ShipControlSprite.CIRCLE_SAMPLES;
-  private static final double CIRCLE_INCREMENT  = ShipControlSprite.CIRCLE_INCREMENT;
-  private static final float LINE_WIDTH			= 1.7f;
+  public static final double CONTROL_RADIUS     = ShipControlGraphic.CONTROL_RADIUS + .5;
+  private static final int CIRCLE_SAMPLES       = ShipControlGraphic.CIRCLE_SAMPLES;
+  private static final double CIRCLE_INCREMENT  = ShipControlGraphic.CIRCLE_INCREMENT;
+  private static final float LINE_WIDTH			= 2.5f;
   private static final double LINE_LENGTH       = .1;
 
   private final int mid    =     - CIRCLE_SAMPLES / 4;

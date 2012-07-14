@@ -1,6 +1,11 @@
 package scene.material;
 
 public class Colour {
+  
+  public static final Colour WHITE = new Colour(1,1,1);
+
+  public static final Colour BLACK = new Colour(0,0,0);
+  
   public final double r;
   public final double g;
   public final double b;

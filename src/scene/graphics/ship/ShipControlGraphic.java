@@ -7,7 +7,7 @@ import math.Rotation;
 import math.Vector2D;
 import scene.graphics.Graphic;
 
-public class ShipControlSprite implements Graphic {
+public class ShipControlGraphic implements Graphic {
 
   public static final double CONTROL_RADIUS     = 2;
   public static final double BUTTON_RADIUS      = .25;
