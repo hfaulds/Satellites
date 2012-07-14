@@ -27,7 +27,7 @@ public class ShipGraphic implements Graphic {
   public ShipGraphic(double width, double length, double height) {
 
     try {
-      this.mesh = MeshLoader.loadOBJ("ship.obj");
+      this.mesh = MeshLoader.loadOBJ("Ship-Mk2.obj");
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
