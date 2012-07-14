@@ -25,13 +25,15 @@ public class Mesh {
           
           Vector3D vertex = triangle.getVertex(i);
           gl.glVertex3dv(vertex.toDouble(), 0);
-          gl.glNormal3dv(vertex.normal.toDouble(), 0);
+          
+          Vector3D normal = triangle.getNormal(i);
+          gl.glNormal3dv(normal.toDouble(), 0);
         }
       }
     }
     gl.glEnd();
   }
-  
+  /*
   public Mesh _smoothNormals() {
     for(Vector3D vert : this.vertices)
       vert.normal = new Vector3D();
@@ -55,5 +57,5 @@ public class Mesh {
       vert.normal._normalize();
     
     return this;
-  }
+  }*/
 }

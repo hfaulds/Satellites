@@ -12,7 +12,7 @@ import math.Vector3D;
 
 public class MeshLoader {
 
-  private final static String FOLDER_PATH = "assets/meshes/";
+  private final static String FOLDER_PATH = "assets/";
 
   public static Mesh loadOBJ(String filename) throws FileNotFoundException {
     String fullpath = FOLDER_PATH + filename;
@@ -26,8 +26,9 @@ public class MeshLoader {
   private static Mesh loadOBJ(BufferedReader file, String filename)
       throws FileNotFoundException {
     Vector<Vector3D> vertices = new Vector<Vector3D>();
-    Vector<Triangle> triangles = new Vector<Triangle>();
     Vector<Vector3D> uvwCoords = new Vector<Vector3D>();
+    Vector<Vector3D> normals = new Vector<Vector3D>();
+    Vector<Triangle> triangles = new Vector<Triangle>();
 
     try {
       for(String line = file.readLine(); line != null; line = file.readLine()) {
@@ -38,7 +39,6 @@ public class MeshLoader {
           String data = st.nextToken();
           
           if (data.equalsIgnoreCase("v")) {
-            
             /**New Vertex**/
             vertices.add(new Vector3D(
                 nextDouble(st), 
@@ -49,7 +49,11 @@ public class MeshLoader {
           } else if (data.equalsIgnoreCase("vn")) {
             
             /**New Normal**/
-            throw new RuntimeException("TODO");
+            normals.add(new Vector3D(
+                nextDouble(st), 
+                nextDouble(st),
+                nextDouble(st)
+                ));
             
           } else if (data.equalsIgnoreCase("vt")) {
             
@@ -64,24 +68,27 @@ public class MeshLoader {
             
             /**New Triangle**/
             Vector3D[] localverts = new Vector3D[3];
+            Vector3D[] localnormals = new Vector3D[3];
             Vector3D[] localuvws = new Vector3D[3];
             
             for(int i=0; i < 3; i++)
             {
-              StringTokenizer subTokenizer = new StringTokenizer(st.nextToken(), "/");
+              String nextToken = st.nextToken();
+              StringTokenizer subTokenizer = new StringTokenizer(nextToken, "/");
               
               localverts[i] = vertices.elementAt(nextInt(subTokenizer));
               localuvws[i] = uvwCoords.get(nextInt(subTokenizer));
+              localnormals[i] = normals.elementAt(nextInt(subTokenizer));
             }
             
-            triangles.add(new Triangle(localverts, localuvws));
+            triangles.add(new Triangle(localverts, localnormals, localuvws));
           }
         }
       }
 
       file.close();
 
-      return new Mesh(vertices.toArray(new Vector3D[0]), triangles.toArray(new Triangle[0]))._smoothNormals();
+      return new Mesh(vertices.toArray(new Vector3D[0]), triangles.toArray(new Triangle[0]));
 
     } catch (IOException e) {
       System.out.println(e);

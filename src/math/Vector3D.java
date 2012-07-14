@@ -4,7 +4,6 @@ import scene.material.Colour;
 
 public class Vector3D {
   
-  public Vector3D normal;
   public Colour colour = new Colour();
   public int renderSize = 5;
   
@@ -24,7 +23,6 @@ public class Vector3D {
     this.x = vector.x;
     this.y = vector.y;
     this.z = vector.z;
-    this.normal = vector.normal;
   }
   
   

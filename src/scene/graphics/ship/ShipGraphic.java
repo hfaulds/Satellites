@@ -1,5 +1,6 @@
 package scene.graphics.ship;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,25 +9,28 @@ import javax.media.opengl.glu.GLU;
 
 import math.Rotation;
 import math.Vector2D;
+import scene.geometry.Mesh;
+import scene.geometry.MeshLoader;
 import scene.graphics.Graphic;
 
 
 public class ShipGraphic implements Graphic {
 
   private final float[] ambientColour   = { 0.7f, 0.7f, 0.7f };
-  
-  private final double width;
-  private final double length;
-  private final double height;
 
   public final List<Graphic> ui = new ArrayList<Graphic>();
   
   private int listID;
+  
+  public Mesh mesh;
 
   public ShipGraphic(double width, double length, double height) {
-    this.width  = width;
-    this.length = length;
-    this.height  = height;
+
+    try {
+      this.mesh = MeshLoader.loadOBJ("ship-normals.obj");
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
@@ -38,45 +42,8 @@ public class ShipGraphic implements Graphic {
       gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, ambientColour, 0);
       gl.glMaterialf(GL2.GL_FRONT, GL2.GL_SHININESS, 0.5f);
     
-      gl.glBegin(GL2.GL_QUADS);
-      {
-        // Front-face
-        gl.glVertex3d( width,  length,  height);
-        gl.glVertex3d(-width,  length,  height);
-        gl.glVertex3d(-width, -length,  height);
-        gl.glVertex3d( width, -length,  height);
-        
-        // Back-face
-        gl.glVertex3d( width, -length, -height);
-        gl.glVertex3d(-width, -length, -height);
-        gl.glVertex3d(-width,  length, -height);
-        gl.glVertex3d( width,  length, -height);
-        
-        // Left-face
-        gl.glVertex3d(-width,  length,  height);
-        gl.glVertex3d(-width,  length, -height);
-        gl.glVertex3d(-width, -length, -height);
-        gl.glVertex3d(-width, -length,  height);
+      mesh.render(gl);
       
-        // Right-face
-        gl.glVertex3d( width,  length, -height);
-        gl.glVertex3d( width,  length,  height);
-        gl.glVertex3d( width, -length,  height);
-        gl.glVertex3d( width, -length, -height);
-        
-        // Top-face
-        gl.glVertex3d( width,  length, -height);
-        gl.glVertex3d(-width,  length, -height);
-        gl.glVertex3d(-width,  length,  height);
-        gl.glVertex3d( width,  length,  height);
-        
-        // Bottom-face
-        gl.glVertex3d( width, -length,  height);
-        gl.glVertex3d(-width, -length,  height);
-        gl.glVertex3d(-width, -length, -height);
-        gl.glVertex3d( width, -length, -height);
-      }
-      gl.glEnd();
     }
     gl.glEndList();
 

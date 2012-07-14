@@ -5,10 +5,12 @@ import math.Vector3D;
 public class Triangle {
   
   public final Vector3D[] vertices;
+  public final Vector3D[] normals;
   public final Vector3D[] uvws;
   
-  public Triangle(Vector3D[] vertices, Vector3D[] uvws) {
+  public Triangle(Vector3D[] vertices, Vector3D[] normals, Vector3D[] uvws) {
     this.vertices = vertices;
+    this.normals = normals;
     this.uvws = uvws;
   }
 
@@ -18,6 +20,10 @@ public class Triangle {
 
   public Vector3D getVertex(int i) {
     return vertices[i];
+  }
+
+  public Vector3D getNormal(int i) {
+    return normals[i];
   }
 
 }
