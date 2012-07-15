@@ -1,13 +1,14 @@
 package scene.ui;
 
 
+import geometry.Vector2D;
+
 import java.awt.Font;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import math.Vector2D;
 import net.msg.ChatMsg;
 
 import com.jogamp.opengl.util.awt.TextRenderer;

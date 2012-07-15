@@ -2,7 +2,6 @@ package geometry;
 
 import javax.media.opengl.GL2;
 
-import math.Vector3D;
 
 public class Mesh {
 

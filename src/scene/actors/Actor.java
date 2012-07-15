@@ -1,6 +1,9 @@
 package scene.actors;
 
 
+import geometry.Rotation;
+import geometry.Vector2D;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -9,8 +12,6 @@ import javax.media.opengl.glu.GLU;
 
 import scene.graphics.Graphic;
 
-import math.Rotation;
-import math.Vector2D;
 import net.msg.ActorMsg;
 
 public abstract class Actor {

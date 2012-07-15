@@ -1,4 +1,4 @@
-package math;
+package geometry;
 
 import scene.material.Colour;
 

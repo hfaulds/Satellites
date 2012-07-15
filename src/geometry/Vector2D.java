@@ -1,6 +1,5 @@
-package math;
+package geometry;
 
-import java.awt.Point;
 
 public class Vector2D {
   
@@ -32,13 +31,12 @@ public class Vector2D {
     this.y = other.y;
     return this;
   }
-  
-  public Vector2D _setFromScreen(Point p) {
-    this.x = p.x;
-    this.y = -p.y;
+
+  public Vector2D _setFromScreen(int x, int y) {
+    this.x = x;
+    this.y = -y;
     return this;
   }
-  
   
   /* Mutable */
   public Vector2D _add(Vector2D other) {
@@ -136,4 +134,5 @@ public class Vector2D {
   public String toString() {
     return "(" + this.x + "," + this.y + ")";
   }
+
 }

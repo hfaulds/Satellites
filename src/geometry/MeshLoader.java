@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import math.Vector3D;
 
 public class MeshLoader {
 

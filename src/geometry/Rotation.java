@@ -1,4 +1,4 @@
-package math;
+package geometry;
 
 public class Rotation {
 

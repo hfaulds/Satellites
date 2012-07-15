@@ -3,6 +3,8 @@ package scene.graphics.ship;
 import geometry.Box;
 import geometry.Mesh;
 import geometry.MeshLoader;
+import geometry.Rotation;
+import geometry.Vector2D;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -11,8 +13,6 @@ import java.util.List;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
-import math.Rotation;
-import math.Vector2D;
 import scene.graphics.Graphic;
 
 

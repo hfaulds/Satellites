@@ -1,5 +1,8 @@
 package net;
 
+import geometry.Rotation;
+import geometry.Vector2D;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,8 +15,6 @@ import java.util.ArrayList;
 import scene.actors.SatelliteActor;
 import scene.actors.ShipActor;
 
-import math.Rotation;
-import math.Vector2D;
 import net.msg.ActorMsg;
 import net.msg.PlayerMsg;
 import net.msg.SceneMsg;

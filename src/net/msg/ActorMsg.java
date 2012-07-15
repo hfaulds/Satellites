@@ -1,12 +1,13 @@
 package net.msg;
 
+import geometry.Rotation;
+import geometry.Vector2D;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import scene.actors.Actor;
 
-import math.Rotation;
-import math.Vector2D;
 
 public class ActorMsg {
 

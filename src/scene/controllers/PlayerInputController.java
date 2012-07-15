@@ -1,5 +1,7 @@
 package scene.controllers;
 
+import geometry.Vector2D;
+
 import java.util.List;
 
 import scene.actors.Actor;
@@ -7,7 +9,6 @@ import scene.actors.Actor;
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.KeyListener;
 
-import math.Vector2D;
 
 
 public class PlayerInputController implements Controller, KeyListener {

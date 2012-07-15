@@ -1,8 +1,8 @@
 package scene.actors;
 
+import geometry.Rotation;
+import geometry.Vector2D;
 import scene.graphics.SatelliteGraphic;
-import math.Rotation;
-import math.Vector2D;
 
 public class SatelliteActor extends Actor {
 

@@ -1,11 +1,11 @@
 package scene.ui;
 
 
+import geometry.Vector2D;
 import gui.InGameGUI;
 
 import javax.media.opengl.GL2;
 
-import math.Vector2D;
 
 import com.jogamp.opengl.util.gl2.GLUT;
 

@@ -1,16 +1,14 @@
 package scene.renderers;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
+import geometry.Vector2D;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import scene.Scene;
 
-import math.Vector2D;
-
+import com.jogamp.newt.event.MouseAdapter;
+import com.jogamp.newt.event.MouseEvent;
 
 public class SceneRenderer extends MouseAdapter {
 
@@ -60,25 +58,24 @@ public class SceneRenderer extends MouseAdapter {
 
   @Override
   public void mouseDragged(MouseEvent e) {
-    endMousePos._setFromScreen(e.getPoint());
+    bPanning = !(e.getButton() == PAN_BUTTON);
+    endMousePos._setFromScreen(e.getX(), e.getY());
   }
   
   @Override
   public void mousePressed(MouseEvent e) {
-   if(e.getButton() == PAN_BUTTON) {
-     bPanning = true;
-     endMousePos._set(startMousePos._setFromScreen(e.getPoint()));
-   }
+    bPanning = !(e.getButton() == PAN_BUTTON);
+     endMousePos._set(startMousePos._setFromScreen(e.getX(), e.getY()));
   }
   
   @Override
   public void mouseReleased(MouseEvent e) {
-    bPanning = !(e.getButton() == PAN_BUTTON);
+    bPanning = (e.getButton() == PAN_BUTTON);
   }
   
   @Override
-  public void mouseWheelMoved(MouseWheelEvent e) {
-    this.zoom =  Math.abs(this.zoom + e.getWheelRotation() * ZOOM_RATE);
+  public void mouseWheelMoved(MouseEvent e) {
+    this.zoom =  Math.max(Math.abs(this.zoom - e.getWheelRotation() * ZOOM_RATE), ZOOM_RATE);
     renderer3D.updateMatrices();
   }
 

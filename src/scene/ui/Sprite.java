@@ -1,8 +1,9 @@
 package scene.ui;
 
+import geometry.Vector2D;
+
 import javax.media.opengl.GL2;
 
-import math.Vector2D;
 
 
 public abstract class Sprite {

@@ -116,14 +116,13 @@ public class InGameGUI extends GUI implements GLEventListener {
     GLWindow window = GLWindow.create(capabilities);
     window.addGLEventListener(this);
     window.addKeyListener(scene.input);
+    window.addMouseListener(renderer);
     return window;
   }
 
   private NewtCanvasAWT createCanvas(GLWindow window) {
     NewtCanvasAWT canvas = new NewtCanvasAWT(window);
-    canvas.addMouseListener(renderer);
-    canvas.addMouseWheelListener(renderer);
-    canvas.addMouseMotionListener(renderer);
+    
     return canvas;
   }
 

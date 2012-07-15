@@ -1,6 +1,5 @@
 package geometry;
 
-import math.Vector3D;
 
 public class Triangle {
   

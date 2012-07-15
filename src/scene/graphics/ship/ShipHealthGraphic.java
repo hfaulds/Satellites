@@ -1,10 +1,11 @@
 package scene.graphics.ship;
 
+import geometry.Rotation;
+import geometry.Vector2D;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
-import math.Rotation;
-import math.Vector2D;
 import scene.actors.ShipActor;
 import scene.graphics.Graphic;
 import scene.material.Colour;

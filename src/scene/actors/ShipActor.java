@@ -1,9 +1,9 @@
 package scene.actors;
 
+import geometry.Rotation;
+import geometry.Vector2D;
 import scene.graphics.Graphic;
 import scene.graphics.ship.ShipGraphic;
-import math.Rotation;
-import math.Vector2D;
 
 public class ShipActor extends Actor {
 

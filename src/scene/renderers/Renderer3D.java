@@ -1,5 +1,7 @@
 package scene.renderers;
 
+import geometry.Vector2D;
+
 import java.util.List;
 
 import javax.media.opengl.GL;
@@ -11,7 +13,6 @@ import scene.Scene;
 import scene.actors.Actor;
 import scene.actors.PointLightActor;
 
-import math.Vector2D;
 
 
 public class Renderer3D {

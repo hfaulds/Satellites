@@ -1,11 +1,12 @@
 package scene.graphics;
 
+import geometry.Rotation;
+import geometry.Vector2D;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUquadric;
 
-import math.Rotation;
-import math.Vector2D;
 
 public class SatelliteGraphic implements Graphic {
 
