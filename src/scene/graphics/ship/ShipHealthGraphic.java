@@ -54,19 +54,19 @@ public class ShipHealthGraphic implements Graphic {
         );
 
     int shield = actor.shield / SEGMENT_RATIO;
-    int asdsada = startShield + (ShipActor.MAX_SHIELD / SEGMENT_RATIO);
+    int sheildFinish = startShield + (ShipActor.MAX_SHIELD / SEGMENT_RATIO);
     
     drawBackground(gl, startShield);
     drawBarDepleted(
         gl, 
         startShield, 
-        asdsada - shield
+        sheildFinish - shield
         );
     drawBarLeft(
         gl, 
         SHIELD_COLOUR, 
-        asdsada - shield, 
-        asdsada
+        sheildFinish - shield, 
+        sheildFinish
         );
 
     gl.glEnable(GL2.GL_LIGHTING);
@@ -91,19 +91,13 @@ public class ShipHealthGraphic implements Graphic {
     thickness /= 2;
 
     for(int i=start; i < end ; i++){
-      gl.glBegin(GL2.GL_POLYGON);
+      gl.glBegin(GL2.GL_QUADS);
       pointOnCircle(gl, thickness, i);
       pointOnCircle(gl, -thickness, i);
-      pointOnCircle(gl, thickness, i+1);
-      gl.glEnd();
-
-      gl.glBegin(GL2.GL_POLYGON);
-      pointOnCircle(gl, thickness, i+1);
       pointOnCircle(gl, -thickness, i+1);
-      pointOnCircle(gl, -thickness, i);
+      pointOnCircle(gl, thickness, i+1);
       gl.glEnd();
     }
-    gl.glEnd();
   }
 
   private void pointOnCircle(GL2 gl, double thickness, int i) {

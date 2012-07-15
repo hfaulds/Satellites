@@ -24,7 +24,8 @@ public class FPSSprite extends Sprite {
   @Override
   public void render(GL2 gl) {
     fps = (fps * 5/6) +  (SECOND / (System.nanoTime() - lastTime) * 1/6);
-    
+
+    gl.glColor4d(1.0, 1.0, 1.0, 1.0);
     gl.glWindowPos2d(position.x, position.y);
     glut.glutBitmapString(GLUT.BITMAP_HELVETICA_10, String.valueOf(fps));
     lastTime = System.nanoTime();

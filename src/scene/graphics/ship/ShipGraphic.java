@@ -30,7 +30,7 @@ public class ShipGraphic implements Graphic {
 
   public ShipGraphic(double width, double length, double height) {
     this.mesh = loadMesh(SHIP_MESH);
-    this.boundingbox = Box.createBoundingBox(mesh);;
+    this.boundingbox = Box.createBoundingBox(mesh);
   }
 
   private Mesh loadMesh(String file) {

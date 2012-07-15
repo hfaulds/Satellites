@@ -14,22 +14,18 @@ public class Mesh {
   }
 
   public void render(GL2 gl) {
-    gl.glColor3d(1, 1, 1);
-    gl.glBegin(GL2.GL_TRIANGLES);
-    {
-      for (Triangle triangle : triangles) {
-        for (int i = 0; i < 3; i++) {
-          Vector3D uvw = triangle.getTextureUV(i);
-          gl.glTexCoord2dv(uvw.toDouble(), 0);
-          
-          Vector3D vertex = triangle.getVertex(i);
-          gl.glVertex3dv(vertex.toDouble(), 0);
-          
-          Vector3D normal = triangle.getNormal(i);
-          gl.glNormal3dv(normal.toDouble(), 0);
-        }
+    for (Triangle triangle : triangles) {
+      gl.glBegin(GL2.GL_TRIANGLES);
+      for (int i = 0; i < 3; i++) {
+        Vector3D uvw = triangle.getTextureUV(i);
+        Vector3D vertex = triangle.getVertex(i);
+        Vector3D normal = triangle.getNormal(i);
+
+        gl.glNormal3dv(normal.toDouble(), 0);
+        gl.glTexCoord3dv(uvw.toDouble(), 0);
+        gl.glVertex3dv(vertex.toDouble(), 0);
       }
+      gl.glEnd();
     }
-    gl.glEnd();
   }
 }

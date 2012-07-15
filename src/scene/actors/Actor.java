@@ -39,10 +39,16 @@ public abstract class Actor {
     this.graphic = graphic;
     this.id = id;
   }
+
+  public Actor(Vector2D position, Rotation rotation, double mass, Graphic graphic) {
+    this(position, rotation, mass, graphic, nextID());
+  }
   
   public Actor(double x, double y, double mass, Graphic graphic) {
     this(new Vector2D(x, y), new Rotation(), mass, graphic, nextID());
   }
+  
+
 
   public void tick() {
     this.position._add(velocity);
