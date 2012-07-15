@@ -1,4 +1,4 @@
-package scene.geometry;
+package geometry;
 
 import math.Vector3D;
 
@@ -12,6 +12,12 @@ public class Triangle {
     this.vertices = vertices;
     this.normals = normals;
     this.uvws = uvws;
+  }
+
+  public Triangle(Vector3D[] vertices) {
+    this.vertices = vertices;
+    this.normals = new Vector3D[0];
+    this.uvws = new Vector3D[0];
   }
 
   public Vector3D getTextureUV(int i) {

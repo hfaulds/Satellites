@@ -1,4 +1,4 @@
-package scene.geometry;
+package geometry;
 
 import java.io.BufferedReader;
 import java.io.File;

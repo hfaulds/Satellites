@@ -1,5 +1,9 @@
 package scene.graphics.ship;
 
+import geometry.Box;
+import geometry.Mesh;
+import geometry.MeshLoader;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,27 +13,32 @@ import javax.media.opengl.glu.GLU;
 
 import math.Rotation;
 import math.Vector2D;
-import scene.geometry.Mesh;
-import scene.geometry.MeshLoader;
 import scene.graphics.Graphic;
 
 
 public class ShipGraphic implements Graphic {
 
+  private static final String SHIP_MESH = "Ship-Mk2.obj";
   private final float[] ambientColour   = { 0.7f, 0.7f, 0.7f };
 
-  public final List<Graphic> ui = new ArrayList<Graphic>();
-  
   private int listID;
   
-  public Mesh mesh;
+  public final List<Graphic> ui = new ArrayList<Graphic>();
+
+  public final Box boundingbox;
+  public final Mesh mesh;
 
   public ShipGraphic(double width, double length, double height) {
+    this.mesh = loadMesh(SHIP_MESH);
+    this.boundingbox = Box.createBoundingBox(mesh);;
+  }
 
+  private Mesh loadMesh(String file) {
     try {
-      this.mesh = MeshLoader.loadOBJ("Ship-Mk2.obj");
+      return MeshLoader.loadOBJ(file);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
+      return null;
     }
   }
 

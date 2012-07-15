@@ -12,7 +12,7 @@ import net.NetworkConnection;
 import net.msg.ChatMsg;
 import scene.Scene;
 import scene.SceneUpdater;
-import scene.render.SceneRenderer;
+import scene.renderers.SceneRenderer;
 import scene.ui.MsgSprite;
 
 import com.jogamp.newt.awt.NewtCanvasAWT;

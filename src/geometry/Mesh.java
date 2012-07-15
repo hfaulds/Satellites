@@ -1,4 +1,4 @@
-package scene.geometry;
+package geometry;
 
 import javax.media.opengl.GL2;
 

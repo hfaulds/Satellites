@@ -1,4 +1,4 @@
-package scene.render;
+package scene.renderers;
 
 
 import javax.media.opengl.GL2;
