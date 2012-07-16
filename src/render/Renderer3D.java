@@ -113,4 +113,20 @@ public class Renderer3D {
       }
     }
   }
+
+  public void reshape(GL2 gl, int width, int height) {
+    if (height <= 0) {
+      height = 1;
+    }
+    if(width <= 0) {
+      width = 1;
+    }
+    float ratio = (float) width / (float) height;
+    gl.glMatrixMode(GL2.GL_PROJECTION);
+    gl.glLoadIdentity();
+    glu.gluPerspective(50.0f, ratio, 1.0, 1000.0);
+    gl.glMatrixMode(GL2.GL_MODELVIEW);
+    gl.glLoadIdentity();
+    updateMatrices();
+  }
 }

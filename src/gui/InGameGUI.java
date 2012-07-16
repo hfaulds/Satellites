@@ -142,7 +142,7 @@ public class InGameGUI extends GUI implements GLEventListener {
   @Override
   public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
     updater.tick();
-    renderer.render(drawable);
+    renderer.reshape(drawable, height, height);
   }
   
   @Override

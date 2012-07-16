@@ -4,6 +4,7 @@ import geometry.Vector2D;
 
 import java.util.List;
 
+import render.Renderer3D;
 import scene.Scene;
 import scene.actors.Actor;
 import scene.actors.ProjectileActor;
@@ -16,13 +17,16 @@ import com.jogamp.newt.event.MouseEvent;
 public class PlayerInputController extends MouseAdapter implements Controller, KeyListener {
 
   private static final Vector2D START_DIRECTION = new Vector2D(0, -1);
+  private static final long FIRE_COOLDOWN = 2000;
+  
+  private static final int KEY_FORWARD = 'W';
+  private static final int KEY_LEFT    = 'A';
+  private static final int KEY_RIGHT   = 'D';
   
   private static final double ACCELERATION = 0.0005;
   private static final double SPIN         = 0.0005;
 
-  private static final int KEY_FORWARD = 'W';
-  private static final int KEY_LEFT    = 'A';
-  private static final int KEY_RIGHT   = 'D';
+  public static int FIRE_BUTTON = MouseEvent.BUTTON1;
   
   private double accelMag = 0;
   private double spinMag  = 0;
@@ -30,6 +34,7 @@ public class PlayerInputController extends MouseAdapter implements Controller, K
   public Actor actor;
 
   private Scene scene;
+  private long lastFired = System.currentTimeMillis();
   
   public PlayerInputController(Scene scene) {
     this.scene = scene;
@@ -91,8 +96,11 @@ public class PlayerInputController extends MouseAdapter implements Controller, K
   
   @Override
   public void mouseClicked(MouseEvent e) {
-    if(e.getButton() == MouseEvent.BUTTON1) {
-      scene.queueAddActor(new ProjectileActor(actor.position));
+    if(e.getButton() == FIRE_BUTTON && System.currentTimeMillis() - lastFired > FIRE_COOLDOWN) {
+      Vector2D direction = Renderer3D.project(actor.position).sub(new Vector2D(e.getX(), e.getY()))._normalize()._invertX();
+      Vector2D position = actor.position.add(direction.mult(2));
+      scene.queueAddActor(new ProjectileActor(position, direction));
+      lastFired = System.currentTimeMillis();
     }
   }
 }

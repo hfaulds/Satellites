@@ -57,6 +57,11 @@ public class SceneRenderer extends MouseAdapter {
     renderer2D.preRender(gl, width, height);
     renderer2D.render(gl, scene.ui);
   }
+  
+  public void reshape(GLAutoDrawable drawable, int width, int height) {
+    GL2 gl = drawable.getGL().getGL2();
+    renderer3D.reshape(gl, width, height);
+  }
 
   @Override
   public void mouseDragged(MouseEvent e) {
