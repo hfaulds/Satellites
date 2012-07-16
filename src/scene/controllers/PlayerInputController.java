@@ -99,7 +99,9 @@ public class PlayerInputController extends MouseAdapter implements Controller, K
     if(e.getButton() == FIRE_BUTTON && System.currentTimeMillis() - lastFired > FIRE_COOLDOWN) {
       Vector2D direction = Renderer3D.project(actor.position).sub(new Vector2D(e.getX(), e.getY()))._normalize()._invertX();
       Vector2D position = actor.position.add(direction.mult(2));
-      scene.queueAddActor(new ProjectileActor(position, direction));
+      ProjectileActor projectile = new ProjectileActor(position, direction);
+      scene.queueAddActor(projectile);
+      scene.addController(new ProjectileController(projectile));
       lastFired = System.currentTimeMillis();
     }
   }

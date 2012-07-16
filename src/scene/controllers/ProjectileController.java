@@ -5,17 +5,14 @@ import geometry.Vector2D;
 import java.util.List;
 
 import scene.actors.Actor;
+import scene.actors.ProjectileActor;
 
-import com.esotericsoftware.kryonet.Server;
+public class ProjectileController implements Controller {
 
-public class ServerSatelliteController implements Controller {
+  private final ProjectileActor actor;
 
-  public final Actor actor;
-  private final Server server;
-  
-  public ServerSatelliteController(Actor actor, Server server) {
+  public ProjectileController(ProjectileActor actor) {
     this.actor = actor;
-    this.server = server;
   }
 
   @Override
@@ -34,7 +31,6 @@ public class ServerSatelliteController implements Controller {
 
     actor.applyForce(force);
     actor.tick();
-    server.sendToAllUDP(actor.getInfo());
   }
 
 }
