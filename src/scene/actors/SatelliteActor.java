@@ -8,7 +8,7 @@ public class SatelliteActor extends Actor {
 
   public final static double density = 0.05;
   
-  private double radius = calcRadius(mass);
+  public final double radius = calcRadius(mass);
   
   public SatelliteActor(Vector2D position, Rotation rotation, double mass, int id) {
     super(position, rotation, mass, new SatelliteGraphic(calcRadius(mass)), id);
