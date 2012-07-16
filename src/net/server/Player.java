@@ -10,12 +10,12 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 
 
-public class PlayerConnection extends Connection {
+public class Player extends Connection {
 
   public final Actor actor;  
   public final Controller controller;  
 
-  public PlayerConnection(Server server) {
+  public Player(Server server) {
     this.actor = new ShipActor(0,0);
     this.controller = new ServerShipController(actor, server);
   }

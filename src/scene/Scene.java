@@ -28,7 +28,7 @@ import com.esotericsoftware.kryonet.Connection;
 
 public class Scene extends MouseAdapter {
 
-  public final PlayerInputController input = new PlayerInputController();
+  public final PlayerInputController input = new PlayerInputController(this);
   public final MsgSprite messageHandler = new MsgSprite();
 
   public final List<Actor>       actors = new ArrayList<Actor>();

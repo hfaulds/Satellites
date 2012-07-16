@@ -22,7 +22,7 @@ public class ServerListener extends Listener {
   
   @Override
   public void connected(Connection connection) {
-    PlayerConnection clientConnection = (PlayerConnection)connection;
+    Player clientConnection = (Player)connection;
     
     scene.queueAddActor(clientConnection.actor);
     scene.addController(clientConnection.controller);
@@ -33,7 +33,7 @@ public class ServerListener extends Listener {
   
   @Override
   public void disconnected(Connection connection) {
-    PlayerConnection clientConnection = (PlayerConnection)connection;
+    Player clientConnection = (Player)connection;
     scene.removeController(clientConnection.controller);
     scene.removeActor(clientConnection.actor);
   }
@@ -41,7 +41,7 @@ public class ServerListener extends Listener {
   @Override
   public void received(Connection connection, Object info) {
     if(info instanceof PlayerMsg) {
-      ((PlayerConnection)connection).updateActor((PlayerMsg)info);
+      ((Player)connection).updateActor((PlayerMsg)info);
     } else if(info instanceof ChatMsg) {
       scene.messageHandler.displayMessage((ChatMsg) info);
     }

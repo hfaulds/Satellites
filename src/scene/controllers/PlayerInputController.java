@@ -4,14 +4,16 @@ import geometry.Vector2D;
 
 import java.util.List;
 
+import scene.Scene;
 import scene.actors.Actor;
+import scene.actors.ProjectileActor;
 
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.KeyListener;
+import com.jogamp.newt.event.MouseAdapter;
+import com.jogamp.newt.event.MouseEvent;
 
-
-
-public class PlayerInputController implements Controller, KeyListener {
+public class PlayerInputController extends MouseAdapter implements Controller, KeyListener {
 
   private static final Vector2D START_DIRECTION = new Vector2D(0, -1);
   
@@ -26,13 +28,11 @@ public class PlayerInputController implements Controller, KeyListener {
   private double spinMag  = 0;
 
   public Actor actor;
+
+  private Scene scene;
   
-  public PlayerInputController() {
-    
-  }
-  
-  public PlayerInputController(Actor actor) {
-    setActor(actor);
+  public PlayerInputController(Scene scene) {
+    this.scene = scene;
   }
   
   public void setActor(Actor actor) {
@@ -86,6 +86,13 @@ public class PlayerInputController implements Controller, KeyListener {
         if(spinMag == -1)
           spinMag = 0;
         break;
+    }
+  }
+  
+  @Override
+  public void mouseClicked(MouseEvent e) {
+    if(e.getButton() == MouseEvent.BUTTON1) {
+      scene.queueAddActor(new ProjectileActor(actor.position));
     }
   }
 }

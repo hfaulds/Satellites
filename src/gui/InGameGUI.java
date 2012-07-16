@@ -118,7 +118,7 @@ public class InGameGUI extends GUI implements GLEventListener {
     GLWindow window = GLWindow.create(capabilities);
     window.addGLEventListener(this);
     window.addKeyListener(scene.input);
-   // window.addMouseListener(scene.input);
+    window.addMouseListener(scene.input);
     window.addMouseListener(renderer);
     return window;
   }

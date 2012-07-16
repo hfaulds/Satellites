@@ -28,7 +28,7 @@ public class ShipGraphic implements Graphic {
   public final Box boundingbox;
   public final Mesh mesh;
 
-  public ShipGraphic(double width, double length, double height) {
+  public ShipGraphic() {
     this.mesh = loadMesh(SHIP_MESH);
     this.boundingbox = Box.createBoundingBox(mesh);
   }

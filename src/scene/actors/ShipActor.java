@@ -20,15 +20,15 @@ public class ShipActor extends Actor {
   public int shield = MAX_SHIELD - 300;
 
   public ShipActor(Vector2D position, Rotation rotation, double mass, int id) {
-    super(position, rotation, mass, getGraphic(), id);
+    super(position, rotation, mass, createGraphic(), id);
   }
 
   public ShipActor(double x, double y) {
-    super(x, y, MASS, getGraphic());
+    super(x, y, MASS, createGraphic());
   }
   
-  private static Graphic getGraphic() {
-    return new ShipGraphic(WIDTH, LENGTH, HEIGHT);
+  private static Graphic createGraphic() {
+    return new ShipGraphic();
   }
   
   @Override

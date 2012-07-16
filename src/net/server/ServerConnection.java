@@ -37,7 +37,7 @@ public class ServerConnection extends NetworkConnection {
   private Server createServer() {
     Server server = new Server() {
       protected Connection newConnection() {
-        return new PlayerConnection(this);
+        return new Player(this);
       }
     };
     return server;
