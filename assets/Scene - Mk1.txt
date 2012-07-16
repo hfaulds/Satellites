@@ -1,0 +1,16 @@
+actor SatelliteActor {
+p	-8/-5
+m	10
+c	ServerSatelliteController
+}
+
+actor SatelliteActor {
+p	0/5
+m	5
+c	ServerSatelliteController
+}
+
+player ShipActor {
+p	0/0
+c	ServerShipController
+}

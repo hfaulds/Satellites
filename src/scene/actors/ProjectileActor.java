@@ -6,7 +6,7 @@ import geometry.Vector2D;
 public class ProjectileActor extends Actor {
 
   private static final double MASS = 0.002;
-  private static final double SPEED = 1.2;
+  private static final double SPEED = 0.8;
 
   public ProjectileActor(Vector2D position, Vector2D direction) {
     super(position.x, position.y, MASS, new ProjectileGraphic());
