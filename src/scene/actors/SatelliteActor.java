@@ -20,7 +20,8 @@ public class SatelliteActor extends Actor {
  
   private static double calcRadius(double mass) {
     double volume = mass / density;
-    return Math.pow( (3.0 * volume) / (4.0 * Math.PI) , (1.0 / 3.0) );
+    double radius = Math.pow( (3.0 * volume) / (4.0 * Math.PI) , (1.0 / 3.0) );
+    return radius;
   }
   
   @Override
