@@ -1,4 +1,4 @@
-package scene.actors;
+package scene.graphics;
 
 import geometry.Rotation;
 import geometry.Vector2D;
@@ -6,13 +6,12 @@ import geometry.Vector2D;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
-import scene.graphics.Graphic;
 
 public class ProjectileGraphic implements Graphic {
 
   @Override
   public void init(GL2 gl, GLU glu) {
-      
+    
   }
 
   @Override

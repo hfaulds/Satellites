@@ -1,5 +1,6 @@
 package scene.actors;
 
+import scene.graphics.ProjectileGraphic;
 import geometry.Vector2D;
 
 public class ProjectileActor extends Actor {
