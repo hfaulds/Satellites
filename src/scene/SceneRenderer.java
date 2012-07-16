@@ -1,11 +1,13 @@
-package scene.renderers;
+package scene;
+
 
 import geometry.Vector2D;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
-import scene.Scene;
+import render.Renderer2D;
+import render.Renderer3D;
 
 import com.jogamp.newt.event.MouseAdapter;
 import com.jogamp.newt.event.MouseEvent;
@@ -50,7 +52,7 @@ public class SceneRenderer extends MouseAdapter {
     renderer3D.clear(gl);
     
     renderer3D.preRender(gl, cameraPos , width/height, zoom);
-    renderer3D.render(gl, scene.actors);
+    renderer3D.render(gl, scene);
     
     renderer2D.preRender(gl, width, height);
     renderer2D.render(gl, scene.ui);

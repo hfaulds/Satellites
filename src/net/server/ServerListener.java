@@ -24,7 +24,7 @@ public class ServerListener extends Listener {
   public void connected(Connection connection) {
     PlayerConnection clientConnection = (PlayerConnection)connection;
     
-    scene.addActor(clientConnection.actor);
+    scene.queueAddActor(clientConnection.actor);
     scene.addController(clientConnection.controller);
 
     List<ActorMsg> actorInfoList = ActorMsg.actorInfoList(scene.actors);

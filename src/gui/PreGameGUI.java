@@ -96,11 +96,11 @@ public class PreGameGUI extends GUI {
   
   private void populateScene(Scene scene, Server server) {
     SatelliteActor sat1 = new SatelliteActor(-8, -5, 10);
-    scene.addActor(sat1);
+    scene.queueAddActor(sat1);
     scene.addController(new ServerSatelliteController(sat1, server));
  
     SatelliteActor sat2 = new SatelliteActor(0, 5, 5);
-    scene.addActor(sat2);
+    scene.queueAddActor(sat2);
     scene.addController(new ServerSatelliteController(sat2, server));
     
     ShipActor player = new ShipActor(0,0);

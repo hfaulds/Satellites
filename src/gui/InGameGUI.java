@@ -11,8 +11,8 @@ import javax.media.opengl.GLProfile;
 import net.NetworkConnection;
 import net.msg.ChatMsg;
 import scene.Scene;
+import scene.SceneRenderer;
 import scene.SceneUpdater;
-import scene.renderers.SceneRenderer;
 import scene.ui.MsgSprite;
 
 import com.jogamp.newt.awt.NewtCanvasAWT;
@@ -38,9 +38,11 @@ public class InGameGUI extends GUI implements GLEventListener {
   private final FPSAnimator animator;
   
   public InGameGUI(Scene scene, NetworkConnection connection) {
+    
     this.scene = scene;
     this.renderer = new SceneRenderer(scene);
     this.updater = new SceneUpdater(scene);
+    
     this.connection = connection;
     
     this.glWindow = createGLWindow(createCapabilities(), scene);
@@ -122,9 +124,7 @@ public class InGameGUI extends GUI implements GLEventListener {
   }
 
   private NewtCanvasAWT createCanvas(GLWindow window) {
-    NewtCanvasAWT canvas = new NewtCanvasAWT(window);
-    
-    return canvas;
+    return new NewtCanvasAWT(window);
   }
 
 

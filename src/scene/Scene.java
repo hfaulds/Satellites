@@ -3,7 +3,9 @@ package scene;
 
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import scene.actors.Actor;
 import scene.actors.PointLightActor;
@@ -35,6 +37,8 @@ public class Scene extends MouseAdapter {
   public final Sprite[]          ui = new Sprite[]{new FPSSprite(), messageHandler};
 
 
+  public final Queue<Actor>       actorqueue = new LinkedList<Actor>();
+  
   public final String username;
   
   public Scene(String username) {
@@ -53,9 +57,9 @@ public class Scene extends MouseAdapter {
     }
   }
 
-  public void addActor(Actor actor) {
+  public void queueAddActor(Actor actor) {
     synchronized(actors) {
-      actors.add(actor);
+      actorqueue.add(actor);
     }
   }
 
@@ -71,7 +75,7 @@ public class Scene extends MouseAdapter {
     graphic.ui.add(new ShipControlGraphic());
     graphic.ui.add(new ShipDirectionGraphic());
     graphic.ui.add(new ShipHealthGraphic(player));
-    addActor(player);
+    queueAddActor(player);
   }
   
   public void populate(List<ActorMsg> actorInfo, int playerID, Connection connection) {
@@ -81,7 +85,7 @@ public class Scene extends MouseAdapter {
         addController(new ClientShipController(actor, connection));
         addPlayer((ShipActor)actor);
       }
-      addActor(actor);
+      queueAddActor(actor);
     }
   }
   

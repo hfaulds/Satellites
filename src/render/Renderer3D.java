@@ -1,8 +1,6 @@
-package scene.renderers;
+package render;
 
 import geometry.Vector2D;
-
-import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -42,13 +40,7 @@ public class Renderer3D {
       gl.glEnable(lightID);
     }
     
-    synchronized(scene.actors) {
-      for(Actor actor : scene.actors) {
-        gl.glPushMatrix();
-        actor.init(gl, glu);
-        gl.glPopMatrix();
-      }
-    }
+    initActors(gl, scene);
     gl.glEnable(GL2.GL_LIGHTING);
   }
 
@@ -72,8 +64,6 @@ public class Renderer3D {
     gl.glEnable(GL.GL_MULTISAMPLE);
   }
 
-
-
   private void updateMatrices(final GL2 gl) {
       gl.glGetIntegerv(GL2.GL_VIEWPORT, viewportMatrix, 0);
       gl.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, modelMatrix, 0);
@@ -96,12 +86,29 @@ public class Renderer3D {
     
     return new Vector2D(player[0], viewportMatrix[3] - player[1]);
   }
+  
+  public void render(GL2 gl, Scene scene) {
+    initActors(gl, scene);
+    renderActors(gl, scene);
+  }
 
-  public void render(GL2 gl, List<Actor> actors) {
-    synchronized(actors) {
-      for(Actor actor : actors) {
+  private void renderActors(GL2 gl, Scene scene) {
+    synchronized(scene.actors) {
+      for(Actor actor : scene.actors) {
         gl.glPushMatrix();
-        actor.render(gl, glu);
+          actor.render(gl, glu);
+        gl.glPopMatrix();
+      }
+    }
+  }
+
+  private void initActors(GL2 gl, Scene scene) {
+    synchronized(scene.actors) {
+      while(scene.actorqueue.size() > 0) {
+        gl.glPushMatrix();
+          Actor actor = scene.actorqueue.poll();
+          actor.init(gl, glu);
+          scene.actors.add(actor);
         gl.glPopMatrix();
       }
     }
