@@ -15,16 +15,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.esotericsoftware.kryonet.Server;
-
 import net.client.ClientConnection;
 import net.server.ServerConnection;
 import scene.Scene;
-import scene.actors.Planet1000;
-import scene.actors.SatelliteActor;
+import scene.actors.Planet1Actor;
 import scene.actors.ShipActor;
 import scene.controllers.ServerSatelliteController;
 import scene.controllers.ServerShipController;
+
+import com.esotericsoftware.kryonet.Server;
 
 @SuppressWarnings("serial")
 public class PreGameGUI extends GUI {
@@ -96,15 +95,7 @@ public class PreGameGUI extends GUI {
   }
   
   private void populateScene(Scene scene, Server server) {
-    SatelliteActor sat1 = new SatelliteActor(-8, -5, 10);
-    scene.queueAddActor(sat1);
-    scene.addController(new ServerSatelliteController(sat1, server));
- 
-    SatelliteActor sat2 = new SatelliteActor(0, 5, 5);
-    scene.queueAddActor(sat2);
-    scene.addController(new ServerSatelliteController(sat2, server));
-    
-    Planet1000 planet = new Planet1000(17,17);
+    Planet1Actor planet = new Planet1Actor(17,17);
     scene.queueAddActor(planet);
     scene.addController(new ServerSatelliteController(planet, server));
     

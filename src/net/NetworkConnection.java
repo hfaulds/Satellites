@@ -12,13 +12,13 @@ import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import scene.actors.SatelliteActor;
-import scene.actors.ShipActor;
-
 import net.msg.ActorMsg;
+import net.msg.ChatMsg;
 import net.msg.PlayerMsg;
 import net.msg.SceneMsg;
-import net.msg.ChatMsg;
+import scene.actors.Planet1Actor;
+import scene.actors.ProjectileActor;
+import scene.actors.ShipActor;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
@@ -63,8 +63,9 @@ public abstract class NetworkConnection {
     kryo.register(SceneMsg.class);
     kryo.register(PlayerMsg.class);
     kryo.register(ChatMsg.class);
-    
-    kryo.register(SatelliteActor.class);
+
+    kryo.register(ProjectileActor.class);
+    kryo.register(Planet1Actor.class);
     kryo.register(ShipActor.class);
     
     kryo.register(ArrayList.class);

@@ -21,11 +21,7 @@ public class ProjectileController implements Controller {
     
     for(Actor other : actors) {
       if(other != actor) {
-        if(!actor.collides(other)) {
-          force._add(actor.gravForceFrom(other));
-        } else {
-          actor.velocity._mult(0.9);
-        }
+        force._add(actor.gravForceFrom(other));
       }
     }
 

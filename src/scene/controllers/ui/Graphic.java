@@ -1,4 +1,4 @@
-package scene.graphics;
+package scene.controllers.ui;
 
 import geometry.Rotation;
 import geometry.Vector2D;

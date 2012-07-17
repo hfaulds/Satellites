@@ -13,6 +13,15 @@ public class MeshLoader {
 
   private final static String FOLDER_PATH = "assets/";
 
+  public static Mesh loadMesh(String file) {
+    try {
+      return MeshLoader.loadOBJ(file);
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+  
   public static Mesh loadOBJ(String filename) throws FileNotFoundException {
     String fullpath = FOLDER_PATH + filename;
     return loadOBJ(new File(fullpath));

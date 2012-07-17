@@ -1,21 +1,23 @@
 package scene.actors;
 
-import scene.graphics.ProjectileGraphic;
+import geometry.Mesh;
+import geometry.MeshLoader;
+import geometry.Rotation;
 import geometry.Vector2D;
 
 public class ProjectileActor extends Actor {
 
+  private static Mesh MESH = MeshLoader.loadMesh("Projectile-Mk2.obj");
+  
   private static final double MASS = 0.002;
   private static final double SPEED = 0.8;
 
+  public ProjectileActor(Vector2D position, Rotation rotation, double mass, int id) {
+    super(position, rotation, mass, MESH, id);
+  }
+  
   public ProjectileActor(Vector2D position, Vector2D direction) {
-    super(position.x, position.y, MASS, new ProjectileGraphic());
+    super(position.x, position.y, MASS, MESH);
     this.velocity._set(direction._mult(SPEED));
   }
-
-  @Override
-  public boolean collides(Actor a) {
-    return false;
-  }
-
 }

@@ -1,9 +1,11 @@
 package render;
 
 
+
 import javax.media.opengl.GL2;
 
 import scene.ui.Sprite;
+
 
 
 public class Renderer2D {

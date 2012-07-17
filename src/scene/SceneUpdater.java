@@ -6,15 +6,9 @@ import java.awt.event.MouseAdapter;
 import java.util.List;
 
 import scene.actors.Actor;
-import scene.actors.SatelliteActor;
-import scene.actors.ShipActor;
 import scene.controllers.Controller;
 
 public class SceneUpdater extends MouseAdapter {
-  
-  private final CollisionHandle ShipSat = new CollisionHandle(ShipActor.class, SatelliteActor.class);
-  private final CollisionHandle SatSat = new CollisionHandle(SatelliteActor.class, SatelliteActor.class);
-  private final CollisionHandle ShipShip = new CollisionHandle(ShipActor.class, ShipActor.class);
   
   private final Scene scene;
 
@@ -50,36 +44,7 @@ public class SceneUpdater extends MouseAdapter {
   }
 
   private boolean collisionExists(Actor a, Actor b) {
-    //AABB collisions first
-    
-    CollisionHandle handle = new CollisionHandle(a.getClass(), b.getClass());
-    
-    if(handle.equal(ShipSat)) {
-      
-    } else if(handle.equal(SatSat)) {
-      SatelliteActor aa = (SatelliteActor)a;
-      SatelliteActor bb = (SatelliteActor)b;
-      double distance = a.position.distanceTo(b.position);
-      return distance <= aa.radius + bb.radius;
-    } else if(handle.equal(ShipShip)) {
-      
-    }
     
     return false;
-  }
-  
-  private class CollisionHandle {
-    
-    private Class<?> a;
-    private Class<?> b;
-    
-    public CollisionHandle(Class<?> a, Class<?> b) {
-      this.a = a;
-      this.b = b;
-    }
-    
-    public boolean equal(CollisionHandle other) {
-      return (other.a.equals(b) && other.b.equals(a)) || (other.a.equals(a) && other.b.equals(b));
-    }
   }
 }

@@ -1,16 +1,21 @@
 package scene.actors;
 
 
+import geometry.Box;
+import geometry.Mesh;
 import geometry.Rotation;
 import geometry.Vector2D;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
-import scene.graphics.Graphic;
+import scene.controllers.ui.Graphic;
+
 
 import net.msg.ActorMsg;
 
@@ -18,10 +23,15 @@ public abstract class Actor {
 
   public static final double G = 0.0001;
   
-  private static int ID = 0;
+  private static int ID_COUNT = 0;
   public int id = nextID();
+
+  private final float[] ambientColour   = { 0.7f, 0.7f, 0.7f };
   
-  public final Graphic graphic;
+  public final Mesh mesh;
+  public final Box boundingbox;
+
+  public final List<Graphic> ui = new ArrayList<Graphic>();
   
   public final Vector2D position;
   public final Vector2D velocity;
@@ -31,21 +41,24 @@ public abstract class Actor {
 
   public final double mass;
 
-  protected Actor(Vector2D position, Rotation rotation, double mass, Graphic graphic, int id) {
+  private int listID;
+
+  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, int id) {
     this.position = new Vector2D(position);
     this.rotation = new Rotation(rotation);
+    this.boundingbox = Box.createBoundingBox(mesh);
     this.mass = mass;
     this.velocity = new Vector2D();
-    this.graphic = graphic;
+    this.mesh = mesh;
     this.id = id;
   }
 
-  public Actor(Vector2D position, Rotation rotation, double mass, Graphic graphic) {
-    this(position, rotation, mass, graphic, nextID());
+  public Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh) {
+    this(position, rotation, mass, mesh, nextID());
   }
   
-  public Actor(double x, double y, double mass, Graphic graphic) {
-    this(new Vector2D(x, y), new Rotation(), mass, graphic, nextID());
+  public Actor(double x, double y, double mass, Mesh mesh) {
+    this(new Vector2D(x, y), new Rotation(), mass, mesh, nextID());
   }
 
   public void tick() {
@@ -54,14 +67,35 @@ public abstract class Actor {
   }
   
   public void init(GL2 gl, GLU glu) {
-    this.graphic.init(gl, glu);
+    listID = gl.glGenLists(1);
+    gl.glNewList(listID, GL2.GL_COMPILE);
+    {
+      gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_AMBIENT,  ambientColour, 0);
+      gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, ambientColour, 0);
+      gl.glMaterialf(GL2.GL_FRONT, GL2.GL_SHININESS, 0.5f);
+    
+      mesh.render(gl);
+    }
+    gl.glEndList();
+
+    for(Graphic uiElem : ui) {
+      gl.glPushMatrix();
+      uiElem.init(gl, glu);
+      gl.glPopMatrix();
+    }
   }
 
   public void render(GL2 gl, GLU glu) {
-    this.graphic.render(gl, glu, position, rotation);
+    for(Graphic uiElem : ui) {
+      gl.glPushMatrix();
+      uiElem.render(gl, glu, position, rotation);
+      gl.glPopMatrix();
+    }
+    
+    gl.glTranslated(position.x, position.y, Vector2D.Z);
+    gl.glRotated(rotation.toDegrees(), rotation.x, rotation.y, rotation.z);
+    gl.glCallList(listID);
   }
-  
-  public abstract boolean collides(Actor a);
 
   public void applyForce(Vector2D force) {
     this.velocity._add(force.divide(mass));
@@ -94,7 +128,7 @@ public abstract class Actor {
   }
 
   protected static int nextID() {
-    return ++ID;
+    return ++ID_COUNT;
   }
 
   public static Actor fromInfo(ActorMsg info) {
@@ -108,5 +142,4 @@ public abstract class Actor {
       return null;
     }
   }
-
  }

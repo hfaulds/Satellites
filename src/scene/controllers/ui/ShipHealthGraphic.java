@@ -1,4 +1,4 @@
-package scene.graphics.ship;
+package scene.controllers.ui;
 
 import geometry.Rotation;
 import geometry.Vector2D;
@@ -6,8 +6,8 @@ import geometry.Vector2D;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
+
 import scene.actors.ShipActor;
-import scene.graphics.Graphic;
 import scene.material.Colour;
 
 public class ShipHealthGraphic implements Graphic {

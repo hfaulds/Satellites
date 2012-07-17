@@ -14,16 +14,14 @@ import scene.actors.ShipActor;
 import scene.controllers.ClientShipController;
 import scene.controllers.Controller;
 import scene.controllers.PlayerInputController;
-import scene.graphics.ship.ShipControlGraphic;
-import scene.graphics.ship.ShipDirectionGraphic;
-import scene.graphics.ship.ShipGraphic;
-import scene.graphics.ship.ShipHealthGraphic;
+import scene.controllers.ui.ShipControlGraphic;
+import scene.controllers.ui.ShipDirectionGraphic;
+import scene.controllers.ui.ShipHealthGraphic;
 import scene.ui.FPSSprite;
 import scene.ui.MsgSprite;
 import scene.ui.Sprite;
 
 import com.esotericsoftware.kryonet.Connection;
-
 
 public class Scene extends MouseAdapter {
 
@@ -35,8 +33,7 @@ public class Scene extends MouseAdapter {
   public final PointLightActor[] lights = {new PointLightActor()};
   public final Sprite[]          ui = new Sprite[]{new FPSSprite(), messageHandler};
 
-
-  public final Queue<Actor>       actorqueue = new LinkedList<Actor>();
+  public final Queue<Actor> actorqueue = new LinkedList<Actor>();
   
   public final String username;
   
@@ -70,10 +67,9 @@ public class Scene extends MouseAdapter {
 
   public void addPlayer(ShipActor player) {
     input.setActor(player);
-    ShipGraphic graphic = (ShipGraphic)ShipActor.GRAPHIC;
-    graphic.ui.add(new ShipControlGraphic());
-    graphic.ui.add(new ShipDirectionGraphic());
-    graphic.ui.add(new ShipHealthGraphic(player));
+    player.ui.add(new ShipControlGraphic());
+    player.ui.add(new ShipDirectionGraphic());
+    player.ui.add(new ShipHealthGraphic(player));
     queueAddActor(player);
   }
   
