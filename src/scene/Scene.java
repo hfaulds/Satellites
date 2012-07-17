@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import net.msg.ActorMsg;
 import scene.actors.Actor;
 import scene.actors.PointLightActor;
 import scene.actors.ShipActor;
@@ -20,8 +21,6 @@ import scene.graphics.ship.ShipHealthGraphic;
 import scene.ui.FPSSprite;
 import scene.ui.MsgSprite;
 import scene.ui.Sprite;
-
-import net.msg.ActorMsg;
 
 import com.esotericsoftware.kryonet.Connection;
 
@@ -71,7 +70,7 @@ public class Scene extends MouseAdapter {
 
   public void addPlayer(ShipActor player) {
     input.setActor(player);
-    ShipGraphic graphic = (ShipGraphic)player.graphic;
+    ShipGraphic graphic = (ShipGraphic)ShipActor.GRAPHIC;
     graphic.ui.add(new ShipControlGraphic());
     graphic.ui.add(new ShipDirectionGraphic());
     graphic.ui.add(new ShipHealthGraphic(player));

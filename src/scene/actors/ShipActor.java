@@ -10,7 +10,9 @@ public class ShipActor extends Actor {
   public static final int MAX_HEALTH = 1000;
   public static final int MAX_SHIELD = 1000;
 
-  private static double MASS    = 0.0001;
+  public static final Graphic GRAPHIC = new ShipGraphic();
+  
+  private static double MASS   = 0.0001;
   
   public static double WIDTH   = 0.02;
   public static double LENGTH  = 1.0;
@@ -20,15 +22,11 @@ public class ShipActor extends Actor {
   public int shield = MAX_SHIELD - 300;
 
   public ShipActor(Vector2D position, Rotation rotation, double mass, int id) {
-    super(position, rotation, mass, createGraphic(), id);
+    super(position, rotation, mass, GRAPHIC, id);
   }
 
   public ShipActor(double x, double y) {
-    super(x, y, MASS, createGraphic());
-  }
-  
-  private static Graphic createGraphic() {
-    return new ShipGraphic();
+    super(x, y, MASS, GRAPHIC);
   }
   
   @Override

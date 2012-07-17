@@ -47,8 +47,6 @@ public abstract class Actor {
   public Actor(double x, double y, double mass, Graphic graphic) {
     this(new Vector2D(x, y), new Rotation(), mass, graphic, nextID());
   }
-  
-
 
   public void tick() {
     this.position._add(velocity);

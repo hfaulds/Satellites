@@ -20,6 +20,7 @@ import com.esotericsoftware.kryonet.Server;
 import net.client.ClientConnection;
 import net.server.ServerConnection;
 import scene.Scene;
+import scene.actors.Planet1000;
 import scene.actors.SatelliteActor;
 import scene.actors.ShipActor;
 import scene.controllers.ServerSatelliteController;
@@ -102,6 +103,10 @@ public class PreGameGUI extends GUI {
     SatelliteActor sat2 = new SatelliteActor(0, 5, 5);
     scene.queueAddActor(sat2);
     scene.addController(new ServerSatelliteController(sat2, server));
+    
+    Planet1000 planet = new Planet1000(17,17);
+    scene.queueAddActor(planet);
+    scene.addController(new ServerSatelliteController(planet, server));
     
     ShipActor player = new ShipActor(0,0);
     scene.addPlayer(player);
