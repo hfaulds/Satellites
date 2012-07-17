@@ -16,7 +16,7 @@ public class ProjectileController implements Controller {
   }
 
   @Override
-  public void tick(List<Actor> actors) {
+  public void tick(long dt, List<Actor> actors) {
     Vector2D force = new Vector2D();
     
     for(Actor other : actors) {
@@ -26,7 +26,7 @@ public class ProjectileController implements Controller {
     }
 
     actor.applyForce(force);
-    actor.tick();
+    actor.tick(dt);
   }
 
 }

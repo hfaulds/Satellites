@@ -11,20 +11,22 @@ import scene.controllers.Controller;
 public class SceneUpdater extends MouseAdapter {
   
   private final Scene scene;
+  private long lastFrame = System.currentTimeMillis();
 
   public SceneUpdater(Scene scene) {
       this.scene = scene;
   }
 
   public void tick() {
+    long dt = System.currentTimeMillis() - lastFrame;
     
     List<Actor> actors = scene.actors;
     
     synchronized(actors) {
-      scene.input.tick(actors);
+      scene.input.tick(dt, actors);
       synchronized(scene.controllers) {
         for(Controller controller : scene.controllers) {
-          controller.tick(actors);
+          controller.tick(dt, actors);
         }
       }
     }
@@ -40,7 +42,7 @@ public class SceneUpdater extends MouseAdapter {
         }
       }
     }
-    
+    lastFrame = System.currentTimeMillis();
   }
 
   private boolean collisionExists(Actor a, Actor b) {

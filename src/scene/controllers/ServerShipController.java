@@ -30,7 +30,7 @@ public class ServerShipController implements Controller {
   }
 
   @Override
-  public void tick(List<Actor> actors) { 
+  public void tick(long dt, List<Actor> actors) { 
     if(actor.id > -1) {
       Vector2D   force            = new Vector2D();
       Vector2D[] cornerForces     = new Vector2D[corners.length];
@@ -68,7 +68,7 @@ public class ServerShipController implements Controller {
       }
   
       actor.applyTorque(torque);
-      actor.tick();
+      actor.tick(dt);
       server.sendToAllUDP(actor.getInfo());
     }
   }

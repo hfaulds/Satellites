@@ -9,17 +9,18 @@ public class Rotation {
   public double mag;
   
   public Rotation() {
-    this.x = 0;
-    this.y = 0;
-    this.z = 1;
-    this.mag = 0;
+    this(0,0,1,0);
   }
   
   public Rotation(Rotation other) {
-    this.x = other.x;
-    this.y = other.y;
-    this.z = other.z;
-    this.mag = other.mag;
+    this(other.x, other.y, other.z, other.mag);
+  }
+
+  private Rotation(double x, double y, double z, double mag) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+    this.mag = mag;
   }
 
   public void _add(double n) {
@@ -43,6 +44,10 @@ public class Rotation {
     this.y = other.x;
     this.z = other.z;
     this.mag = other.mag;
+  }
+
+  public Rotation mult(double dt) {
+    return new Rotation(x, y, z, mag*dt);
   }
   
 }

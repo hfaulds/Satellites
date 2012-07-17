@@ -21,7 +21,7 @@ import net.msg.ActorMsg;
 
 public abstract class Actor {
 
-  public static final double G = 0.0001;
+  public static final double G = 0.000001;
   
   private static int ID_COUNT = 0;
   public int id = nextID();
@@ -61,9 +61,9 @@ public abstract class Actor {
     this(new Vector2D(x, y), new Rotation(), mass, mesh, nextID());
   }
 
-  public void tick() {
-    this.position._add(velocity);
-    this.rotation._add(spin);
+  public void tick(long dt) {
+    this.position._add(velocity.mult(dt));
+    this.rotation._add(spin.mult(dt));
   }
   
   public void init(GL2 gl, GLU glu) {

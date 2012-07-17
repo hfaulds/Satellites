@@ -12,15 +12,15 @@ public class ClientShipController implements Controller {
 
   private final Actor actor;
   private final Connection connection;
-
+  
+  
   public ClientShipController(Actor actor, Connection connection) {
     this.actor = actor;
     this.connection = connection;
   }
 
   @Override
-  public void tick(List<Actor> actors) {
-    actor.tick();
+  public void tick(long dt, List<Actor> actors) {
     connection.sendUDP(new PlayerMsg(actor.velocity, actor.spin));
   }
 

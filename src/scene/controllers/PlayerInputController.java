@@ -17,14 +17,14 @@ import com.jogamp.newt.event.MouseEvent;
 public class PlayerInputController extends MouseAdapter implements Controller, KeyListener {
 
   private static final Vector2D START_DIRECTION = new Vector2D(0, -1);
-  private static final long FIRE_COOLDOWN = 2000;
+  private static final long FIRE_COOLDOWN = 1000;
   
   private static final int KEY_FORWARD = 'W';
   private static final int KEY_LEFT    = 'A';
   private static final int KEY_RIGHT   = 'D';
   
-  private static final double ACCELERATION = 0.0005;
-  private static final double SPIN         = 0.0005;
+  private static final double ACCELERATION = 0.00005;
+  private static final double SPIN         = 0.00005;
 
   public static int FIRE_BUTTON = MouseEvent.BUTTON1;
   
@@ -45,7 +45,7 @@ public class PlayerInputController extends MouseAdapter implements Controller, K
   }
   
   @Override
-  public void tick(List<Actor> actors) {
+  public void tick(long dt, List<Actor> actors) {
     if(actor != null) {
       if(accelMag != 0) {
         Vector2D acceleration = START_DIRECTION.rotate(actor.rotation.mag)._mult(accelMag * ACCELERATION);
