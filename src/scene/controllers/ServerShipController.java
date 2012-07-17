@@ -18,7 +18,7 @@ public class ServerShipController implements Controller {
     new Vector2D( ShipActor.WIDTH /-2, ShipActor.LENGTH / 2),
     new Vector2D( ShipActor.WIDTH / 2, ShipActor.LENGTH / 2),
     new Vector2D( ShipActor.WIDTH /-2, ShipActor.LENGTH /-2),
-    new Vector2D(ShipActor. WIDTH / 2, ShipActor.LENGTH /-2)
+    new Vector2D( ShipActor. WIDTH / 2, ShipActor.LENGTH /-2)
   };
   
   public final Actor actor;

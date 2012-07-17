@@ -27,10 +27,15 @@ public class Box {
 
     return new Box(max, min);
   }
-
-  public boolean contains(Vector3D point) {
-    return (point.x <= max.x) && (point.x >= min.x) 
-        && (point.y <= max.y) && (point.y >= min.y) 
-        && (point.z <= max.z) && (point.z >= min.z);
+  
+  public boolean collides(Box other) {
+    if (this.max.x < other.min.x || 
+        this.max.y < other.min.y || 
+        this.min.x > other.max.x || 
+        this.min.y > other.max.y) 
+    {
+        return false;
+    }
+    return true;
   }
 }

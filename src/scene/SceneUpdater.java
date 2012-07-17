@@ -44,7 +44,9 @@ public class SceneUpdater extends MouseAdapter {
   }
 
   private boolean collisionExists(Actor a, Actor b) {
-    
+    if(a.boundingbox.collides(b.boundingbox)) {
+      
+    }
     return false;
   }
 }
