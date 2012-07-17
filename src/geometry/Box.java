@@ -3,14 +3,16 @@ package geometry;
 
 public class Box {
 
-  public final Vector3D max, min;
+  private final Vector3D max, min;
+  private final Vector2D position;
   
-  public Box(Vector3D max, Vector3D min) {
+  public Box(Vector3D max, Vector3D min, Vector2D position) {
     this.max = max;
     this.min = min;
+    this.position = position;
   }
   
-  public static Box createBoundingBox(Mesh mesh) {
+  public static Box createBoundingBox(Mesh mesh, Vector2D position) {
     Vector3D max = new Vector3D(mesh.vertices[0]);
     Vector3D min = new Vector3D(mesh.vertices[0]);
     
@@ -25,17 +27,29 @@ public class Box {
       min.z = Math.min(Vector3D.z, min.z);
     }
 
-    return new Box(max, min);
+    return new Box(max, min, position);
+  }
+
+  public double minX() {
+    return min.x + position.x;
   }
   
-  public boolean collides(Box other) {
-    if (this.max.x < other.min.x || 
-        this.max.y < other.min.y || 
-        this.min.x > other.max.x || 
-        this.min.y > other.max.y) 
-    {
-        return false;
-    }
-    return true;
+  public double maxX() {
+    return max.x + position.x;
+  }
+  
+  public double minY() {
+    return min.y + position.y;
+  }
+  
+  public double maxY() {
+    return max.y + position.y;
+  }
+  
+  public static boolean boxesIntersect(Box a, Box b) {
+    return  a.minX() < b.maxX() && 
+            a.maxX() > b.minX() &&
+            a.minY() < b.maxY() && 
+            a.maxY() > b.minY();
   }
 }

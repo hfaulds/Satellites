@@ -1,5 +1,6 @@
 package scene;
 
+import geometry.Box;
 import geometry.Vector2D;
 
 import java.awt.event.MouseAdapter;
@@ -46,8 +47,10 @@ public class SceneUpdater extends MouseAdapter {
   }
 
   private boolean collisionExists(Actor a, Actor b) {
-    if(a.boundingbox.collides(b.boundingbox)) {
-      
+    if(Box.boxesIntersect(a.boundingbox, b.boundingbox)) {
+      System.out.println();
+      System.out.println(a.getClass());
+      System.out.println(b.getClass());
     }
     return false;
   }

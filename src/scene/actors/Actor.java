@@ -46,7 +46,7 @@ public abstract class Actor {
   protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, int id) {
     this.position = new Vector2D(position);
     this.rotation = new Rotation(rotation);
-    this.boundingbox = Box.createBoundingBox(mesh);
+    this.boundingbox = Box.createBoundingBox(mesh, this.position);
     this.mass = mass;
     this.velocity = new Vector2D();
     this.mesh = mesh;
