@@ -26,7 +26,7 @@ public abstract class Actor {
   private static int ID_COUNT = 0;
   public int id = nextID();
 
-  private final float[] ambientColour   = { 0.7f, 0.7f, 0.7f };
+  private final float[] ambientColour = { 0.7f, 0.7f, 0.7f };
   
   public final Mesh mesh;
   public final Box boundingbox;
@@ -128,7 +128,7 @@ public abstract class Actor {
   }
 
   protected static int nextID() {
-    return ++ID_COUNT;
+    return ID_COUNT++;
   }
 
   public static Actor fromInfo(ActorMsg info) {

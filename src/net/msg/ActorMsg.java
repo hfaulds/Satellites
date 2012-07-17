@@ -6,6 +6,7 @@ import geometry.Vector2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import scene.Scene;
 import scene.actors.Actor;
 
 
@@ -29,10 +30,15 @@ public class ActorMsg {
     this.actorClass = actorClass;
   }
   
-  public static List<ActorMsg> actorInfoList(List<Actor> actors) {
+  public static List<ActorMsg> actorInfoList(Scene scene) {
     List<ActorMsg> infoList = new ArrayList<ActorMsg>();
-    for(Actor actor: actors)
+    
+    for(Actor actor: scene.actors)
       infoList.add(actor.getInfo());
+
+    for(Actor actor: scene.actorqueue)
+      infoList.add(actor.getInfo());
+    
     return infoList;
   }
 }

@@ -22,13 +22,13 @@ public class ServerListener extends Listener {
   
   @Override
   public void connected(Connection connection) {
-    Player clientConnection = (Player)connection;
+    Player player = (Player)connection;
     
-    scene.queueAddActor(clientConnection.actor);
-    scene.addController(clientConnection.controller);
+    scene.queueAddActor(player.actor);
+    scene.addController(player.controller);
 
-    List<ActorMsg> actorInfoList = ActorMsg.actorInfoList(scene.actors);
-    connection.sendTCP(new SceneMsg(actorInfoList, clientConnection.actor.id));
+    List<ActorMsg> actorInfoList = ActorMsg.actorInfoList(scene);
+    connection.sendTCP(new SceneMsg(actorInfoList, player.actor.id));
   }
   
   @Override
