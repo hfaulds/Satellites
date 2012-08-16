@@ -101,7 +101,7 @@ public class PlayerInputController extends MouseAdapter implements Controller, K
       ProjectileActor projectile = new ProjectileActor(position, direction);
       
       if(connection != null) {
-        connection.addActor(projectile);
+        connection.fireProjectile(projectile);
       }
       
       lastFired = System.currentTimeMillis();

@@ -4,7 +4,7 @@ import java.util.List;
 
 import scene.actors.Actor;
 
-import net.msg.PlayerMsg;
+import net.msg.PlayerUpdateMsg;
 
 import com.esotericsoftware.kryonet.Connection;
 
@@ -20,7 +20,7 @@ public class ClientShipController implements Controller {
 
   @Override
   public void tick(long dt, List<Actor> actors) {
-    connection.sendUDP(new PlayerMsg(actor.velocity, actor.spin));
+    connection.sendUDP(new PlayerUpdateMsg(actor.velocity, actor.spin));
   }
 
 }

@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import net.NetworkConnection;
 import scene.Scene;
+import scene.actors.ProjectileActor;
+import scene.controllers.ServerActorController;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
@@ -22,7 +24,7 @@ public class ServerConnection extends NetworkConnection {
       super.addClasses(server);
       server.start();
       server.bind(TCP_PORT, UDP_PORT);
-      server.addListener(new ServerListener(scene));
+      server.addListener(new ServerListener(scene, server));
       
       super.setAddress();
       online = true;
@@ -54,5 +56,11 @@ public class ServerConnection extends NetworkConnection {
   @Override
   public void sendMsg(Object msg) {
     server.sendToAllUDP(msg);
+  }
+
+  @Override
+  public void fireProjectile(ProjectileActor projectile) {
+    super.addActor(projectile);
+    scene.addController(new ServerActorController(projectile, server));
   }
 }

@@ -5,6 +5,7 @@ import java.net.InetAddress;
 
 import net.NetworkConnection;
 import scene.Scene;
+import scene.actors.ProjectileActor;
 
 import com.esotericsoftware.kryonet.Client;
 
@@ -42,5 +43,10 @@ public class ClientConnection extends NetworkConnection {
     if(clientListener != null && clientListener.isConnected()) {
       clientListener.connection.sendUDP(msg);
     }
+  }
+
+  @Override
+  public void fireProjectile(ProjectileActor projectile) {
+    super.addActor(projectile);
   }
 }

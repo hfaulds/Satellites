@@ -20,7 +20,7 @@ import net.server.ServerConnection;
 import scene.Scene;
 import scene.actors.Planet1Actor;
 import scene.actors.ShipActor;
-import scene.controllers.ServerSatelliteController;
+import scene.controllers.ServerActorController;
 import scene.controllers.ServerShipController;
 
 import com.esotericsoftware.kryonet.Server;
@@ -99,7 +99,7 @@ public class PreGameGUI extends GUI {
   private void populateScene(Scene scene, Server server) {
     Planet1Actor planet = new Planet1Actor(17,17);
     scene.queueAddActor(planet);
-    scene.addController(new ServerSatelliteController(planet, server));
+    scene.addController(new ServerActorController(planet, server));
     
     ShipActor player = new ShipActor(0,0);
     scene.addPlayer(player);

@@ -3,17 +3,17 @@ package net.msg;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SceneMsg {
+public class SceneCreateMsg {
   
   public final int playerID;
   public final List<ActorCreateMsg> actorInfoList;
   
-  public SceneMsg(List<ActorCreateMsg> actorInfoList, int playerID) {
+  public SceneCreateMsg(List<ActorCreateMsg> actorInfoList, int playerID) {
     this.actorInfoList = actorInfoList;
     this.playerID = playerID;
   }
   
-  public SceneMsg() {
+  public SceneCreateMsg() {
     this.actorInfoList = new ArrayList<ActorCreateMsg>();
     this.playerID = 0;
   }

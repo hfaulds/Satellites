@@ -3,7 +3,7 @@ package net.client;
 import net.msg.ActorCreateMsg;
 import net.msg.ActorUpdateMsg;
 import net.msg.ChatMsg;
-import net.msg.SceneMsg;
+import net.msg.SceneCreateMsg;
 import scene.Scene;
 import scene.actors.Actor;
 import scene.actors.ProjectileActor;
@@ -30,8 +30,8 @@ public class ClientListener extends Listener {
   @Override
   public void received(Connection connection, Object info) {
     
-    if(info instanceof SceneMsg) {
-      SceneMsg sceneInfo = (SceneMsg)info;
+    if(info instanceof SceneCreateMsg) {
+      SceneCreateMsg sceneInfo = (SceneCreateMsg)info;
       this.connection = connection;
       scene.populate(sceneInfo.actorInfoList, sceneInfo.playerID, connection);
       

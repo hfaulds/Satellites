@@ -23,7 +23,7 @@ public abstract class Actor {
   public static final double G = 0.000001;
   
   private static int ID_COUNT = 0;
-  public int id = nextID();
+  public final int id;
 
   private final float[] ambientColour = { 0.7f, 0.7f, 0.7f };
   
@@ -42,6 +42,8 @@ public abstract class Actor {
 
   private int listID;
 
+  /* CONSTRUCTORS */
+  
   protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, int id) {
     this.position = new Vector2D(position);
     this.rotation = new Rotation(rotation);
@@ -50,20 +52,25 @@ public abstract class Actor {
     this.velocity = new Vector2D();
     this.mesh = mesh;
     this.id = id;
+    ID_COUNT = Math.max(ID_COUNT, id);
   }
 
-  public Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh) {
-    this(position, rotation, mass, mesh, nextID());
+  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh) {
+    this(position, rotation, mass, mesh, NEXT_ID());
   }
   
-  public Actor(double x, double y, double mass, Mesh mesh) {
-    this(new Vector2D(x, y), new Rotation(), mass, mesh, nextID());
+  protected Actor(double x, double y, double mass, Mesh mesh) {
+    this(new Vector2D(x, y), new Rotation(), mass, mesh, NEXT_ID());
   }
 
+  /* TICK */
+  
   public void tick(long dt) {
     this.position._add(velocity.mult(dt));
     this.rotation._add(spin.mult(dt));
   }
+  
+  /* RENDERING */
   
   public void init(GL2 gl, GLU glu) {
     listID = gl.glGenLists(1);
@@ -96,6 +103,7 @@ public abstract class Actor {
     gl.glCallList(listID);
   }
 
+  /* FORCES */
   public void applyForce(Vector2D force) {
     this.velocity._add(force.divide(mass));
   }
@@ -115,6 +123,9 @@ public abstract class Actor {
   public Vector2D gravForceFrom(Actor actor) {
 	return gravForceFrom(actor, new Vector2D());
   }
+  
+  
+  /* SYNCING*/
 
   @SuppressWarnings("unchecked")
   public ActorCreateMsg getCreateMsg() {
@@ -130,10 +141,6 @@ public abstract class Actor {
     this.rotation._set(info.rotation);
   }
 
-  protected static int nextID() {
-    return ID_COUNT++;
-  }
-
   public static Actor fromInfo(ActorCreateMsg info) {
     try {
       Constructor<? extends Actor> constructor = info.actorClass.getConstructor(Vector2D.class, Rotation.class, double.class, int.class);
@@ -145,4 +152,9 @@ public abstract class Actor {
       return null;
     }
   }
+  
+  private static int NEXT_ID() {
+    return ID_COUNT + 1;
+  }
+
  }

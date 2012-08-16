@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import net.msg.ActorCreateMsg;
 import net.msg.ActorUpdateMsg;
 import net.msg.ChatMsg;
-import net.msg.PlayerMsg;
-import net.msg.SceneMsg;
+import net.msg.PlayerUpdateMsg;
+import net.msg.SceneCreateMsg;
 import scene.Scene;
 import scene.actors.Actor;
 import scene.actors.Planet1Actor;
@@ -37,6 +37,7 @@ public abstract class NetworkConnection {
   public abstract void disconnect();
   public abstract boolean isOnline();
   public abstract void sendMsg(Object msg);
+  public abstract void fireProjectile(ProjectileActor projectile);
 
   protected final Scene scene;
   
@@ -68,8 +69,8 @@ public abstract class NetworkConnection {
     
     kryo.register(ActorCreateMsg.class);
     kryo.register(ActorUpdateMsg.class);
-    kryo.register(SceneMsg.class);
-    kryo.register(PlayerMsg.class);
+    kryo.register(SceneCreateMsg.class);
+    kryo.register(PlayerUpdateMsg.class);
     kryo.register(ChatMsg.class);
 
     kryo.register(ProjectileActor.class);
@@ -92,7 +93,7 @@ public abstract class NetworkConnection {
     this.address = address;
   }
   
-  public void addActor(Actor actor) {
+  protected void addActor(Actor actor) {
     this.sendMsg(new ActorCreateMsg(actor.position, actor.rotation, actor.id, actor.mass, actor.getClass()));
     this.scene.queueAddActor(actor);
   }

@@ -4,7 +4,7 @@ import scene.actors.Actor;
 import scene.actors.ShipActor;
 import scene.controllers.Controller;
 import scene.controllers.ServerShipController;
-import net.msg.PlayerMsg;
+import net.msg.PlayerUpdateMsg;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
@@ -20,7 +20,7 @@ public class Player extends Connection {
     this.controller = new ServerShipController(actor, server);
   }
 
-  public void updateActor(PlayerMsg info) {
+  public void updateActor(PlayerUpdateMsg info) {
     actor.velocity._set(info.velocity);
     actor.spin._set(info.spin);
   }

@@ -10,7 +10,7 @@ public class ProjectileActor extends Actor {
   private static Mesh MESH = MeshLoader.loadMesh("Projectile-Mk2.obj");
   
   private static final double MASS = 0.002;
-  private static final double SPEED = 0.8;
+  private static final double SPEED = 0.00001;
 
   public ProjectileActor(Vector2D position, Rotation rotation, double mass, int id) {
     super(position, rotation, mass, MESH, id);
