@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import net.msg.ActorMsg;
+import net.msg.ActorCreateMsg;
 import scene.actors.Actor;
 import scene.actors.PointLightActor;
 import scene.actors.ShipActor;
@@ -25,7 +25,7 @@ import com.esotericsoftware.kryonet.Connection;
 
 public class Scene extends MouseAdapter {
 
-  public final PlayerInputController input = new PlayerInputController(this);
+  public final PlayerInputController input = new PlayerInputController();
   public final MsgSprite messageHandler = new MsgSprite();
 
   public final List<Actor>       actors = new ArrayList<Actor>();
@@ -73,8 +73,8 @@ public class Scene extends MouseAdapter {
     queueAddActor(player);
   }
   
-  public void populate(List<ActorMsg> actorInfo, int playerID, Connection connection) {
-    for(ActorMsg info : actorInfo) {
+  public void populate(List<ActorCreateMsg> actorInfo, int playerID, Connection connection) {
+    for(ActorCreateMsg info : actorInfo) {
       Actor actor = Actor.fromInfo(info);
       if(info.id == playerID) {
         addController(new ClientShipController(actor, connection));

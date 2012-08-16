@@ -7,8 +7,8 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 
+import render.material.Colour;
 import scene.actors.ShipActor;
-import scene.material.Colour;
 
 public class ShipHealthGraphic implements Graphic {
 

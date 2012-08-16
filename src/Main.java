@@ -20,6 +20,7 @@ public class Main {
 
     frame.add(gui);
     frame.addWindowListener(new WindowAdapter() {
+      @Override
       public void windowClosing(WindowEvent e) {
         close();
       }
@@ -49,6 +50,7 @@ public class Main {
     });
     
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         frame.setSize(gui.getWidth() , gui.getHeight());
         frame.revalidate();

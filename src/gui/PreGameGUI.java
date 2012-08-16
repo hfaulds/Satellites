@@ -67,6 +67,7 @@ public class PreGameGUI extends GUI {
       public void actionPerformed(ActionEvent e) {
         Scene scene = new Scene(username);
         ClientConnection connection = new ClientConnection(scene);
+        scene.input.setConnection(connection);
         if(SelectServerDialog.showDialog(content, connection)) {
           freezeButtons();
           switchGUI(new InGameGUI(scene, connection));
@@ -83,6 +84,7 @@ public class PreGameGUI extends GUI {
       public void actionPerformed(ActionEvent e) {
         Scene scene = new Scene(username);
         ServerConnection connection = new ServerConnection(scene);
+        scene.input.setConnection(connection);
         if(CreateServerDialog.showDialog(content, connection)) {
           freezeButtons();
           populateScene(scene, connection.server);

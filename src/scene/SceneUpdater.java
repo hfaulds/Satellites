@@ -43,14 +43,13 @@ public class SceneUpdater extends MouseAdapter {
         }
       }
     }
+    
     lastFrame = System.currentTimeMillis();
   }
 
   private boolean collisionExists(Actor a, Actor b) {
     if(Box.boxesIntersect(a.boundingbox, b.boundingbox)) {
-      System.out.println();
-      System.out.println(a.getClass());
-      System.out.println(b.getClass());
+      
     }
     return false;
   }

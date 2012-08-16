@@ -14,10 +14,9 @@ import java.util.List;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
+import net.msg.ActorCreateMsg;
+import net.msg.ActorUpdateMsg;
 import scene.controllers.ui.Graphic;
-
-
-import net.msg.ActorMsg;
 
 public abstract class Actor {
 
@@ -118,11 +117,15 @@ public abstract class Actor {
   }
 
   @SuppressWarnings("unchecked")
-  public ActorMsg getInfo() {
-    return new ActorMsg(position, rotation, id, mass, (Class<Actor>) this.getClass());
+  public ActorCreateMsg getCreateMsg() {
+    return new ActorCreateMsg(position, rotation, id, mass, (Class<Actor>) this.getClass());
+  }
+  
+  public ActorUpdateMsg getUpdateMsg() {
+    return new ActorUpdateMsg(position, rotation, id);
   }
 
-  public void _update(ActorMsg info) {
+  public void _update(ActorUpdateMsg info) {
     this.position._set(info.position);
     this.rotation._set(info.rotation);
   }
@@ -131,9 +134,9 @@ public abstract class Actor {
     return ID_COUNT++;
   }
 
-  public static Actor fromInfo(ActorMsg info) {
+  public static Actor fromInfo(ActorCreateMsg info) {
     try {
-      Constructor<Actor> constructor = info.actorClass.getConstructor(Vector2D.class, Rotation.class, double.class, int.class);
+      Constructor<? extends Actor> constructor = info.actorClass.getConstructor(Vector2D.class, Rotation.class, double.class, int.class);
       return constructor.newInstance(info.position, info.rotation, info.mass, info.id);
     } catch (InstantiationException | IllegalAccessException
         | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {

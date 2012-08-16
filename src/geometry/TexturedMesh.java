@@ -2,7 +2,7 @@ package geometry;
 
 import javax.media.opengl.GL2;
 
-import scene.material.Material;
+import render.material.Material;
 
 public class TexturedMesh extends Mesh {
 

@@ -30,7 +30,7 @@ public class ServerSatelliteController implements Controller {
 
     actor.applyForce(force);
     actor.tick(dt);
-    server.sendToAllUDP(actor.getInfo());
+    server.sendToAllUDP(actor.getUpdateMsg());
   }
 
 }

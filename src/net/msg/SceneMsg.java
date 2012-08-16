@@ -6,15 +6,15 @@ import java.util.List;
 public class SceneMsg {
   
   public final int playerID;
-  public final List<ActorMsg> actorInfoList;
+  public final List<ActorCreateMsg> actorInfoList;
   
-  public SceneMsg(List<ActorMsg> actorInfoList, int playerID) {
+  public SceneMsg(List<ActorCreateMsg> actorInfoList, int playerID) {
     this.actorInfoList = actorInfoList;
     this.playerID = playerID;
   }
   
   public SceneMsg() {
-    this.actorInfoList = new ArrayList<ActorMsg>();
+    this.actorInfoList = new ArrayList<ActorCreateMsg>();
     this.playerID = 0;
   }
 }

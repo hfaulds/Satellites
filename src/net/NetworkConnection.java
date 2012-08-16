@@ -12,10 +12,13 @@ import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import net.msg.ActorMsg;
+import net.msg.ActorCreateMsg;
+import net.msg.ActorUpdateMsg;
 import net.msg.ChatMsg;
 import net.msg.PlayerMsg;
 import net.msg.SceneMsg;
+import scene.Scene;
+import scene.actors.Actor;
 import scene.actors.Planet1Actor;
 import scene.actors.ProjectileActor;
 import scene.actors.ShipActor;
@@ -32,11 +35,15 @@ public abstract class NetworkConnection {
   private InetAddress address;
 
   public abstract void disconnect();
-
   public abstract boolean isOnline();
+  public abstract void sendMsg(Object msg);
 
-  public abstract void sendMessage(ChatMsg message);
-
+  protected final Scene scene;
+  
+  public NetworkConnection(Scene scene) {
+    this.scene = scene;
+  }
+  
   private InetAddress getIP() {
     try {
       URLConnection con = new URL("http://automation.whatismyip.com/n09230945.asp").openConnection();
@@ -59,7 +66,8 @@ public abstract class NetworkConnection {
     kryo.register(Vector2D.class);
     kryo.register(Rotation.class);
     
-    kryo.register(ActorMsg.class);
+    kryo.register(ActorCreateMsg.class);
+    kryo.register(ActorUpdateMsg.class);
     kryo.register(SceneMsg.class);
     kryo.register(PlayerMsg.class);
     kryo.register(ChatMsg.class);
@@ -82,5 +90,10 @@ public abstract class NetworkConnection {
   
   protected void setAddress(InetAddress address) {
     this.address = address;
+  }
+  
+  public void addActor(Actor actor) {
+    this.sendMsg(new ActorCreateMsg(actor.position, actor.rotation, actor.id, actor.mass, actor.getClass()));
+    this.scene.queueAddActor(actor);
   }
 }

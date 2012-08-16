@@ -4,8 +4,8 @@ import geometry.Vector2D;
 
 import java.util.List;
 
+import net.NetworkConnection;
 import render.Renderer3D;
-import scene.Scene;
 import scene.actors.Actor;
 import scene.actors.ProjectileActor;
 
@@ -33,15 +33,15 @@ public class PlayerInputController extends MouseAdapter implements Controller, K
 
   public Actor actor;
 
-  private Scene scene;
+  private NetworkConnection connection;
   private long lastFired = System.currentTimeMillis();
-  
-  public PlayerInputController(Scene scene) {
-    this.scene = scene;
-  }
   
   public void setActor(Actor actor) {
     this.actor = actor;
+  }
+  
+  public void setConnection(NetworkConnection connection) {
+    this.connection = connection;
   }
   
   @Override
@@ -57,7 +57,6 @@ public class PlayerInputController extends MouseAdapter implements Controller, K
       }
     }
   }
-
 
   @Override
   public void keyTyped(KeyEvent e) {}
@@ -100,8 +99,11 @@ public class PlayerInputController extends MouseAdapter implements Controller, K
       Vector2D direction = Renderer3D.project(actor.position).sub(new Vector2D(e.getX(), e.getY()))._normalize()._invertX();
       Vector2D position = actor.position.add(direction.mult(2));
       ProjectileActor projectile = new ProjectileActor(position, direction);
-      scene.queueAddActor(projectile);
-      scene.addController(new ProjectileController(projectile));
+      
+      if(connection != null) {
+        connection.addActor(projectile);
+      }
+      
       lastFired = System.currentTimeMillis();
     }
   }

@@ -2,12 +2,13 @@ package net.server;
 
 import java.util.List;
 
-import net.msg.ActorMsg;
+import net.msg.ActorCreateMsg;
 import net.msg.ChatMsg;
 import net.msg.PlayerMsg;
 import net.msg.SceneMsg;
-
 import scene.Scene;
+import scene.actors.Actor;
+import scene.actors.ProjectileActor;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -27,7 +28,7 @@ public class ServerListener extends Listener {
     scene.queueAddActor(player.actor);
     scene.addController(player.controller);
 
-    List<ActorMsg> actorInfoList = ActorMsg.actorInfoList(scene);
+    List<ActorCreateMsg> actorInfoList = ActorCreateMsg.actorInfoList(scene);
     connection.sendTCP(new SceneMsg(actorInfoList, player.actor.id));
   }
   
@@ -44,6 +45,11 @@ public class ServerListener extends Listener {
       ((Player)connection).updateActor((PlayerMsg)info);
     } else if(info instanceof ChatMsg) {
       scene.messageHandler.displayMessage((ChatMsg) info);
+    } else if(info instanceof ActorCreateMsg) {
+      ActorCreateMsg msg = (ActorCreateMsg) info;
+      if(msg.actorClass.equals(ProjectileActor.class)) {
+        scene.queueAddActor(Actor.fromInfo(msg));
+      }
     }
   }
 }

@@ -13,7 +13,8 @@ public class PlayerMsg {
   }
   
   public PlayerMsg(Vector2D velocity, Rotation spin) {
-    this.velocity = velocity; 
+    this.velocity = velocity;
     this.spin = spin;
   }
+  
 }

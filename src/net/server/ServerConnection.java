@@ -3,7 +3,6 @@ package net.server;
 import java.io.IOException;
 
 import net.NetworkConnection;
-import net.msg.ChatMsg;
 import scene.Scene;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -11,12 +10,11 @@ import com.esotericsoftware.kryonet.Server;
 
 public class ServerConnection extends NetworkConnection {
 
-  public final Scene scene;
   public final Server server = createServer();
   private boolean online = false;
   
   public ServerConnection(Scene scene) {
-    this.scene = scene;
+    super(scene);
   }
 
   public boolean create() {
@@ -54,7 +52,7 @@ public class ServerConnection extends NetworkConnection {
   }
 
   @Override
-  public void sendMessage(ChatMsg message) {
-    server.sendToAllUDP(message);
+  public void sendMsg(Object msg) {
+    server.sendToAllUDP(msg);
   }
 }

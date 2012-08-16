@@ -13,7 +13,6 @@ public class ClientShipController implements Controller {
   private final Actor actor;
   private final Connection connection;
   
-  
   public ClientShipController(Actor actor, Connection connection) {
     this.actor = actor;
     this.connection = connection;

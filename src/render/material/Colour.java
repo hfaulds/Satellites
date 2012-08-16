@@ -1,4 +1,4 @@
-package scene.material;
+package render.material;
 
 public class Colour {
   

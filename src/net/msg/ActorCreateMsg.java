@@ -9,20 +9,19 @@ import java.util.List;
 import scene.Scene;
 import scene.actors.Actor;
 
-
-public class ActorMsg {
+public class ActorCreateMsg {
 
   public final Vector2D position;
   public final Rotation rotation;
   public final double mass;
   public final int id;
-  public final Class<Actor> actorClass;
+  public final Class<? extends Actor> actorClass;
   
-  public ActorMsg() {
+  public ActorCreateMsg() {
     this(new Vector2D(), new Rotation(), 0, 0, Actor.class);
   }
   
-  public ActorMsg(Vector2D position, Rotation rotation, int id, double mass, Class<Actor> actorClass) {
+  public ActorCreateMsg(Vector2D position, Rotation rotation, int id, double mass, Class<? extends Actor> actorClass) {
     this.position = position;
     this.rotation = rotation;
     this.mass = mass;
@@ -30,14 +29,14 @@ public class ActorMsg {
     this.actorClass = actorClass;
   }
   
-  public static List<ActorMsg> actorInfoList(Scene scene) {
-    List<ActorMsg> infoList = new ArrayList<ActorMsg>();
+  public static List<ActorCreateMsg> actorInfoList(Scene scene) {
+    List<ActorCreateMsg> infoList = new ArrayList<ActorCreateMsg>();
     
     for(Actor actor: scene.actors)
-      infoList.add(actor.getInfo());
+      infoList.add(actor.getCreateMsg());
 
     for(Actor actor: scene.actorqueue)
-      infoList.add(actor.getInfo());
+      infoList.add(actor.getCreateMsg());
     
     return infoList;
   }

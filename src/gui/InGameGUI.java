@@ -76,7 +76,7 @@ public class InGameGUI extends GUI implements GLEventListener {
               if(messageHandler.getInput().length() > 0) {
                 ChatMsg msg = new ChatMsg(messageHandler.getInput(), scene.username);
                 messageHandler.displayMessage(msg);
-                connection.sendMessage(msg);
+                connection.sendMsg(msg);
               }
               messageHandler.closeInput();
               break;

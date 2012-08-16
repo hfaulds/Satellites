@@ -4,20 +4,18 @@ import java.io.IOException;
 import java.net.InetAddress;
 
 import net.NetworkConnection;
-import net.msg.ChatMsg;
 import scene.Scene;
 
 import com.esotericsoftware.kryonet.Client;
 
 public class ClientConnection extends NetworkConnection {
 
-  private final Scene scene;
   private final Client client = new Client();
   
   private ClientListener clientListener; 
-  
+
   public ClientConnection(Scene scene) {
-    this.scene = scene;
+    super(scene);
   }
 
   public void connect(InetAddress address) throws IOException {
@@ -40,9 +38,9 @@ public class ClientConnection extends NetworkConnection {
   }
 
   @Override
-  public void sendMessage(ChatMsg message) {
+  public void sendMsg(Object msg) {
     if(clientListener != null && clientListener.isConnected()) {
-      clientListener.connection.sendUDP(message);
+      clientListener.connection.sendUDP(msg);
     }
   }
 }

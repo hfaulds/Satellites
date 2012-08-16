@@ -1,6 +1,6 @@
 package geometry;
 
-import scene.material.Colour;
+import render.material.Colour;
 
 public class Vector3D {
   
