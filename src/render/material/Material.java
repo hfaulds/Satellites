@@ -22,7 +22,7 @@ public class Material implements Cloneable {
     ambient = new Colour ( 0.2, 0.2, 0.2, 1 );
     diffuse = new Colour ( 0.8, 0.8, 0.8, 1 );
     specular = new Colour ( 0.5, 0.5, 0.5, 1 );
-    emission = new Colour ( 0, 0, 0, 1 );
+    emission = new Colour ( 0.3, 0.3, 0.3, 1 );
     shininess = 32;
   }
   

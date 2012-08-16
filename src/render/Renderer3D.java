@@ -11,8 +11,6 @@ import scene.Scene;
 import scene.actors.Actor;
 import scene.actors.PointLightActor;
 
-
-
 public class Renderer3D {
   
   private static final GLU glu = new GLU();

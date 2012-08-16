@@ -26,6 +26,6 @@ public class ShipActor extends Actor {
   }
 
   public ShipActor(double x, double y) {
-    super(x, y, MASS, MESH);
+    super(new Vector2D(x,y), new Rotation(), MASS, MESH);
   }
 }

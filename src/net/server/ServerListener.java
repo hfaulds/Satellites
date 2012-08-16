@@ -1,5 +1,7 @@
 package net.server;
 
+import geometry.Vector2D;
+
 import java.util.List;
 
 import net.msg.ActorCreateMsg;
@@ -52,7 +54,8 @@ public class ServerListener extends Listener {
     } else if(info instanceof ActorCreateMsg) {
       ActorCreateMsg msg = (ActorCreateMsg) info;
       if(msg.actorClass.equals(ProjectileActor.class)) {
-        Actor projectile = Actor.fromInfo(msg);
+        ProjectileActor projectile = (ProjectileActor) Actor.fromInfo(msg);
+        projectile.velocity._set(Vector2D.fromRotation(projectile.rotation)._mult(ProjectileActor.SPEED));
         scene.queueAddActor(projectile);
         scene.addController(new ServerActorController(projectile, server));
       }

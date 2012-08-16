@@ -16,6 +16,7 @@ import javax.media.opengl.glu.GLU;
 
 import net.msg.ActorCreateMsg;
 import net.msg.ActorUpdateMsg;
+import render.material.Material;
 import scene.controllers.ui.Graphic;
 
 public abstract class Actor {
@@ -25,7 +26,7 @@ public abstract class Actor {
   private static int ID_COUNT = 0;
   public final int id;
 
-  private final float[] ambientColour = { 0.7f, 0.7f, 0.7f };
+  private final Material material = new Material();
   
   public final Mesh mesh;
   public final Box boundingbox;
@@ -59,9 +60,6 @@ public abstract class Actor {
     this(position, rotation, mass, mesh, NEXT_ID());
   }
   
-  protected Actor(double x, double y, double mass, Mesh mesh) {
-    this(new Vector2D(x, y), new Rotation(), mass, mesh, NEXT_ID());
-  }
 
   /* TICK */
   
@@ -76,9 +74,11 @@ public abstract class Actor {
     listID = gl.glGenLists(1);
     gl.glNewList(listID, GL2.GL_COMPILE);
     {
-      gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_AMBIENT,  ambientColour, 0);
-      gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, ambientColour, 0);
-      gl.glMaterialf(GL2.GL_FRONT, GL2.GL_SHININESS, 0.5f);
+      gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_AMBIENT,  material.ambient.toFloat(), 0);
+      gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_DIFFUSE,  material.diffuse.toFloat(), 0);
+      gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, material.specular.toFloat(), 0);
+      gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_EMISSION, material.emission.toFloat(), 0);
+      gl.glMaterialf(GL2.GL_FRONT, GL2.GL_SHININESS, material.shininess);
     
       mesh.render(gl);
     }

@@ -139,4 +139,9 @@ public class Vector2D {
     return "(" + this.x + "," + this.y + ")";
   }
 
+  public static Vector2D fromRotation(Rotation rotation) {
+    //TODO : UNDERSTAND THIS
+    return new Vector2D(0,-1).rotate(rotation.mag);
+  }
+
 }

@@ -49,5 +49,11 @@ public class Rotation {
   public Rotation mult(double dt) {
     return new Rotation(x, y, z, mag*dt);
   }
+
+  public static Rotation XRotFromvector(Vector2D a) {
+    double angle = Math.atan2(a.y, a.x) + Math.PI/2;
+    
+    return new Rotation(0, 0, 1, angle);
+  }
   
 }
