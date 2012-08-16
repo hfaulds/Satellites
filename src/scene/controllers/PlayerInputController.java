@@ -23,8 +23,8 @@ public class PlayerInputController extends MouseAdapter implements Controller, K
   private static final int KEY_LEFT    = 'A';
   private static final int KEY_RIGHT   = 'D';
   
-  private static final double ACCELERATION = 0.00005;
-  private static final double SPIN         = 0.00005;
+  private static final double ACCELERATION = 0.00001;
+  private static final double SPIN         = 0.00001;
 
   public static int FIRE_BUTTON = MouseEvent.BUTTON1;
   
@@ -109,7 +109,7 @@ public class PlayerInputController extends MouseAdapter implements Controller, K
     if(e.getButton() == FIRE_BUTTON && timeTillNextFire <= 0) {
       if(connection != null) {
         Vector2D position = actor.position.add(aimDirection.mult(2));
-        ProjectileActor projectile = new ProjectileActor(position, aimDirection);
+        ProjectileActor projectile = new ProjectileActor(position, aimDirection, actor.velocity);
         
         connection.fireProjectile(projectile);
         

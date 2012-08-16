@@ -16,7 +16,7 @@ public class Material implements Cloneable {
   public float shininess;
   
   public Texture texture;
-  public BufferedImage rawTexture;
+  private BufferedImage rawTexture;
   
   public Material() {
     ambient = new Colour ( 0.2, 0.2, 0.2, 1 );

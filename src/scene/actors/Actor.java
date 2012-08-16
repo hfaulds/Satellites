@@ -104,6 +104,7 @@ public abstract class Actor {
   }
 
   /* FORCES */
+  
   public void applyForce(Vector2D force) {
     this.velocity._add(force.divide(mass));
   }
@@ -123,7 +124,6 @@ public abstract class Actor {
   public Vector2D gravForceFrom(Actor actor) {
 	return gravForceFrom(actor, new Vector2D());
   }
-  
   
   /* SYNCING*/
 
@@ -152,6 +152,8 @@ public abstract class Actor {
       return null;
     }
   }
+  
+  /* IDs */
   
   private static int NEXT_ID() {
     return ID_COUNT + 1;
