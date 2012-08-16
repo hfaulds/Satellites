@@ -1,14 +1,10 @@
 package scene.controllers.ui;
 
-
 import geometry.Rotation;
 import geometry.Vector2D;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
-
-
-
 
 public class ShipDirectionGraphic implements Graphic {
 
@@ -16,7 +12,7 @@ public class ShipDirectionGraphic implements Graphic {
   private static final int CIRCLE_SAMPLES       = ShipControlGraphic.CIRCLE_SAMPLES;
   private static final double CIRCLE_INCREMENT  = ShipControlGraphic.CIRCLE_INCREMENT;
   private static final float LINE_WIDTH			= 2.5f;
-  private static final double LINE_LENGTH       = .1;
+  private static final double LINE_LENGTH       = 0.1;
 
   private final int mid    =     - CIRCLE_SAMPLES / 4;
   private final int start  = mid - (int)(CIRCLE_SAMPLES * LINE_LENGTH);

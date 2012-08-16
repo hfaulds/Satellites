@@ -14,6 +14,7 @@ import scene.actors.ShipActor;
 import scene.controllers.ClientShipController;
 import scene.controllers.Controller;
 import scene.controllers.PlayerInputController;
+import scene.controllers.ui.ShipAimGraphic;
 import scene.controllers.ui.ShipControlGraphic;
 import scene.controllers.ui.ShipDirectionGraphic;
 import scene.controllers.ui.ShipHealthGraphic;
@@ -70,6 +71,7 @@ public class Scene extends MouseAdapter {
     player.ui.add(new ShipControlGraphic());
     player.ui.add(new ShipDirectionGraphic());
     player.ui.add(new ShipHealthGraphic(player));
+    player.ui.add(new ShipAimGraphic(input));
     queueAddActor(player);
   }
   

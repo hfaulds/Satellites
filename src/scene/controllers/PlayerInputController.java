@@ -17,7 +17,7 @@ import com.jogamp.newt.event.MouseEvent;
 public class PlayerInputController extends MouseAdapter implements Controller, KeyListener {
 
   private static final Vector2D START_DIRECTION = new Vector2D(0, -1);
-  private static final long FIRE_COOLDOWN = 1000;
+  public static final long GUN_COOLDOWN = 1000;
   
   private static final int KEY_FORWARD = 'W';
   private static final int KEY_LEFT    = 'A';
@@ -34,7 +34,9 @@ public class PlayerInputController extends MouseAdapter implements Controller, K
   public Actor actor;
 
   private NetworkConnection connection;
-  private long lastFired = System.currentTimeMillis();
+  public long timeTillNextFire = 0;
+  
+  public Vector2D aimDirection = START_DIRECTION;
   
   public void setActor(Actor actor) {
     this.actor = actor;
@@ -46,6 +48,10 @@ public class PlayerInputController extends MouseAdapter implements Controller, K
   
   @Override
   public void tick(long dt, List<Actor> actors) {
+    
+    if(timeTillNextFire > 0)
+      timeTillNextFire -= dt;
+    
     if(actor != null) {
       if(accelMag != 0) {
         Vector2D acceleration = START_DIRECTION.rotate(actor.rotation.mag)._mult(accelMag * ACCELERATION);
@@ -94,16 +100,20 @@ public class PlayerInputController extends MouseAdapter implements Controller, K
   }
   
   @Override
+  public void mouseMoved(MouseEvent e) {
+    this.aimDirection = Renderer3D.project(actor.position).sub(new Vector2D(e.getX(), e.getY()))._normalize()._invertX();
+  }
+  
+  @Override
   public void mouseClicked(MouseEvent e) {
-    if(e.getButton() == FIRE_BUTTON && System.currentTimeMillis() - lastFired > FIRE_COOLDOWN) {
+    if(e.getButton() == FIRE_BUTTON && timeTillNextFire <= 0) {
       if(connection != null) {
-        Vector2D direction = Renderer3D.project(actor.position).sub(new Vector2D(e.getX(), e.getY()))._normalize()._invertX();
-        Vector2D position = actor.position.add(direction.mult(2));
-        ProjectileActor projectile = new ProjectileActor(position, direction);
+        Vector2D position = actor.position.add(aimDirection.mult(2));
+        ProjectileActor projectile = new ProjectileActor(position, aimDirection);
         
         connection.fireProjectile(projectile);
         
-        lastFired = System.currentTimeMillis();
+        timeTillNextFire = GUN_COOLDOWN;
       }
     }
   }
