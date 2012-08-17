@@ -25,6 +25,13 @@ public class Renderer3D {
     gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     gl.glClearDepth(1.0f);
     
+    gl.glEnable(GL2.GL_CULL_FACE);
+    gl.glCullFace(GL2.GL_BACK);
+    
+    gl.glShadeModel(GL2.GL_SMOOTH);
+    gl.glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_FILL);
+    
+    gl.glEnable(GL2.GL_NORMALIZE);
     gl.glEnable(GL.GL_DEPTH_TEST);
     gl.glDepthFunc(GL.GL_LEQUAL);
     gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
@@ -33,8 +40,8 @@ public class Renderer3D {
       PointLightActor light = scene.lights[i];
       int lightID = GL2.GL_LIGHT0 + i;
       gl.glLightfv(lightID, GL2.GL_DIFFUSE, light.diffuseColour, 0);
-      gl.glLightfv(lightID, GL2.GL_POSITION, light.lightPos, 0);
       gl.glLightfv(lightID, GL2.GL_SPECULAR, light.specularColour, 0);
+      gl.glLightfv(lightID, GL2.GL_POSITION, light.position, 0);
       gl.glEnable(lightID);
     }
     
@@ -91,6 +98,7 @@ public class Renderer3D {
   }
 
   private void renderActors(GL2 gl, Scene scene) {
+    gl.glEnable(GL2.GL_NORMALIZE);
     synchronized(scene.actors) {
       for(Actor actor : scene.actors) {
         gl.glPushMatrix();

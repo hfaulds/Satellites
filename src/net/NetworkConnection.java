@@ -22,6 +22,7 @@ import scene.actors.Actor;
 import scene.actors.Planet1Actor;
 import scene.actors.ProjectileActor;
 import scene.actors.ShipActor;
+import scene.actors.StationActor;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
@@ -63,7 +64,7 @@ public abstract class NetworkConnection {
 
   protected void addClasses(EndPoint endPoint) {
     Kryo kryo = endPoint.getKryo();
-    
+  
     kryo.register(Vector2D.class);
     kryo.register(Rotation.class);
     
@@ -76,6 +77,7 @@ public abstract class NetworkConnection {
     kryo.register(ProjectileActor.class);
     kryo.register(Planet1Actor.class);
     kryo.register(ShipActor.class);
+    kryo.register(StationActor.class);
     
     kryo.register(ArrayList.class);
     kryo.register(Class.class);

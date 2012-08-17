@@ -74,11 +74,11 @@ public abstract class Actor {
     listID = gl.glGenLists(1);
     gl.glNewList(listID, GL2.GL_COMPILE);
     {
-      gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_AMBIENT,  material.ambient.toFloat(), 0);
-      gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_DIFFUSE,  material.diffuse.toFloat(), 0);
-      gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, material.specular.toFloat(), 0);
-      gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_EMISSION, material.emission.toFloat(), 0);
-      gl.glMaterialf(GL2.GL_FRONT, GL2.GL_SHININESS, material.shininess);
+      gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT,  material.ambient.toFloat(), 0);
+      gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_DIFFUSE,  material.diffuse.toFloat(), 0);
+      gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, material.specular.toFloat(), 0);
+      gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_EMISSION, material.emission.toFloat(), 0);
+      gl.glMaterialf(GL2.GL_FRONT_AND_BACK, GL2.GL_SHININESS, material.shininess);
     
       mesh.render(gl);
     }

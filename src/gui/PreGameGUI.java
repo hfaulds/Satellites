@@ -20,6 +20,7 @@ import net.server.ServerConnection;
 import scene.Scene;
 import scene.actors.Planet1Actor;
 import scene.actors.ShipActor;
+import scene.actors.StationActor;
 import scene.controllers.ServerActorController;
 import scene.controllers.ServerShipController;
 
@@ -97,13 +98,19 @@ public class PreGameGUI extends GUI {
   }
   
   private void populateScene(Scene scene, Server server) {
-    Planet1Actor planet = new Planet1Actor(17,17);
+    
+    ShipActor player = new ShipActor(0, 0);
+    scene.addPlayer(player);
+    scene.addController(new ServerShipController(player, server));
+    
+    Planet1Actor planet = new Planet1Actor(17, 17);
     scene.queueAddActor(planet);
     scene.addController(new ServerActorController(planet, server));
     
-    ShipActor player = new ShipActor(0,0);
-    scene.addPlayer(player);
-    scene.addController(new ServerShipController(player, server));
+    StationActor station = new StationActor(-25, 17);
+    scene.queueAddActor(station);
+    scene.addController(new ServerActorController(station, server));
+    
   }
 
 
