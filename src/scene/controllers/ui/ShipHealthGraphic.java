@@ -40,6 +40,10 @@ public class ShipHealthGraphic implements Graphic {
     gl.glTranslated(pos.x, pos.y, Vector2D.Z);
     int health = startHealth + actor.health / SEGMENT_RATIO;
 
+    
+    gl.glDisable(GL2.GL_DEPTH_TEST);
+    gl.glDisable(GL2.GL_CULL_FACE);
+
     drawBackground(gl, startHealth);
     drawBarDepleted(
         gl, 
@@ -68,6 +72,9 @@ public class ShipHealthGraphic implements Graphic {
         sheildFinish - shield, 
         sheildFinish
         );
+    
+    gl.glEnable(GL2.GL_DEPTH_TEST);
+    gl.glEnable(GL2.GL_CULL_FACE);
 
     gl.glEnable(GL2.GL_LIGHTING);
   }
