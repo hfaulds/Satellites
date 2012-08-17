@@ -9,7 +9,7 @@ public class Colour {
   public final double r;
   public final double g;
   public final double b;
-  public final double a;
+  public double a;
 
   public Colour(double r, double g, double b, double a) {
     this.r = r;

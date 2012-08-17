@@ -33,7 +33,7 @@ public class Scene extends MouseAdapter {
 
   public final List<Actor>       actors = new ArrayList<Actor>();
   public final List<Controller>  controllers = new ArrayList<Controller>();
-  public final PointLightActor[] lights = {new PointLightActor(), new PointLightActor(new Vector3D(-25, 17, 10))};
+  public final PointLightActor[] lights = {new PointLightActor(), new PointLightActor(new Vector3D(-10, 10, 10))};
   public final Sprite[]          ui = new Sprite[]{new FPSSprite(), messageHandler};
 
   public final Queue<Actor> actorqueue = new LinkedList<Actor>();

@@ -26,7 +26,7 @@ public abstract class Actor {
   private static int ID_COUNT = 0;
   public final int id;
 
-  private final Material material = new Material();
+  public final Material material = new Material();
   
   public final Mesh mesh;
   public final Box boundingbox;
@@ -74,13 +74,9 @@ public abstract class Actor {
     listID = gl.glGenLists(1);
     gl.glNewList(listID, GL2.GL_COMPILE);
     {
-      gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT,  material.ambient.toFloat(), 0);
-      gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_DIFFUSE,  material.diffuse.toFloat(), 0);
-      gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, material.specular.toFloat(), 0);
-      gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_EMISSION, material.emission.toFloat(), 0);
-      gl.glMaterialf(GL2.GL_FRONT_AND_BACK, GL2.GL_SHININESS, material.shininess);
-    
+      material.startRender(gl);
       mesh.render(gl);
+      material.stopRender(gl);
     }
     gl.glEndList();
 

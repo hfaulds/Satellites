@@ -31,6 +31,9 @@ public class Renderer3D {
     gl.glShadeModel(GL2.GL_SMOOTH);
     gl.glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_FILL);
     
+    gl.glEnable(GL2.GL_BLEND); 
+    gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+    
     gl.glEnable(GL2.GL_NORMALIZE);
     gl.glEnable(GL.GL_DEPTH_TEST);
     gl.glDepthFunc(GL.GL_LEQUAL);
