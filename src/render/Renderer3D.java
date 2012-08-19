@@ -73,10 +73,10 @@ public class Renderer3D {
   }
 
   private void updateMatrices(final GL2 gl) {
-      gl.glGetIntegerv(GL2.GL_VIEWPORT, viewportMatrix, 0);
-      gl.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, modelMatrix, 0);
-      gl.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projectionMatrix, 0);
-      bUpdateMatrices = false;
+    gl.glGetIntegerv(GL2.GL_VIEWPORT, viewportMatrix, 0);
+    gl.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, modelMatrix, 0);
+    gl.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projectionMatrix, 0);
+    bUpdateMatrices = false;
   }
   
   public void updateMatrices() {

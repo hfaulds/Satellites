@@ -51,7 +51,7 @@ public class SceneRenderer extends MouseAdapter {
     
     renderer3D.clear(gl);
     
-    renderer3D.preRender(gl, cameraPos , width/height, zoom);
+    renderer3D.preRender(gl, cameraPos , (double)width/height, zoom);
     renderer3D.render(gl, scene);
     
     renderer2D.preRender(gl, width, height);
