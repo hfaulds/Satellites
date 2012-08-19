@@ -6,8 +6,9 @@ public class ChatMsg {
 
   public final String username;
   public final String text;
+  
   public final long sent;
-
+  
   public ChatMsg() {
     this("", "");
   }

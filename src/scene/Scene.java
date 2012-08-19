@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Queue;
 
 import net.msg.ActorCreateMsg;
-import render.ging.FPSCounter;
-import render.ging.ChatBox;
-import render.ging.GComponent;
+import render.gimley.components.ChatBox;
+import render.gimley.components.FPSCounter;
+import render.gimley.components.GComponent;
 import scene.actors.Actor;
 import scene.actors.PointLightActor;
 import scene.actors.ShipActor;

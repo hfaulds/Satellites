@@ -2,7 +2,7 @@ package render;
 
 import javax.media.opengl.GL2;
 
-import render.ging.GComponent;
+import render.gimley.components.GComponent;
 
 public class Renderer2D {
   public void preRender(GL2 gl, double width, double height) {
@@ -16,9 +16,9 @@ public class Renderer2D {
     gl.glTranslated(0, -height, 0);
   }
 
-  public void render(GL2 gl, GComponent[] components) {
+  public void render(GL2 gl, GComponent[] components, int width, int height) {
     for(GComponent component : components)
-      component.render(gl);
+      component.render(gl, width, height);
     gl.glEnable(GL2.GL_LIGHTING);
   }
   

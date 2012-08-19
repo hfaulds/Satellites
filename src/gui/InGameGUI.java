@@ -1,7 +1,5 @@
 package gui;
 
-
-
 import java.awt.BorderLayout;
 
 import javax.media.opengl.GLAutoDrawable;
@@ -11,7 +9,7 @@ import javax.media.opengl.GLProfile;
 
 import net.NetworkConnection;
 import net.msg.ChatMsg;
-import render.ging.ChatBox;
+import render.gimley.components.ChatBox;
 import scene.Scene;
 import scene.SceneRenderer;
 import scene.SceneUpdater;
@@ -47,6 +45,7 @@ public class InGameGUI extends GUI implements GLEventListener {
     this.connection = connection;
     
     this.glWindow = createGLWindow(createCapabilities(), scene);
+
     this.canvas = createCanvas(glWindow);
     this.animator = new FPSAnimator(glWindow, 80);
     

@@ -41,8 +41,8 @@ public class SceneRenderer extends MouseAdapter {
   public void render(GLAutoDrawable drawable) {
     final GL2 gl = drawable.getGL().getGL2();
     
-    double width = drawable.getWidth();
-    double height = drawable.getHeight();
+    int width = drawable.getWidth();
+    int height = drawable.getHeight();
     
     if(bPanning) {
       Vector2D direction = endMousePos.sub(startMousePos).divide(1000);
@@ -55,7 +55,7 @@ public class SceneRenderer extends MouseAdapter {
     renderer3D.render(gl, scene);
     
     renderer2D.preRender(gl, width, height);
-    renderer2D.render(gl, scene.ui);
+    renderer2D.render(gl, scene.ui, width, height);
   }
   
   public void reshape(GLAutoDrawable drawable, int width, int height) {
@@ -72,7 +72,7 @@ public class SceneRenderer extends MouseAdapter {
   @Override
   public void mousePressed(MouseEvent e) {
     bPanning = !(e.getButton() == PAN_BUTTON);
-     endMousePos._set(startMousePos._setFromScreen(e.getX(), e.getY()));
+    endMousePos._set(startMousePos._setFromScreen(e.getX(), e.getY()));
   }
   
   @Override
