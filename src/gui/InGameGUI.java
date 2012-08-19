@@ -11,10 +11,10 @@ import javax.media.opengl.GLProfile;
 
 import net.NetworkConnection;
 import net.msg.ChatMsg;
+import render.ging.ChatBox;
 import scene.Scene;
 import scene.SceneRenderer;
 import scene.SceneUpdater;
-import scene.ui.MsgSprite;
 
 import com.jogamp.newt.awt.NewtCanvasAWT;
 import com.jogamp.newt.event.KeyEvent;
@@ -68,7 +68,7 @@ public class InGameGUI extends GUI implements GLEventListener {
       public void keyReleased(KeyEvent e) {
         int keyCode = e.getKeyCode();
 
-        MsgSprite messageHandler = scene.messageHandler;
+        ChatBox messageHandler = scene.messageHandler;
         
         if(messageHandler.isOpen()) {
           switch(keyCode) {

@@ -13,19 +13,20 @@ public class Vector3D {
     this(0,0,0);
   }
 
+  public Vector3D(Vector3D vector) {
+    this(vector.x, vector.y, vector.z);
+  }
+  
+  public Vector3D(Vector2D vector) {
+    this(vector.x, vector.y, 0);
+  }
+  
   public Vector3D(double x, double y, double z) {
     this.x = x;
     this.y = y;
     this.z = z;
   }
-  
-  public Vector3D(Vector3D vector) {
-    this.x = vector.x;
-    this.y = vector.y;
-    this.z = vector.z;
-  }
-  
-  
+
   public double distanceTo(Vector3D vert) {
     double x = Math.pow(vert.x - this.x, 2);
     double y = Math.pow(vert.y - this.y, 2);

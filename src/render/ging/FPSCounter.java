@@ -1,4 +1,4 @@
-package scene.ui;
+package render.ging;
 
 
 import geometry.Vector2D;
@@ -9,7 +9,7 @@ import javax.media.opengl.GL2;
 
 import com.jogamp.opengl.util.gl2.GLUT;
 
-public class FPSSprite extends Sprite {
+public class FPSCounter extends GComponent {
 
   private static final long SECOND = (long)10e8;
   
@@ -17,7 +17,7 @@ public class FPSSprite extends Sprite {
   private long lastTime = System.nanoTime();
   private long fps = 0;
 
-  public FPSSprite() {
+  public FPSCounter() {
     super(new Vector2D(5, InGameGUI.HEIGHT - 50));
   }
 

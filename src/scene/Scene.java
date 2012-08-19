@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Queue;
 
 import net.msg.ActorCreateMsg;
+import render.ging.FPSCounter;
+import render.ging.ChatBox;
+import render.ging.GComponent;
 import scene.actors.Actor;
 import scene.actors.PointLightActor;
 import scene.actors.ShipActor;
@@ -20,21 +23,18 @@ import scene.controllers.ui.ShipAimGraphic;
 import scene.controllers.ui.ShipControlGraphic;
 import scene.controllers.ui.ShipDirectionGraphic;
 import scene.controllers.ui.ShipHealthGraphic;
-import scene.ui.FPSSprite;
-import scene.ui.MsgSprite;
-import scene.ui.Sprite;
 
 import com.esotericsoftware.kryonet.Connection;
 
 public class Scene extends MouseAdapter {
 
   public final PlayerInputController input = new PlayerInputController();
-  public final MsgSprite messageHandler = new MsgSprite();
+  public final ChatBox messageHandler = new ChatBox();
 
   public final List<Actor>       actors = new ArrayList<Actor>();
   public final List<Controller>  controllers = new ArrayList<Controller>();
   public final PointLightActor[] lights = {new PointLightActor(), new PointLightActor(new Vector3D(-10, 10, 10))};
-  public final Sprite[]          ui = new Sprite[]{new FPSSprite(), messageHandler};
+  public final GComponent[]          ui = new GComponent[]{new FPSCounter(), messageHandler};
 
   public final Queue<Actor> actorqueue = new LinkedList<Actor>();
   

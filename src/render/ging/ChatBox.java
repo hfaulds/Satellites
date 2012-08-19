@@ -1,4 +1,4 @@
-package scene.ui;
+package render.ging;
 
 
 import geometry.Vector2D;
@@ -9,12 +9,14 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
+import render.Renderer2D;
+
 import net.msg.ChatMsg;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.opengl.util.gl2.GLUT;
 
-public class MsgSprite extends Sprite {
+public class ChatBox extends GComponent {
   
 
   private static final int MESSAGE_HEIGHT = 15;
@@ -31,9 +33,9 @@ public class MsgSprite extends Sprite {
   private boolean open = false;
   private String input = "";
 
-  private final Vector2D messagesPos = position.add(new Vector2D(2, MESSAGE_HEIGHT + 5));
+  private final Vector2D messagesOffset = new Vector2D(2, MESSAGE_HEIGHT + 5);
   
-  public MsgSprite() {
+  public ChatBox() {
     super(new Vector2D(15, 10));
   }
 
@@ -44,17 +46,12 @@ public class MsgSprite extends Sprite {
       
       gl.glColor4d(1.0, 1.0, 1.0, 1.0);
       gl.glLineWidth(0.9f);
-
-      gl.glBegin(GL2.GL_LINE_LOOP);
-      gl.glVertex2d(position.x - 2              , position.y - 5);
-      gl.glVertex2d(position.x - 2              , position.x + MESSAGE_HEIGHT /2);
-      gl.glVertex2d(position.x + INPUT_WIDTH + 2, position.x + MESSAGE_HEIGHT / 2);
-      gl.glVertex2d(position.x + INPUT_WIDTH + 2, position.y - 5);
-      gl.glEnd();
+      
+      Renderer2D.drawRect(gl, position.x - 2 , position.y - 5, INPUT_WIDTH + 4, MESSAGE_HEIGHT + 5);
+      Renderer2D.drawRect(gl, position.x - 2 , position.y + MESSAGE_HEIGHT, INPUT_WIDTH + 4, MESSAGE_HEIGHT * 5);
       
       gl.glEnable(GL2.GL_LIGHTING);
-      gl.glWindowPos2d(messagesPos.x, position.y);
-      
+      gl.glWindowPos2d(messagesOffset.x + position.x, position.y);
       
       String input = new String(this.input);
       
@@ -64,11 +61,11 @@ public class MsgSprite extends Sprite {
     }
     
     int i = 0;
-    while(i < messages.size() && messages.size() != 0)
+    while(i < messages.size() && messages.size() > 0)
     {
       ChatMsg message = messages.get((messages.size() - i - 1));
       if(!message.expired()) {
-        gl.glWindowPos2d(messagesPos.x, messagesPos.y + MESSAGE_HEIGHT * i);
+        gl.glWindowPos2d(messagesOffset.x + position.x, messagesOffset.y + position.y + MESSAGE_HEIGHT * i);
         glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, message.username + ": " + message.text);
       } else {
         messages.remove(message);
