@@ -59,24 +59,25 @@ public class ChatBox extends GComponent {
       
       gl.glPopMatrix();
       
-      for(int i=0; i < messages.size() && i < MAX_MSG_DISPLAYED; i++)
-      {
-        ChatMsg message = messages.get(messages.size() - 1 - i);
-        gl.glWindowPos2d(messagesOffset.x + position.x, messagesOffset.y + position.y + MESSAGE_HEIGHT * i);
-        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, message.username + ": " + message.text);
+      for(int i=0; i < messages.size() && i < MAX_MSG_DISPLAYED; i++) {
+        ChatMsg message = messages.get(i);
+        renderMessage(gl, i, message);
       }
     } else {
-      for(int i=0; i < messages.size(); i++)
-      {
-        ChatMsg message = messages.get(messages.size() - 1 - i);
+      for(int i=0; i < messages.size(); i++) {
+        ChatMsg message = messages.get(i);
         if(message.expired()) {
           break;
         }
-        gl.glWindowPos2d(messagesOffset.x + position.x, messagesOffset.y + position.y + MESSAGE_HEIGHT * i);
-        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, message.username + ": " + message.text);
+        renderMessage(gl, i, message);
       }
     }
     
+  }
+
+  private void renderMessage(GL2 gl, int i, ChatMsg message) {
+    gl.glWindowPos2d(messagesOffset.x + position.x, messagesOffset.y + position.y + MESSAGE_HEIGHT * i);
+    glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, message.username + ": " + message.text);
   }
   
   private String fitMessage(String message) {
@@ -87,7 +88,7 @@ public class ChatBox extends GComponent {
   }
 
   public void displayMessage(ChatMsg msg) {
-    messages.add(msg);
+    messages.add(0, msg);
   }
 
   public String getInput() {
