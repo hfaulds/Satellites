@@ -22,12 +22,24 @@ public class Renderer2D {
     gl.glEnable(GL2.GL_LIGHTING);
   }
   
-  public static void drawRect(GL2 gl, double x, double y, double width, double height) {
+
+  public static void drawFillRect(GL2 gl, double x, double y, double width, double height) {
+    gl.glBegin(GL2.GL_QUADS);
+    drawRect(gl, x, y, width, height);
+    gl.glEnd();
+  }
+  
+  public static void drawLineRect(GL2 gl, double x, double y, double width, double height) {
     gl.glBegin(GL2.GL_LINE_LOOP);
-    gl.glVertex2d(x        , y          );
+    drawRect(gl, x, y, width, height);
+    gl.glEnd();
+  }
+
+  private static void drawRect(GL2 gl, double x, double y, double width,
+      double height) {
     gl.glVertex2d(x        , y + height );
     gl.glVertex2d(x + width, y + height );
     gl.glVertex2d(x + width, y          );
-    gl.glEnd();
+    gl.glVertex2d(x        , y          );
   }
 }

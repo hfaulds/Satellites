@@ -26,6 +26,13 @@ public class Vector3D {
     this.y = y;
     this.z = z;
   }
+  
+
+  public void _set(Vector3D other) {
+    this.x = other.x;
+    this.y = other.y;
+    this.z = other.z;
+  }
 
   public double distanceTo(Vector3D vert) {
     double x = Math.pow(vert.x - this.x, 2);
@@ -118,4 +125,5 @@ public class Vector3D {
   public String toString() {
     return "[" + this.x + ", " + this.y + ", " + this.z + "]";
   }
+
 }

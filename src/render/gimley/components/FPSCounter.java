@@ -2,11 +2,8 @@ package render.gimley.components;
 
 
 import geometry.Vector2D;
-import gui.InGameGUI;
 
 import javax.media.opengl.GL2;
-
-
 
 import com.jogamp.opengl.util.gl2.GLUT;
 
@@ -18,8 +15,8 @@ public class FPSCounter extends GComponent {
   private long lastTime = System.nanoTime();
   private long fps = 0;
 
-  public FPSCounter() {
-    super(new Vector2D(5, InGameGUI.HEIGHT - 50));
+  public FPSCounter(GComponent parent, Vector2D position) {
+    super(parent, position);
   }
 
   @Override

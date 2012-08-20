@@ -3,16 +3,27 @@ package render.gimley.components;
 import geometry.Vector2D;
 import geometry.Vector3D;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.media.opengl.GL2;
 
-import com.jogamp.newt.event.MouseEvent;
-import com.jogamp.newt.event.MouseListener;
+public abstract class GComponent {
 
-public abstract class GComponent implements MouseListener {
+  protected final List<GComponent> subcomponents = new LinkedList<GComponent>();
   
   public final Vector3D position;
+  public final GComponent parent;
   
-  public GComponent(Vector2D position) {
+  public int width;
+  public int height;
+  
+  public GComponent(GComponent parent) {
+    this(parent, new Vector2D());
+  }
+  
+  public GComponent(GComponent parent, Vector2D position) {
+    this.parent = parent;
     this.position = new Vector3D(position);
   }
 
@@ -20,21 +31,30 @@ public abstract class GComponent implements MouseListener {
   
   public abstract boolean testClick(Vector2D position);
   
-  @Override
-  public void mouseClicked(MouseEvent e) {}
-  @Override
-  public void mouseDragged(MouseEvent e) {}
-  @Override
-  public void mouseEntered(MouseEvent e) {}
-  @Override
-  public void mouseExited(MouseEvent e) {}
-  @Override
-  public void mouseMoved(MouseEvent e) {}
-  @Override
-  public void mousePressed(MouseEvent e) {}
-  @Override
-  public void mouseReleased(MouseEvent e) {}
-  @Override
-  public void mouseWheelMoved(MouseEvent e) {}
+  public void mouseClicked(Vector2D click, int button) {
+    for(GComponent component : subcomponents)
+      if(component.testClick(click))
+        component.mouseClicked(click, button);
+  }
+  
+  public void mouseDragged(Vector2D click, int button) {
+    for(GComponent component : subcomponents)
+      component.mouseDragged(click, button);
+  }
+
+  public void mousePressed(Vector2D click, int button) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public void mouseReleased(Vector2D click, int button) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public void mouseWheelMoved(int scroll) {
+    // TODO Auto-generated method stub
+    
+  }
   
 }

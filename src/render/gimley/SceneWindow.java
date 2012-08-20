@@ -1,8 +1,8 @@
 package render.gimley;
 
 import geometry.Vector2D;
+import gui.InGameGUI;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -25,13 +25,12 @@ import scene.actors.StationActor;
 
 import com.jogamp.newt.event.MouseAdapter;
 import com.jogamp.newt.event.MouseEvent;
-import com.jogamp.newt.event.MouseListener;
 import com.jogamp.newt.event.WindowAdapter;
 import com.jogamp.newt.event.WindowEvent;
 import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.util.FPSAnimator;
 
-public class SceneWindow extends GComponent implements GLEventListener, MouseListener {
+public class SceneWindow extends GComponent implements GLEventListener {
 
   private static final int ZOOM_RATE    = 10;
   private static final int ZOOM_DEFAULT = 20;
@@ -51,16 +50,21 @@ public class SceneWindow extends GComponent implements GLEventListener, MouseLis
   
   private GComponent focus = this;
   
-  private final List<GComponent> components = new LinkedList<GComponent>(
-      Arrays.asList(new ChatBox(), new FPSCounter()));
-  
   public SceneWindow(Scene scene) {
-    super(new Vector2D());
+    super(null);
+    this.width = 800;
+    this.height = 800;
     this.scene = scene;
-    GLCapabilities capabilities = new GLCapabilities(GLProfile.getDefault());
     
-    this.glWindow = GLWindow.create(capabilities);
-    glWindow.setSize(800, 800);    
+    ChatBox chatBox = new ChatBox(this, new Vector2D(15, 10));
+    chatBox.openInput();
+    subcomponents.add(chatBox);
+    
+    subcomponents.add(new FPSCounter(this, new Vector2D(5, InGameGUI.HEIGHT - 50)));
+    
+    GLCapabilities capabilities = new GLCapabilities(GLProfile.getDefault());
+    glWindow = GLWindow.create(capabilities);
+    glWindow.setSize(width, height);    
     glWindow.addWindowListener(new WindowAdapter() {
       @Override
       public void windowDestroyNotify(WindowEvent e) {
@@ -73,13 +77,14 @@ public class SceneWindow extends GComponent implements GLEventListener, MouseLis
       @Override
       public void mousePressed(MouseEvent e) {
         
-        Vector2D clickPosition = new Vector2D(e.getX(), e.getY());
+        Vector2D click = new Vector2D(e.getX(), height - e.getY());
+        int button = e.getButton();
         
-        if(!focus.testClick(clickPosition)) {
+        if(!focus.testClick(click) || focus == SceneWindow.this) {
           List<GComponent> componentsHit = new LinkedList<GComponent>();
           
-          for(GComponent component : components) {
-            if(component.testClick(clickPosition))
+          for(GComponent component : subcomponents) {
+            if(component.testClick(click))
               componentsHit.add(component);
           }
           
@@ -91,13 +96,26 @@ public class SceneWindow extends GComponent implements GLEventListener, MouseLis
               }
             });
             
-            changeFocus(components.get(0));
+            //TODO change z-axis of items
+            focus = subcomponents.get(0);
+            focus.mousePressed(click, button);
           }
+        } else {
+          focus = SceneWindow.this;
+          SceneWindow.this.mousePressed(click, button);
         }
         
       }
+      
+      @Override
+      public void mouseDragged(MouseEvent e) {
+        
+        Vector2D click = new Vector2D(e.getX(), height - e.getY());
+        int button = e.getButton();
+        
+        focus.mouseDragged(click, button);
+      }
     });
-    glWindow.addMouseListener(focus);
     
     glWindow.addGLEventListener(this);
     glWindow.setVisible(true);
@@ -108,9 +126,7 @@ public class SceneWindow extends GComponent implements GLEventListener, MouseLis
   
   public void changeFocus(GComponent focus) {
     //TODO change z-axis of items
-    glWindow.removeMouseListener(this.focus);
     this.focus = focus;
-    glWindow.addMouseListener(focus);
   }
 
   @Override
@@ -137,27 +153,32 @@ public class SceneWindow extends GComponent implements GLEventListener, MouseLis
     renderer3D.preRender(gl, cameraPos , width/height, zoom);
     renderer3D.render(gl, scene);
     
-    gl.glMatrixMode(GL2.GL_PROJECTION);
-    gl.glLoadIdentity();
-    gl.glOrtho(0, width, height, 0, 0, 1);
-    gl.glMatrixMode(GL2.GL_MODELVIEW);
-    gl.glLoadIdentity();
-    gl.glDisable(GL2.GL_LIGHTING);
-    gl.glScalef(1, -1, 1);
-    gl.glTranslated(0, -height, 0);
     
-    Collections.sort(components, new Comparator<GComponent>() {
+    Collections.sort(subcomponents, new Comparator<GComponent>() {
       @Override 
       public int compare(GComponent a, GComponent b) {
         return (int) (b.position.z - a.position.z);
       }
     });
 
-    for(GComponent component : components) {
-      gl.glTranslated(component.position.x, component.position.y, 0);
+    gl.glMatrixMode(GL2.GL_PROJECTION);
+    gl.glLoadIdentity();
+    gl.glOrtho(0, width, height, 0, 0, 1);
+    gl.glMatrixMode(GL2.GL_MODELVIEW);
+    gl.glLoadIdentity();
+    gl.glScalef(1, -1, 1);
+    gl.glTranslated(0, -height, 0);
+    
+    gl.glDisable(GL2.GL_LIGHTING);
+    gl.glDisable(GL2.GL_CULL_FACE);
+    gl.glDisable(GL2.GL_DEPTH_TEST);
+    
+    for(GComponent component : subcomponents) {
       component.render(gl, width, height);
     }
     
+    gl.glEnable(GL2.GL_CULL_FACE);
+    gl.glEnable(GL2.GL_DEPTH_TEST);
     gl.glEnable(GL2.GL_LIGHTING);
   }
 
@@ -169,54 +190,31 @@ public class SceneWindow extends GComponent implements GLEventListener, MouseLis
   @Override
   public void dispose(GLAutoDrawable drawable) {}
 
-
-  
   
   
   
   @Override
-  public void mouseDragged(MouseEvent e) {
-    bPanning = !(e.getButton() == PAN_BUTTON);
-    endMousePos._setFromScreen(e.getX(), e.getY());
+  public void mouseDragged(Vector2D click, int button) {
+    bPanning = !(button == PAN_BUTTON);
+    endMousePos._set(click);
   }
   
   @Override
-  public void mousePressed(MouseEvent e) {
-    bPanning = !(e.getButton() == PAN_BUTTON);
-    endMousePos._set(startMousePos._setFromScreen(e.getX(), e.getY()));
+  public void mousePressed(Vector2D click, int button) {
+    bPanning = !(button == PAN_BUTTON);
+    endMousePos._set(startMousePos._set(click));
   }
   
   @Override
-  public void mouseReleased(MouseEvent e) {
-    bPanning = (e.getButton() == PAN_BUTTON);
+  public void mouseReleased(Vector2D click, int button) {
+    bPanning = (button == PAN_BUTTON);
   }
   
   @Override
-  public void mouseWheelMoved(MouseEvent e) {
-    this.zoom =  Math.max(Math.abs(this.zoom - e.getWheelRotation() * ZOOM_RATE), ZOOM_RATE);
+  public void mouseWheelMoved(int scroll) {
+    this.zoom =  Math.max(Math.abs(this.zoom - scroll * ZOOM_RATE), ZOOM_RATE);
     renderer3D.updateMatrices();
   }
-  
-  @Override
-  public void mouseClicked(MouseEvent e) {
-    
-  }
-
-  @Override
-  public void mouseEntered(MouseEvent e) {}
-
-  @Override
-  public void mouseExited(MouseEvent e) {}
-
-  @Override
-  public void mouseMoved(MouseEvent e) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  
-  
-  
   
   
   

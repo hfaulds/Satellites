@@ -34,24 +34,34 @@ public class ChatBox extends GComponent {
   private String input = "";
 
   private final Vector2D messagesOffset = new Vector2D(2, MESSAGE_HEIGHT + 5);
-  
-  public ChatBox() {
-    super(new Vector2D(15, 10));
+
+  public ChatBox(GComponent parent, Vector2D position) {
+    super(parent, position);
+    this.width = INPUT_WIDTH + 4 + 1;
+    this.height = MESSAGE_HEIGHT * (MAX_MSG_DISPLAYED + 1) + 5;
+    subcomponents.add(new TopBar(this));
   }
 
   @Override
   public void render(GL2 gl, int width, int height) {
     if(open) {
+      
+      for(GComponent component : subcomponents) {
+        component.render(gl, width, height);
+      }
+      
       gl.glPushMatrix();
       
       gl.glColor4d(1.0, 1.0, 1.0, 1.0);
       gl.glLineWidth(0.9f);
       
-      Renderer2D.drawRect(gl, position.x - 2 , position.y - 5, INPUT_WIDTH + 4, MESSAGE_HEIGHT + 5);
-      Renderer2D.drawRect(gl, position.x - 2 , position.y + MESSAGE_HEIGHT, INPUT_WIDTH + 4, MESSAGE_HEIGHT * MAX_MSG_DISPLAYED);
+      Renderer2D.drawLineRect(gl, position.x , position.y, 
+          INPUT_WIDTH + 4, MESSAGE_HEIGHT + 5);
+      Renderer2D.drawLineRect(gl, position.x, position.y + MESSAGE_HEIGHT + 5, 
+          INPUT_WIDTH + 4, MESSAGE_HEIGHT * MAX_MSG_DISPLAYED);
       
       gl.glEnable(GL2.GL_LIGHTING);
-      gl.glWindowPos2d(messagesOffset.x + position.x, position.y);
+      gl.glWindowPos2d(messagesOffset.x + position.x, position.y + 5);
       
       String input = new String(this.input);
       
@@ -76,7 +86,7 @@ public class ChatBox extends GComponent {
   }
 
   private void renderMessage(GL2 gl, int i, ChatMsg message) {
-    gl.glWindowPos2d(messagesOffset.x + position.x, messagesOffset.y + position.y + MESSAGE_HEIGHT * i);
+    gl.glWindowPos2d(messagesOffset.x + position.x + 2, messagesOffset.y + position.y + MESSAGE_HEIGHT * i + 5);
     glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, message.username + ": " + message.text);
   }
   
@@ -124,9 +134,12 @@ public class ChatBox extends GComponent {
   }
 
   @Override
-  public boolean testClick(Vector2D position) {
+  public boolean testClick(Vector2D click) {
     if(open) {
-      //TODO: Collide
+      for(GComponent component : subcomponents) {
+        if(component.testClick(click))
+          return true;
+      }
     }
     return false;
   }

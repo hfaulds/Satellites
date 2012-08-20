@@ -8,8 +8,17 @@ public class Vector2D {
   public static double Z;
   
   /* Constructors */
+  
   public Vector2D() {
     this(0,0);
+  }
+
+  public Vector2D(Vector2D other) {
+    this(other.x, other.y);
+  }
+  
+  public Vector2D(Vector3D other) {
+    this(other.x, other.y);
   }
   
   public Vector2D(double x, double y) {
@@ -17,14 +26,8 @@ public class Vector2D {
     this.y = y;
   }
 
-  public Vector2D(Vector2D other) {
-    this.x = other.x;
-    this.y = other.y;
-  }
-
   
   /*Mutable setters*/
-  
 
   public Vector2D _set(Vector2D other) {
     this.x = other.x;

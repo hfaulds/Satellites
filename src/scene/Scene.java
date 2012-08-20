@@ -1,7 +1,9 @@
 package scene;
 
 
+import geometry.Vector2D;
 import geometry.Vector3D;
+import gui.InGameGUI;
 
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
@@ -29,12 +31,12 @@ import com.esotericsoftware.kryonet.Connection;
 public class Scene extends MouseAdapter {
 
   public final PlayerInputController input = new PlayerInputController();
-  public final ChatBox messageHandler = new ChatBox();
+  public final ChatBox messageHandler = new ChatBox(null, new Vector2D(15, 10));
 
   public final List<Actor>       actors = new ArrayList<Actor>();
   public final List<Controller>  controllers = new ArrayList<Controller>();
   public final PointLightActor[] lights = {new PointLightActor(), new PointLightActor(new Vector3D(-10, 10, 10))};
-  public final GComponent[]          ui = new GComponent[]{new FPSCounter(), messageHandler};
+  public final GComponent[]          ui = new GComponent[]{new FPSCounter(null, new Vector2D(5, InGameGUI.HEIGHT - 50)), messageHandler};
 
   public final Queue<Actor> actorqueue = new LinkedList<Actor>();
   
