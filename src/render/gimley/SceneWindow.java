@@ -99,6 +99,9 @@ public class SceneWindow extends GComponent implements GLEventListener {
             //TODO change z-axis of items
             focus = subcomponents.get(0);
             focus.mousePressed(click, button);
+          } else {
+            focus = SceneWindow.this;
+            SceneWindow.this.mousePressed(click, button);
           }
         } else {
           focus = SceneWindow.this;

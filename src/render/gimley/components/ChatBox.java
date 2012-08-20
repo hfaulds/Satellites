@@ -37,7 +37,7 @@ public class ChatBox extends GComponent {
 
   public ChatBox(GComponent parent, Vector2D position) {
     super(parent, position);
-    this.width = INPUT_WIDTH + 4 + 1;
+    this.width = INPUT_WIDTH + 4;
     this.height = MESSAGE_HEIGHT * (MAX_MSG_DISPLAYED + 1) + 5;
     subcomponents.add(new TopBar(this));
   }
@@ -53,12 +53,11 @@ public class ChatBox extends GComponent {
       gl.glPushMatrix();
       
       gl.glColor4d(1.0, 1.0, 1.0, 1.0);
-      gl.glLineWidth(0.9f);
       
       Renderer2D.drawLineRect(gl, position.x , position.y, 
-          INPUT_WIDTH + 4, MESSAGE_HEIGHT + 5);
+          INPUT_WIDTH + 4, MESSAGE_HEIGHT + 5, 0.9f);
       Renderer2D.drawLineRect(gl, position.x, position.y + MESSAGE_HEIGHT + 5, 
-          INPUT_WIDTH + 4, MESSAGE_HEIGHT * MAX_MSG_DISPLAYED);
+          INPUT_WIDTH + 4, MESSAGE_HEIGHT * MAX_MSG_DISPLAYED, 0.9f);
       
       gl.glEnable(GL2.GL_LIGHTING);
       gl.glWindowPos2d(messagesOffset.x + position.x, position.y + 5);

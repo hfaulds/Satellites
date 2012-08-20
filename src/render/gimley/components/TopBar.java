@@ -7,8 +7,6 @@ import javax.media.opengl.GL2;
 
 import render.Renderer2D;
 
-import com.jogamp.opengl.util.gl2.GLUT;
-
 public class TopBar extends GComponent {
 
   private Vector2D mouseDragOffset;
@@ -33,22 +31,13 @@ public class TopBar extends GComponent {
       this.parent.position._set(position.subtract(new Vector3D(0, parent.height, 0)));
     }
   }
-
-  private final GLUT glut = new GLUT();
   
   @Override
   public void render(GL2 gl, int width, int height) {
-    for(int i=150; i < 750; i+=20){
-      gl.glWindowPos2d(5,i);
-      glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, String.valueOf(i));
-      
-      gl.glBegin(GL2.GL_LINES);
-      gl.glVertex2d(10, i);
-      gl.glVertex2d(100, i);
-      gl.glEnd();
-    }
-    gl.glColor4d(1.0, 1.0, 1.0, 1.0);
+    gl.glColor4d(1.0, 1.0, 1.0, 0.8);
     Renderer2D.drawFillRect(gl, position.x, position.y, parent.width, this.height);
+    gl.glColor4d(1.0, 1.0, 1.0, 1);
+    Renderer2D.drawLineRect(gl, position.x, position.y, parent.width, this.height, 0.9f);
   }
 
   @Override

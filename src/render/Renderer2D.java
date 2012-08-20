@@ -29,9 +29,10 @@ public class Renderer2D {
     gl.glEnd();
   }
   
-  public static void drawLineRect(GL2 gl, double x, double y, double width, double height) {
+  public static void drawLineRect(GL2 gl, double x, double y, double width, double height, float thickness) {
+    gl.glLineWidth(thickness);
     gl.glBegin(GL2.GL_LINE_LOOP);
-    drawRect(gl, x, y, width, height);
+    drawRect(gl, x - thickness, y - thickness, width + 2*thickness, height + 2*thickness);
     gl.glEnd();
   }
 
