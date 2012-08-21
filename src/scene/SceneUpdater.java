@@ -11,6 +11,7 @@ import java.util.Queue;
 import scene.actors.Actor;
 import scene.actors.ProjectileActor;
 import scene.actors.ShipActor;
+import scene.actors.StationActor;
 import scene.controllers.Controller;
 
 public class SceneUpdater extends MouseAdapter {
@@ -71,6 +72,12 @@ public class SceneUpdater extends MouseAdapter {
       } else if (b instanceof ProjectileActor && a instanceof ShipActor) {
         ((ShipActor)a).damage(ProjectileActor.DAMAGE);
         actorRemoveQueue.add(b);
+        
+      /* Ship Station Collisions */
+      } else if(a instanceof StationActor && b instanceof ShipActor) {
+        //TODO contact gui
+      } else if (b instanceof StationActor && a instanceof ShipActor) {
+        
       }
       
     }

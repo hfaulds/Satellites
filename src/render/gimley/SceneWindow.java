@@ -10,6 +10,9 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLProfile;
 
+import net.NetworkConnection;
+import net.msg.ChatMsg;
+import net.server.ServerConnection;
 import render.Renderer2D;
 import render.Renderer3D;
 import render.gimley.components.ChatBox;
@@ -17,10 +20,16 @@ import render.gimley.components.FPSCounter;
 import render.gimley.components.GComponent;
 import render.gimley.components.StationDockRequest;
 import scene.Scene;
+import scene.SceneUpdater;
 import scene.actors.Planet1Actor;
 import scene.actors.ShipActor;
 import scene.actors.StationActor;
+import scene.controllers.ServerActorController;
+import scene.controllers.ServerShipController;
 
+import com.esotericsoftware.kryonet.Server;
+import com.jogamp.newt.event.KeyEvent;
+import com.jogamp.newt.event.KeyListener;
 import com.jogamp.newt.event.MouseEvent;
 import com.jogamp.newt.event.WindowAdapter;
 import com.jogamp.newt.event.WindowEvent;
@@ -37,6 +46,7 @@ public class SceneWindow extends GComponent implements GLEventListener {
   private final FPSAnimator animator;
   
   private final Scene scene;
+  private final SceneUpdater updater;
   private final Renderer2D renderer2D = new Renderer2D();
   private final Renderer3D renderer3D = new Renderer3D();
   
@@ -45,13 +55,13 @@ public class SceneWindow extends GComponent implements GLEventListener {
   private Vector2D endMousePos   = new Vector2D();
   private boolean bPanning       = false;
   
-  private ChatBox chatBox = new ChatBox(this, new Vector2D(15, 15));
-  private ChatBox chatBox2 = new ChatBox(this, new Vector2D(25, 25));
-  private ChatBox chatBox3 = new ChatBox(this, new Vector2D(35, 35));
-  private FPSCounter fpsCounter = new FPSCounter(this, new Vector2D(5, InGameGUI.HEIGHT - 50));
-  private StationDockRequest dockRequest = new StationDockRequest(this);
+  private final ChatBox chatBox = new ChatBox(this, new Vector2D(15, 15));
+  private final ChatBox chatBox2 = new ChatBox(this, new Vector2D(25, 25));
+  private final ChatBox chatBox3 = new ChatBox(this, new Vector2D(35, 35));
+  private final FPSCounter fpsCounter = new FPSCounter(this, new Vector2D(5, InGameGUI.HEIGHT - 50));
+  private final StationDockRequest dockRequest = new StationDockRequest(this);
   
-  public SceneWindow(Scene scene) {
+  public SceneWindow(final Scene scene, final NetworkConnection connection) {
     super(null);
     subcomponents.add(chatBox);
     subcomponents.add(chatBox2);
@@ -66,6 +76,7 @@ public class SceneWindow extends GComponent implements GLEventListener {
     this.width = 800;
     this.height = 800;
     this.scene = scene;
+    this.updater = new SceneUpdater(scene);
     
     GLCapabilities capabilities = new GLCapabilities(GLProfile.getDefault());
     glWindow = GLWindow.create(capabilities);
@@ -78,9 +89,54 @@ public class SceneWindow extends GComponent implements GLEventListener {
       }
     });
     glWindow.addMouseListener(new MouseRouter(this));
+    glWindow.addMouseListener(scene.input);
+    glWindow.addKeyListener(new KeyListener() {
+      @Override
+      public void keyReleased(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+        
+        if(chatBox.isOpen()) {
+          switch(keyCode) {
+            case 10: // enter
+              if(chatBox.getInput().length() > 0) {
+                ChatMsg msg = new ChatMsg(chatBox.getInput(), scene.username);
+                chatBox.displayMessage(msg);
+                connection.sendMsg(msg);
+              }
+              chatBox.closeInput();
+              break;
+            case 27: // escape
+              chatBox.closeInput();
+              break;
+            case 8: // backspace
+              chatBox.backSpace();
+              break;
+            default:
+              char character = (char)keyCode;
+              if(!e.isShiftDown())
+                character =  Character.toLowerCase(character);
+              chatBox.addChar(character);
+          }
+        } else {
+          if(keyCode == 'T') {
+            chatBox.openInput();
+          } else {
+            scene.input.keyReleased(e);
+          }
+        }
+      }
+
+      @Override
+      public void keyPressed(KeyEvent e) {
+        scene.input.keyPressed(e);
+        }
+      @Override
+      public void keyTyped(KeyEvent e) {}
+
+    });
     glWindow.addGLEventListener(this);
     glWindow.setVisible(true);
-    
+
     this.animator = new FPSAnimator(glWindow, 80);
     animator.start();
   }
@@ -94,6 +150,7 @@ public class SceneWindow extends GComponent implements GLEventListener {
   
   @Override
   public void display(GLAutoDrawable drawable) {
+    updater.tick();
     int width = drawable.getWidth();
     int height = drawable.getHeight();
     this.render(drawable.getGL().getGL2(), width, height);
@@ -156,19 +213,29 @@ public class SceneWindow extends GComponent implements GLEventListener {
   
   
   
-  public static void main(String ... args) {
-    Scene scene = new Scene("");
-
+  
+  private static void populateScene(Scene scene, Server server) {
+    
     ShipActor player = new ShipActor(0, 0);
     scene.addPlayer(player);
+    scene.addController(new ServerShipController(player, server));
     
     Planet1Actor planet = new Planet1Actor(17, 17);
     scene.queueAddActor(planet);
+    scene.addController(new ServerActorController(planet, server));
     
     StationActor station = new StationActor(-25, 17);
     scene.queueAddActor(station);
+    scene.addController(new ServerActorController(station, server));
     
-    new SceneWindow(scene);
+  }
+  
+  public static void main(String ... args) {
+    Scene scene = new Scene("");
+    ServerConnection connection = new ServerConnection(scene);
+    scene.input.setConnection(connection);
+    populateScene(scene, connection.server);
+    new SceneWindow(scene, connection);
   }
 
 }
