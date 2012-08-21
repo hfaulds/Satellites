@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import render.gimley.components.GComponent;
-import render.gimley.components.GComponentList;
 
 import com.jogamp.newt.event.MouseAdapter;
 import com.jogamp.newt.event.MouseEvent;
@@ -28,8 +27,9 @@ public class MouseRouter extends MouseAdapter {
       List<GComponent> componentsHit = new LinkedList<GComponent>();
       
       for(GComponent component : subcomponents) {
-        if(component.testClick(click))
+        if(component.testClick(click)) {
           componentsHit.add(component);
+        }
       }
       
       if(componentsHit.size() > 0) {

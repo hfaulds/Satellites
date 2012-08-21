@@ -36,8 +36,10 @@ public class Renderer3D {
     gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
     
     gl.glEnable(GL2.GL_NORMALIZE);
+    
     gl.glEnable(GL.GL_DEPTH_TEST);
     gl.glDepthFunc(GL.GL_LEQUAL);
+    
     gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
     
     for(int i=0; i < scene.lights.length; i++) {

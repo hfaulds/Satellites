@@ -4,6 +4,8 @@ import geometry.Vector2D;
 
 import javax.media.opengl.GL2;
 
+import render.gimley.GComponentList;
+
 import com.jogamp.newt.event.MouseEvent;
 
 public abstract class GComponent {

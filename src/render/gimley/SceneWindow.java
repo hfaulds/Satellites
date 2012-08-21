@@ -42,18 +42,21 @@ public class SceneWindow extends GComponent implements GLEventListener {
   private Vector2D endMousePos   = new Vector2D();
   private boolean bPanning       = false;
   
-  private ChatBox chatBox = new ChatBox(this, new Vector2D(15, 10));
+  private ChatBox chatBox = new ChatBox(this, new Vector2D(15, 15));
   private ChatBox chatBox2 = new ChatBox(this, new Vector2D(25, 25));
+  private ChatBox chatBox3 = new ChatBox(this, new Vector2D(35, 35));
   private FPSCounter fpsCounter = new FPSCounter(this, new Vector2D(5, InGameGUI.HEIGHT - 50));
   
   public SceneWindow(Scene scene) {
     super(null);
     subcomponents.add(chatBox);
     subcomponents.add(chatBox2);
+    subcomponents.add(chatBox3);
     subcomponents.add(fpsCounter);
     
     chatBox.openInput();
     chatBox2.openInput();
+    chatBox3.openInput();
     
     this.width = 800;
     this.height = 800;
@@ -110,12 +113,10 @@ public class SceneWindow extends GComponent implements GLEventListener {
     
     gl.glDisable(GL2.GL_LIGHTING);
     gl.glDisable(GL2.GL_CULL_FACE);
-    gl.glDisable(GL2.GL_DEPTH_TEST);
     
     subcomponents.render(gl, width, height);
     
     gl.glEnable(GL2.GL_CULL_FACE);
-    gl.glEnable(GL2.GL_DEPTH_TEST);
     gl.glEnable(GL2.GL_LIGHTING);
   }
 
@@ -147,7 +148,7 @@ public class SceneWindow extends GComponent implements GLEventListener {
   
   @Override
   public void mouseReleased(Vector2D click, MouseEvent e) {
-    bPanning = (e.getButton() == PAN_BUTTON);
+    bPanning = false;
   }
   
   @Override

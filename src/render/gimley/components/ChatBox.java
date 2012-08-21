@@ -48,24 +48,26 @@ public class ChatBox extends GComponent {
       for(GComponent component : subcomponents) {
         component.render(gl, width, height);
       }
-      
-      gl.glPushMatrix();
+
+      gl.glColor4d(0.6, 0.6, 0.6, 1.0);
+      Renderer2D.drawFillRect(gl, position.x , position.y, 
+          INPUT_WIDTH + 4, MESSAGE_HEIGHT + 5);
       
       gl.glColor4d(1.0, 1.0, 1.0, 1.0);
-      
       Renderer2D.drawLineRect(gl, position.x , position.y, 
           INPUT_WIDTH + 4, MESSAGE_HEIGHT + 5, 0.9f);
+
+      gl.glColor4d(0.4, 0.4, 0.4, 1.0);
+      Renderer2D.drawFillRect(gl, position.x, position.y + MESSAGE_HEIGHT + 5, 
+          INPUT_WIDTH + 4, MESSAGE_HEIGHT * MAX_MSG_DISPLAYED);
+
+      gl.glColor4d(1.0, 1.0, 1.0, 1.0);
       Renderer2D.drawLineRect(gl, position.x, position.y + MESSAGE_HEIGHT + 5, 
           INPUT_WIDTH + 4, MESSAGE_HEIGHT * MAX_MSG_DISPLAYED, 0.9f);
       
-      gl.glEnable(GL2.GL_LIGHTING);
       gl.glWindowPos2d(messagesOffset.x + position.x, position.y + 5);
       
-      String input = new String(this.input);
-      
       glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, fitMessage(input));
-      
-      gl.glPopMatrix();
       
       for(int i=0; i < messages.size() && i < MAX_MSG_DISPLAYED; i++) {
         ChatMsg message = messages.get(i);
@@ -89,10 +91,11 @@ public class ChatBox extends GComponent {
   }
   
   private String fitMessage(String message) {
-    if(textRenderer.getBounds(message).getWidth() > INPUT_WIDTH)
+    if(textRenderer.getBounds(message).getWidth() > INPUT_WIDTH) {
       return fitMessage(message.substring(1));
-    else
+    } else {
       return message;
+    }
   }
 
   public void displayMessage(ChatMsg msg) {
