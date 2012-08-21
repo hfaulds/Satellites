@@ -3,7 +3,6 @@ package render.gimley.components;
 
 import geometry.Vector2D;
 
-import java.awt.Font;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,9 +10,6 @@ import javax.media.opengl.GL2;
 
 import net.msg.ChatMsg;
 import render.Renderer2D;
-
-import com.jogamp.opengl.util.awt.TextRenderer;
-import com.jogamp.opengl.util.gl2.GLUT;
 
 public class ChatBox extends GComponent {
   
@@ -23,10 +19,7 @@ public class ChatBox extends GComponent {
   
   private static final int MAX_INPUT = 40;
 
-  private static final Font font = new Font("Helvetica", Font.PLAIN, 12);
-  private static final TextRenderer textRenderer = new TextRenderer(font);
   
-  private final GLUT glut = new GLUT();
   private final List<ChatMsg> messages = new LinkedList<ChatMsg>();
   
   private boolean open = false;
@@ -44,10 +37,7 @@ public class ChatBox extends GComponent {
   @Override
   public void render(GL2 gl, int width, int height) {
     if(open) {
-      
-      for(GComponent component : subcomponents) {
-        component.render(gl, width, height);
-      }
+      super.render(gl, width, height);
 
       gl.glColor4d(0.6, 0.6, 0.6, 1.0);
       Renderer2D.drawFillRect(gl, position.x , position.y, 
@@ -65,9 +55,7 @@ public class ChatBox extends GComponent {
       Renderer2D.drawLineRect(gl, position.x, position.y + MESSAGE_HEIGHT + 5, 
           INPUT_WIDTH + 4, MESSAGE_HEIGHT * MAX_MSG_DISPLAYED, 0.9f);
       
-      gl.glWindowPos2d(messagesOffset.x + position.x, position.y + 5);
-      
-      glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, fitMessage(input));
+      Renderer2D.drawText(gl, messagesOffset.x + position.x, position.y + 5, fitMessage(gl, input));
       
       for(int i=0; i < messages.size() && i < MAX_MSG_DISPLAYED; i++) {
         ChatMsg message = messages.get(i);
@@ -86,13 +74,16 @@ public class ChatBox extends GComponent {
   }
 
   private void renderMessage(GL2 gl, int i, ChatMsg message) {
-    gl.glWindowPos2d(messagesOffset.x + position.x + 2, messagesOffset.y + position.y + MESSAGE_HEIGHT * i + 5);
-    glut.glutBitmapString(GLUT.BITMAP_HELVETICA_12, message.username + ": " + message.text);
+    Renderer2D.drawText(gl, 
+        messagesOffset.x + position.x + 2, 
+        messagesOffset.y + position.y + MESSAGE_HEIGHT * i + 5, 
+        message.username + ": " + message.text
+        );
   }
   
-  private String fitMessage(String message) {
-    if(textRenderer.getBounds(message).getWidth() > INPUT_WIDTH) {
-      return fitMessage(message.substring(1));
+  private String fitMessage(GL2 gl, String message) {
+    if(Renderer2D.getTextSize(gl, message).y > INPUT_WIDTH) {
+      return fitMessage(gl, message.substring(1));
     } else {
       return message;
     }

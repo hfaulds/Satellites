@@ -15,6 +15,7 @@ import render.Renderer3D;
 import render.gimley.components.ChatBox;
 import render.gimley.components.FPSCounter;
 import render.gimley.components.GComponent;
+import render.gimley.components.StationDockRequest;
 import scene.Scene;
 import scene.actors.Planet1Actor;
 import scene.actors.ShipActor;
@@ -39,7 +40,7 @@ public class SceneWindow extends GComponent implements GLEventListener {
   private final Renderer2D renderer2D = new Renderer2D();
   private final Renderer3D renderer3D = new Renderer3D();
   
-  private Vector3D camera     = new Vector3D(0, 0, ZOOM_DEFAULT);
+  private Vector3D camera        = new Vector3D(0, 0, ZOOM_DEFAULT);
   private Vector2D startMousePos = new Vector2D();
   private Vector2D endMousePos   = new Vector2D();
   private boolean bPanning       = false;
@@ -48,6 +49,7 @@ public class SceneWindow extends GComponent implements GLEventListener {
   private ChatBox chatBox2 = new ChatBox(this, new Vector2D(25, 25));
   private ChatBox chatBox3 = new ChatBox(this, new Vector2D(35, 35));
   private FPSCounter fpsCounter = new FPSCounter(this, new Vector2D(5, InGameGUI.HEIGHT - 50));
+  private StationDockRequest dockRequest = new StationDockRequest(this);
   
   public SceneWindow(Scene scene) {
     super(null);
@@ -55,6 +57,7 @@ public class SceneWindow extends GComponent implements GLEventListener {
     subcomponents.add(chatBox2);
     subcomponents.add(chatBox3);
     subcomponents.add(fpsCounter);
+    subcomponents.add(dockRequest);
     
     chatBox.openInput();
     chatBox2.openInput();
@@ -109,7 +112,6 @@ public class SceneWindow extends GComponent implements GLEventListener {
   
   @Override
   public void render(GL2 gl, int width, int height) {
-
     if(bPanning) {
       Vector2D direction = endMousePos.sub(startMousePos).divide(1000);
       camera._add(new Vector3D(direction));

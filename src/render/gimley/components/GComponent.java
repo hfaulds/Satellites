@@ -38,7 +38,9 @@ public abstract class GComponent {
     this.position = position;
   }
 
-  public abstract void render(GL2 gl, int width, int height);
+  public void render(GL2 gl, int width, int height) {
+    subcomponents.render(gl, width, height);
+  }
 
   public boolean testClick(Vector2D click) {
 

@@ -1,11 +1,22 @@
 package render;
 
+import geometry.Vector2D;
+
+import java.awt.Font;
+import java.awt.geom.Rectangle2D;
+
 import javax.media.opengl.GL2;
+
+import com.jogamp.opengl.util.awt.TextRenderer;
+import com.jogamp.opengl.util.gl2.GLUT;
 
 import render.gimley.GComponentList;
 import render.gimley.components.GComponent;
 
 public class Renderer2D {
+
+  private static final Font font = new Font("Helvetica", Font.PLAIN, 12);
+  private static final TextRenderer textRenderer = new TextRenderer(font);
   
   public void render(GL2 gl, GComponentList components, int width, int height) {
     gl.glMatrixMode(GL2.GL_PROJECTION);
@@ -46,6 +57,10 @@ public class Renderer2D {
     gl.glEnable(GL2.GL_LIGHTING);
   }
   
+  public static Vector2D getTextSize(GL2 gl, String text) {
+    Rectangle2D bounds = textRenderer.getBounds(text);
+    return new Vector2D(bounds.getWidth(), bounds.getHeight());
+  }
 
   public static void drawFillRect(GL2 gl, double x, double y, double width, double height) {
     gl.glBegin(GL2.GL_QUADS);
@@ -66,5 +81,16 @@ public class Renderer2D {
     gl.glVertex2d(x + width, y + height);
     gl.glVertex2d(x + width, y         );
     gl.glVertex2d(x        , y         );
+  }
+
+  public static void drawText(GL2 gl, double x, double y, String text) {
+    drawText(gl, x, y, GLUT.BITMAP_HELVETICA_12, text);
+  }
+  
+
+  public static void drawText(GL2 gl, double x, double y, int font, String text) {
+    GLUT glut = new GLUT();
+    gl.glWindowPos2d(x, y);
+    glut.glutBitmapString(font, text);
   }
 }
