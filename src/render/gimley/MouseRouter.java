@@ -41,8 +41,6 @@ public class MouseRouter extends MouseAdapter {
       }
       
     }
-    
-    System.out.println(focus);
 
     subcomponents.setFocus(focus);
     return focus;
