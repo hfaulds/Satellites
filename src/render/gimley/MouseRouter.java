@@ -25,8 +25,8 @@ public class MouseRouter extends MouseAdapter {
     GComponent focus = subcomponents.getFocus();
     
     boolean testClick = focus.testClick(click);
-    
-    if(testClick || focus == window) {
+
+    if(!testClick || focus == window) {
       List<GComponent> componentsHit = new LinkedList<GComponent>();
       
       for(GComponent component : subcomponents) {
@@ -35,14 +35,14 @@ public class MouseRouter extends MouseAdapter {
       }
       
       if(componentsHit.size() > 0) {
-        focus = subcomponents.get(0);
+        focus = componentsHit.get(0);
       } else {
         focus = window;
       }
       
-    } else {
-      focus = window;
     }
+    
+    System.out.println(focus);
 
     subcomponents.setFocus(focus);
     return focus;
@@ -61,13 +61,18 @@ public class MouseRouter extends MouseAdapter {
   @Override
   public void mouseDragged(MouseEvent e) {
     Vector2D click = getClick(e);
-   subcomponents.getFocus().mouseDragged(click, e);
+    subcomponents.getFocus().mouseDragged(click, e);
   }
 
   @Override
   public void mouseReleased(MouseEvent e) {
     Vector2D click = getClick(e);
     subcomponents.getFocus().mouseReleased(click, e);
+  }
+
+  @Override
+  public void mouseWheelMoved(MouseEvent e) {
+    subcomponents.getFocus().mouseWheelMoved(e);
   }
   
 }

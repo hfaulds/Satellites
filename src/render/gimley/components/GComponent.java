@@ -16,6 +16,8 @@ public abstract class GComponent {
   
   public final Vector2D position;
   
+  private boolean bDragPossible;
+  
   public GComponent(GComponent parent) {
     this(parent, new Vector2D());
   }
@@ -35,28 +37,38 @@ public abstract class GComponent {
   }
 
   public abstract void render(GL2 gl, int width, int height);
-  
-  public abstract boolean testClick(Vector2D position);
-  
-  public void mouseClicked(Vector2D click, MouseEvent e) {
+
+  public boolean testClick(Vector2D click) {
+
     for(GComponent component : subcomponents)
       if(component.testClick(click))
-        component.mouseClicked(click, e);
+        return true;
+    
+    return click.x >= position.x 
+        && click.y >= position.y 
+        && click.x <= position.x + width 
+        && click.y <= position.y + height;
   }
   
-  public void mouseDragged(Vector2D click, MouseEvent e) {
-    for(GComponent component : subcomponents)
-      component.mouseDragged(click, e);
-  }
-
   public void mousePressed(Vector2D click, MouseEvent e) {
     for(GComponent component : subcomponents)
-      component.mousePressed(click, e);
+      if(component.testClick(click)) {
+        component.bDragPossible = true;
+        component.mousePressed(click, e);
+      }
   }
 
   public void mouseReleased(Vector2D click, MouseEvent e) {
-    for(GComponent component : subcomponents)
+    for(GComponent component : subcomponents) {
+      component.bDragPossible = false;
       component.mouseReleased(click, e);
+    }
+  }
+
+  public void mouseDragged(Vector2D click, MouseEvent e) {
+    for(GComponent component : subcomponents)
+      if(component.bDragPossible)
+        component.mouseDragged(click, e);
   }
 
   public void mouseWheelMoved(MouseEvent e) {

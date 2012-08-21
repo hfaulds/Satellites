@@ -1,8 +1,8 @@
 package render.gimley;
 
 import geometry.Vector2D;
+import geometry.Vector3D;
 import gui.InGameGUI;
-
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -37,24 +37,27 @@ public class SceneWindow extends GComponent implements GLEventListener {
   private final Scene scene;
   private final Renderer3D renderer3D = new Renderer3D();
   
-  private Vector2D cameraPos     = new Vector2D();
+  private Vector3D cameraPos     = new Vector3D(0, 0, ZOOM_DEFAULT);
   private Vector2D startMousePos = new Vector2D();
   private Vector2D endMousePos   = new Vector2D();
   private boolean bPanning       = false;
-  public double zoom             = ZOOM_DEFAULT;
   
+  private ChatBox chatBox = new ChatBox(this, new Vector2D(15, 10));
+  private ChatBox chatBox2 = new ChatBox(this, new Vector2D(25, 25));
+  private FPSCounter fpsCounter = new FPSCounter(this, new Vector2D(5, InGameGUI.HEIGHT - 50));
   
   public SceneWindow(Scene scene) {
     super(null);
+    subcomponents.add(chatBox);
+    subcomponents.add(chatBox2);
+    subcomponents.add(fpsCounter);
+    
+    chatBox.openInput();
+    chatBox2.openInput();
+    
     this.width = 800;
     this.height = 800;
     this.scene = scene;
-    
-    ChatBox chatBox = new ChatBox(this, new Vector2D(15, 10));
-    chatBox.openInput();
-    subcomponents.add(chatBox);
-    
-    subcomponents.add(new FPSCounter(this, new Vector2D(5, InGameGUI.HEIGHT - 50)));
     
     GLCapabilities capabilities = new GLCapabilities(GLProfile.getDefault());
     glWindow = GLWindow.create(capabilities);
@@ -66,9 +69,7 @@ public class SceneWindow extends GComponent implements GLEventListener {
         glWindow.destroy();
       }
     });
-
     glWindow.addMouseListener(new MouseRouter(this));
-    
     glWindow.addGLEventListener(this);
     glWindow.setVisible(true);
     
@@ -90,15 +91,14 @@ public class SceneWindow extends GComponent implements GLEventListener {
   
   @Override
   public void render(GL2 gl, int width, int height) {
-    
+
     if(bPanning) {
       Vector2D direction = endMousePos.sub(startMousePos).divide(1000);
-      cameraPos._add(direction);
+      cameraPos._add(new Vector3D(direction));
     }
 
     renderer3D.clear(gl);
-    renderer3D.preRender(gl, cameraPos , width/height, zoom);
-    renderer3D.render(gl, scene);
+    renderer3D.render(gl, scene, cameraPos , (double)width/height);
 
     gl.glMatrixMode(GL2.GL_PROJECTION);
     gl.glLoadIdentity();
@@ -112,9 +112,7 @@ public class SceneWindow extends GComponent implements GLEventListener {
     gl.glDisable(GL2.GL_CULL_FACE);
     gl.glDisable(GL2.GL_DEPTH_TEST);
     
-    for(GComponent component : subcomponents) {
-      component.render(gl, width, height);
-    }
+    subcomponents.render(gl, width, height);
     
     gl.glEnable(GL2.GL_CULL_FACE);
     gl.glEnable(GL2.GL_DEPTH_TEST);
@@ -122,15 +120,18 @@ public class SceneWindow extends GComponent implements GLEventListener {
   }
 
   @Override
-  public void reshape(GLAutoDrawable drawable, int arg1, int arg2, int arg3,
-      int arg4) {
+  public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+    this.width = width;
+    this.height = height;
   }
 
   @Override
   public void dispose(GLAutoDrawable drawable) {}
 
-  
-  
+  @Override
+  public boolean testClick(Vector2D position) {
+    return true;
+  }
   
   @Override
   public void mouseDragged(Vector2D click, MouseEvent e) {
@@ -151,11 +152,9 @@ public class SceneWindow extends GComponent implements GLEventListener {
   
   @Override
   public void mouseWheelMoved(MouseEvent e) {
-    this.zoom =  Math.max(Math.abs(this.zoom - e.getWheelRotation() * ZOOM_RATE), ZOOM_RATE);
+    cameraPos.z = Math.max(Math.abs(cameraPos.z - e.getWheelRotation() * ZOOM_RATE), ZOOM_RATE);
     renderer3D.updateMatrices();
   }
-  
-  
   
   public static void main(String ... args) {
     Scene scene = new Scene("");
@@ -170,11 +169,6 @@ public class SceneWindow extends GComponent implements GLEventListener {
     scene.queueAddActor(station);
     
     new SceneWindow(scene);
-  }
-
-  @Override
-  public boolean testClick(Vector2D position) {
-    return true;
   }
 
 }

@@ -9,9 +9,8 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import render.Renderer2D;
-
 import net.msg.ChatMsg;
+import render.Renderer2D;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.opengl.util.gl2.GLUT;
@@ -131,15 +130,5 @@ public class ChatBox extends GComponent {
   public boolean isOpen() {
     return open;
   }
-
-  @Override
-  public boolean testClick(Vector2D click) {
-    if(open) {
-      for(GComponent component : subcomponents) {
-        if(component.testClick(click))
-          return true;
-      }
-    }
-    return false;
-  }
+  
 }

@@ -1,6 +1,7 @@
 package render;
 
 import geometry.Vector2D;
+import geometry.Vector3D;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -58,19 +59,26 @@ public class Renderer3D {
     gl.glLoadIdentity();
   }
   
-  public void preRender(final GL2 gl, Vector2D camera, double ratio, double zoom) {
+  
+  public void render(GL2 gl, Scene scene, Vector3D camera, double ratio) {
     gl.glMatrixMode(GL2.GL_PROJECTION);
     gl.glLoadIdentity();
+    
     glu.gluPerspective(45, ratio, 1, 1000);
-    glu.gluLookAt(camera.x, camera.y, zoom, camera.x, camera.y, 0, 0, 1, 0);
+    glu.gluLookAt(camera.x, camera.y, camera.z, camera.x, camera.y, 0, 0, 1, 0);
 
     if(bUpdateMatrices)
       updateMatrices(gl);
     
     gl.glMatrixMode(GL2.GL_MODELVIEW);
     gl.glLoadIdentity();
+    
     gl.glEnable(GL.GL_MULTISAMPLE);
+    
+    initActors(gl, scene);
+    renderActors(gl, scene);
   }
+
 
   private void updateMatrices(final GL2 gl) {
     gl.glGetIntegerv(GL2.GL_VIEWPORT, viewportMatrix, 0);
@@ -95,11 +103,6 @@ public class Renderer3D {
     return new Vector2D(player[0], viewportMatrix[3] - player[1]);
   }
   
-  public void render(GL2 gl, Scene scene) {
-    initActors(gl, scene);
-    renderActors(gl, scene);
-  }
-
   private void renderActors(GL2 gl, Scene scene) {
     gl.glEnable(GL2.GL_NORMALIZE);
     synchronized(scene.actors) {

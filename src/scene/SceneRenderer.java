@@ -2,6 +2,7 @@ package scene;
 
 
 import geometry.Vector2D;
+import geometry.Vector3D;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -23,9 +24,8 @@ public class SceneRenderer extends MouseAdapter {
   private final Renderer2D renderer2D = new Renderer2D();
 
   private final Scene scene;
-  public double zoom = ZOOM_DEFAULT;
   
-  private Vector2D cameraPos = new Vector2D();
+  private Vector3D cameraPos = new Vector3D(0, 0, ZOOM_DEFAULT);
   private Vector2D startMousePos = new Vector2D();
   private Vector2D endMousePos = new Vector2D();
   private boolean bPanning = false;
@@ -46,13 +46,12 @@ public class SceneRenderer extends MouseAdapter {
     
     if(bPanning) {
       Vector2D direction = endMousePos.sub(startMousePos).divide(1000);
-      cameraPos._add(direction);
+      cameraPos._add(new Vector3D(direction));
     }
     
     renderer3D.clear(gl);
     
-    renderer3D.preRender(gl, cameraPos , (double)width/height, zoom);
-    renderer3D.render(gl, scene);
+    renderer3D.render(gl, scene, cameraPos , (double)width/height);
     
     renderer2D.preRender(gl, width, height);
     renderer2D.render(gl, scene.ui, width, height);
@@ -82,7 +81,7 @@ public class SceneRenderer extends MouseAdapter {
   
   @Override
   public void mouseWheelMoved(MouseEvent e) {
-    this.zoom =  Math.max(Math.abs(this.zoom - e.getWheelRotation() * ZOOM_RATE), ZOOM_RATE);
+    cameraPos.z = Math.max(Math.abs(cameraPos.z - e.getWheelRotation() * ZOOM_RATE), ZOOM_RATE);
     renderer3D.updateMatrices();
   }
 

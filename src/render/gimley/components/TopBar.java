@@ -25,13 +25,10 @@ public class TopBar extends GComponent {
   
   @Override
   public void mouseDragged(Vector2D click, MouseEvent e) {
-    if(mouseDragOffset == null) {
-      mouseDragOffset = click.sub(new Vector2D(position));
+    if(mouseDragOffset != null) {
+      this.position._set(click.sub(mouseDragOffset));
+      this.parent.position._set(position.sub(new Vector2D(0, parent.height)));
     }
-
-    this.position._set(click.sub(mouseDragOffset));
-    this.parent.position._set(position.sub(new Vector2D(0, parent.height)));
-    
   }
   
   @Override
@@ -40,15 +37,6 @@ public class TopBar extends GComponent {
     Renderer2D.drawFillRect(gl, position.x, position.y, parent.width, this.height);
     gl.glColor4d(1.0, 1.0, 1.0, 1);
     Renderer2D.drawLineRect(gl, position.x, position.y, parent.width, this.height, 0.9f);
-  }
-
-  @Override
-  public boolean testClick(Vector2D click) {
-    boolean a = click.x >= position.x;
-    boolean b = click.y >= position.y;
-    boolean c = click.x < position.x + width;
-    boolean d = click.y < position.y + height;
-    return a && b && c && d;
   }
 
 }
