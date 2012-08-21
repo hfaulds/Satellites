@@ -1,60 +1,67 @@
 package render.gimley.components;
 
 import geometry.Vector2D;
-import geometry.Vector3D;
-
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.media.opengl.GL2;
 
+import com.jogamp.newt.event.MouseEvent;
+
 public abstract class GComponent {
 
-  protected final List<GComponent> subcomponents = new LinkedList<GComponent>();
-  
-  public final Vector3D position;
   public final GComponent parent;
-  
+  public final GComponentList subcomponents;
+
   public int width;
   public int height;
+  
+  public final Vector2D position;
   
   public GComponent(GComponent parent) {
     this(parent, new Vector2D());
   }
   
   public GComponent(GComponent parent, Vector2D position) {
+    this(parent, new GComponent[0], position);
+  }
+
+  public GComponent(GComponent parent, GComponent[] subcomponents) {
+    this(parent, subcomponents, new Vector2D());
+  }
+  
+  public GComponent(GComponent parent, GComponent[] subcomponents, Vector2D position) {
     this.parent = parent;
-    this.position = new Vector3D(position);
+    this.subcomponents = new GComponentList(this, subcomponents);
+    this.position = position;
   }
 
   public abstract void render(GL2 gl, int width, int height);
   
   public abstract boolean testClick(Vector2D position);
   
-  public void mouseClicked(Vector2D click, int button) {
+  public void mouseClicked(Vector2D click, MouseEvent e) {
     for(GComponent component : subcomponents)
       if(component.testClick(click))
-        component.mouseClicked(click, button);
+        component.mouseClicked(click, e);
   }
   
-  public void mouseDragged(Vector2D click, int button) {
+  public void mouseDragged(Vector2D click, MouseEvent e) {
     for(GComponent component : subcomponents)
-      component.mouseDragged(click, button);
+      component.mouseDragged(click, e);
   }
 
-  public void mousePressed(Vector2D click, int button) {
-    // TODO Auto-generated method stub
-    
+  public void mousePressed(Vector2D click, MouseEvent e) {
+    for(GComponent component : subcomponents)
+      component.mousePressed(click, e);
   }
 
-  public void mouseReleased(Vector2D click, int button) {
-    // TODO Auto-generated method stub
-    
+  public void mouseReleased(Vector2D click, MouseEvent e) {
+    for(GComponent component : subcomponents)
+      component.mouseReleased(click, e);
   }
 
-  public void mouseWheelMoved(int scroll) {
-    // TODO Auto-generated method stub
-    
+  public void mouseWheelMoved(MouseEvent e) {
+    for(GComponent component : subcomponents)
+      component.mouseWheelMoved(e);
   }
   
 }

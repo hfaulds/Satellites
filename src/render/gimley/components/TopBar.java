@@ -1,9 +1,10 @@
 package render.gimley.components;
 
 import geometry.Vector2D;
-import geometry.Vector3D;
 
 import javax.media.opengl.GL2;
+
+import com.jogamp.newt.event.MouseEvent;
 
 import render.Renderer2D;
 
@@ -18,18 +19,19 @@ public class TopBar extends GComponent {
   }
   
   @Override
-  public void mousePressed(Vector2D click, int button) {
+  public void mousePressed(Vector2D click, MouseEvent e) {
     mouseDragOffset = click.sub(new Vector2D(position));
   }
   
   @Override
-  public void mouseDragged(Vector2D click, int button) {
-    if(mouseDragOffset == null)
+  public void mouseDragged(Vector2D click, MouseEvent e) {
+    if(mouseDragOffset == null) {
       mouseDragOffset = click.sub(new Vector2D(position));
-    else {
-      this.position._set(new Vector3D(click.sub(mouseDragOffset)));
-      this.parent.position._set(position.subtract(new Vector3D(0, parent.height, 0)));
     }
+
+    this.position._set(click.sub(mouseDragOffset));
+    this.parent.position._set(position.sub(new Vector2D(0, parent.height)));
+    
   }
   
   @Override

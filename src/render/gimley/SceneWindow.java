@@ -3,10 +3,6 @@ package render.gimley;
 import geometry.Vector2D;
 import gui.InGameGUI;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -23,7 +19,6 @@ import scene.actors.Planet1Actor;
 import scene.actors.ShipActor;
 import scene.actors.StationActor;
 
-import com.jogamp.newt.event.MouseAdapter;
 import com.jogamp.newt.event.MouseEvent;
 import com.jogamp.newt.event.WindowAdapter;
 import com.jogamp.newt.event.WindowEvent;
@@ -48,7 +43,6 @@ public class SceneWindow extends GComponent implements GLEventListener {
   private boolean bPanning       = false;
   public double zoom             = ZOOM_DEFAULT;
   
-  private GComponent focus = this;
   
   public SceneWindow(Scene scene) {
     super(null);
@@ -73,63 +67,13 @@ public class SceneWindow extends GComponent implements GLEventListener {
       }
     });
 
-    glWindow.addMouseListener(new MouseAdapter() {
-      @Override
-      public void mousePressed(MouseEvent e) {
-        
-        Vector2D click = new Vector2D(e.getX(), height - e.getY());
-        int button = e.getButton();
-        
-        if(!focus.testClick(click) || focus == SceneWindow.this) {
-          List<GComponent> componentsHit = new LinkedList<GComponent>();
-          
-          for(GComponent component : subcomponents) {
-            if(component.testClick(click))
-              componentsHit.add(component);
-          }
-          
-          if(componentsHit.size() > 0) {
-            Collections.sort(componentsHit, new Comparator<GComponent>() {
-              @Override 
-              public int compare(GComponent a, GComponent b) {
-                return (int) (b.position.z - a.position.z);
-              }
-            });
-            
-            //TODO change z-axis of items
-            focus = subcomponents.get(0);
-            focus.mousePressed(click, button);
-          } else {
-            focus = SceneWindow.this;
-            SceneWindow.this.mousePressed(click, button);
-          }
-        } else {
-          focus = SceneWindow.this;
-          SceneWindow.this.mousePressed(click, button);
-        }
-        
-      }
-      
-      @Override
-      public void mouseDragged(MouseEvent e) {
-        
-        Vector2D click = new Vector2D(e.getX(), height - e.getY());
-        int button = e.getButton();
-        
-        focus.mouseDragged(click, button);
-      }
-    });
+    glWindow.addMouseListener(new MouseRouter(this));
     
     glWindow.addGLEventListener(this);
     glWindow.setVisible(true);
     
     this.animator = new FPSAnimator(glWindow, 80);
     animator.start();
-  }
-  
-  public void changeFocus(GComponent focus) {
-    //TODO change z-axis of items
-    this.focus = focus;
   }
 
   @Override
@@ -155,14 +99,6 @@ public class SceneWindow extends GComponent implements GLEventListener {
     renderer3D.clear(gl);
     renderer3D.preRender(gl, cameraPos , width/height, zoom);
     renderer3D.render(gl, scene);
-    
-    
-    Collections.sort(subcomponents, new Comparator<GComponent>() {
-      @Override 
-      public int compare(GComponent a, GComponent b) {
-        return (int) (b.position.z - a.position.z);
-      }
-    });
 
     gl.glMatrixMode(GL2.GL_PROJECTION);
     gl.glLoadIdentity();
@@ -197,25 +133,25 @@ public class SceneWindow extends GComponent implements GLEventListener {
   
   
   @Override
-  public void mouseDragged(Vector2D click, int button) {
-    bPanning = !(button == PAN_BUTTON);
+  public void mouseDragged(Vector2D click, MouseEvent e) {
+    bPanning = !(e.getButton() == PAN_BUTTON);
     endMousePos._set(click);
   }
   
   @Override
-  public void mousePressed(Vector2D click, int button) {
-    bPanning = !(button == PAN_BUTTON);
+  public void mousePressed(Vector2D click, MouseEvent e) {
+    bPanning = !(e.getButton() == PAN_BUTTON);
     endMousePos._set(startMousePos._set(click));
   }
   
   @Override
-  public void mouseReleased(Vector2D click, int button) {
-    bPanning = (button == PAN_BUTTON);
+  public void mouseReleased(Vector2D click, MouseEvent e) {
+    bPanning = (e.getButton() == PAN_BUTTON);
   }
   
   @Override
-  public void mouseWheelMoved(int scroll) {
-    this.zoom =  Math.max(Math.abs(this.zoom - scroll * ZOOM_RATE), ZOOM_RATE);
+  public void mouseWheelMoved(MouseEvent e) {
+    this.zoom =  Math.max(Math.abs(this.zoom - e.getWheelRotation() * ZOOM_RATE), ZOOM_RATE);
     renderer3D.updateMatrices();
   }
   
