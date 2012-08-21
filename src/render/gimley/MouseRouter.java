@@ -24,9 +24,7 @@ public class MouseRouter extends MouseAdapter {
   private GComponent refreshFocus(Vector2D click) {
     GComponent focus = subcomponents.getFocus();
     
-    boolean testClick = focus.testClick(click);
-
-    if(!testClick || focus == window) {
+    if(!focus.testClick(click) || focus == window) {
       List<GComponent> componentsHit = new LinkedList<GComponent>();
       
       for(GComponent component : subcomponents) {
@@ -39,7 +37,6 @@ public class MouseRouter extends MouseAdapter {
       } else {
         focus = window;
       }
-      
     }
 
     subcomponents.setFocus(focus);
