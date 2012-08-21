@@ -10,6 +10,7 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLProfile;
 
+import render.Renderer2D;
 import render.Renderer3D;
 import render.gimley.components.ChatBox;
 import render.gimley.components.FPSCounter;
@@ -35,9 +36,10 @@ public class SceneWindow extends GComponent implements GLEventListener {
   private final FPSAnimator animator;
   
   private final Scene scene;
+  private final Renderer2D renderer2D = new Renderer2D();
   private final Renderer3D renderer3D = new Renderer3D();
   
-  private Vector3D cameraPos     = new Vector3D(0, 0, ZOOM_DEFAULT);
+  private Vector3D camera     = new Vector3D(0, 0, ZOOM_DEFAULT);
   private Vector2D startMousePos = new Vector2D();
   private Vector2D endMousePos   = new Vector2D();
   private boolean bPanning       = false;
@@ -80,6 +82,13 @@ public class SceneWindow extends GComponent implements GLEventListener {
     animator.start();
   }
 
+  
+  
+  @Override
+  public void init(GLAutoDrawable drawable) {
+    renderer3D.init(drawable.getGL().getGL2(), scene);
+  }
+  
   @Override
   public void display(GLAutoDrawable drawable) {
     int width = drawable.getWidth();
@@ -88,46 +97,31 @@ public class SceneWindow extends GComponent implements GLEventListener {
   }
 
   @Override
-  public void init(GLAutoDrawable drawable) {
-    renderer3D.init(drawable.getGL().getGL2(), scene);
+  public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+    this.width = width;
+    this.height = height;
   }
+  
+  @Override
+  public void dispose(GLAutoDrawable drawable) {}
+  
+  
   
   @Override
   public void render(GL2 gl, int width, int height) {
 
     if(bPanning) {
       Vector2D direction = endMousePos.sub(startMousePos).divide(1000);
-      cameraPos._add(new Vector3D(direction));
+      camera._add(new Vector3D(direction));
     }
 
     renderer3D.clear(gl);
-    renderer3D.render(gl, scene, cameraPos , (double)width/height);
-
-    gl.glMatrixMode(GL2.GL_PROJECTION);
-    gl.glLoadIdentity();
-    gl.glOrtho(0, width, height, 0, 0, 1);
-    gl.glMatrixMode(GL2.GL_MODELVIEW);
-    gl.glLoadIdentity();
-    gl.glScalef(1, -1, 1);
-    gl.glTranslated(0, -height, 0);
-    
-    gl.glDisable(GL2.GL_LIGHTING);
-    gl.glDisable(GL2.GL_CULL_FACE);
-    
-    subcomponents.render(gl, width, height);
-    
-    gl.glEnable(GL2.GL_CULL_FACE);
-    gl.glEnable(GL2.GL_LIGHTING);
+    renderer3D.render(gl, scene, camera, (double)width/height);
+    renderer2D.render(gl, subcomponents, width, height);
   }
 
-  @Override
-  public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-    this.width = width;
-    this.height = height;
-  }
-
-  @Override
-  public void dispose(GLAutoDrawable drawable) {}
+  
+  
 
   @Override
   public boolean testClick(Vector2D position) {
@@ -153,9 +147,12 @@ public class SceneWindow extends GComponent implements GLEventListener {
   
   @Override
   public void mouseWheelMoved(MouseEvent e) {
-    cameraPos.z = Math.max(Math.abs(cameraPos.z - e.getWheelRotation() * ZOOM_RATE), ZOOM_RATE);
+    camera.z = Math.max(Math.abs(camera.z - e.getWheelRotation() * ZOOM_RATE), ZOOM_RATE);
     renderer3D.updateMatrices();
   }
+  
+  
+  
   
   public static void main(String ... args) {
     Scene scene = new Scene("");

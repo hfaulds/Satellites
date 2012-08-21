@@ -34,7 +34,7 @@ public class Renderer3D {
     
     gl.glEnable(GL2.GL_BLEND); 
     gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
-    
+
     gl.glEnable(GL2.GL_NORMALIZE);
     
     gl.glEnable(GL.GL_DEPTH_TEST);

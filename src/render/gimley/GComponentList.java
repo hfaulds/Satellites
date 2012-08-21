@@ -24,7 +24,7 @@ public class GComponentList extends ArrayList<GComponent>  {
   public void setFocus(GComponent focus) {
     if(contains(focus)) {
       remove(focus);
-      add(0, focus);
+      add(focus);
     }
     
     this.focus = focus;
