@@ -4,18 +4,17 @@ import geometry.Vector2D;
 
 import java.util.List;
 
+import net.server.ServerConnection;
 import scene.actors.Actor;
-
-import com.esotericsoftware.kryonet.Server;
 
 public class ServerActorController implements Controller {
 
   public final Actor actor;
-  private final Server server;
+  private final ServerConnection connection;
   
-  public ServerActorController(Actor actor, Server server) {
+  public ServerActorController(Actor actor, ServerConnection connection) {
     this.actor = actor;
-    this.server = server;
+    this.connection = connection;
   }
 
   @Override
@@ -30,7 +29,7 @@ public class ServerActorController implements Controller {
 
     actor.applyForce(force);
     actor.tick(dt);
-    server.sendToAllUDP(actor.getUpdateMsg());
+    connection.sendMsg(actor.getUpdateMsg());
   }
 
 }

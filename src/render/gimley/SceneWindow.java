@@ -11,6 +11,7 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLProfile;
 
 import net.NetworkConnection;
+import net.msg.ActorCreateMsg;
 import net.msg.ChatMsg;
 import net.msg.MsgListener;
 import net.server.ServerConnection;
@@ -22,14 +23,15 @@ import render.gimley.components.GComponent;
 import render.gimley.components.StationDockRequest;
 import scene.Scene;
 import scene.SceneUpdater;
+import scene.actors.Actor;
 import scene.actors.Planet1Actor;
+import scene.actors.ProjectileActor;
 import scene.actors.ShipActor;
 import scene.actors.StationActor;
 import scene.controllers.ServerActorController;
 import scene.controllers.ServerShipController;
 
 import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Server;
 import com.jogamp.newt.event.MouseEvent;
 import com.jogamp.newt.event.WindowAdapter;
 import com.jogamp.newt.event.WindowEvent;
@@ -176,29 +178,29 @@ public class SceneWindow extends GComponent implements GLEventListener {
   
   
   
-  private static void populateScene(Scene scene, Server server) {
+  private static void populateScene(Scene scene, ServerConnection connection) {
     
     ShipActor player = new ShipActor(0, 0);
     scene.addPlayer(player);
-    scene.addController(new ServerShipController(player, server));
+    scene.addController(new ServerShipController(player, connection));
     
     Planet1Actor planet = new Planet1Actor(17, 17);
     scene.queueAddActor(planet);
-    scene.addController(new ServerActorController(planet, server));
+    scene.addController(new ServerActorController(planet, connection));
     
     StationActor station = new StationActor(-25, 17);
     scene.queueAddActor(station);
-    scene.addController(new ServerActorController(station, server));
+    scene.addController(new ServerActorController(station, connection));
     
   }
   
   public static void main(String ... args) {
     final Scene scene = new Scene("");
-    ServerConnection connection = new ServerConnection(scene);
+    final ServerConnection connection = new ServerConnection(scene);
     
     connection.addMsgListener(new MsgListener() {
       @Override
-      public void msgReceived(Object msg, Connection connection) {
+      public void msgReceived(Object msg, Connection reply) {
         scene.messageHandler.displayMessage((ChatMsg) msg);
       }
 
@@ -207,10 +209,28 @@ public class SceneWindow extends GComponent implements GLEventListener {
         return ChatMsg.class;
       }
     });
+    connection.addMsgListener(new MsgListener() {
+      @Override
+      public void msgReceived(Object rawMsg, Connection reply) {
+        ActorCreateMsg msg = (ActorCreateMsg) rawMsg;
+        if(msg.actorClass.equals(ProjectileActor.class)) {
+          ProjectileActor projectile = (ProjectileActor) Actor.fromInfo(msg);
+          projectile.velocity._set(Vector2D.fromRotation(projectile.rotation)._mult(ProjectileActor.SPEED));
+          scene.queueAddActor(projectile);
+          scene.addController(new ServerActorController(projectile, connection));
+        }
+      }
+
+      @Override
+      public Class<?> getMsgClass() {
+        return ActorCreateMsg.class;
+      }
+    });
+    
     
     connection.create();
     scene.input.setConnection(connection);
-    populateScene(scene, connection.server);
+    populateScene(scene, connection);
     new SceneWindow(scene, connection);
   }
 

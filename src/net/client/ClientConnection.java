@@ -13,18 +13,15 @@ public class ClientConnection extends NetworkConnection {
 
   private final Client client = new Client();
   
-  private ClientListener clientListener; 
-
   public ClientConnection(Scene scene) {
-    super(scene);
+    super(scene, new ClientListener(scene));
   }
 
   public void connect(InetAddress address) throws IOException {
     addClasses(client);
     client.start();
     client.connect(TIMEOUT, address, TCP_PORT, UDP_PORT);
-    this.clientListener = new ClientListener(scene);
-    client.addListener(clientListener);
+    client.addListener(listener);
     super.setAddress(address);
   }
 
@@ -40,8 +37,9 @@ public class ClientConnection extends NetworkConnection {
 
   @Override
   public void sendMsg(Object msg) {
-    if(clientListener != null && clientListener.isConnected()) {
-      clientListener.connection.sendUDP(msg);
+    ClientListener listener = (ClientListener) this.listener;
+    if(listener != null && listener.isConnected()) {
+      listener.connection.sendUDP(msg);
     }
   }
 

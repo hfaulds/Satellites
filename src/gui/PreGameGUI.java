@@ -27,7 +27,6 @@ import scene.controllers.ServerActorController;
 import scene.controllers.ServerShipController;
 
 import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Server;
 
 @SuppressWarnings("serial")
 public class PreGameGUI extends GUI {
@@ -104,7 +103,7 @@ public class PreGameGUI extends GUI {
             
           });
           freezeButtons();
-          populateScene(scene, connection.server);
+          populateScene(scene, connection);
           switchGUI(new InGameGUI(scene, connection));
         }
       }
@@ -113,7 +112,7 @@ public class PreGameGUI extends GUI {
     return create;
   }
   
-  private void populateScene(Scene scene, Server server) {
+  private void populateScene(Scene scene, ServerConnection server) {
     
     ShipActor player = new ShipActor(0, 0);
     scene.addPlayer(player);

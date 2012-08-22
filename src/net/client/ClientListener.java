@@ -1,5 +1,6 @@
 package net.client;
 
+import net.NetworkListener;
 import net.msg.ActorCreateMsg;
 import net.msg.ActorUpdateMsg;
 import net.msg.ChatMsg;
@@ -9,9 +10,8 @@ import scene.actors.Actor;
 import scene.actors.ProjectileActor;
 
 import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Listener;
 
-public class ClientListener extends Listener {
+public class ClientListener extends NetworkListener {
 
   private final Scene scene;
   public Connection connection;

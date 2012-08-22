@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import net.msg.ActorCreateMsg;
 import net.msg.ActorUpdateMsg;
 import net.msg.ChatMsg;
+import net.msg.MsgListener;
 import net.msg.PlayerUpdateMsg;
 import net.msg.SceneCreateMsg;
 import scene.Scene;
@@ -41,9 +42,14 @@ public abstract class NetworkConnection {
   public abstract void fireProjectile(ProjectileActor projectile);
 
   protected final Scene scene;
+  protected final NetworkListener listener;
   
-  public NetworkConnection(Scene scene) {
+  public NetworkConnection(Scene scene, NetworkListener listener) {
     this.scene = scene;
+    this.listener = listener;
+  }
+  public void addMsgListener(MsgListener listener) {
+    this.listener.addMsgListener(listener);
   }
   
   private InetAddress getIP() {

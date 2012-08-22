@@ -14,18 +14,13 @@ import com.esotericsoftware.kryonet.Server;
 
 public class ServerConnection extends NetworkConnection {
 
-  public final Server server = createServer();
-  public final ServerListener listener = new ServerListener(scene, server);
+  private final Server server = createServer();
   private boolean online = false;
   
   public ServerConnection(Scene scene) {
-    super(scene);
+    super(scene, new ServerListener(scene));
   }
 
-  public void addMsgListener(MsgListener listener) {
-    this.listener.addMsgListener(listener);
-  }
-  
   public boolean create() {
     try {
       super.addClasses(server);
@@ -53,7 +48,7 @@ public class ServerConnection extends NetworkConnection {
   private Server createServer() {
     Server server = new Server() {
       protected Connection newConnection() {
-        return new Player(this);
+        return new Player(ServerConnection.this);
       }
     };
     return server;
@@ -77,6 +72,6 @@ public class ServerConnection extends NetworkConnection {
   @Override
   public void fireProjectile(ProjectileActor projectile) {
     super.addActor(projectile);
-    scene.addController(new ServerActorController(projectile, server));
+    scene.addController(new ServerActorController(projectile, this));
   }
 }

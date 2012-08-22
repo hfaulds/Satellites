@@ -5,11 +5,9 @@ import geometry.Vector2D;
 
 import java.util.List;
 
+import net.server.ServerConnection;
 import scene.actors.Actor;
 import scene.actors.ShipActor;
-
-
-import com.esotericsoftware.kryonet.Server;
 
 
 public class ServerShipController implements Controller {
@@ -22,11 +20,11 @@ public class ServerShipController implements Controller {
   };
   
   public final Actor actor;
-  private final Server server;
+  private final ServerConnection connection;
   
-  public ServerShipController(Actor actor, Server server) {
+  public ServerShipController(Actor actor, ServerConnection connection) {
     this.actor = actor;
-    this.server = server;
+    this.connection = connection;
   }
 
   @Override
@@ -68,7 +66,7 @@ public class ServerShipController implements Controller {
 
     actor.applyTorque(torque);
     actor.tick(dt);
-    server.sendToAllUDP(actor.getUpdateMsg());
+    connection.sendMsg(actor.getUpdateMsg());
   }
   
   public static double calcTorque(double r, double F, double angle) {
