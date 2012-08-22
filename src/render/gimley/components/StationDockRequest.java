@@ -20,6 +20,7 @@ public class StationDockRequest extends GComponent {
     super(parent, new Vector2D(0, 725));
     subcomponents.add(accept);
     subcomponents.add(decline);
+    setVisible(false);
   }
 
   @Override

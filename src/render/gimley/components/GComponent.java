@@ -20,6 +20,7 @@ public abstract class GComponent {
   public final Vector2D position;
   
   private boolean bDragPossible;
+  private boolean visible = true;
   
   public GComponent(GComponent parent) {
     this(parent, new Vector2D());
@@ -87,5 +88,13 @@ public abstract class GComponent {
   
   public void keyPressed(KeyEvent e) {
     
+  }
+
+  public void setVisible(boolean visible) {
+    this.visible  = visible;
+  }
+
+  public boolean getVisible() {
+    return this.visible;
   }
 }

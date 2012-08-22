@@ -33,14 +33,15 @@ public class GComponentList extends ArrayList<GComponent>  {
 
   public void render(GL2 gl, int width, int height) {
     for(int z=0; z < size(); z++) {
-      gl.glPushMatrix();
-      
-      gl.glTranslated(0, 0, (double)-z/MAX_COMPONENTS);
-      
       GComponent component = get(z);
-      component.render(gl, width, height);
-      
-      gl.glPopMatrix();
+      if(component.getVisible()) {
+        gl.glPushMatrix();
+        gl.glTranslated(0, 0, (double)-z/MAX_COMPONENTS);
+        
+        component.render(gl, width, height);
+        
+        gl.glPopMatrix();
+      }
     }
   }
   

@@ -20,6 +20,12 @@ import render.gimley.components.GComponent;
 import render.gimley.components.StationDockRequest;
 import scene.Scene;
 import scene.SceneUpdater;
+import scene.actors.Actor;
+import scene.actors.ShipActor;
+import scene.actors.StationActor;
+
+import collisions.Collision;
+import collisions.CollisionListener;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.jogamp.newt.event.MouseEvent;
@@ -52,16 +58,17 @@ public class SceneWindow extends GComponent implements GLEventListener {
     this.width = 800;
     this.height = 800;
 
-    subcomponents.add(setupChatBox(scene, connection));
-    subcomponents.add(new FPSCounter(this, new Vector2D(5, height - 50)));
-    subcomponents.add(new StationDockRequest(this));
-    
     this.scene = scene;
     this.updater = new SceneUpdater(scene);
     this.animator = new FPSAnimator(setupGLWindow(scene), 80);
+
+    subcomponents.add(setupChatBox(scene, connection));
+    subcomponents.add(new FPSCounter(this, new Vector2D(5, height - 50)));
+    subcomponents.add(setupStationDockRequest(updater));
     
     animator.start();
   }
+
 
   /* Setup Graphics */
   
@@ -99,6 +106,24 @@ public class SceneWindow extends GComponent implements GLEventListener {
     return chatBox;
   }
 
+  private GComponent setupStationDockRequest(SceneUpdater updater) {
+    final GComponent stationDockRequest = new StationDockRequest(this);
+    updater.addCollisionListener(new CollisionListener() {
+
+      @SuppressWarnings("unchecked")
+      @Override
+      public Class<? extends Actor>[] getTypes() {
+        return new Class[]{ShipActor.class, StationActor.class};
+      }
+
+      @Override
+      public void collision(Collision collision) {
+        stationDockRequest.setVisible(true);
+      }
+      
+    });
+    return stationDockRequest;
+  }
 
   /* Rendering */
   
