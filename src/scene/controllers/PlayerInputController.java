@@ -10,11 +10,9 @@ import scene.actors.Actor;
 import scene.actors.ProjectileActor;
 
 import com.jogamp.newt.event.KeyEvent;
-import com.jogamp.newt.event.KeyListener;
-import com.jogamp.newt.event.MouseAdapter;
 import com.jogamp.newt.event.MouseEvent;
 
-public class PlayerInputController extends MouseAdapter implements Controller, KeyListener {
+public class PlayerInputController implements Controller {
 
   private static final Vector2D START_DIRECTION = new Vector2D(0, -1);
   public static final long GUN_COOLDOWN = 1000;
@@ -64,10 +62,6 @@ public class PlayerInputController extends MouseAdapter implements Controller, K
     }
   }
 
-  @Override
-  public void keyTyped(KeyEvent e) {}
-
-  @Override
   public void keyPressed(KeyEvent e) {
     switch(e.getKeyCode()) {
       case KEY_FORWARD:
@@ -82,7 +76,6 @@ public class PlayerInputController extends MouseAdapter implements Controller, K
     }
   }
 
-  @Override
   public void keyReleased(KeyEvent e) {
     switch(e.getKeyCode()) {
       case KEY_FORWARD:
@@ -99,12 +92,10 @@ public class PlayerInputController extends MouseAdapter implements Controller, K
     }
   }
   
-  @Override
   public void mouseMoved(MouseEvent e) {
     this.aimDirection = Renderer3D.project(actor.position).sub(new Vector2D(e.getX(), e.getY()))._normalize()._invertX();
   }
   
-  @Override
   public void mouseClicked(MouseEvent e) {
     if(e.getButton() == FIRE_BUTTON && timeTillNextFire <= 0) {
       if(connection != null) {

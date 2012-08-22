@@ -76,8 +76,7 @@ public class SceneWindow extends GComponent implements GLEventListener {
         window.destroy();
       }
     });
-    window.addMouseListener(new MouseRouter(this));
-    window.addMouseListener(scene.input);
+    window.addMouseListener(new MouseRouter(this, scene));
     window.addKeyListener(new KeyRouter(this, scene));
     window.addGLEventListener(this);
     window.setVisible(true);

@@ -19,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 import net.connections.ClientConnection;
 import net.connections.ServerConnection;
 import net.msg.ActorCreateMsg;
+import net.msg.ActorUpdateMsg;
 import net.msg.MsgListener;
 import render.gimley.SceneWindow;
 import scene.Scene;
@@ -77,10 +78,12 @@ public class PreGameGUI extends GUI {
         scene.input.setConnection(connection);
         if(SelectServerDialog.showDialog(content, connection)) {
           freezeButtons();
+          setupClientEnvironment(scene, connection);
           new SceneWindow(scene, connection);
           unfreezeButtons();
         }
       }
+
     });
     join.setAlignmentX(Component.CENTER_ALIGNMENT);
     return join;
@@ -95,7 +98,7 @@ public class PreGameGUI extends GUI {
         scene.input.setConnection(connection);
         if(CreateServerDialog.showDialog(content, connection)) {
           freezeButtons();
-          populateScene(scene, connection);
+          setupServerEnvironment(scene, connection);
           new SceneWindow(scene, connection);
           unfreezeButtons();
         }
@@ -105,7 +108,41 @@ public class PreGameGUI extends GUI {
     return create;
   }
   
-  private void populateScene(final Scene scene, final ServerConnection server) {
+  private void setupClientEnvironment(final Scene scene, final ClientConnection client) {
+    client.addMsgListener(new MsgListener() {
+      @Override
+      public void msgReceived(Object msg, Connection connection) {
+        ActorUpdateMsg actorInfo = (ActorUpdateMsg) msg;
+        Actor actor = scene.findActor(actorInfo.id);
+        
+        if(actor != null) {
+          actor._update(actorInfo);
+        }
+      }
+
+      @Override
+      public Class<?> getMsgClass() {
+        return ActorUpdateMsg.class;
+      }
+    });
+    
+    client.addMsgListener(new MsgListener() {
+      @Override
+      public void msgReceived(Object msg, Connection connection) {
+        ActorCreateMsg actorInfo = (ActorCreateMsg) msg;
+        if(actorInfo.actorClass.equals(ProjectileActor.class)) {
+          scene.queueAddActor(Actor.fromInfo(actorInfo));
+        }
+      }
+
+      @Override
+      public Class<?> getMsgClass() {
+        return ActorCreateMsg.class;
+      }
+    });
+  }
+  
+  private void setupServerEnvironment(final Scene scene, final ServerConnection server) {
     
     server.addMsgListener(new MsgListener() {
       @Override

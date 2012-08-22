@@ -25,7 +25,6 @@ public class ChatBox extends GComponent implements KeyListener {
   private final Vector2D messagesOffset = new Vector2D(2, MESSAGE_HEIGHT + 5);
   private final List<ChatMsg> messages = new LinkedList<ChatMsg>();
   
-  private boolean open = false;
   private String input = "";
 
   private NetworkConnection connection;
@@ -42,41 +41,30 @@ public class ChatBox extends GComponent implements KeyListener {
 
   @Override
   public void render(GL2 gl, int width, int height) {
-    if(open) {
-      super.render(gl, width, height);
+    super.render(gl, width, height);
 
-      gl.glColor4d(0.6, 0.6, 0.6, 1.0);
-      Renderer2D.drawFillRect(gl, position.x , position.y, 
-          INPUT_WIDTH + 4, MESSAGE_HEIGHT + 5);
-      
-      gl.glColor4d(1.0, 1.0, 1.0, 1.0);
-      Renderer2D.drawLineRect(gl, position.x , position.y, 
-          INPUT_WIDTH + 4, MESSAGE_HEIGHT + 5, 0.9f);
-
-      gl.glColor4d(0.4, 0.4, 0.4, 1.0);
-      Renderer2D.drawFillRect(gl, position.x, position.y + MESSAGE_HEIGHT + 5, 
-          INPUT_WIDTH + 4, MESSAGE_HEIGHT * MAX_MSG_DISPLAYED);
-
-      gl.glColor4d(1.0, 1.0, 1.0, 1.0);
-      Renderer2D.drawLineRect(gl, position.x, position.y + MESSAGE_HEIGHT + 5, 
-          INPUT_WIDTH + 4, MESSAGE_HEIGHT * MAX_MSG_DISPLAYED, 0.9f);
-      
-      Renderer2D.drawText(gl, messagesOffset.x + position.x, position.y + 5, fitMessage(gl, input));
-      
-      for(int i=0; i < messages.size() && i < MAX_MSG_DISPLAYED; i++) {
-        ChatMsg message = messages.get(i);
-        renderMessage(gl, i, message);
-      }
-    } else {
-      for(int i=0; i < messages.size(); i++) {
-        ChatMsg message = messages.get(i);
-        if(message.expired()) {
-          break;
-        }
-        renderMessage(gl, i, message);
-      }
-    }
+    gl.glColor4d(0.6, 0.6, 0.6, 1.0);
+    Renderer2D.drawFillRect(gl, position.x , position.y, 
+        INPUT_WIDTH + 4, MESSAGE_HEIGHT + 5);
     
+    gl.glColor4d(1.0, 1.0, 1.0, 1.0);
+    Renderer2D.drawLineRect(gl, position.x , position.y, 
+        INPUT_WIDTH + 4, MESSAGE_HEIGHT + 5, 0.9f);
+
+    gl.glColor4d(0.4, 0.4, 0.4, 1.0);
+    Renderer2D.drawFillRect(gl, position.x, position.y + MESSAGE_HEIGHT + 5, 
+        INPUT_WIDTH + 4, MESSAGE_HEIGHT * MAX_MSG_DISPLAYED);
+
+    gl.glColor4d(1.0, 1.0, 1.0, 1.0);
+    Renderer2D.drawLineRect(gl, position.x, position.y + MESSAGE_HEIGHT + 5, 
+        INPUT_WIDTH + 4, MESSAGE_HEIGHT * MAX_MSG_DISPLAYED, 0.9f);
+    
+    Renderer2D.drawText(gl, messagesOffset.x + position.x, position.y + 5, fitMessage(gl, input));
+    
+    for(int i=0; i < messages.size() && i < MAX_MSG_DISPLAYED; i++) {
+      ChatMsg message = messages.get(i);
+      renderMessage(gl, i, message);
+    }
   }
 
   private void renderMessage(GL2 gl, int i, ChatMsg message) {
