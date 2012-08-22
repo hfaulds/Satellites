@@ -1,9 +1,7 @@
-package net.client;
+package net.listeners;
 
-import net.NetworkListener;
 import net.msg.ActorCreateMsg;
 import net.msg.ActorUpdateMsg;
-import net.msg.ChatMsg;
 import net.msg.SceneCreateMsg;
 import scene.Scene;
 import scene.actors.Actor;
@@ -29,7 +27,7 @@ public class ClientListener extends NetworkListener {
   
   @Override
   public void received(Connection connection, Object info) {
-    
+    super.received(connection, info);
     if(info instanceof SceneCreateMsg) {
       SceneCreateMsg sceneInfo = (SceneCreateMsg)info;
       this.connection = connection;
@@ -50,8 +48,6 @@ public class ClientListener extends NetworkListener {
         scene.queueAddActor(Actor.fromInfo(actorInfo));
       }
       
-    } else if(info instanceof ChatMsg) {
-      scene.messageHandler.displayMessage((ChatMsg) info);
     }
   }
   

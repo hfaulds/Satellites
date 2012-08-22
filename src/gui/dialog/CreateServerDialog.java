@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import net.server.ServerConnection;
+import net.connections.ServerConnection;
 
 @SuppressWarnings("serial")
 public class CreateServerDialog extends JDialog {

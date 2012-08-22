@@ -1,8 +1,8 @@
-package net.server;
+package net.listeners;
 
 import java.util.List;
 
-import net.NetworkListener;
+import net.Player;
 import net.msg.ActorCreateMsg;
 import net.msg.SceneCreateMsg;
 import scene.Scene;

@@ -1,9 +1,7 @@
 package scene;
 
 
-import geometry.Vector2D;
 import geometry.Vector3D;
-import gui.InGameGUI;
 
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
@@ -12,9 +10,6 @@ import java.util.List;
 import java.util.Queue;
 
 import net.msg.ActorCreateMsg;
-import render.gimley.components.ChatBox;
-import render.gimley.components.FPSCounter;
-import render.gimley.components.GComponent;
 import scene.actors.Actor;
 import scene.actors.PointLightActor;
 import scene.actors.ShipActor;
@@ -33,12 +28,10 @@ public class Scene extends MouseAdapter {
   public final String username;
   
   public final PlayerInputController input = new PlayerInputController();
-  public final ChatBox messageHandler = new ChatBox(null, new Vector2D(15, 10), "", null);
 
   public final List<Actor>       actors = new ArrayList<Actor>();
   public final List<Controller>  controllers = new ArrayList<Controller>();
   public final PointLightActor[] lights = {new PointLightActor(), new PointLightActor(new Vector3D(-10, 10, 10))};
-  public final GComponent[]          ui = new GComponent[]{new FPSCounter(null, new Vector2D(5, InGameGUI.HEIGHT - 50)), messageHandler};
 
   public final Queue<Actor> actorqueue = new LinkedList<Actor>();
   

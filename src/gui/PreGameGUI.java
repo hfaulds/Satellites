@@ -1,5 +1,6 @@
 package gui;
 
+import geometry.Vector2D;
 import gui.dialog.CreateServerDialog;
 import gui.dialog.SelectServerDialog;
 
@@ -15,12 +16,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import net.client.ClientConnection;
-import net.msg.ChatMsg;
+import net.connections.ClientConnection;
+import net.connections.ServerConnection;
+import net.msg.ActorCreateMsg;
 import net.msg.MsgListener;
-import net.server.ServerConnection;
+import render.gimley.SceneWindow;
 import scene.Scene;
+import scene.actors.Actor;
 import scene.actors.Planet1Actor;
+import scene.actors.ProjectileActor;
 import scene.actors.ShipActor;
 import scene.actors.StationActor;
 import scene.controllers.ServerActorController;
@@ -73,7 +77,8 @@ public class PreGameGUI extends GUI {
         scene.input.setConnection(connection);
         if(SelectServerDialog.showDialog(content, connection)) {
           freezeButtons();
-          switchGUI(new InGameGUI(scene, connection));
+          new SceneWindow(scene, connection);
+          unfreezeButtons();
         }
       }
     });
@@ -89,22 +94,10 @@ public class PreGameGUI extends GUI {
         ServerConnection connection = new ServerConnection(scene);
         scene.input.setConnection(connection);
         if(CreateServerDialog.showDialog(content, connection)) {
-          connection.addMsgListener(new MsgListener() {
-
-            @Override
-            public void msgReceived(Object msg, Connection connection) {
-              scene.messageHandler.displayMessage((ChatMsg) msg);
-            }
-
-            @Override
-            public Class<?> getMsgClass() {
-              return ChatMsg.class;
-            }
-            
-          });
           freezeButtons();
           populateScene(scene, connection);
-          switchGUI(new InGameGUI(scene, connection));
+          new SceneWindow(scene, connection);
+          unfreezeButtons();
         }
       }
     });
@@ -112,7 +105,25 @@ public class PreGameGUI extends GUI {
     return create;
   }
   
-  private void populateScene(Scene scene, ServerConnection server) {
+  private void populateScene(final Scene scene, final ServerConnection server) {
+    
+    server.addMsgListener(new MsgListener() {
+      @Override
+      public void msgReceived(Object rawMsg, Connection reply) {
+        ActorCreateMsg msg = (ActorCreateMsg) rawMsg;
+        if(msg.actorClass.equals(ProjectileActor.class)) {
+          ProjectileActor projectile = (ProjectileActor) Actor.fromInfo(msg);
+          projectile.velocity._set(Vector2D.fromRotation(projectile.rotation)._mult(ProjectileActor.SPEED));
+          scene.queueAddActor(projectile);
+          scene.addController(new ServerActorController(projectile, server));
+        }
+      }
+
+      @Override
+      public Class<?> getMsgClass() {
+        return ActorCreateMsg.class;
+      }
+    });
     
     ShipActor player = new ShipActor(0, 0);
     scene.addPlayer(player);
@@ -149,6 +160,13 @@ public class PreGameGUI extends GUI {
     });
     exit.setAlignmentX(Component.CENTER_ALIGNMENT);
     return exit;
+  }
+
+  private void unfreezeButtons() {
+    this.join.setEnabled(true);
+    this.create.setEnabled(true);
+    this.settings.setEnabled(true);
+    this.exit.setEnabled(true);
   }
   
   private void freezeButtons() {

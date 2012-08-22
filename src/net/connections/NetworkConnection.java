@@ -1,4 +1,4 @@
-package net;
+package net.connections;
 
 import geometry.Rotation;
 import geometry.Vector2D;
@@ -12,6 +12,7 @@ import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import net.listeners.NetworkListener;
 import net.msg.ActorCreateMsg;
 import net.msg.ActorUpdateMsg;
 import net.msg.ChatMsg;

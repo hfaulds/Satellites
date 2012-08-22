@@ -1,5 +1,6 @@
-package net.server;
+package net;
 
+import net.connections.ServerConnection;
 import net.msg.PlayerUpdateMsg;
 import scene.actors.Actor;
 import scene.actors.ShipActor;

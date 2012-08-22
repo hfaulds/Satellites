@@ -1,9 +1,10 @@
-package net.client;
+package net.connections;
 
 import java.io.IOException;
 import java.net.InetAddress;
 
-import net.NetworkConnection;
+import net.listeners.ClientListener;
+
 import scene.Scene;
 import scene.actors.ProjectileActor;
 

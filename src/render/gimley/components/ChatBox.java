@@ -8,7 +8,7 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import net.NetworkConnection;
+import net.connections.NetworkConnection;
 import net.msg.ChatMsg;
 import render.Renderer2D;
 
@@ -118,19 +118,6 @@ public class ChatBox extends GComponent implements KeyListener {
     input = "";
   }
 
-  public void closeInput() {
-    clearInput();
-    open = false;
-  }
-
-  public void openInput() {
-    open = true;
-  }
-
-  public boolean isOpen() {
-    return open;
-  }
-
   @Override
   public void keyPressed(KeyEvent e) {
     int keyCode = e.getKeyCode();
@@ -140,6 +127,7 @@ public class ChatBox extends GComponent implements KeyListener {
           ChatMsg msg = new ChatMsg(getInput(), username);
           displayMessage(msg);
           connection.sendMsg(msg);
+          System.out.println("MESSAGE SENT");
           clearInput();
         }
         break;

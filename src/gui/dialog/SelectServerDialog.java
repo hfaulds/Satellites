@@ -30,7 +30,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import net.client.ClientConnection;
+import net.connections.ClientConnection;
 
 
 @SuppressWarnings("serial")

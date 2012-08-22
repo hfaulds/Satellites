@@ -4,7 +4,7 @@ import geometry.Vector2D;
 
 import java.util.List;
 
-import net.NetworkConnection;
+import net.connections.NetworkConnection;
 import render.Renderer3D;
 import scene.actors.Actor;
 import scene.actors.ProjectileActor;

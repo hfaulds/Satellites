@@ -1,8 +1,9 @@
-package net.server;
+package net.connections;
 
 import java.io.IOException;
 
-import net.NetworkConnection;
+import net.Player;
+import net.listeners.ServerListener;
 import net.msg.MsgListener;
 import net.msg.PlayerUpdateMsg;
 import scene.Scene;

@@ -5,7 +5,7 @@ import geometry.Vector2D;
 
 import java.util.List;
 
-import net.server.ServerConnection;
+import net.connections.ServerConnection;
 import scene.actors.Actor;
 import scene.actors.ShipActor;
 

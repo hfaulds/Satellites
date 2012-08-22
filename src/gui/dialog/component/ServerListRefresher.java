@@ -5,7 +5,7 @@ import gui.dialog.SelectServerDialog;
 import java.net.InetAddress;
 import java.util.List;
 
-import net.NetworkConnection;
+import net.connections.NetworkConnection;
 
 import com.esotericsoftware.kryonet.Client;
 
