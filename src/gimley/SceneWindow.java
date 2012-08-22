@@ -4,6 +4,7 @@ import gimley.components.ChatBox;
 import gimley.components.FPSCounter;
 import gimley.components.GComponent;
 import gimley.components.StationDockRequest;
+import gimley.components.button.ActionListener;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -108,9 +109,9 @@ public class SceneWindow extends GComponent implements GLEventListener {
   }
 
   private GComponent setupStationDockRequest(SceneUpdater updater) {
-    final GComponent stationDockRequest = new StationDockRequest(this);
+    final StationDockRequest stationDockRequest = new StationDockRequest(this);
+    
     updater.addCollisionListener(new CollisionListener() {
-
       @SuppressWarnings("unchecked")
       @Override
       public Class<? extends Actor>[] getTypes() {
@@ -121,8 +122,16 @@ public class SceneWindow extends GComponent implements GLEventListener {
       public void collision(Collision collision) {
         stationDockRequest.setVisible(true);
       }
-      
     });
+    
+    stationDockRequest.accept.addActionListener(new ActionListener(){
+      @Override
+      public void action() {
+        ShipActor player = scene.player;
+        scene.removeActor(player);
+      }
+    });
+    
     return stationDockRequest;
   }
 

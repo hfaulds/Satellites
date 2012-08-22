@@ -1,6 +1,8 @@
 package gimley.components;
 
 
+import gimley.components.button.GButton;
+
 import javax.media.opengl.GL2;
 
 import com.jogamp.opengl.util.gl2.GLUT;
@@ -14,8 +16,8 @@ public class StationDockRequest extends GComponent {
   private static final double HEIGHT = 35;
   private static final double WIDTH = 340;
   
-  private final GButton accept = new GButton(this, position.add(new Vector2D(200, 5)), 65, 25, "ACCEPT");
-  private final GButton decline = new GButton(this, position.add(new Vector2D(270, 5)), 65, 25, "DECLINE");
+  public final GButton accept = new GButton(this, position.add(new Vector2D(200, 5)), 65, 25, "DOCK");
+  public final GButton decline = new GButton(this, position.add(new Vector2D(270, 5)), 65, 25, "DECLINE");
 
   public StationDockRequest(GComponent parent) {
     super(parent, new Vector2D(0, 725));

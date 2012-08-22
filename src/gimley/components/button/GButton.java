@@ -1,7 +1,14 @@
-package gimley.components;
+package gimley.components.button;
 
+
+import java.util.LinkedList;
+import java.util.List;
+
+import gimley.components.GComponent;
 
 import javax.media.opengl.GL2;
+
+import com.jogamp.newt.event.MouseEvent;
 
 import core.geometry.Vector2D;
 import core.render.Renderer2D;
@@ -12,11 +19,17 @@ public class GButton extends GComponent {
   private final String label;
   private Vector2D textPos;
 
+  private List<ActionListener> listeners = new LinkedList<ActionListener>();
+  
   public GButton(GComponent parent, Vector2D position, int width, int height, String label) {
     super(parent, position);
     this.width = width;
     this.height = height;
     this.label = label;
+  }
+  
+  public void addActionListener(ActionListener listener) {
+    this.listeners.add(listener);
   }
 
   @Override
@@ -34,4 +47,11 @@ public class GButton extends GComponent {
     Renderer2D.drawText(gl, textPos.x, textPos.y, label);
   }
 
+  @Override
+  public void mouseReleased(Vector2D click, MouseEvent e) {
+    super.mouseReleased(click, e);
+    for(ActionListener listener : listeners) {
+      listener.action();
+    }
+  }
 }

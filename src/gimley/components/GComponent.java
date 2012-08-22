@@ -68,7 +68,9 @@ public abstract class GComponent {
   public void mouseReleased(Vector2D click, MouseEvent e) {
     for(GComponent component : subcomponents) {
       component.bDragPossible = false;
-      component.mouseReleased(click, e);
+      if(component.testClick(click)) {
+        component.mouseReleased(click, e);
+      }
     }
   }
 

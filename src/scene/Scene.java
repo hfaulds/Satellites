@@ -27,6 +27,7 @@ import core.net.msg.ActorCreateMsg;
 public class Scene extends MouseAdapter {
 
   public final String username;
+  public ShipActor player;
   
   public final PlayerInputController input = new PlayerInputController();
 
@@ -35,6 +36,7 @@ public class Scene extends MouseAdapter {
   public final PointLightActor[] lights = {new PointLightActor(), new PointLightActor(new Vector3D(-10, 10, 10))};
 
   public final Queue<Actor> actorqueue = new LinkedList<Actor>();
+
   
   public Scene(String username) {
     this.username = username;
@@ -65,6 +67,7 @@ public class Scene extends MouseAdapter {
   }
 
   public void addPlayer(ShipActor player) {
+    this.player = player;
     input.setActor(player);
     player.ui.add(new ShipControlGraphic());
     player.ui.add(new ShipDirectionGraphic());
