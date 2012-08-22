@@ -1,10 +1,6 @@
 package scene.actors;
 
 
-import geometry.Box;
-import geometry.Mesh;
-import geometry.Rotation;
-import geometry.Vector2D;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -14,9 +10,14 @@ import java.util.List;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
-import net.msg.ActorCreateMsg;
-import net.msg.ActorUpdateMsg;
-import render.material.Material;
+import core.geometry.Box;
+import core.geometry.Mesh;
+import core.geometry.Rotation;
+import core.geometry.Vector2D;
+import core.net.msg.ActorCreateMsg;
+import core.net.msg.ActorUpdateMsg;
+import core.render.material.Material;
+
 import scene.controllers.ui.Graphic;
 
 public abstract class Actor {

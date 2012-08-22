@@ -1,18 +1,19 @@
 package scene;
 
-import geometry.Box;
-import geometry.Vector2D;
 
 import java.awt.event.MouseAdapter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import collisions.Collision;
-import collisions.CollisionListener;
-import collisions.ShipProjectileCollisionHandle;
+import core.geometry.Box;
+import core.geometry.Vector2D;
+
 
 import scene.actors.Actor;
+import scene.collisions.Collision;
+import scene.collisions.CollisionListener;
+import scene.collisions.ShipProjectileCollisionHandle;
 import scene.controllers.Controller;
 
 public class SceneUpdater extends MouseAdapter {

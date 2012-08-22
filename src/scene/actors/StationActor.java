@@ -1,16 +1,17 @@
 package scene.actors;
 
-import geometry.Mesh;
-import geometry.MeshLoader;
-import geometry.Rotation;
-import geometry.Vector2D;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUquadric;
 
-import render.material.Colour;
-import render.material.Material;
+import core.geometry.Mesh;
+import core.geometry.MeshLoader;
+import core.geometry.Rotation;
+import core.geometry.Vector2D;
+import core.render.material.Colour;
+import core.render.material.Material;
+
 
 public class StationActor extends Actor {
   

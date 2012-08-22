@@ -4,9 +4,10 @@ import java.util.List;
 
 import scene.actors.Actor;
 
-import net.msg.PlayerUpdateMsg;
 
 import com.esotericsoftware.kryonet.Connection;
+
+import core.net.msg.PlayerUpdateMsg;
 
 public class ClientShipController implements Controller {
 

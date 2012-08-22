@@ -5,9 +5,10 @@ import gui.dialog.SelectServerDialog;
 import java.net.InetAddress;
 import java.util.List;
 
-import net.connections.NetworkConnection;
 
 import com.esotericsoftware.kryonet.Client;
+
+import core.net.connections.NetworkConnection;
 
 public class ServerListRefresher implements Runnable {
   

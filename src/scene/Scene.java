@@ -1,7 +1,6 @@
 package scene;
 
 
-import geometry.Vector3D;
 
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
@@ -9,7 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import net.msg.ActorCreateMsg;
 import scene.actors.Actor;
 import scene.actors.PointLightActor;
 import scene.actors.ShipActor;
@@ -22,6 +20,9 @@ import scene.controllers.ui.ShipDirectionGraphic;
 import scene.controllers.ui.ShipHealthGraphic;
 
 import com.esotericsoftware.kryonet.Connection;
+
+import core.geometry.Vector3D;
+import core.net.msg.ActorCreateMsg;
 
 public class Scene extends MouseAdapter {
 

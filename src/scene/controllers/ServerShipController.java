@@ -1,11 +1,12 @@
 package scene.controllers;
 
-import geometry.Rotation;
-import geometry.Vector2D;
 
 import java.util.List;
 
-import net.connections.ServerConnection;
+import core.geometry.Rotation;
+import core.geometry.Vector2D;
+import core.net.connections.ServerConnection;
+
 import scene.actors.Actor;
 import scene.actors.ShipActor;
 

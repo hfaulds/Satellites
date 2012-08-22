@@ -1,9 +1,9 @@
 package scene.actors;
 
-import geometry.Mesh;
-import geometry.MeshLoader;
-import geometry.Rotation;
-import geometry.Vector2D;
+import core.geometry.Mesh;
+import core.geometry.MeshLoader;
+import core.geometry.Rotation;
+import core.geometry.Vector2D;
 
 public class ShipActor extends Actor {
 

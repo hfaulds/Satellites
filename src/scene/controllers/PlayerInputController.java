@@ -1,16 +1,17 @@
 package scene.controllers;
 
-import geometry.Vector2D;
 
 import java.util.List;
 
-import net.connections.NetworkConnection;
-import render.Renderer3D;
 import scene.actors.Actor;
 import scene.actors.ProjectileActor;
 
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.MouseEvent;
+
+import core.geometry.Vector2D;
+import core.net.connections.NetworkConnection;
+import core.render.Renderer3D;
 
 public class PlayerInputController implements Controller {
 

@@ -1,10 +1,11 @@
 package scene.controllers;
 
-import geometry.Vector2D;
 
 import java.util.List;
 
-import net.connections.ServerConnection;
+import core.geometry.Vector2D;
+import core.net.connections.ServerConnection;
+
 import scene.actors.Actor;
 
 public class ServerActorController implements Controller {

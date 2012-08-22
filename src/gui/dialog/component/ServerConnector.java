@@ -8,7 +8,8 @@ import java.net.UnknownHostException;
 
 import javax.swing.JOptionPane;
 
-import net.connections.ClientConnection;
+import core.net.connections.ClientConnection;
+
 
 public class ServerConnector implements Runnable {
   

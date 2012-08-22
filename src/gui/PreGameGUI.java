@@ -1,5 +1,6 @@
 package gui;
 
+import gimley.SceneWindow;
 import gui.dialog.CreateServerDialog;
 import gui.dialog.SelectServerDialog;
 
@@ -15,9 +16,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import net.connections.ClientConnection;
-import net.connections.ServerConnection;
-import render.gimley.SceneWindow;
+import core.net.connections.ClientConnection;
+import core.net.connections.ServerConnection;
+
 import scene.Scene;
 
 @SuppressWarnings("serial")

@@ -1,6 +1,6 @@
 package scene.actors;
 
-import geometry.Vector3D;
+import core.geometry.Vector3D;
 
 public class PointLightActor {
   
