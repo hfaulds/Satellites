@@ -11,7 +11,6 @@ import java.util.Queue;
 import scene.actors.Actor;
 import scene.actors.ProjectileActor;
 import scene.actors.ShipActor;
-import scene.actors.StationActor;
 import scene.controllers.Controller;
 
 public class SceneUpdater extends MouseAdapter {
@@ -20,8 +19,31 @@ public class SceneUpdater extends MouseAdapter {
   private long lastFrame = System.currentTimeMillis();
   private final Queue<Actor> actorRemoveQueue = new LinkedList<Actor>();
 
+  private List<CollisionListener> listeners = new LinkedList<CollisionListener>();
+  
   public SceneUpdater(Scene scene) {
-      this.scene = scene;
+    this.scene = scene;
+    this.addCollisionListener(new CollisionListener() {
+
+      @SuppressWarnings("unchecked")
+      @Override
+      public Class<? extends Actor>[] getTypes() {
+        return new Class[]{ProjectileActor.class, ShipActor.class};
+      }
+
+      @Override
+      public void collision(Collision collision) {
+        ProjectileActor a = (ProjectileActor)collision.a;
+        ShipActor b = (ShipActor)collision.b;
+        b.damage(ProjectileActor.DAMAGE);
+        actorRemoveQueue.add(a);
+      }
+      
+    });
+  }
+  
+  public void addCollisionListener(CollisionListener listener) {
+    listeners.add(listener);
   }
 
   public void tick() {
@@ -41,16 +63,12 @@ public class SceneUpdater extends MouseAdapter {
     int numActors = actors.size();
     for(int i=0; i < numActors; i++) {
       for(int j=i+1; j < numActors; j++) {
-        try {
           Actor a = actors.get(i);
           Actor b = actors.get(j);
           if(collisionExists(a, b)) {
             a.velocity._set(new Vector2D(0,0));
             b.velocity._set(new Vector2D(0,0));
           }
-        } catch (Exception e) {
-          
-        }
         
       }
     }
@@ -64,23 +82,25 @@ public class SceneUpdater extends MouseAdapter {
 
   private boolean collisionExists(Actor a, Actor b) {
     if(Box.boxesIntersect(a.boundingbox, b.boundingbox)) {
-      
       /* Ship Projectile Collisions */
-      if(a instanceof ProjectileActor && b instanceof ShipActor) {
-        ((ShipActor)b).damage(ProjectileActor.DAMAGE);
-        actorRemoveQueue.add(a);
-      } else if (b instanceof ProjectileActor && a instanceof ShipActor) {
-        ((ShipActor)a).damage(ProjectileActor.DAMAGE);
-        actorRemoveQueue.add(b);
-        
-      /* Ship Station Collisions */
-      } else if(a instanceof StationActor && b instanceof ShipActor) {
-        //TODO contact gui
-      } else if (b instanceof StationActor && a instanceof ShipActor) {
-        
-      }
       
+      for(CollisionListener listener : listeners) {
+        if(checkTypes(a, b, listener)) {
+          listener.collision(new Collision(a, b, listener.getTypes()));
+        }
+      }
     }
     return false;
+  }
+
+  private boolean checkTypes(Actor a, Actor b, CollisionListener listener) {
+    Class<? extends Actor>[] types = listener.getTypes();
+    boolean a1 =  a.getClass().equals(types[0]);
+    boolean b1 =  b.getClass().equals(types[1]);
+    
+    boolean a2 =  a.getClass().equals(types[1]);
+    boolean b2 =  b.getClass().equals(types[0]);
+    
+    return a1 && b1 || a2 && b2;
   }
 }
