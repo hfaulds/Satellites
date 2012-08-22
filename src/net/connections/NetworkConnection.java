@@ -69,7 +69,7 @@ public abstract class NetworkConnection {
     }
   }
 
-  protected void addClasses(EndPoint endPoint) {
+  protected void setupKryo(EndPoint endPoint) {
     Kryo kryo = endPoint.getKryo();
   
     kryo.register(Vector2D.class);

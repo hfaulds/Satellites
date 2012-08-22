@@ -10,6 +10,7 @@ import render.gimley.components.GComponent;
 @SuppressWarnings("serial")
 public class GComponentList extends ArrayList<GComponent>  {
   
+  private static final double MAX_COMPONENTS = 15;
   private GComponent focus;
   
   public GComponentList(GComponent focus, GComponent ... components) {
@@ -34,7 +35,7 @@ public class GComponentList extends ArrayList<GComponent>  {
     for(int z=0; z < size(); z++) {
       gl.glPushMatrix();
       
-      gl.glTranslated(0, 0, (double)-z/size());
+      gl.glTranslated(0, 0, (double)-z/MAX_COMPONENTS);
       
       GComponent component = get(z);
       component.render(gl, width, height);

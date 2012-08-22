@@ -1,4 +1,4 @@
-package scene;
+package collisions;
 
 import scene.actors.Actor;
 

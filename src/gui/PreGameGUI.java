@@ -1,6 +1,5 @@
 package gui;
 
-import geometry.Vector2D;
 import gui.dialog.CreateServerDialog;
 import gui.dialog.SelectServerDialog;
 
@@ -18,20 +17,8 @@ import javax.swing.border.EmptyBorder;
 
 import net.connections.ClientConnection;
 import net.connections.ServerConnection;
-import net.msg.ActorCreateMsg;
-import net.msg.ActorUpdateMsg;
-import net.msg.MsgListener;
 import render.gimley.SceneWindow;
 import scene.Scene;
-import scene.actors.Actor;
-import scene.actors.Planet1Actor;
-import scene.actors.ProjectileActor;
-import scene.actors.ShipActor;
-import scene.actors.StationActor;
-import scene.controllers.ServerActorController;
-import scene.controllers.ServerShipController;
-
-import com.esotericsoftware.kryonet.Connection;
 
 @SuppressWarnings("serial")
 public class PreGameGUI extends GUI {
@@ -78,7 +65,6 @@ public class PreGameGUI extends GUI {
         scene.input.setConnection(connection);
         if(SelectServerDialog.showDialog(content, connection)) {
           freezeButtons();
-          setupClientEnvironment(scene, connection);
           new SceneWindow(scene, connection);
           unfreezeButtons();
         }
@@ -98,7 +84,6 @@ public class PreGameGUI extends GUI {
         scene.input.setConnection(connection);
         if(CreateServerDialog.showDialog(content, connection)) {
           freezeButtons();
-          setupServerEnvironment(scene, connection);
           new SceneWindow(scene, connection);
           unfreezeButtons();
         }
@@ -107,75 +92,6 @@ public class PreGameGUI extends GUI {
     create.setAlignmentX(Component.CENTER_ALIGNMENT);
     return create;
   }
-  
-  private void setupClientEnvironment(final Scene scene, final ClientConnection client) {
-    client.addMsgListener(new MsgListener() {
-      @Override
-      public void msgReceived(Object msg, Connection connection) {
-        ActorUpdateMsg actorInfo = (ActorUpdateMsg) msg;
-        Actor actor = scene.findActor(actorInfo.id);
-        
-        if(actor != null) {
-          actor._update(actorInfo);
-        }
-      }
-
-      @Override
-      public Class<?> getMsgClass() {
-        return ActorUpdateMsg.class;
-      }
-    });
-    
-    client.addMsgListener(new MsgListener() {
-      @Override
-      public void msgReceived(Object msg, Connection connection) {
-        ActorCreateMsg actorInfo = (ActorCreateMsg) msg;
-        if(actorInfo.actorClass.equals(ProjectileActor.class)) {
-          scene.queueAddActor(Actor.fromInfo(actorInfo));
-        }
-      }
-
-      @Override
-      public Class<?> getMsgClass() {
-        return ActorCreateMsg.class;
-      }
-    });
-  }
-  
-  private void setupServerEnvironment(final Scene scene, final ServerConnection server) {
-    
-    server.addMsgListener(new MsgListener() {
-      @Override
-      public void msgReceived(Object rawMsg, Connection reply) {
-        ActorCreateMsg msg = (ActorCreateMsg) rawMsg;
-        if(msg.actorClass.equals(ProjectileActor.class)) {
-          ProjectileActor projectile = (ProjectileActor) Actor.fromInfo(msg);
-          projectile.velocity._set(Vector2D.fromRotation(projectile.rotation)._mult(ProjectileActor.SPEED));
-          scene.queueAddActor(projectile);
-          scene.addController(new ServerActorController(projectile, server));
-        }
-      }
-
-      @Override
-      public Class<?> getMsgClass() {
-        return ActorCreateMsg.class;
-      }
-    });
-    
-    ShipActor player = new ShipActor(0, 0);
-    scene.addPlayer(player);
-    scene.addController(new ServerShipController(player, server));
-    
-    Planet1Actor planet = new Planet1Actor(17, 17);
-    scene.queueAddActor(planet);
-    scene.addController(new ServerActorController(planet, server));
-    
-    StationActor station = new StationActor(-25, 17);
-    scene.queueAddActor(station);
-    scene.addController(new ServerActorController(station, server));
-    
-  }
-
 
   private JButton createSettingsButton() {
     settings.addActionListener(new ActionListener() {

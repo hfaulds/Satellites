@@ -8,38 +8,25 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import collisions.Collision;
+import collisions.CollisionListener;
+import collisions.ShipProjectileCollisionHandle;
+
 import scene.actors.Actor;
-import scene.actors.ProjectileActor;
-import scene.actors.ShipActor;
 import scene.controllers.Controller;
 
 public class SceneUpdater extends MouseAdapter {
   
   private final Scene scene;
   private long lastFrame = System.currentTimeMillis();
-  private final Queue<Actor> actorRemoveQueue = new LinkedList<Actor>();
+  
+  public final Queue<Actor> actorRemoveQueue = new LinkedList<Actor>();
 
   private List<CollisionListener> listeners = new LinkedList<CollisionListener>();
   
   public SceneUpdater(Scene scene) {
     this.scene = scene;
-    this.addCollisionListener(new CollisionListener() {
-
-      @SuppressWarnings("unchecked")
-      @Override
-      public Class<? extends Actor>[] getTypes() {
-        return new Class[]{ProjectileActor.class, ShipActor.class};
-      }
-
-      @Override
-      public void collision(Collision collision) {
-        ProjectileActor a = (ProjectileActor)collision.a;
-        ShipActor b = (ShipActor)collision.b;
-        b.damage(ProjectileActor.DAMAGE);
-        actorRemoveQueue.add(a);
-      }
-      
-    });
+    this.addCollisionListener(new ShipProjectileCollisionHandle(this));
   }
   
   public void addCollisionListener(CollisionListener listener) {
@@ -82,8 +69,6 @@ public class SceneUpdater extends MouseAdapter {
 
   private boolean collisionExists(Actor a, Actor b) {
     if(Box.boxesIntersect(a.boundingbox, b.boundingbox)) {
-      /* Ship Projectile Collisions */
-      
       for(CollisionListener listener : listeners) {
         if(checkTypes(a, b, listener)) {
           listener.collision(new Collision(a, b, listener.getTypes()));
