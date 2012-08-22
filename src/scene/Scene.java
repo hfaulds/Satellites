@@ -30,8 +30,10 @@ import com.esotericsoftware.kryonet.Connection;
 
 public class Scene extends MouseAdapter {
 
+  public final String username;
+  
   public final PlayerInputController input = new PlayerInputController();
-  public final ChatBox messageHandler = new ChatBox(null, new Vector2D(15, 10));
+  public final ChatBox messageHandler = new ChatBox(null, new Vector2D(15, 10), "", null);
 
   public final List<Actor>       actors = new ArrayList<Actor>();
   public final List<Controller>  controllers = new ArrayList<Controller>();
@@ -39,8 +41,6 @@ public class Scene extends MouseAdapter {
   public final GComponent[]          ui = new GComponent[]{new FPSCounter(null, new Vector2D(5, InGameGUI.HEIGHT - 50)), messageHandler};
 
   public final Queue<Actor> actorqueue = new LinkedList<Actor>();
-  
-  public final String username;
   
   public Scene(String username) {
     this.username = username;

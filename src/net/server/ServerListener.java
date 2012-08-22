@@ -2,10 +2,12 @@ package net.server;
 
 import geometry.Vector2D;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import net.msg.ActorCreateMsg;
 import net.msg.ChatMsg;
+import net.msg.MsgListener;
 import net.msg.PlayerUpdateMsg;
 import net.msg.SceneCreateMsg;
 import scene.Scene;
@@ -21,6 +23,8 @@ public class ServerListener extends Listener {
 
   private final Scene scene;
   private final Server server;
+  
+  private final List<MsgListener> listeners = new LinkedList<MsgListener>();
   
   public ServerListener(Scene scene, Server server) {
     this.scene = scene;
@@ -45,12 +49,20 @@ public class ServerListener extends Listener {
     scene.removeActor(clientConnection.actor);
   }
   
+  public void addMsgListener(MsgListener listener) {
+    listeners.add(listener);
+  }
+  
   @Override
   public void received(Connection connection, Object info) {
+    for(MsgListener listener : listeners) {
+      if(info.getClass().equals( listener.getMsgClass())) {
+        listener.msgReceived(info, connection);
+      }
+    }
+    
     if(info instanceof PlayerUpdateMsg) {
-      ((Player)connection).updateActor((PlayerUpdateMsg)info);
     } else if(info instanceof ChatMsg) {
-      scene.messageHandler.displayMessage((ChatMsg) info);
     } else if(info instanceof ActorCreateMsg) {
       ActorCreateMsg msg = (ActorCreateMsg) info;
       if(msg.actorClass.equals(ProjectileActor.class)) {

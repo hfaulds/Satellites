@@ -6,6 +6,7 @@ import javax.media.opengl.GL2;
 
 import render.gimley.GComponentList;
 
+import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.MouseEvent;
 
 public abstract class GComponent {
@@ -79,5 +80,12 @@ public abstract class GComponent {
     for(GComponent component : subcomponents)
       component.mouseWheelMoved(e);
   }
+
+  public void keyReleased(KeyEvent e) {
+
+  }
   
+  public void keyPressed(KeyEvent e) {
+    
+  }
 }

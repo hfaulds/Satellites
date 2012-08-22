@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import net.client.ClientConnection;
+import net.msg.ChatMsg;
+import net.msg.MsgListener;
 import net.server.ServerConnection;
 import scene.Scene;
 import scene.actors.Planet1Actor;
@@ -24,6 +26,7 @@ import scene.actors.StationActor;
 import scene.controllers.ServerActorController;
 import scene.controllers.ServerShipController;
 
+import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 
 @SuppressWarnings("serial")
@@ -83,10 +86,23 @@ public class PreGameGUI extends GUI {
     create.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        Scene scene = new Scene(username);
+        final Scene scene = new Scene(username);
         ServerConnection connection = new ServerConnection(scene);
         scene.input.setConnection(connection);
         if(CreateServerDialog.showDialog(content, connection)) {
+          connection.addMsgListener(new MsgListener() {
+
+            @Override
+            public void msgReceived(Object msg, Connection connection) {
+              scene.messageHandler.displayMessage((ChatMsg) msg);
+            }
+
+            @Override
+            public Class<?> getMsgClass() {
+              return ChatMsg.class;
+            }
+            
+          });
           freezeButtons();
           populateScene(scene, connection.server);
           switchGUI(new InGameGUI(scene, connection));

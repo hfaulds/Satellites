@@ -12,18 +12,18 @@ import com.jogamp.newt.event.MouseEvent;
 
 public class MouseRouter extends MouseAdapter {
 
-  private final SceneWindow window;
+  private final GComponent parent;
   private final GComponentList subcomponents;
 
-  MouseRouter(SceneWindow window) {
-    this.window = window;
-    this.subcomponents = window.subcomponents;
+  MouseRouter(GComponent parent) {
+    this.parent = parent;
+    this.subcomponents = parent.subcomponents;
   }
 
   private GComponent refreshFocus(Vector2D click) {
     GComponent focus = subcomponents.getFocus();
     
-    if(!focus.testClick(click) || focus == window) {
+    if(!focus.testClick(click) || focus == parent) {
       List<GComponent> componentsHit = new LinkedList<GComponent>();
       
       for(GComponent component : subcomponents) {
@@ -35,7 +35,7 @@ public class MouseRouter extends MouseAdapter {
       if(componentsHit.size() > 0) {
         focus = componentsHit.get(0);
       } else {
-        focus = window;
+        focus = parent;
       }
     }
 
@@ -44,7 +44,7 @@ public class MouseRouter extends MouseAdapter {
   }
 
   private Vector2D getClick(MouseEvent e) {
-    return new Vector2D(e.getX(), window.height - e.getY());
+    return new Vector2D(e.getX(), parent.height - e.getY());
   }
 
   @Override

@@ -3,6 +3,8 @@ package net.server;
 import java.io.IOException;
 
 import net.NetworkConnection;
+import net.msg.MsgListener;
+import net.msg.PlayerUpdateMsg;
 import scene.Scene;
 import scene.actors.ProjectileActor;
 import scene.controllers.ServerActorController;
@@ -13,19 +15,33 @@ import com.esotericsoftware.kryonet.Server;
 public class ServerConnection extends NetworkConnection {
 
   public final Server server = createServer();
+  public final ServerListener listener = new ServerListener(scene, server);
   private boolean online = false;
   
   public ServerConnection(Scene scene) {
     super(scene);
   }
 
+  public void addMsgListener(MsgListener listener) {
+    this.listener.addMsgListener(listener);
+  }
+  
   public boolean create() {
     try {
       super.addClasses(server);
       server.start();
       server.bind(TCP_PORT, UDP_PORT);
-      server.addListener(new ServerListener(scene, server));
-      
+      server.addListener(listener);
+      listener.addMsgListener(new MsgListener() {
+        @Override
+        public void msgReceived(Object msg, Connection connection) {
+          ((Player)connection).updateActor((PlayerUpdateMsg)msg);
+        }
+        @Override
+        public Class<?> getMsgClass() {
+          return PlayerUpdateMsg.class;
+        }
+      });
       super.setAddress();
       online = true;
       return true;

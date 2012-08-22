@@ -12,6 +12,7 @@ import javax.media.opengl.GLProfile;
 
 import net.NetworkConnection;
 import net.msg.ChatMsg;
+import net.msg.MsgListener;
 import net.server.ServerConnection;
 import render.Renderer2D;
 import render.Renderer3D;
@@ -27,9 +28,8 @@ import scene.actors.StationActor;
 import scene.controllers.ServerActorController;
 import scene.controllers.ServerShipController;
 
+import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
-import com.jogamp.newt.event.KeyEvent;
-import com.jogamp.newt.event.KeyListener;
 import com.jogamp.newt.event.MouseEvent;
 import com.jogamp.newt.event.WindowAdapter;
 import com.jogamp.newt.event.WindowEvent;
@@ -55,21 +55,26 @@ public class SceneWindow extends GComponent implements GLEventListener {
   private Vector2D endMousePos   = new Vector2D();
   private boolean bPanning       = false;
   
-  private final ChatBox chatBox = new ChatBox(this, new Vector2D(15, 15));
-  private final ChatBox chatBox2 = new ChatBox(this, new Vector2D(25, 25));
-  private final ChatBox chatBox3 = new ChatBox(this, new Vector2D(35, 35));
+  private final ChatBox chatBox1;
+  private final ChatBox chatBox2;
+  private final ChatBox chatBox3;
   private final FPSCounter fpsCounter = new FPSCounter(this, new Vector2D(5, InGameGUI.HEIGHT - 50));
   private final StationDockRequest dockRequest = new StationDockRequest(this);
   
   public SceneWindow(final Scene scene, final NetworkConnection connection) {
     super(null);
-    subcomponents.add(chatBox);
+
+    chatBox1 = new ChatBox(this, new Vector2D(15, 15), "asd", connection);
+    chatBox2 = new ChatBox(this, new Vector2D(25, 25), "asd", connection);
+    chatBox3 = new ChatBox(this, new Vector2D(35, 35), "asd", connection);
+    
+    subcomponents.add(chatBox1);
     subcomponents.add(chatBox2);
     subcomponents.add(chatBox3);
     subcomponents.add(fpsCounter);
     subcomponents.add(dockRequest);
     
-    chatBox.openInput();
+    chatBox1.openInput();
     chatBox2.openInput();
     chatBox3.openInput();
     
@@ -90,50 +95,7 @@ public class SceneWindow extends GComponent implements GLEventListener {
     });
     glWindow.addMouseListener(new MouseRouter(this));
     glWindow.addMouseListener(scene.input);
-    glWindow.addKeyListener(new KeyListener() {
-      @Override
-      public void keyReleased(KeyEvent e) {
-        int keyCode = e.getKeyCode();
-        
-        if(chatBox.isOpen()) {
-          switch(keyCode) {
-            case 10: // enter
-              if(chatBox.getInput().length() > 0) {
-                ChatMsg msg = new ChatMsg(chatBox.getInput(), scene.username);
-                chatBox.displayMessage(msg);
-                connection.sendMsg(msg);
-              }
-              chatBox.closeInput();
-              break;
-            case 27: // escape
-              chatBox.closeInput();
-              break;
-            case 8: // backspace
-              chatBox.backSpace();
-              break;
-            default:
-              char character = (char)keyCode;
-              if(!e.isShiftDown())
-                character =  Character.toLowerCase(character);
-              chatBox.addChar(character);
-          }
-        } else {
-          if(keyCode == 'T') {
-            chatBox.openInput();
-          } else {
-            scene.input.keyReleased(e);
-          }
-        }
-      }
-
-      @Override
-      public void keyPressed(KeyEvent e) {
-        scene.input.keyPressed(e);
-        }
-      @Override
-      public void keyTyped(KeyEvent e) {}
-
-    });
+    glWindow.addKeyListener(new KeyRouter(this, scene));
     glWindow.addGLEventListener(this);
     glWindow.setVisible(true);
 
@@ -231,8 +193,22 @@ public class SceneWindow extends GComponent implements GLEventListener {
   }
   
   public static void main(String ... args) {
-    Scene scene = new Scene("");
+    final Scene scene = new Scene("");
     ServerConnection connection = new ServerConnection(scene);
+    
+    connection.addMsgListener(new MsgListener() {
+      @Override
+      public void msgReceived(Object msg, Connection connection) {
+        scene.messageHandler.displayMessage((ChatMsg) msg);
+      }
+
+      @Override
+      public Class<?> getMsgClass() {
+        return ChatMsg.class;
+      }
+    });
+    
+    connection.create();
     scene.input.setConnection(connection);
     populateScene(scene, connection.server);
     new SceneWindow(scene, connection);

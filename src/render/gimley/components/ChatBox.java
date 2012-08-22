@@ -8,29 +8,35 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
+import net.NetworkConnection;
 import net.msg.ChatMsg;
 import render.Renderer2D;
 
-public class ChatBox extends GComponent {
+import com.jogamp.newt.event.KeyEvent;
+import com.jogamp.newt.event.KeyListener;
+
+public class ChatBox extends GComponent implements KeyListener {
   
   private static final int MAX_MSG_DISPLAYED = 6;
   private static final int MESSAGE_HEIGHT = 15;
   private static final int INPUT_WIDTH = 200;
-  
   private static final int MAX_INPUT = 40;
-
   
+  private final Vector2D messagesOffset = new Vector2D(2, MESSAGE_HEIGHT + 5);
   private final List<ChatMsg> messages = new LinkedList<ChatMsg>();
   
   private boolean open = false;
   private String input = "";
 
-  private final Vector2D messagesOffset = new Vector2D(2, MESSAGE_HEIGHT + 5);
+  private NetworkConnection connection;
+  private String username;
 
-  public ChatBox(GComponent parent, Vector2D position) {
+  public ChatBox(GComponent parent, Vector2D position, String username, NetworkConnection connection) {
     super(parent, position);
     this.width = INPUT_WIDTH + 4;
     this.height = MESSAGE_HEIGHT * (MAX_MSG_DISPLAYED + 1) + 5;
+    this.username = username;
+    this.connection = connection;
     subcomponents.add(new TopBar(this));
   }
 
@@ -123,6 +129,41 @@ public class ChatBox extends GComponent {
 
   public boolean isOpen() {
     return open;
+  }
+
+  @Override
+  public void keyPressed(KeyEvent e) {
+    int keyCode = e.getKeyCode();
+    switch(keyCode) {
+      case 10: // enter
+        if(getInput().length() > 0) {
+          ChatMsg msg = new ChatMsg(getInput(), username);
+          displayMessage(msg);
+          connection.sendMsg(msg);
+          clearInput();
+        }
+        break;
+      case 8: // backspace
+        backSpace();
+        break;
+      default:
+        char character = (char)keyCode;
+        if(!e.isShiftDown())
+          character =  Character.toLowerCase(character);
+        addChar(character);
+    }
+  }
+
+  @Override
+  public void keyReleased(KeyEvent e) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void keyTyped(KeyEvent e) {
+    // TODO Auto-generated method stub
+    
   }
   
 }
