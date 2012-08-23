@@ -14,13 +14,13 @@ public abstract class CollisionListener {
   public abstract void collisionEnd(Collision collision);
 
   public boolean isListeningFor(Actor a, Actor b) {
-    boolean a1 =  a.getClass().equals(classes[0]);
-    boolean b1 =  b.getClass().equals(classes[1]);
+    boolean a1 = a.getClass().equals(classes[0]);
+    boolean b1 = b.getClass().equals(classes[1]);
     
-    boolean a2 =  a.getClass().equals(classes[1]);
-    boolean b2 =  b.getClass().equals(classes[0]);
+    boolean a2 = a.getClass().equals(classes[1]);
+    boolean b2 = b.getClass().equals(classes[0]);
     
-    return a1 && b1 || a2 && b2;
+    return (a1 && b1) || (a2 && b2);
   }
   
   public Collision correctOrder(Collision collision) {

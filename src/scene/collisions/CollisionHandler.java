@@ -51,7 +51,7 @@ public class CollisionHandler {
   private Entry<Collision, Boolean> getExistingEntry(Collision newCollision) {
     for(Entry<Collision, Boolean> entry : collisions.entrySet()) {
       Collision oldCollision = entry.getKey();
-      if(oldCollision.equals(newCollision)) {
+      if(oldCollision.equivalent(newCollision)) {
         return entry;
       }
     }

@@ -114,12 +114,16 @@ public class SceneWindow extends GComponent implements GLEventListener {
 
       @Override
       public void collisionStart(Collision collision) {
-        stationDockRequest.setVisible(true);
+        if(collision.a == scene.player) {
+          stationDockRequest.setVisible(true);
+        }
       }
 
       @Override
       public void collisionEnd(Collision collision) {
-        stationDockRequest.setVisible(false);
+        if(collision.a == scene.player) {
+          stationDockRequest.setVisible(false);
+        }
       }
       
     });
