@@ -14,15 +14,13 @@ import core.render.Renderer2D;
 public class StationDockRequest extends GComponent {
   
   private static final double HEIGHT = 35;
-  private static final double WIDTH = 340;
+  private static final double WIDTH = 300;
   
-  public final GButton accept = new GButton(this, position.add(new Vector2D(200, 5)), 65, 25, "DOCK");
-  public final GButton decline = new GButton(this, position.add(new Vector2D(270, 5)), 65, 25, "DECLINE");
+  public final GButton dock = new GButton(this, new Vector2D(200, 5), 65, 25, "DOCK");
 
   public StationDockRequest(GComponent parent) {
     super(parent, new Vector2D(0, 725));
-    subcomponents.add(accept);
-    subcomponents.add(decline);
+    subcomponents.add(dock);
     setVisible(false);
   }
 

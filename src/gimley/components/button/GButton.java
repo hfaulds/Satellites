@@ -41,10 +41,10 @@ public class GButton extends GComponent {
     }
    
     gl.glColor4d(0.3, 0.3, 0.3, 1.0);
-    Renderer2D.drawFillRect(gl, position.x, position.y, this.width, this.height);
+    Renderer2D.drawFillRect(gl, parent.position.x + position.x, parent.position.y + position.y, this.width, this.height);
     
     gl.glColor4d(1.0, 1.0, 1.0, 1.0);
-    Renderer2D.drawText(gl, textPos.x, textPos.y, label);
+    Renderer2D.drawText(gl, parent.position.x + textPos.x, parent.position.y + textPos.y, label);
   }
 
   @Override

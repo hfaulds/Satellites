@@ -15,8 +15,8 @@ public class ProjectileActor extends Actor {
 
   public static final int DAMAGE = 100;
 
-  public ProjectileActor(Vector2D position, Rotation rotation, double mass, int id, int owner) {
-    super(position, rotation, mass, MESH, id, owner);
+  public ProjectileActor(Vector2D position, Rotation rotation, double mass, boolean visible, int id, int owner) {
+    super(position, rotation, mass, MESH, visible, id, owner);
   }
   
   public ProjectileActor(Vector2D position, Vector2D direction, Vector2D shipVelocity, Actor owner) {

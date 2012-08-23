@@ -37,7 +37,7 @@ public class ChatBox extends GComponent implements KeyListener {
     this.height = MESSAGE_HEIGHT * (MAX_MSG_DISPLAYED + 1) + 5;
     this.username = username;
     this.connection = connection;
-    subcomponents.add(new TopBar(this));
+    subcomponents.add(new TopBar(this, "Chat"));
   }
 
   @Override
@@ -60,7 +60,7 @@ public class ChatBox extends GComponent implements KeyListener {
     Renderer2D.drawLineRect(gl, position.x, position.y + MESSAGE_HEIGHT + 5, 
         INPUT_WIDTH + 4, MESSAGE_HEIGHT * MAX_MSG_DISPLAYED, 0.9f);
     
-    Renderer2D.drawText(gl, messagesOffset.x + position.x, position.y + 5, fitMessage(gl, input));
+    Renderer2D.drawText(gl, messagesOffset.x + position.x, position.y + 5, Renderer2D.fitString(gl, input, INPUT_WIDTH));
     
     for(int i=0; i < messages.size() && i < MAX_MSG_DISPLAYED; i++) {
       ChatMsg message = messages.get(i);
@@ -76,14 +76,6 @@ public class ChatBox extends GComponent implements KeyListener {
         );
   }
   
-  private String fitMessage(GL2 gl, String message) {
-    if(Renderer2D.getTextSize(gl, message).y > INPUT_WIDTH) {
-      return fitMessage(gl, message.substring(1));
-    } else {
-      return message;
-    }
-  }
-
   public void displayMessage(ChatMsg msg) {
     messages.add(0, msg);
   }

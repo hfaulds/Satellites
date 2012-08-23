@@ -94,4 +94,13 @@ public class Renderer2D {
     gl.glWindowPos2d(x, y);
     glut.glutBitmapString(font, text);
   }
+
+  public static String fitString(GL2 gl, String message, int width) {
+    if(Renderer2D.getTextSize(gl, message).y > width) {
+      return fitString(gl, message.substring(1), width);
+    } else {
+      return message;
+    }
+  
+  }
 }

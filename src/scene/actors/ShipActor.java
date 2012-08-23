@@ -22,10 +22,10 @@ public class ShipActor extends Actor {
   public int health = MAX_HEALTH;
   public int shield = MAX_SHIELD;
 
-  public ShipActor(Vector2D position, Rotation rotation, double mass, int id, int owner) {
-    super(position, rotation, mass, MESH, id, owner);
+  public ShipActor(Vector2D position, Rotation rotation, double mass, boolean visible, int id, int owner) {
+    super(position, rotation, mass, MESH, visible, id, owner);
   }
-
+  
   public ShipActor(double x, double y) {
     super(new Vector2D(x,y), new Rotation(), MASS, MESH);
   }

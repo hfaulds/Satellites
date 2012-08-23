@@ -50,7 +50,7 @@ public abstract class Actor {
 
   /* CONSTRUCTORS */
   
-  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, int id, int owner) {
+  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, boolean visible, int id, int owner) {
     this.position = new Vector2D(position);
     this.rotation = new Rotation(rotation);
     this.boundingbox = Box.createBoundingBox(mesh, this.position);
@@ -59,6 +59,7 @@ public abstract class Actor {
     this.mesh = mesh;
     this.id = id;
     this.owner = owner;
+    this.visible = visible;
     ID_COUNT = Math.max(ID_COUNT, id);
   }
 
@@ -67,7 +68,7 @@ public abstract class Actor {
   }
   
   protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, int owner) {
-    this(position, rotation, mass, mesh, NEXT_ID(), owner);
+    this(position, rotation, mass, mesh, true, NEXT_ID(), owner);
   }
   
 
@@ -138,7 +139,7 @@ public abstract class Actor {
 
   @SuppressWarnings("unchecked")
   public ActorCreateMsg getCreateMsg() {
-    return new ActorCreateMsg(position, rotation, id, owner, mass, (Class<Actor>) getClass());
+    return new ActorCreateMsg(position, rotation, visible, id, owner, mass, (Class<Actor>) getClass());
   }
   
   public ActorUpdateMsg getUpdateMsg() {
@@ -156,8 +157,8 @@ public abstract class Actor {
 
   public static Actor fromInfo(ActorCreateMsg info) {
     try {
-      Constructor<? extends Actor> constructor = info.actorClass.getConstructor(Vector2D.class, Rotation.class, double.class, int.class, int.class);
-      return constructor.newInstance(info.position, info.rotation, info.mass, info.id, info.owner);
+      Constructor<? extends Actor> constructor = info.actorClass.getConstructor(Vector2D.class, Rotation.class, double.class, boolean.class, int.class, int.class);
+      return constructor.newInstance(info.position, info.rotation, info.mass, info.visible, info.id, info.owner);
     } catch (InstantiationException | IllegalAccessException
         | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
       e.printStackTrace();

@@ -51,10 +51,10 @@ public abstract class GComponent {
       if(component.testClick(click))
         return true;
     
-    return click.x >= position.x 
-        && click.y >= position.y 
-        && click.x <= position.x + width 
-        && click.y <= position.y + height;
+    return click.x >= parent.position.x + position.x 
+        && click.y >= parent.position.y + position.y 
+        && click.x <= parent.position.x + position.x + width 
+        && click.y <= parent.position.y + position.y + height;
   }
   
   public void mousePressed(Vector2D click, MouseEvent e) {

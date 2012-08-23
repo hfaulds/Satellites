@@ -6,6 +6,7 @@ package gimley;
 import gimley.components.ChatBox;
 import gimley.components.FPSCounter;
 import gimley.components.GComponent;
+import gimley.components.StationDisplay;
 import gimley.components.StationDockRequest;
 import gimley.components.button.ActionListener;
 
@@ -49,10 +50,11 @@ public class SceneWindow extends GComponent implements GLEventListener {
   
   private final Scene scene;
   private final SceneUpdater updater;
+  
   private final Renderer2D renderer2D = new Renderer2D();
   private final Renderer3D renderer3D = new Renderer3D();
   
-  private Vector3D camera        = new Vector3D(0, 0, ZOOM_DEFAULT);
+  private Vector3D cameraPos     = new Vector3D(0, 0, ZOOM_DEFAULT);
   private Vector2D startMousePos = new Vector2D();
   private Vector2D endMousePos   = new Vector2D();
   private boolean bPanning       = false;
@@ -69,7 +71,8 @@ public class SceneWindow extends GComponent implements GLEventListener {
 
     subcomponents.add(setupChatBox(scene, connection));
     subcomponents.add(new FPSCounter(this, new Vector2D(5, height - 50)));
-    subcomponents.add(setupStationDockRequest(updater, connection));
+    
+    setupStationUI(updater, connection);
     
     animator.start();
   }
@@ -78,9 +81,10 @@ public class SceneWindow extends GComponent implements GLEventListener {
   /* Setup Graphics */
   
   private GLWindow setupGLWindow(final Scene scene) {
-    GLCapabilities capabilities = new GLCapabilities(GLProfile.getDefault());
-    final GLWindow window = GLWindow.create(capabilities);
-    window.setSize(width, height);    
+    final GLWindow window = GLWindow.create(new GLCapabilities(GLProfile.getDefault()));
+    
+    window.setSize(width, height);
+    
     window.addWindowListener(new WindowAdapter() {
       @Override
       public void windowDestroyNotify(WindowEvent e) {
@@ -88,15 +92,18 @@ public class SceneWindow extends GComponent implements GLEventListener {
         window.destroy();
       }
     });
+    
     window.addMouseListener(new MouseRouter(this, scene));
     window.addKeyListener(new KeyRouter(this, scene));
     window.addGLEventListener(this);
     window.setVisible(true);
+    
     return window;
   }
 
   private ChatBox setupChatBox(Scene scene, NetworkConnection connection) {
     final ChatBox chatBox = new ChatBox(this, new Vector2D(15, 15), scene.username, connection);
+    
     connection.addMsgListener(new MsgListener() {
       @Override
       public void msgReceived(Object msg, Connection reply) {
@@ -112,8 +119,12 @@ public class SceneWindow extends GComponent implements GLEventListener {
   }
 
   @SuppressWarnings("unchecked")
-  private GComponent setupStationDockRequest(SceneUpdater updater, final NetworkConnection connection) {
+  private void setupStationUI(SceneUpdater updater, final NetworkConnection connection) {
     final StationDockRequest stationDockRequest = new StationDockRequest(this);
+    final StationDisplay stationDisplay = new StationDisplay(this);
+
+    subcomponents.add(stationDockRequest);
+    subcomponents.add(stationDisplay);
     
     updater.addCollisionListener(new CollisionListener(new Class[]{ShipActor.class, StationActor.class}) {
       @Override
@@ -130,17 +141,33 @@ public class SceneWindow extends GComponent implements GLEventListener {
       }
     });
     
-    stationDockRequest.accept.addActionListener(new ActionListener(){
+    stationDockRequest.dock.addActionListener(new ActionListener() {
       @Override
       public void action() {
-        Actor player = scene.player;
-        player.setVisible(false);
         scene.input.setActor(null);
+        
+        Actor player = scene.player;
+        
         connection.sendMsg(new ShipDockMsg(player.id, ShipDockMsg.DOCKING));
+        
+        player.setVisible(false);
+        stationDockRequest.setVisible(false);
+        stationDisplay.setVisible(true);
       }
     });
     
-    return stationDockRequest;
+    stationDisplay.undock.addActionListener(new ActionListener() {
+      @Override
+      public void action() {
+        stationDisplay.setVisible(false);
+        
+        Actor player = scene.player;
+        connection.sendMsg(new ShipDockMsg(player.id, ShipDockMsg.UNDOCKING));
+
+        player.setVisible(true);
+        scene.input.setActor(player);
+      }
+    });
   }
 
   /* Rendering */
@@ -159,11 +186,11 @@ public class SceneWindow extends GComponent implements GLEventListener {
     
     if(bPanning) {
       Vector2D direction = endMousePos.sub(startMousePos).divide(1000);
-      camera._add(new Vector3D(direction));
+      cameraPos._add(new Vector3D(direction));
     }
 
     renderer3D.clear(gl);
-    renderer3D.render(gl, scene, camera, (double)width/height);
+    renderer3D.render(gl, scene, cameraPos, (double)width/height);
     renderer2D.render(gl, subcomponents, width, height);
   }
 
@@ -203,7 +230,7 @@ public class SceneWindow extends GComponent implements GLEventListener {
   
   @Override
   public void mouseWheelMoved(MouseEvent e) {
-    camera.z = Math.max(Math.abs(camera.z - e.getWheelRotation() * ZOOM_RATE), ZOOM_RATE);
+    cameraPos.z = Math.max(Math.abs(cameraPos.z - e.getWheelRotation() * ZOOM_RATE), ZOOM_RATE);
     renderer3D.updateMatrices();
   }
   
