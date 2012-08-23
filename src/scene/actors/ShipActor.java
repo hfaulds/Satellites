@@ -21,8 +21,8 @@ public class ShipActor extends Actor {
   public int health = MAX_HEALTH;
   public int shield = MAX_SHIELD;
 
-  public ShipActor(Vector2D position, Rotation rotation, double mass, int id) {
-    super(position, rotation, mass, MESH, id);
+  public ShipActor(Vector2D position, Rotation rotation, double mass, int id, int owner) {
+    super(position, rotation, mass, MESH, id, owner);
   }
 
   public ShipActor(double x, double y) {

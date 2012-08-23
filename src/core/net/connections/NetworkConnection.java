@@ -104,7 +104,7 @@ public abstract class NetworkConnection {
   }
   
   protected void addActor(Actor actor) {
-    this.sendMsg(new ActorCreateMsg(actor.position, actor.rotation, actor.id, actor.mass, actor.getClass()));
+    this.sendMsg(actor.getCreateMsg());
     this.scene.queueAddActor(actor);
   }
 }

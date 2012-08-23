@@ -101,7 +101,7 @@ public class PlayerInputController implements Controller {
     if(e.getButton() == FIRE_BUTTON && timeTillNextFire <= 0) {
       if(connection != null) {
         Vector2D position = actor.position.add(aimDirection.mult(2));
-        ProjectileActor projectile = new ProjectileActor(position, aimDirection, actor.velocity);
+        ProjectileActor projectile = new ProjectileActor(position, aimDirection, actor.velocity, actor);
         
         connection.fireProjectile(projectile);
         

@@ -14,12 +14,12 @@ public class ProjectileActor extends Actor {
 
   public static final int DAMAGE = 100;
 
-  public ProjectileActor(Vector2D position, Rotation rotation, double mass, int id) {
-    super(position, rotation, mass, MESH, id);
+  public ProjectileActor(Vector2D position, Rotation rotation, double mass, int id, int owner) {
+    super(position, rotation, mass, MESH, id, owner);
   }
   
-  public ProjectileActor(Vector2D position, Vector2D direction, Vector2D shipVelocity) {
-    super(position, Rotation.XRotFromvector(direction), MASS, MESH);
+  public ProjectileActor(Vector2D position, Vector2D direction, Vector2D shipVelocity, Actor owner) {
+    super(position, Rotation.XRotFromvector(direction), MASS, MESH, owner.id);
     this.velocity._set(shipVelocity.add(direction._mult(SPEED)));
   }
 }

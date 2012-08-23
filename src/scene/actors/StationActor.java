@@ -23,8 +23,8 @@ public class StationActor extends Actor {
   final double shieldRadius = new Vector2D(boundingbox.maxX(), boundingbox.maxY()).distanceTo(new Vector2D(boundingbox.minX(), boundingbox.minY()));
   final int shieldSegments = 25;
 
-  public StationActor(Vector2D position, Rotation rotation, double mass, int id) {
-    super(position, rotation, mass, MESH, id);
+  public StationActor(Vector2D position, Rotation rotation, double mass, int id, int owner) {
+    super(position, rotation, mass, MESH, id, owner);
   }
 
   public StationActor(double x, double y) {
