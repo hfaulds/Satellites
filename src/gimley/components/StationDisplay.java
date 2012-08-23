@@ -10,14 +10,14 @@ import core.render.Renderer2D;
 public class StationDisplay extends GComponent {
 
   private static final int WIDTH = 750;
-  private static final int HEIGHT = 500;
+  private static final int HEIGHT = 600;
   
-  public final GButton undock = new GButton(this, new Vector2D(650, 5), 65, 25, "UNDOCK");
+  public final GButton undock = new GButton(this, new Vector2D(675, 10), 65, 20, "UNDOCK");
   
   public StationDisplay(GComponent parent) {
     super(parent, new Vector2D(20, 20));
     
-    setVisible(false);
+    setVisible(true);
     
     this.width = WIDTH;
     this.height = HEIGHT;
@@ -33,7 +33,13 @@ public class StationDisplay extends GComponent {
 
     gl.glColor4d(1.0, 1.0, 1.0, 1.0);
     Renderer2D.drawLineRect(gl, position.x, position.y, WIDTH, HEIGHT, 0.9f);
-    super.render(gl, width, height);
 
+    gl.glColor4d(1.0, 1.0, 1.0, 1.0);
+    Renderer2D.drawFillRect(gl, position.x + 10, position.y + 130, 730, HEIGHT - 140);
+
+    gl.glColor4d(1.0, 1.0, 1.0, 1.0);
+    Renderer2D.drawFillRect(gl, position.x + 10, position.y + 40, 730, 80);
+    
+    super.render(gl, width, height);
   }
 }

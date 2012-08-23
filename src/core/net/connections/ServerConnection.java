@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import scene.Actor;
 import scene.Scene;
-import scene.actors.Planet1Actor;
+import scene.actors.Planet001Actor;
 import scene.actors.ProjectileActor;
 import scene.actors.ShipActor;
 import scene.actors.StationActor;
@@ -91,7 +91,7 @@ public class ServerConnection extends NetworkConnection {
     scene.addPlayer(player);
     scene.addController(new ServerShipController(player, this));
     
-    Planet1Actor planet = new Planet1Actor(17, 17);
+    Planet001Actor planet = new Planet001Actor(17, 17);
     scene.queueAddActor(planet);
     scene.addController(new ServerActorController(planet, this));
     

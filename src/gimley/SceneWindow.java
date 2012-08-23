@@ -170,6 +170,7 @@ public class SceneWindow extends GComponent implements GLEventListener {
     });
   }
 
+  
   /* Rendering */
   
   @Override
