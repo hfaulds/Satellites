@@ -2,7 +2,7 @@ package scene.controllers;
 
 import java.util.List;
 
-import scene.actors.Actor;
+import scene.Actor;
 
 
 import com.esotericsoftware.kryonet.Connection;

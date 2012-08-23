@@ -7,7 +7,7 @@ import java.util.List;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
-import core.net.msg.MsgListener;
+import core.net.MsgListener;
 
 public class NetworkListener extends Listener {
 

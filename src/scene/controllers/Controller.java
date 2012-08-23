@@ -2,7 +2,7 @@ package scene.controllers;
 
 import java.util.List;
 
-import scene.actors.Actor;
+import scene.Actor;
 
 
 public interface Controller {

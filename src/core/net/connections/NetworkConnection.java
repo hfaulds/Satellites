@@ -2,6 +2,7 @@ package core.net.connections;
 
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
@@ -10,25 +11,17 @@ import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import scene.Actor;
 import scene.Scene;
-import scene.actors.Actor;
-import scene.actors.Planet1Actor;
 import scene.actors.ProjectileActor;
-import scene.actors.ShipActor;
-import scene.actors.StationActor;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
+import core.net.MsgListener;
 import core.net.listeners.NetworkListener;
-import core.net.msg.ActorCreateMsg;
-import core.net.msg.ActorUpdateMsg;
-import core.net.msg.ChatMsg;
-import core.net.msg.MsgListener;
-import core.net.msg.PlayerUpdateMsg;
-import core.net.msg.SceneCreateMsg;
 
 public abstract class NetworkConnection {
   
@@ -76,16 +69,17 @@ public abstract class NetworkConnection {
     kryo.register(Vector2D.class);
     kryo.register(Rotation.class);
     
-    kryo.register(ActorCreateMsg.class);
-    kryo.register(ActorUpdateMsg.class);
-    kryo.register(SceneCreateMsg.class);
-    kryo.register(PlayerUpdateMsg.class);
-    kryo.register(ChatMsg.class);
-
-    kryo.register(ProjectileActor.class);
-    kryo.register(Planet1Actor.class);
-    kryo.register(ShipActor.class);
-    kryo.register(StationActor.class);
+    try {
+      for(Class<?> klass : getClasses("core.net.msg"))
+        kryo.register(klass);
+      
+      for(Class<?> klass : getClasses("scene.actors"))
+        kryo.register(klass);
+      
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    }
+    
     
     kryo.register(ArrayList.class);
     kryo.register(Class.class);
@@ -107,4 +101,34 @@ public abstract class NetworkConnection {
     this.sendMsg(actor.getCreateMsg());
     this.scene.queueAddActor(actor);
   }
+  
+  public static ArrayList<Class<?>> getClasses(String packageName) throws ClassNotFoundException {
+      ArrayList<Class<?>> classes=new ArrayList<Class<?>>();
+      // Get a File object for the package
+      File directory=null;
+
+      String folder = packageName.replace('.', '/');
+      try {
+        directory = new File(Thread.currentThread().getContextClassLoader().getResource(folder).getFile());
+      }
+      catch(NullPointerException x) {
+       throw new ClassNotFoundException(folder + " can't load directory");
+      }
+
+      if(directory.exists()) {
+        String[] files = directory.list();
+        
+        for(int i=0; i<files.length; i++) {
+         if(files[i].endsWith(".class")) {
+          Class<?> klass = Class.forName(packageName + '.' + files[i].substring(0, files[i].length() - 6));
+          classes.add(klass);
+        }
+       }
+        
+      } else {
+       throw new ClassNotFoundException(packageName +" does notappear to be a valid package");
+      }
+
+      return classes;
+     } 
 }

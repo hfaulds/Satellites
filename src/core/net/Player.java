@@ -1,6 +1,6 @@
 package core.net;
 
-import scene.actors.Actor;
+import scene.Actor;
 import scene.actors.ShipActor;
 import scene.controllers.Controller;
 import scene.controllers.ServerShipController;

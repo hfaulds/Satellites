@@ -3,7 +3,7 @@ package scene.controllers;
 
 import java.util.List;
 
-import scene.actors.Actor;
+import scene.Actor;
 import scene.actors.ProjectileActor;
 
 import com.jogamp.newt.event.KeyEvent;
@@ -48,8 +48,9 @@ public class PlayerInputController implements Controller {
   @Override
   public void tick(long dt, List<Actor> actors) {
     
-    if(timeTillNextFire > 0)
+    if(timeTillNextFire > 0) {
       timeTillNextFire -= dt;
+    }
     
     if(actor != null) {
       if(accelMag != 0) {
@@ -94,11 +95,13 @@ public class PlayerInputController implements Controller {
   }
   
   public void mouseMoved(MouseEvent e) {
-    this.aimDirection = Renderer3D.project(actor.position).sub(new Vector2D(e.getX(), e.getY()))._normalize()._invertX();
+    if(actor != null) {
+      aimDirection = Renderer3D.project(actor.position).sub(new Vector2D(e.getX(), e.getY()))._normalize()._invertX();
+    }
   }
   
   public void mouseClicked(MouseEvent e) {
-    if(e.getButton() == FIRE_BUTTON && timeTillNextFire <= 0) {
+    if(actor != null && e.getButton() == FIRE_BUTTON && timeTillNextFire <= 0) {
       if(connection != null) {
         Vector2D position = actor.position.add(aimDirection.mult(2));
         ProjectileActor projectile = new ProjectileActor(position, aimDirection, actor.velocity, actor);

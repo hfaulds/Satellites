@@ -7,8 +7,8 @@ import java.util.List;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
 
+import scene.Actor;
 import scene.Scene;
-import scene.actors.Actor;
 
 public class ActorCreateMsg {
 

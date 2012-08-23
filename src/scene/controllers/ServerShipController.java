@@ -7,7 +7,7 @@ import core.geometry.Rotation;
 import core.geometry.Vector2D;
 import core.net.connections.ServerConnection;
 
-import scene.actors.Actor;
+import scene.Actor;
 import scene.actors.ShipActor;
 
 

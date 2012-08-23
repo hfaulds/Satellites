@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import scene.actors.Actor;
 import scene.collisions.Collision;
 import scene.collisions.CollisionHandler;
 import scene.collisions.CollisionListener;

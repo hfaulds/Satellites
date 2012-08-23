@@ -1,4 +1,4 @@
-package scene.actors;
+package scene;
 
 
 
@@ -28,11 +28,12 @@ public abstract class Actor {
   
   public final int id;
   public final int owner;
-
-  public final Material material = new Material();
+  
+  private boolean visible = true;
   
   public final Mesh mesh;
   public final Box boundingbox;
+  public final Material material = new Material();
 
   public final List<Graphic> ui = new ArrayList<Graphic>();
   
@@ -45,6 +46,7 @@ public abstract class Actor {
   public final double mass;
 
   private int listID;
+
 
   /* CONSTRUCTORS */
   
@@ -97,15 +99,17 @@ public abstract class Actor {
   }
 
   public void render(GL2 gl, GLU glu) {
-    for(Graphic uiElem : ui) {
-      gl.glPushMatrix();
-      uiElem.render(gl, glu, position, rotation);
-      gl.glPopMatrix();
+    if(visible) {
+      for(Graphic uiElem : ui) {
+        gl.glPushMatrix();
+        uiElem.render(gl, glu, position, rotation);
+        gl.glPopMatrix();
+      }
+      
+      gl.glTranslated(position.x, position.y, Vector2D.Z);
+      gl.glRotated(rotation.toDegrees(), rotation.x, rotation.y, rotation.z);
+      gl.glCallList(listID);
     }
-    
-    gl.glTranslated(position.x, position.y, Vector2D.Z);
-    gl.glRotated(rotation.toDegrees(), rotation.x, rotation.y, rotation.z);
-    gl.glCallList(listID);
   }
 
   /* FORCES */
@@ -144,6 +148,10 @@ public abstract class Actor {
   public void _update(ActorUpdateMsg info) {
     this.position._set(info.position);
     this.rotation._set(info.rotation);
+  }
+
+  public void setVisible(boolean visible) {
+    this.visible = visible;
   }
 
   public static Actor fromInfo(ActorCreateMsg info) {

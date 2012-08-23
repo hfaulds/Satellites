@@ -1,5 +1,8 @@
 package gimley;
 
+
+
+
 import gimley.components.ChatBox;
 import gimley.components.FPSCounter;
 import gimley.components.GComponent;
@@ -12,6 +15,7 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLProfile;
 
+import scene.Actor;
 import scene.Scene;
 import scene.SceneUpdater;
 import scene.actors.ShipActor;
@@ -28,9 +32,10 @@ import com.jogamp.opengl.util.FPSAnimator;
 
 import core.geometry.Vector2D;
 import core.geometry.Vector3D;
+import core.net.MsgListener;
 import core.net.connections.NetworkConnection;
 import core.net.msg.ChatMsg;
-import core.net.msg.MsgListener;
+import core.net.msg.ShipDockMsg;
 import core.render.Renderer2D;
 import core.render.Renderer3D;
 
@@ -64,7 +69,7 @@ public class SceneWindow extends GComponent implements GLEventListener {
 
     subcomponents.add(setupChatBox(scene, connection));
     subcomponents.add(new FPSCounter(this, new Vector2D(5, height - 50)));
-    subcomponents.add(setupStationDockRequest(updater));
+    subcomponents.add(setupStationDockRequest(updater, connection));
     
     animator.start();
   }
@@ -107,32 +112,31 @@ public class SceneWindow extends GComponent implements GLEventListener {
   }
 
   @SuppressWarnings("unchecked")
-  private GComponent setupStationDockRequest(SceneUpdater updater) {
+  private GComponent setupStationDockRequest(SceneUpdater updater, final NetworkConnection connection) {
     final StationDockRequest stationDockRequest = new StationDockRequest(this);
     
     updater.addCollisionListener(new CollisionListener(new Class[]{ShipActor.class, StationActor.class}) {
-
       @Override
       public void collisionStart(Collision collision) {
         if(collision.a == scene.player) {
           stationDockRequest.setVisible(true);
         }
       }
-
       @Override
       public void collisionEnd(Collision collision) {
         if(collision.a == scene.player) {
           stationDockRequest.setVisible(false);
         }
       }
-      
     });
     
     stationDockRequest.accept.addActionListener(new ActionListener(){
       @Override
       public void action() {
-        ShipActor player = scene.player;
-        scene.removeActor(player);
+        Actor player = scene.player;
+        player.setVisible(false);
+        scene.input.setActor(null);
+        connection.sendMsg(new ShipDockMsg(player.id, ShipDockMsg.DOCKING));
       }
     });
     

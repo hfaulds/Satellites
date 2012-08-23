@@ -9,8 +9,8 @@ import javax.media.opengl.glu.GLU;
 import core.geometry.Vector2D;
 import core.geometry.Vector3D;
 
+import scene.Actor;
 import scene.Scene;
-import scene.actors.Actor;
 import scene.actors.PointLightActor;
 
 public class Renderer3D {

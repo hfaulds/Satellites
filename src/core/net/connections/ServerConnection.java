@@ -3,8 +3,8 @@ package core.net.connections;
 
 import java.io.IOException;
 
+import scene.Actor;
 import scene.Scene;
-import scene.actors.Actor;
 import scene.actors.Planet1Actor;
 import scene.actors.ProjectileActor;
 import scene.actors.ShipActor;
@@ -16,11 +16,12 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 
 import core.geometry.Vector2D;
+import core.net.MsgListener;
 import core.net.Player;
 import core.net.listeners.ServerListener;
 import core.net.msg.ActorCreateMsg;
-import core.net.msg.MsgListener;
 import core.net.msg.PlayerUpdateMsg;
+import core.net.msg.ShipDockMsg;
 
 public class ServerConnection extends NetworkConnection {
 
@@ -38,7 +39,7 @@ public class ServerConnection extends NetworkConnection {
       server.start();
       server.bind(TCP_PORT, UDP_PORT);
       server.addListener(listener);
-      listener.addMsgListener(new MsgListener() {
+      this.addMsgListener(new MsgListener() {
         @Override
         public void msgReceived(Object msg, Connection connection) {
           ((Player)connection).updateActor((PlayerUpdateMsg)msg);
@@ -46,6 +47,16 @@ public class ServerConnection extends NetworkConnection {
         @Override
         public Class<?> getMsgClass() {
           return PlayerUpdateMsg.class;
+        }
+      });
+      this.addMsgListener(new MsgListener() {
+        @Override
+        public void msgReceived(Object msg, Connection connection) {
+          sendMsg((ShipDockMsg)msg);
+        }
+        @Override
+        public Class<?> getMsgClass() {
+          return ShipDockMsg.class;
         }
       });
       super.setAddress();

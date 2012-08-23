@@ -4,17 +4,18 @@ import java.io.IOException;
 import java.net.InetAddress;
 
 
+import scene.Actor;
 import scene.Scene;
-import scene.actors.Actor;
 import scene.actors.ProjectileActor;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 
+import core.net.MsgListener;
 import core.net.listeners.ClientListener;
 import core.net.msg.ActorCreateMsg;
 import core.net.msg.ActorUpdateMsg;
-import core.net.msg.MsgListener;
+import core.net.msg.ShipDockMsg;
 
 public class ClientConnection extends NetworkConnection {
 
@@ -65,8 +66,28 @@ public class ClientConnection extends NetworkConnection {
         return ActorCreateMsg.class;
       }
     });
+    
+    this.addMsgListener(new MsgListener() {
+      @Override
+      public void msgReceived(Object msg, Connection connection) {
+        ShipDockMsg dockInfo = (ShipDockMsg)msg;
+        Actor ship = scene.findActor(dockInfo.id);
+        if(dockInfo.status == ShipDockMsg.DOCKING) {
+          ship.setVisible(false);
+        } else {
+          ship.setVisible(true);
+        }
+      }
+      
+      @Override
+      public Class<?> getMsgClass() {
+        return ShipDockMsg.class;
+      }
+    });
+    
   }
 
+  
   @Override
   public void disconnect() {
     client.stop();

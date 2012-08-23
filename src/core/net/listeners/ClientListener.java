@@ -4,7 +4,7 @@ import scene.Scene;
 
 import com.esotericsoftware.kryonet.Connection;
 
-import core.net.msg.MsgListener;
+import core.net.MsgListener;
 import core.net.msg.SceneCreateMsg;
 
 public class ClientListener extends NetworkListener {

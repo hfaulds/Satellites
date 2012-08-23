@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import scene.actors.Actor;
 import scene.actors.PointLightActor;
 import scene.actors.ShipActor;
 import scene.controllers.ClientShipController;
@@ -27,7 +26,7 @@ import core.net.msg.ActorCreateMsg;
 public class Scene extends MouseAdapter {
 
   public final String username;
-  public ShipActor player;
+  public Actor player;
   
   public final PlayerInputController input = new PlayerInputController();
 

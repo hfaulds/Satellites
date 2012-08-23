@@ -1,5 +1,6 @@
 package scene.actors;
 
+import scene.Actor;
 import core.geometry.Mesh;
 import core.geometry.MeshLoader;
 import core.geometry.Rotation;
