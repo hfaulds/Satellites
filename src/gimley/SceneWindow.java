@@ -14,12 +14,10 @@ import javax.media.opengl.GLProfile;
 
 import scene.Scene;
 import scene.SceneUpdater;
-import scene.actors.Actor;
 import scene.actors.ShipActor;
 import scene.actors.StationActor;
 import scene.collisions.Collision;
 import scene.collisions.CollisionListener;
-
 
 import com.esotericsoftware.kryonet.Connection;
 import com.jogamp.newt.event.MouseEvent;
@@ -108,20 +106,22 @@ public class SceneWindow extends GComponent implements GLEventListener {
     return chatBox;
   }
 
+  @SuppressWarnings("unchecked")
   private GComponent setupStationDockRequest(SceneUpdater updater) {
     final StationDockRequest stationDockRequest = new StationDockRequest(this);
     
-    updater.addCollisionListener(new CollisionListener() {
-      @SuppressWarnings("unchecked")
+    updater.addCollisionListener(new CollisionListener(new Class[]{ShipActor.class, StationActor.class}) {
+
       @Override
-      public Class<? extends Actor>[] getTypes() {
-        return new Class[]{ShipActor.class, StationActor.class};
+      public void collisionStart(Collision collision) {
+        stationDockRequest.setVisible(true);
       }
 
       @Override
-      public void collision(Collision collision) {
-        stationDockRequest.setVisible(true);
+      public void collisionEnd(Collision collision) {
+        stationDockRequest.setVisible(false);
       }
+      
     });
     
     stationDockRequest.accept.addActionListener(new ActionListener(){

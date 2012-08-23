@@ -1,20 +1,17 @@
 package scene;
 
-
 import java.awt.event.MouseAdapter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import core.geometry.Box;
-import core.geometry.Vector2D;
-
-
 import scene.actors.Actor;
 import scene.collisions.Collision;
+import scene.collisions.CollisionHandler;
 import scene.collisions.CollisionListener;
 import scene.collisions.ShipProjectileCollisionHandle;
 import scene.controllers.Controller;
+import core.geometry.Box;
 
 public class SceneUpdater extends MouseAdapter {
   
@@ -22,8 +19,9 @@ public class SceneUpdater extends MouseAdapter {
   private long lastFrame = System.currentTimeMillis();
   
   public final Queue<Actor> actorRemoveQueue = new LinkedList<Actor>();
-
-  private List<CollisionListener> listeners = new LinkedList<CollisionListener>();
+  
+  private final List<CollisionListener> listeners = new LinkedList<CollisionListener>();
+  public final CollisionHandler collisionHandler = new CollisionHandler(listeners);
   
   public SceneUpdater(Scene scene) {
     this.scene = scene;
@@ -54,12 +52,12 @@ public class SceneUpdater extends MouseAdapter {
           Actor a = actors.get(i);
           Actor b = actors.get(j);
           if(collisionExists(a, b)) {
-            a.velocity._set(new Vector2D(0,0));
-            b.velocity._set(new Vector2D(0,0));
+            collisionHandler.addOrUpdateCollision(new Collision(a, b));
           }
-        
       }
     }
+    
+    collisionHandler.tick();
     
     for(Actor actor : actorRemoveQueue) {
       scene.removeActor(actor);
@@ -69,24 +67,7 @@ public class SceneUpdater extends MouseAdapter {
   }
 
   private boolean collisionExists(Actor a, Actor b) {
-    if(Box.boxesIntersect(a.boundingbox, b.boundingbox)) {
-      for(CollisionListener listener : listeners) {
-        if(checkTypes(a, b, listener)) {
-          listener.collision(new Collision(a, b, listener.getTypes()));
-        }
-      }
-    }
-    return false;
+    return Box.boxesIntersect(a.boundingbox, b.boundingbox);
   }
 
-  private boolean checkTypes(Actor a, Actor b, CollisionListener listener) {
-    Class<? extends Actor>[] types = listener.getTypes();
-    boolean a1 =  a.getClass().equals(types[0]);
-    boolean b1 =  b.getClass().equals(types[1]);
-    
-    boolean a2 =  a.getClass().equals(types[1]);
-    boolean b2 =  b.getClass().equals(types[0]);
-    
-    return a1 && b1 || a2 && b2;
-  }
 }

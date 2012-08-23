@@ -1,30 +1,30 @@
 package scene.collisions;
 
 import scene.SceneUpdater;
-import scene.actors.Actor;
 import scene.actors.ProjectileActor;
 import scene.actors.ShipActor;
 
-public class ShipProjectileCollisionHandle implements
+public class ShipProjectileCollisionHandle extends
     CollisionListener {
   
   private final SceneUpdater updater;
 
-  public ShipProjectileCollisionHandle(SceneUpdater sceneUpdater) {
-    updater = sceneUpdater;
-  }
-
   @SuppressWarnings("unchecked")
-  @Override
-  public Class<? extends Actor>[] getTypes() {
-    return new Class[]{ProjectileActor.class, ShipActor.class};
+  public ShipProjectileCollisionHandle(SceneUpdater updater) {
+    super(new Class[]{ProjectileActor.class, ShipActor.class});
+    this.updater = updater;
   }
-
+ 
   @Override
-  public void collision(Collision collision) {
+  public void collisionStart(Collision collision) {
     ProjectileActor a = (ProjectileActor)collision.a;
     ShipActor b = (ShipActor)collision.b;
     b.damage(ProjectileActor.DAMAGE);
     updater.actorRemoveQueue.add(a);
+  }
+
+  @Override
+  public void collisionEnd(Collision collision) {
+    
   }
 }
