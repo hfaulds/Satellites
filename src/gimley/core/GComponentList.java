@@ -1,6 +1,6 @@
-package gimley;
+package gimley.core;
 
-import gimley.components.GComponent;
+import gimley.core.components.GComponent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,6 +44,11 @@ public class GComponentList extends ArrayList<GComponent>  {
         gl.glPopMatrix();
       }
     }
+  }
+
+  public void init(GL2 gl, int width, int height) {
+    for(GComponent component : this)
+      component.init(gl, width, height);
   }
   
 }

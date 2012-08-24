@@ -1,7 +1,8 @@
-package gimley.components;
+package gimley.core.components;
 
 
-import gimley.components.button.GButton;
+import gimley.core.components.button.ActionListener;
+import gimley.core.components.button.GButton;
 
 import javax.media.opengl.GL2;
 
@@ -23,7 +24,7 @@ public class TopBar extends GComponent {
     this(parent, title, true, false);
   }
 
-  public TopBar(GComponent parent, String title, boolean bMinimise, boolean bClose) {
+  public TopBar(final GComponent parent, String title, boolean bMinimise, boolean bClose) {
     super(parent, new Vector2D(0, parent.height));
     this.width = parent.width;
     this.height = 15;
@@ -31,16 +32,33 @@ public class TopBar extends GComponent {
     
     if(bMinimise) {
       subcomponents.add(minimise);
-      if(!bClose)
+      if(!bClose) {
         minimise.position.x += 11;
+      }
     }
     
     if(bClose) {
       subcomponents.add(close);
     }
     
+    minimise.addActionListener(new ActionListener() {
+      @Override
+      public void action() {
+        
+      }
+    });
+
+    close.addActionListener(new ActionListener() {
+      @Override
+      public void action() {
+        parent.setVisible(false);
+      }
+    });
+    
   }
   
+  
+  /* Mouse Controls */
   
   @Override
   public void mousePressed(Vector2D click, MouseEvent e) {
@@ -53,6 +71,9 @@ public class TopBar extends GComponent {
       this.parent.position._set(click.sub(mouseDragOffset));
     }
   }
+  
+  
+  /* Rendering */
   
   @Override
   public void render(GL2 gl, int width, int height) {

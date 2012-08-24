@@ -1,6 +1,7 @@
-package gimley;
+package gimley.core.routers;
 
-import gimley.components.GComponent;
+import gimley.core.GComponentList;
+import gimley.core.components.GComponent;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +19,7 @@ public class MouseRouter extends MouseAdapter {
   private final GComponentList subcomponents;
   private final Scene scene;
 
-  MouseRouter(GComponent parent, Scene scene) {
+  public MouseRouter(GComponent parent, Scene scene) {
     this.parent = parent;
     this.scene = scene;
     this.subcomponents = parent.subcomponents;

@@ -2,6 +2,8 @@ package gimley.components;
 
 
 
+import gimley.core.components.GComponent;
+
 import javax.media.opengl.GL2;
 
 import com.jogamp.opengl.util.gl2.GLUT;

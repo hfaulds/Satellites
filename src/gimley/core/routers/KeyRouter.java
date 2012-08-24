@@ -1,6 +1,6 @@
-package gimley;
+package gimley.core.routers;
 
-import gimley.components.GComponent;
+import gimley.core.components.GComponent;
 import scene.Scene;
 
 import com.jogamp.newt.event.KeyEvent;
@@ -11,7 +11,7 @@ public class KeyRouter implements KeyListener {
   private final GComponent parent;
   private final Scene scene;
 
-  KeyRouter(GComponent parent, Scene scene) {
+  public KeyRouter(GComponent parent, Scene scene) {
     this.parent = parent;
     this.scene = scene;
   }

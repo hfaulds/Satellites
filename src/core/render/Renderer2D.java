@@ -1,7 +1,6 @@
 package core.render;
 
-import gimley.GComponentList;
-import gimley.components.GComponent;
+import gimley.core.GComponentList;
 
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
@@ -12,7 +11,6 @@ import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.opengl.util.gl2.GLUT;
 
 import core.geometry.Vector2D;
-
 
 public class Renderer2D {
 
@@ -39,23 +37,6 @@ public class Renderer2D {
     gl.glEnable(GL2.GL_LIGHTING);
     
     gl.glDepthMask(true);
-  }
-  
-  public void render(GL2 gl, GComponent[] components, int width, int height) {
-    gl.glMatrixMode(GL2.GL_PROJECTION);
-    gl.glLoadIdentity();
-    gl.glOrtho(0, width, height, 0, 0, 1);
-    gl.glMatrixMode(GL2.GL_MODELVIEW);
-    gl.glLoadIdentity();
-    gl.glDisable(GL2.GL_LIGHTING);
-    gl.glScalef(1, -1, 1);
-    gl.glTranslated(0, -height, 0);
-    for(GComponent component : components) {
-      gl.glPushMatrix();
-      component.render(gl, width, height);
-      gl.glPopMatrix();
-    }
-    gl.glEnable(GL2.GL_LIGHTING);
   }
   
   public static Vector2D getTextSize(GL2 gl, String text) {

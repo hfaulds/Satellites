@@ -1,6 +1,6 @@
-package gimley.components;
+package gimley.core.components;
 
-import gimley.GComponentList;
+import gimley.core.GComponentList;
 
 import javax.media.opengl.GL2;
 
@@ -41,6 +41,11 @@ public abstract class GComponent {
     this.position = position;
   }
 
+
+  public void init(GL2 gl, int width, int height) {
+    subcomponents.init(gl, width, height);
+  }
+  
   public void render(GL2 gl, int width, int height) {
     subcomponents.render(gl, width, height);
   }

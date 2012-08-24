@@ -2,6 +2,9 @@ package gimley.components;
 
 
 
+import gimley.core.components.GComponent;
+import gimley.core.components.TopBar;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,7 +40,7 @@ public class ChatBox extends GComponent implements KeyListener {
     this.height = MESSAGE_HEIGHT * (MAX_MSG_DISPLAYED + 1) + 5;
     this.username = username;
     this.connection = connection;
-    subcomponents.add(new TopBar(this, "Chat"));
+    subcomponents.add(new TopBar(this, "Chat", true, true));
   }
 
   @Override
@@ -108,7 +111,6 @@ public class ChatBox extends GComponent implements KeyListener {
           ChatMsg msg = new ChatMsg(getInput(), username);
           displayMessage(msg);
           connection.sendMsg(msg);
-          System.out.println("MESSAGE SENT");
           clearInput();
         }
         break;
@@ -118,7 +120,7 @@ public class ChatBox extends GComponent implements KeyListener {
       default:
         char character = (char)keyCode;
         if(!e.isShiftDown())
-          character =  Character.toLowerCase(character);
+          character = Character.toLowerCase(character);
         addChar(character);
     }
   }

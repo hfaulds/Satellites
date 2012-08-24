@@ -5,10 +5,12 @@ package gimley;
 
 import gimley.components.ChatBox;
 import gimley.components.FPSCounter;
-import gimley.components.GComponent;
 import gimley.components.StationDisplay;
 import gimley.components.StationDockRequest;
-import gimley.components.button.ActionListener;
+import gimley.core.components.GComponent;
+import gimley.core.components.button.ActionListener;
+import gimley.core.routers.KeyRouter;
+import gimley.core.routers.MouseRouter;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -175,7 +177,11 @@ public class SceneWindow extends GComponent implements GLEventListener {
   
   @Override
   public void init(GLAutoDrawable drawable) {
-    renderer3D.init(drawable.getGL().getGL2(), scene);
+    int width = drawable.getWidth();
+    int height = drawable.getHeight();
+    GL2 gl = drawable.getGL().getGL2();
+    renderer3D.init(gl, scene);
+    subcomponents.init(gl, width, height);
   }
   
   @Override

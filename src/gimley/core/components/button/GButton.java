@@ -1,10 +1,10 @@
-package gimley.components.button;
+package gimley.core.components.button;
 
 
 import java.util.LinkedList;
 import java.util.List;
 
-import gimley.components.GComponent;
+import gimley.core.components.GComponent;
 
 import javax.media.opengl.GL2;
 
@@ -16,8 +16,8 @@ import core.render.Renderer2D;
 
 public class GButton extends GComponent {
 
-  private final String label;
-  private Vector2D textPos;
+  protected final String label;
+  protected Vector2D textPos;
 
   private List<ActionListener> listeners = new LinkedList<ActionListener>();
   
@@ -33,13 +33,14 @@ public class GButton extends GComponent {
   }
 
   @Override
+  public void init(GL2 gl, int width, int height) {
+    Vector2D center = position.add(new Vector2D(this.width, this.height).divide(2));
+    Vector2D text = Renderer2D.getTextSize(gl, label).divide(2);
+    textPos = center.sub(text);
+  }
+  
+  @Override
   public void render(GL2 gl, int width, int height) {
-    if(textPos == null) {
-      Vector2D center = position.add(new Vector2D(this.width, this.height).divide(2));
-      Vector2D text = Renderer2D.getTextSize(gl, label).divide(2);
-      textPos = center.sub(text);
-    }
-   
     gl.glColor4d(0.3, 0.3, 0.3, 1.0);
     Renderer2D.drawFillRect(gl, parent.position.x + position.x, parent.position.y + position.y, this.width, this.height);
     
