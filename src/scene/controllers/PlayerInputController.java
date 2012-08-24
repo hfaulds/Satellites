@@ -3,12 +3,12 @@ package scene.controllers;
 
 import java.util.List;
 
-import scene.Actor;
 import scene.actors.ProjectileActor;
 
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.MouseEvent;
 
+import core.Actor;
 import core.geometry.Vector2D;
 import core.net.connections.NetworkConnection;
 import core.render.Renderer3D;
@@ -112,4 +112,10 @@ public class PlayerInputController implements Controller {
       }
     }
   }
+
+  @Override
+  public void destroy() {
+    this.actor = null;
+  }
+  
 }

@@ -1,10 +1,8 @@
-package gimley.core.components;
+package core.gimley.components;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import gimley.core.ActionListener;
-import gimley.core.GComponentList;
 
 import javax.media.opengl.GL2;
 
@@ -13,6 +11,8 @@ import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.MouseEvent;
 
 import core.geometry.Vector2D;
+import core.gimley.ActionListener;
+import core.gimley.GComponentList;
 
 public abstract class GComponent {
 

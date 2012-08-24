@@ -1,9 +1,5 @@
-package gui.dialog;
+package pregameGUI.dialog;
 
-import gui.dialog.component.IPInputField;
-import gui.dialog.component.SelectServerListener;
-import gui.dialog.component.ServerConnector;
-import gui.dialog.component.ServerListRefresher;
 
 import java.awt.Component;
 import java.awt.Font;
@@ -29,6 +25,11 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import pregameGUI.dialog.component.IPInputField;
+import pregameGUI.dialog.component.SelectServerListener;
+import pregameGUI.dialog.component.ServerConnector;
+import pregameGUI.dialog.component.ServerListRefresher;
 
 import core.net.connections.ClientConnection;
 

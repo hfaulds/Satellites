@@ -1,9 +1,9 @@
 package core.net.listeners;
 
-import scene.Scene;
 
 import com.esotericsoftware.kryonet.Connection;
 
+import core.Scene;
 import core.net.MsgListener;
 import core.net.msg.SceneCreateMsg;
 

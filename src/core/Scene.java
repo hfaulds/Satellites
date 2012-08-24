@@ -1,6 +1,4 @@
-package scene;
-
-
+package core;
 
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
@@ -94,4 +92,10 @@ public class Scene extends MouseAdapter {
     return null;
   }
 
+  public void destroy() {
+    actors.clear();
+    for(Controller controller : controllers)
+      controller.destroy();
+    controllers.clear();
+  }
 }

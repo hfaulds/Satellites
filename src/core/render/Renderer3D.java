@@ -5,11 +5,11 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.fixedfunc.GLLightingFunc;
 import javax.media.opengl.glu.GLU;
 
+import core.Actor;
+import core.Scene;
 import core.geometry.Vector2D;
 import core.geometry.Vector3D;
 
-import scene.Actor;
-import scene.Scene;
 import scene.actors.PointLightActor;
 
 public class Renderer3D {

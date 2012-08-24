@@ -1,12 +1,12 @@
-package gimley.core.components;
+package core.gimley.components;
 
-import gimley.core.ActionListener;
 
 import javax.media.opengl.GL2;
 
 import com.jogamp.newt.event.KeyEvent;
 
 import core.geometry.Vector2D;
+import core.gimley.ActionListener;
 import core.render.Renderer2D;
 
 public class GTextInput extends GComponent {

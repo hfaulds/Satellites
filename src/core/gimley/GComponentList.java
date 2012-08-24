@@ -1,6 +1,5 @@
-package gimley.core;
+package core.gimley;
 
-import gimley.core.components.GComponent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +9,8 @@ import java.util.List;
 import java.util.ListIterator;
 
 import javax.media.opengl.GL2;
+
+import core.gimley.components.GComponent;
 
 public class GComponentList implements List<GComponent> {
 

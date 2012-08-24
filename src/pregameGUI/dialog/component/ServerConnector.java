@@ -1,12 +1,13 @@
-package gui.dialog.component;
+package pregameGUI.dialog.component;
 
-import gui.dialog.SelectServerDialog;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import javax.swing.JOptionPane;
+
+import pregameGUI.dialog.SelectServerDialog;
 
 import core.net.connections.ClientConnection;
 

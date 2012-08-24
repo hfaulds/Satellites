@@ -1,14 +1,14 @@
 package gimley.components;
 
-import gimley.core.components.GComponent;
-import gimley.core.components.GTopBar;
-import gimley.core.components.buttons.GButton;
 
 import javax.media.opengl.GL2;
 
 import scene.actors.StationActor;
 
 import core.geometry.Vector2D;
+import core.gimley.components.GComponent;
+import core.gimley.components.GTopBar;
+import core.gimley.components.buttons.GButton;
 import core.render.Renderer2D;
 
 public class StationDisplay extends GComponent {

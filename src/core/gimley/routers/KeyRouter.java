@@ -1,9 +1,10 @@
-package gimley.core.routers;
+package core.gimley.routers;
 
-import gimley.core.components.GComponent;
 
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.KeyListener;
+
+import core.gimley.components.GComponent;
 
 public class KeyRouter implements KeyListener {
 

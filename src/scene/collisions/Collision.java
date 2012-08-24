@@ -1,6 +1,6 @@
 package scene.collisions;
 
-import scene.Actor;
+import core.Actor;
 
 public class Collision {
 

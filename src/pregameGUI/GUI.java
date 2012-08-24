@@ -1,4 +1,4 @@
-package gui;
+package pregameGUI;
 
 
 import java.util.LinkedList;

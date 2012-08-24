@@ -1,9 +1,10 @@
-package gui.dialog.component;
+package pregameGUI.dialog.component;
 
-import gui.dialog.SelectServerDialog;
 
 import java.net.InetAddress;
 import java.util.List;
+
+import pregameGUI.dialog.SelectServerDialog;
 
 
 import com.esotericsoftware.kryonet.Client;

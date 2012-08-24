@@ -1,7 +1,5 @@
-package gimley.core.routers;
+package core.gimley.routers;
 
-import gimley.core.GComponentList;
-import gimley.core.components.GComponent;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +8,8 @@ import com.jogamp.newt.event.MouseAdapter;
 import com.jogamp.newt.event.MouseEvent;
 
 import core.geometry.Vector2D;
+import core.gimley.GComponentList;
+import core.gimley.components.GComponent;
 
 public class MouseRouter extends MouseAdapter {
 

@@ -2,10 +2,10 @@ package core.net.listeners;
 
 import java.util.List;
 
-import scene.Scene;
 
 import com.esotericsoftware.kryonet.Connection;
 
+import core.Scene;
 import core.net.Player;
 import core.net.msg.ActorCreateMsg;
 import core.net.msg.SceneCreateMsg;

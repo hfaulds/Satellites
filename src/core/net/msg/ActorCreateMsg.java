@@ -4,11 +4,11 @@ package core.net.msg;
 import java.util.ArrayList;
 import java.util.List;
 
+import core.Actor;
+import core.Scene;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
 
-import scene.Actor;
-import scene.Scene;
 
 public class ActorCreateMsg {
 

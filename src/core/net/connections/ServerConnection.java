@@ -3,8 +3,6 @@ package core.net.connections;
 
 import java.io.IOException;
 
-import scene.Actor;
-import scene.Scene;
 import scene.actors.Planet001Actor;
 import scene.actors.ProjectileActor;
 import scene.actors.ShipActor;
@@ -15,6 +13,8 @@ import scene.controllers.ServerShipController;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 
+import core.Actor;
+import core.Scene;
 import core.geometry.Vector2D;
 import core.net.MsgListener;
 import core.net.Player;

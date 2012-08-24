@@ -3,14 +3,14 @@ package scene.controllers;
 
 import java.util.List;
 
+import core.Actor;
 import core.geometry.Vector2D;
 import core.net.connections.ServerConnection;
 
-import scene.Actor;
 
 public class ServerActorController implements Controller {
 
-  public final Actor actor;
+  public Actor actor;
   private final ServerConnection connection;
   
   public ServerActorController(Actor actor, ServerConnection connection) {
@@ -33,4 +33,9 @@ public class ServerActorController implements Controller {
     connection.sendMsg(actor.getUpdateMsg());
   }
 
+  @Override
+  public void destroy() {
+    this.actor = null;
+  }
+  
 }

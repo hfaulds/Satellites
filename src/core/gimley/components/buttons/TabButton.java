@@ -1,9 +1,9 @@
-package gimley.core.components.buttons;
+package core.gimley.components.buttons;
 
 import javax.media.opengl.GL2;
 
-import gimley.core.components.GComponent;
 import core.geometry.Vector2D;
+import core.gimley.components.GComponent;
 import core.render.Renderer2D;
 
 public class TabButton extends GButton {

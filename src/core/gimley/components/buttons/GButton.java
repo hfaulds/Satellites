@@ -1,13 +1,13 @@
-package gimley.core.components.buttons;
+package core.gimley.components.buttons;
 
-import gimley.core.ActionListener;
-import gimley.core.components.GComponent;
 
 import javax.media.opengl.GL2;
 
 import com.jogamp.newt.event.MouseEvent;
 
 import core.geometry.Vector2D;
+import core.gimley.ActionListener;
+import core.gimley.components.GComponent;
 import core.render.Renderer2D;
 
 

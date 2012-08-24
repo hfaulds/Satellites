@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.net.InetAddress;
 
 
-import scene.Actor;
-import scene.Scene;
 import scene.actors.ProjectileActor;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 
+import core.Actor;
+import core.Scene;
 import core.net.MsgListener;
 import core.net.listeners.ClientListener;
 import core.net.msg.ActorCreateMsg;

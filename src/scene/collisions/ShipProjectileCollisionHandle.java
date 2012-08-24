@@ -1,6 +1,6 @@
 package scene.collisions;
 
-import scene.SceneUpdater;
+import core.SceneUpdater;
 import scene.actors.ProjectileActor;
 import scene.actors.ShipActor;
 

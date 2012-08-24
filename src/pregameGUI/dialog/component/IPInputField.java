@@ -1,4 +1,4 @@
-package gui.dialog.component;
+package pregameGUI.dialog.component;
 
 import java.text.ParseException;
 import java.util.regex.Matcher;

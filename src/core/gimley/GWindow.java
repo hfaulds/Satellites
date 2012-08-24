@@ -1,8 +1,5 @@
-package gimley.core;
+package core.gimley;
 
-import gimley.core.components.GComponent;
-import gimley.core.routers.KeyRouter;
-import gimley.core.routers.MouseRouter;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -10,36 +7,35 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLProfile;
 
-import com.jogamp.newt.event.KeyListener;
-import com.jogamp.newt.event.MouseListener;
 import com.jogamp.newt.event.WindowListener;
 import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.util.FPSAnimator;
 
+import core.gimley.components.GComponent;
+import core.gimley.routers.KeyRouter;
+import core.gimley.routers.MouseRouter;
 import core.render.Renderer2D;
 
-public class GFrame extends GComponent implements GLEventListener {
+public class GWindow extends GComponent implements GLEventListener {
   
   private final GLWindow window = GLWindow.create(new GLCapabilities(GLProfile.getDefault()));
   private final Renderer2D renderer2D = new Renderer2D();
   private final FPSAnimator animator = new FPSAnimator(window, 80);
 
-  public GFrame(GComponent parent, int width, int height) {
+  public GWindow(GComponent parent, int width, int height) {
     super(parent);
     
     this.width = 800;
     this.height = 800;
 
-    addMouseListener(new MouseRouter(this));
-    addKeyListener(new KeyRouter(this));
-    
+    window.addMouseListener(new MouseRouter(this));
+    window.addKeyListener(new KeyRouter(this));
     window.setSize(width, height);
     window.addGLEventListener(this);
   }
 
   public void destroy() {
     window.destroy();
-    setVisible(false);
   }
   
   /* Rendering */
@@ -58,7 +54,9 @@ public class GFrame extends GComponent implements GLEventListener {
   public void init(GLAutoDrawable drawable) {
     int width = drawable.getWidth();
     int height = drawable.getHeight();
+    
     GL2 gl = drawable.getGL().getGL2();
+    
     init(gl, width, height);
     super.init(gl, width, height);
   }
@@ -66,6 +64,7 @@ public class GFrame extends GComponent implements GLEventListener {
   public void display(GLAutoDrawable drawable) {
     int width = drawable.getWidth();
     int height = drawable.getHeight();
+    
     GL2 gl = drawable.getGL().getGL2();
 
     renderer2D.clear(gl);
@@ -83,16 +82,8 @@ public class GFrame extends GComponent implements GLEventListener {
   public void dispose(GLAutoDrawable drawable) {}
 
   
-  /* Listeners */
+  /* Window Listeners */
   
-  public void addKeyListener(KeyListener listener) {
-    window.addKeyListener(listener);
-  }
-
-  public void addMouseListener(MouseListener listener) {
-    window.addMouseListener(listener);
-  }
-
   public void addWindowListener(WindowListener listener) {
     window.addWindowListener(listener);
   }

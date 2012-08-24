@@ -1,9 +1,10 @@
-package gui.dialog.component;
+package pregameGUI.dialog.component;
 
-import gui.dialog.SelectServerDialog;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import pregameGUI.dialog.SelectServerDialog;
 
 public class SelectServerListener implements
     DocumentListener {

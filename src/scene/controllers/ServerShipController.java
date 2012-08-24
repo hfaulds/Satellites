@@ -3,11 +3,11 @@ package scene.controllers;
 
 import java.util.List;
 
+import core.Actor;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
 import core.net.connections.ServerConnection;
 
-import scene.Actor;
 import scene.actors.ShipActor;
 
 
@@ -20,7 +20,7 @@ public class ServerShipController implements Controller {
     new Vector2D( ShipActor. WIDTH / 2, ShipActor.LENGTH /-2)
   };
   
-  public final Actor actor;
+  public Actor actor;
   private final ServerConnection connection;
   
   public ServerShipController(Actor actor, ServerConnection connection) {
@@ -74,4 +74,8 @@ public class ServerShipController implements Controller {
     return r * F * Math.sin(angle) * -400;
   }
 
+  @Override
+  public void destroy() {
+    this.actor = null;
+  }
 }

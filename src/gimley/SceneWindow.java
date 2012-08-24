@@ -4,15 +4,10 @@ import gimley.components.ChatBox;
 import gimley.components.FPSCounter;
 import gimley.components.StationDisplay;
 import gimley.components.StationDockRequest;
-import gimley.core.ActionListener;
-import gimley.core.GFrame;
 import gimley.routers.WindowRouter;
 
 import javax.media.opengl.GL2;
 
-import scene.Actor;
-import scene.Scene;
-import scene.SceneUpdater;
 import scene.actors.ShipActor;
 import scene.actors.StationActor;
 import scene.collisions.Collision;
@@ -22,16 +17,21 @@ import com.esotericsoftware.kryonet.Connection;
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.MouseEvent;
 
+import core.Actor;
+import core.Scene;
+import core.SceneUpdater;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
 import core.geometry.Vector3D;
+import core.gimley.ActionListener;
+import core.gimley.GWindow;
 import core.net.MsgListener;
 import core.net.connections.NetworkConnection;
 import core.net.msg.ChatMsg;
 import core.net.msg.ShipDockMsg;
 import core.render.Renderer3D;
 
-public class SceneWindow extends GFrame {
+public class SceneWindow extends GWindow {
 
   private static final int ZOOM_RATE    = 10;
   private static final int ZOOM_DEFAULT = 20;
@@ -54,7 +54,7 @@ public class SceneWindow extends GFrame {
     this.renderer3D = new Renderer3D(scene);
     this.updater = new SceneUpdater(scene);
     
-    addWindowListener(new WindowRouter(this, connection));
+    addWindowListener(new WindowRouter(this, scene, connection));
     setupComponents(scene, connection);
     
     setVisible(true);

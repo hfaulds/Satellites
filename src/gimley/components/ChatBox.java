@@ -1,9 +1,5 @@
 package gimley.components;
 
-import gimley.core.ActionListener;
-import gimley.core.components.GComponent;
-import gimley.core.components.GTextInput;
-import gimley.core.components.GTopBar;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -11,6 +7,10 @@ import java.util.List;
 import javax.media.opengl.GL2;
 
 import core.geometry.Vector2D;
+import core.gimley.ActionListener;
+import core.gimley.components.GComponent;
+import core.gimley.components.GTextInput;
+import core.gimley.components.GTopBar;
 import core.net.connections.NetworkConnection;
 import core.net.msg.ChatMsg;
 import core.render.Renderer2D;

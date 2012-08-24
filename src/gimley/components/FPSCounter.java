@@ -2,13 +2,13 @@ package gimley.components;
 
 
 
-import gimley.core.components.GComponent;
 
 import javax.media.opengl.GL2;
 
 import com.jogamp.opengl.util.gl2.GLUT;
 
 import core.geometry.Vector2D;
+import core.gimley.components.GComponent;
 
 public class FPSCounter extends GComponent {
 

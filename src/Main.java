@@ -1,14 +1,15 @@
 
 
-import gui.GUI;
-import gui.GUIEventListener;
-import gui.LoginGUI;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+
+import pregameGUI.GUI;
+import pregameGUI.GUIEventListener;
+import pregameGUI.LoginGUI;
 
 
 public class Main {

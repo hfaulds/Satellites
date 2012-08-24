@@ -11,13 +11,13 @@ import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import scene.Actor;
-import scene.Scene;
 import scene.actors.ProjectileActor;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 
+import core.Actor;
+import core.Scene;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
 import core.net.MsgListener;

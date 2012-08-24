@@ -1,8 +1,6 @@
-package gui;
+package pregameGUI;
 
 import gimley.SceneWindow;
-import gui.dialog.CreateServerDialog;
-import gui.dialog.SelectServerDialog;
 
 import java.awt.Component;
 import java.awt.Font;
@@ -16,10 +14,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import pregameGUI.dialog.CreateServerDialog;
+import pregameGUI.dialog.SelectServerDialog;
+
+import core.Scene;
 import core.net.connections.ClientConnection;
 import core.net.connections.ServerConnection;
 
-import scene.Scene;
 
 @SuppressWarnings("serial")
 public class PreGameGUI extends GUI {

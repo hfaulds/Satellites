@@ -5,8 +5,8 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUquadric;
 
-import scene.Actor;
 
+import core.Actor;
 import core.geometry.Mesh;
 import core.geometry.MeshLoader;
 import core.geometry.Rotation;
