@@ -1,5 +1,6 @@
-package gimley.core.components.button;
+package gimley.core.components.buttons;
 
+import gimley.core.ActionListener;
 import gimley.core.components.GComponent;
 
 import javax.media.opengl.GL2;

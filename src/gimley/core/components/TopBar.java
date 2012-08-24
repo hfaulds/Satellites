@@ -1,8 +1,8 @@
 package gimley.core.components;
 
 
-import gimley.core.components.button.ActionListener;
-import gimley.core.components.button.GButton;
+import gimley.core.ActionListener;
+import gimley.core.components.buttons.GButton;
 
 import javax.media.opengl.GL2;
 

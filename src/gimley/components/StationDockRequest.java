@@ -2,7 +2,7 @@ package gimley.components;
 
 
 import gimley.core.components.GComponent;
-import gimley.core.components.button.GButton;
+import gimley.core.components.buttons.GButton;
 
 import javax.media.opengl.GL2;
 

@@ -1,4 +1,4 @@
-package gimley.core.components.button;
+package gimley.core.components.buttons;
 
 import javax.media.opengl.GL2;
 

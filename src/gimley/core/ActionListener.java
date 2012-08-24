@@ -1,4 +1,4 @@
-package gimley.core.components.button;
+package gimley.core;
 
 public interface ActionListener {
   public void action();

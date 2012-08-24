@@ -7,8 +7,8 @@ import gimley.components.ChatBox;
 import gimley.components.FPSCounter;
 import gimley.components.StationDisplay;
 import gimley.components.StationDockRequest;
+import gimley.core.ActionListener;
 import gimley.core.components.GComponent;
-import gimley.core.components.button.ActionListener;
 import gimley.routers.KeyRouter;
 import gimley.routers.MouseRouter;
 

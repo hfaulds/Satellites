@@ -3,8 +3,8 @@ package gimley.core.components;
 import java.util.LinkedList;
 import java.util.List;
 
+import gimley.core.ActionListener;
 import gimley.core.GComponentList;
-import gimley.core.components.button.ActionListener;
 
 import javax.media.opengl.GL2;
 

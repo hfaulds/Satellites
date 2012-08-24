@@ -1,9 +1,9 @@
 package gimley.components;
 
+import gimley.core.ActionListener;
 import gimley.core.components.GComponent;
 import gimley.core.components.GTextInput;
 import gimley.core.components.TopBar;
-import gimley.core.components.button.ActionListener;
 
 import java.util.LinkedList;
 import java.util.List;
