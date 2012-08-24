@@ -1,7 +1,8 @@
 package ingame.gimley;
 
+import ingame.actors.ShipActor;
 import ingame.actors.StationActor;
-import ingame.actors.ship.ShipActor;
+import ingame.actors.StationShieldActor;
 import ingame.collisions.Collision;
 import ingame.collisions.CollisionListener;
 import ingame.controllers.PlayerInputController;
@@ -99,12 +100,12 @@ public class SceneWindow extends GWindow {
     stationDisplay.setVisible(false);
     
     updater.addCollisionListener(
-      new CollisionListener(new Class[]{ShipActor.class, StationActor.class}) {
+      new CollisionListener(new Class[]{ShipActor.class, StationShieldActor.class}) {
         @Override
         public void collisionStart(Collision collision) {
           if(collision.a == scene.player) {
             stationDockRequest.setVisible(true);
-            stationDisplay.setStation((StationActor)collision.b);
+            stationDisplay.setStation((StationActor)((StationShieldActor)collision.b).parent);
           }
         }
         @Override
@@ -126,7 +127,7 @@ public class SceneWindow extends GWindow {
         
         player.velocity._set(new Vector2D());
         player.spin._set(new Rotation());
-        player.position._set(station.position.add(new Vector2D(station.shieldRadius, 0)));
+        player.position._set(station.position.add(new Vector2D(20, 0)));
         player.setVisible(false);
         
         connection.sendMsg(new ShipDockMsg(player.id, ShipDockMsg.DOCKING));

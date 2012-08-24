@@ -32,7 +32,7 @@ public abstract class Actor {
   
   public final Mesh mesh;
   public final Box boundingbox;
-  public final Material material = new Material();
+  public final Material material;
 
   public final Actor parent;
   public final List<Actor> subactors = new ArrayList<Actor>();
@@ -70,7 +70,15 @@ public abstract class Actor {
     this(parent, position, rotation, mass, mesh, true, NEXT_ID(), owner);
   }
   
+  public Actor(Actor parent, Vector2D position, Rotation rotation, double mass, Mesh mesh, Material material) {
+    this(parent, position, rotation, mass, mesh, true, NEXT_ID(), -1, material);
+  }
+  
   protected Actor(Actor parent, Vector2D position, Rotation rotation, double mass, Mesh mesh, boolean visible, int id, int owner) {
+    this(parent, position, rotation, mass, mesh, true, NEXT_ID(), owner, new Material());
+  }
+
+  protected Actor(Actor parent, Vector2D position, Rotation rotation, double mass, Mesh mesh, boolean visible, int id, int owner, Material material) {
     this.parent = parent;
     this.position = new Vector2D(position);
     this.rotation = new Rotation(rotation);
@@ -81,11 +89,12 @@ public abstract class Actor {
     this.id = id;
     this.owner = owner;
     this.visible = visible;
+    this.material = material;
     ID_COUNT = Math.max(ID_COUNT, id);
   }
 
 
-  
+
   public void add(Actor actor) {
     subactors.add(actor); 
   }
@@ -120,15 +129,19 @@ public abstract class Actor {
 
   public void render(GL2 gl, GLU glu) {
     if(visible) {
+
+      gl.glPushMatrix();
+      gl.glTranslated(position.x, position.y, Vector2D.Z);
+      gl.glRotated(rotation.toDegrees(), rotation.x, rotation.y, rotation.z);
+      gl.glCallList(listID);      
+      gl.glPopMatrix();
+      
       for(Actor actor : subactors) {
         gl.glPushMatrix();
         actor.render(gl, glu);
         gl.glPopMatrix();
       }
       
-      gl.glTranslated(position.x, position.y, Vector2D.Z);
-      gl.glRotated(rotation.toDegrees(), rotation.x, rotation.y, rotation.z);
-      gl.glCallList(listID);
     }
   }
 

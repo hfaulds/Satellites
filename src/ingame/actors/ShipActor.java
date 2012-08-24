@@ -1,4 +1,4 @@
-package ingame.actors.ship;
+package ingame.actors;
 
 import core.Actor;
 import core.geometry.Mesh;

@@ -1,5 +1,6 @@
 package ingame.actors.ship;
 
+import ingame.actors.ShipActor;
 import ingame.controllers.PlayerInputController;
 
 import javax.media.opengl.GL2;

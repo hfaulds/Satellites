@@ -48,11 +48,9 @@ public class SceneUpdater {
     int numActors = actors.size();
     for(int i=0; i < numActors; i++) {
       for(int j=i+1; j < numActors; j++) {
-          Actor a = actors.get(i);
-          Actor b = actors.get(j);
-          if(collisionExists(a, b)) {
-            collisionHandler.addOrUpdateCollision(new Collision(a, b));
-          }
+        Actor a = actors.get(i);
+        Actor b = actors.get(j);
+        findCollision(a, b);
       }
     }
     
@@ -63,6 +61,25 @@ public class SceneUpdater {
     }
     
     lastFrame = System.currentTimeMillis();
+  }
+
+  private void findCollision(Actor a, Actor b) {
+    //TODO: Do not like this
+    if(collisionExists(a, b)) {
+      collisionHandler.addOrUpdateCollision(new Collision(a, b));
+    }
+
+    if(a.subactors.size() > 0) {
+      for(Actor a2 : a.subactors) {
+        findCollision(a2, b);
+      }
+    }
+    
+    if(b.subactors.size() > 0) {
+      for(Actor b2 : b.subactors) {
+        findCollision(a, b2);
+      }
+    }
   }
 
   private boolean collisionExists(Actor a, Actor b) {

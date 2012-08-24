@@ -1,6 +1,5 @@
 package ingame.gimley.components;
 
-
 import javax.media.opengl.GL2;
 
 import com.jogamp.opengl.util.gl2.GLUT;

@@ -1,7 +1,7 @@
 package core;
 
 import ingame.actors.PointLightActor;
-import ingame.actors.ship.ShipActor;
+import ingame.actors.ShipActor;
 import ingame.actors.ship.ShipAim;
 import ingame.actors.ship.ShipControl;
 import ingame.actors.ship.ShipDirection;
