@@ -19,8 +19,6 @@ public class StationDisplay extends GComponent {
   public StationDisplay(GComponent parent) {
     super(parent, new Vector2D(20, 20));
     
-    setVisible(true);
-    
     this.width = WIDTH;
     this.height = HEIGHT;
     

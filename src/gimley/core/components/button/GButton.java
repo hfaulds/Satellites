@@ -1,9 +1,5 @@
 package gimley.core.components.button;
 
-
-import java.util.LinkedList;
-import java.util.List;
-
 import gimley.core.components.GComponent;
 
 import javax.media.opengl.GL2;
@@ -18,8 +14,6 @@ public class GButton extends GComponent {
 
   protected final String label;
   protected Vector2D textPos;
-
-  private List<ActionListener> listeners = new LinkedList<ActionListener>();
   
   public GButton(GComponent parent, Vector2D position, int width, int height, String label) {
     super(parent, position);
@@ -28,10 +22,6 @@ public class GButton extends GComponent {
     this.label = label;
   }
   
-  public void addActionListener(ActionListener listener) {
-    this.listeners.add(listener);
-  }
-
   @Override
   public void init(GL2 gl, int width, int height) {
     Vector2D center = position.add(new Vector2D(this.width, this.height).divide(2));

@@ -9,8 +9,8 @@ import gimley.components.StationDisplay;
 import gimley.components.StationDockRequest;
 import gimley.core.components.GComponent;
 import gimley.core.components.button.ActionListener;
-import gimley.core.routers.KeyRouter;
-import gimley.core.routers.MouseRouter;
+import gimley.routers.KeyRouter;
+import gimley.routers.MouseRouter;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -69,7 +69,7 @@ public class SceneWindow extends GComponent implements GLEventListener {
 
     this.scene = scene;
     this.updater = new SceneUpdater(scene);
-    this.animator = new FPSAnimator(setupGLWindow(scene), 80);
+    this.animator = new FPSAnimator(setupGLWindow(scene, connection), 80);
 
     subcomponents.add(setupChatBox(scene, connection));
     subcomponents.add(new FPSCounter(this, new Vector2D(5, height - 50)));
@@ -82,7 +82,7 @@ public class SceneWindow extends GComponent implements GLEventListener {
 
   /* Setup Graphics */
   
-  private GLWindow setupGLWindow(final Scene scene) {
+  private GLWindow setupGLWindow(final Scene scene, final NetworkConnection connection) {
     final GLWindow window = GLWindow.create(new GLCapabilities(GLProfile.getDefault()));
     
     window.setSize(width, height);
@@ -90,6 +90,7 @@ public class SceneWindow extends GComponent implements GLEventListener {
     window.addWindowListener(new WindowAdapter() {
       @Override
       public void windowDestroyNotify(WindowEvent e) {
+        connection.disconnect();
         animator.stop();
         window.destroy();
       }
@@ -104,7 +105,7 @@ public class SceneWindow extends GComponent implements GLEventListener {
   }
 
   private ChatBox setupChatBox(Scene scene, NetworkConnection connection) {
-    final ChatBox chatBox = new ChatBox(this, new Vector2D(15, 15), scene.username, connection);
+    final ChatBox chatBox = new ChatBox(this, new Vector2D(15, 15), connection);
     
     connection.addMsgListener(new MsgListener() {
       @Override
@@ -124,21 +125,18 @@ public class SceneWindow extends GComponent implements GLEventListener {
   private void setupStationUI(SceneUpdater updater, final NetworkConnection connection) {
     final StationDockRequest stationDockRequest = new StationDockRequest(this);
     final StationDisplay stationDisplay = new StationDisplay(this);
-
-    subcomponents.add(stationDockRequest);
-    subcomponents.add(stationDisplay);
     
     updater.addCollisionListener(new CollisionListener(new Class[]{ShipActor.class, StationActor.class}) {
       @Override
       public void collisionStart(Collision collision) {
         if(collision.a == scene.player) {
-          stationDockRequest.setVisible(true);
+          subcomponents.add(stationDockRequest);
         }
       }
       @Override
       public void collisionEnd(Collision collision) {
         if(collision.a == scene.player) {
-          stationDockRequest.setVisible(false);
+          subcomponents.remove(stationDockRequest);
         }
       }
     });
@@ -153,15 +151,16 @@ public class SceneWindow extends GComponent implements GLEventListener {
         connection.sendMsg(new ShipDockMsg(player.id, ShipDockMsg.DOCKING));
         
         player.setVisible(false);
-        stationDockRequest.setVisible(false);
-        stationDisplay.setVisible(true);
+        
+        subcomponents.remove(stationDockRequest);
+        subcomponents.add(stationDisplay);
       }
     });
     
     stationDisplay.undock.addActionListener(new ActionListener() {
       @Override
       public void action() {
-        stationDisplay.setVisible(false);
+        subcomponents.remove(stationDisplay);
         
         Actor player = scene.player;
         connection.sendMsg(new ShipDockMsg(player.id, ShipDockMsg.UNDOCKING));
@@ -177,11 +176,8 @@ public class SceneWindow extends GComponent implements GLEventListener {
   
   @Override
   public void init(GLAutoDrawable drawable) {
-    int width = drawable.getWidth();
-    int height = drawable.getHeight();
     GL2 gl = drawable.getGL().getGL2();
     renderer3D.init(gl, scene);
-    subcomponents.init(gl, width, height);
   }
   
   @Override

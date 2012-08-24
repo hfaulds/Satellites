@@ -28,21 +28,23 @@ public abstract class NetworkConnection {
   public static final int TIMEOUT = 5000;
   public static final int TCP_PORT = 54555;
   public static final int UDP_PORT = 45444;
- 
-  private InetAddress address;
+  
+  protected final Scene scene;
+  protected final NetworkListener listener;
 
+  private InetAddress address;
+  
   public abstract void disconnect();
   public abstract boolean isOnline();
   public abstract void sendMsg(Object msg);
   public abstract void fireProjectile(ProjectileActor projectile);
 
-  protected final Scene scene;
-  protected final NetworkListener listener;
   
   public NetworkConnection(Scene scene, NetworkListener listener) {
     this.scene = scene;
     this.listener = listener;
   }
+  
   public void addMsgListener(MsgListener listener) {
     this.listener.addMsgListener(listener);
   }
@@ -103,32 +105,33 @@ public abstract class NetworkConnection {
   }
   
   public static ArrayList<Class<?>> getClasses(String packageName) throws ClassNotFoundException {
-      ArrayList<Class<?>> classes=new ArrayList<Class<?>>();
-      // Get a File object for the package
-      File directory=null;
+    ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
 
-      String folder = packageName.replace('.', '/');
-      try {
-        directory = new File(Thread.currentThread().getContextClassLoader().getResource(folder).getFile());
-      }
-      catch(NullPointerException x) {
-       throw new ClassNotFoundException(folder + " can't load directory");
-      }
-
+    String folder = packageName.replace('.', '/');
+    
+    try {
+      File directory = new File(Thread.currentThread().getContextClassLoader().getResource(folder).getFile());
+      
       if(directory.exists()) {
         String[] files = directory.list();
         
         for(int i=0; i<files.length; i++) {
-         if(files[i].endsWith(".class")) {
-          Class<?> klass = Class.forName(packageName + '.' + files[i].substring(0, files[i].length() - 6));
-          classes.add(klass);
+          if(files[i].endsWith(".class")) {
+            Class<?> klass = Class.forName(packageName + '.' + files[i].substring(0, files[i].length() - 6));
+            classes.add(klass);
+          }
         }
-       }
-        
-      } else {
-       throw new ClassNotFoundException(packageName +" does notappear to be a valid package");
       }
+      
+    }
+    catch(NullPointerException e) {
+      throw new ClassNotFoundException();
+    }
 
-      return classes;
-     } 
+    return classes;
+  }
+  
+  public String getUsername() {
+    return scene.username;
+  }
 }

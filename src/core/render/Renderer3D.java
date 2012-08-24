@@ -61,7 +61,29 @@ public class Renderer3D {
     gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
     gl.glLoadIdentity();
   }
-  
+
+  private void renderActors(GL2 gl, Scene scene) {
+    gl.glEnable(GL2.GL_NORMALIZE);
+    synchronized(scene.actors) {
+      for(Actor actor : scene.actors) {
+        gl.glPushMatrix();
+          actor.render(gl, glu);
+        gl.glPopMatrix();
+      }
+    }
+  }
+
+  private void initActors(GL2 gl, Scene scene) {
+    synchronized(scene.actors) {
+      while(scene.actorqueue.size() > 0) {
+        gl.glPushMatrix();
+          Actor actor = scene.actorqueue.poll();
+          actor.init(gl, glu);
+          scene.actors.add(actor);
+        gl.glPopMatrix();
+      }
+    }
+  }
   
   public void render(GL2 gl, Scene scene, Vector3D camera, double ratio) {
     gl.glMatrixMode(GL2.GL_PROJECTION);
@@ -106,28 +128,6 @@ public class Renderer3D {
     return new Vector2D(player[0], viewportMatrix[3] - player[1]);
   }
   
-  private void renderActors(GL2 gl, Scene scene) {
-    gl.glEnable(GL2.GL_NORMALIZE);
-    synchronized(scene.actors) {
-      for(Actor actor : scene.actors) {
-        gl.glPushMatrix();
-          actor.render(gl, glu);
-        gl.glPopMatrix();
-      }
-    }
-  }
-
-  private void initActors(GL2 gl, Scene scene) {
-    synchronized(scene.actors) {
-      while(scene.actorqueue.size() > 0) {
-        gl.glPushMatrix();
-          Actor actor = scene.actorqueue.poll();
-          actor.init(gl, glu);
-          scene.actors.add(actor);
-        gl.glPopMatrix();
-      }
-    }
-  }
 
   public void reshape(GL2 gl, int width, int height) {
     if (height <= 0) {

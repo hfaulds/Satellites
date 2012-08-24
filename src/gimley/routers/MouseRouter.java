@@ -1,4 +1,4 @@
-package gimley.core.routers;
+package gimley.routers;
 
 import gimley.core.GComponentList;
 import gimley.core.components.GComponent;

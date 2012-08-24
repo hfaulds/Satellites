@@ -1,6 +1,10 @@
 package gimley.core.components;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import gimley.core.GComponentList;
+import gimley.core.components.button.ActionListener;
 
 import javax.media.opengl.GL2;
 
@@ -22,6 +26,8 @@ public abstract class GComponent {
   
   private boolean bDragPossible;
   private boolean visible = true;
+
+  protected final List<ActionListener> listeners = new LinkedList<ActionListener>();
   
   public GComponent(GComponent parent) {
     this(parent, new Vector2D());
@@ -90,12 +96,18 @@ public abstract class GComponent {
       component.mouseWheelMoved(e);
   }
 
-  public void keyReleased(KeyEvent e) {
-
+  public void keyPressed(KeyEvent e) {
+    for(GComponent component : subcomponents)
+      component.keyPressed(e);
   }
   
-  public void keyPressed(KeyEvent e) {
-    
+  public void keyReleased(KeyEvent e) {
+    for(GComponent component : subcomponents)
+      component.keyReleased(e);
+  }
+
+  public void addActionListener(ActionListener listener) {
+    this.listeners.add(listener);
   }
 
   public void setVisible(boolean visible) {
