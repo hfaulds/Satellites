@@ -70,7 +70,7 @@ public abstract class GComponent {
   }
   
   public void setVisible(boolean visible) {
-    this.visible = visible; //An assumption is made that visibility is changed on mouseRelease, changing focus
+    this.visible = visible;
   }
 
   public boolean getVisible() {
@@ -93,11 +93,12 @@ public abstract class GComponent {
   }
   
   public void mousePressed(Vector2D click, MouseEvent e) {
-    for(GComponent component : subcomponents)
+    for(GComponent component : subcomponents) {
       if(component.testClick(click)) {
         component.bDragPossible = true;
         component.mousePressed(click, e);
       }
+    }
   }
 
   public void mouseReleased(Vector2D click, MouseEvent e) {
