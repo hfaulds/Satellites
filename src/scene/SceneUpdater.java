@@ -1,6 +1,5 @@
 package scene;
 
-import java.awt.event.MouseAdapter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -12,7 +11,7 @@ import scene.collisions.ShipProjectileCollisionHandle;
 import scene.controllers.Controller;
 import core.geometry.Box;
 
-public class SceneUpdater extends MouseAdapter {
+public class SceneUpdater {
   
   private final Scene scene;
   private long lastFrame = System.currentTimeMillis();
