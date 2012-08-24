@@ -24,13 +24,10 @@ public class ShipAim extends Actor {
   private PlayerInputController controller;
 
   public ShipAim(ShipActor parent, PlayerInputController controller) {
-    super(parent, new Vector2D(), new Rotation(), 0, new Mesh());
+    super(parent, parent.position, new Rotation(), 0, new Mesh());
     add(new Canon(this));
     this.controller = controller;
   }
-  
-  @Override
-  public void init(GL2 gl, GLU glu) {}
   
   @Override
   public void render(GL2 gl, GLU glu) {
@@ -38,7 +35,7 @@ public class ShipAim extends Actor {
         
     gl.glTranslated(parent.position.x, parent.position.y, Vector2D.Z);
     gl.glRotated(rotation.mag, parent.rotation.x, parent.rotation.y, parent.rotation.z);
-    
+
     double l = PlayerInputController.GUN_COOLDOWN - controller.timeTillNextFire;
     double length = l / PlayerInputController.GUN_COOLDOWN;
     
