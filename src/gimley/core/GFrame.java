@@ -1,6 +1,8 @@
 package gimley.core;
 
 import gimley.core.components.GComponent;
+import gimley.routers.KeyRouter;
+import gimley.routers.MouseRouter;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -27,6 +29,9 @@ public class GFrame extends GComponent implements GLEventListener {
     
     this.width = 800;
     this.height = 800;
+
+    addMouseListener(new MouseRouter(this));
+    addKeyListener(new KeyRouter(this));
     
     window.setSize(width, height);
     window.addGLEventListener(this);

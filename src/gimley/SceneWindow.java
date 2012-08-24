@@ -6,8 +6,6 @@ import gimley.components.StationDisplay;
 import gimley.components.StationDockRequest;
 import gimley.core.ActionListener;
 import gimley.core.GFrame;
-import gimley.routers.KeyRouter;
-import gimley.routers.MouseRouter;
 import gimley.routers.WindowRouter;
 
 import javax.media.opengl.GL2;
@@ -21,6 +19,7 @@ import scene.collisions.Collision;
 import scene.collisions.CollisionListener;
 
 import com.esotericsoftware.kryonet.Connection;
+import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.MouseEvent;
 
 import core.geometry.Rotation;
@@ -40,8 +39,7 @@ public class SceneWindow extends GFrame {
   
   private final Scene scene;
   private final SceneUpdater updater;
-  
-  private final Renderer3D renderer3D = new Renderer3D();
+  private final Renderer3D renderer3D;
   
   private Vector3D cameraPos     = new Vector3D(0, 0, ZOOM_DEFAULT);
   private Vector2D startMousePos = new Vector2D();
@@ -51,33 +49,24 @@ public class SceneWindow extends GFrame {
   
   public SceneWindow(final Scene scene, final NetworkConnection connection) {
     super(null, 800, 800);
-
+    
     this.scene = scene;
+    this.renderer3D = new Renderer3D(scene);
     this.updater = new SceneUpdater(scene);
     
-    setupListeners(scene, connection);
+    addWindowListener(new WindowRouter(this, connection));
     setupComponents(scene, connection);
     
     setVisible(true);
   }
   
-  
-  /* Listeners */
-
-  private void setupListeners(Scene scene, NetworkConnection connection) {
-    addWindowListener(new WindowRouter(this, connection));
-    addMouseListener(new MouseRouter(this, scene));
-    addKeyListener(new KeyRouter(this, scene));
-  }
-
-
   /* Components */
 
   private void setupComponents(final Scene scene, final NetworkConnection connection) {
     StationDockRequest stationDockRequest = new StationDockRequest(this);
     StationDisplay stationDisplay = new StationDisplay(this);
     
-    setupStationUI(stationDockRequest, stationDisplay, connection);
+    setupStationUI(stationDockRequest, stationDisplay, scene, connection);
     
     add(setupChatBox(scene, connection));
     add(new FPSCounter(this, new Vector2D(5, -20)));
@@ -99,11 +88,12 @@ public class SceneWindow extends GFrame {
         return ChatMsg.class;
       }
     });
+    
     return chatBox;
   }
 
   @SuppressWarnings("unchecked")
-  private void setupStationUI(final StationDockRequest stationDockRequest, final StationDisplay stationDisplay, final NetworkConnection connection) {
+  private void setupStationUI(final StationDockRequest stationDockRequest, final StationDisplay stationDisplay, final Scene scene, final NetworkConnection connection) {
     stationDockRequest.setVisible(false);
     stationDisplay.setVisible(false);
     
@@ -132,13 +122,13 @@ public class SceneWindow extends GFrame {
         
         Actor player = scene.player;
         StationActor station = stationDisplay.getStation();
+        
         player.velocity._set(new Vector2D());
         player.spin._set(new Rotation());
         player.position._set(station.position.add(new Vector2D(station.shieldRadius, 0)));
+        player.setVisible(false);
         
         connection.sendMsg(new ShipDockMsg(player.id, ShipDockMsg.DOCKING));
-        
-        player.setVisible(false);
         
         stationDockRequest.setVisible(false);
         stationDisplay.setVisible(true);
@@ -153,9 +143,11 @@ public class SceneWindow extends GFrame {
 
         stationDisplay.setVisible(false);
         player.setVisible(true);
+        
         scene.input.setActor(player);
       }
     });
+    
   }
 
   
@@ -163,7 +155,7 @@ public class SceneWindow extends GFrame {
   
   @Override
   public void init(GL2 gl, int width, int height) {
-    renderer3D.init(gl, scene);
+    renderer3D.init(gl);
   }
   
   @Override
@@ -175,7 +167,7 @@ public class SceneWindow extends GFrame {
       cameraPos._add(new Vector3D(direction));
     }
 
-    renderer3D.render(gl, scene, cameraPos, (double)width/height);
+    renderer3D.render(gl, cameraPos, (double)width/height);
   }
   
 
@@ -201,12 +193,31 @@ public class SceneWindow extends GFrame {
   @Override
   public void mouseReleased(Vector2D click, MouseEvent e) {
     bPanning = false;
+    scene.input.mouseClicked(e);
   }
   
   @Override
   public void mouseWheelMoved(MouseEvent e) {
     cameraPos.z = Math.max(Math.abs(cameraPos.z - e.getWheelRotation() * ZOOM_RATE), ZOOM_RATE);
     renderer3D.updateMatrices();
+  } 
+
+  @Override
+  public void mouseMoved(Vector2D mouse) {
+    scene.input.mouseMoved(mouse);
+  }
+  
+  
+  /* Key Handling */
+  
+  @Override
+  public void keyPressed(KeyEvent e) {
+    scene.input.keyPressed(e);
+  }
+  
+  @Override
+  public void keyReleased(KeyEvent e) {
+    scene.input.keyReleased(e);
   }
   
 }

@@ -1,6 +1,5 @@
 package core.render;
 
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.fixedfunc.GLLightingFunc;
@@ -17,12 +16,18 @@ public class Renderer3D {
   
   private static final GLU glu = new GLU();
   
+  private final Scene scene;
+  
   private boolean bUpdateMatrices          = true;
   private static double[] modelMatrix      = new double[16];
   private static double[] projectionMatrix = new double[16];
   private static int[] viewportMatrix      = new int[4];
 
-  public void init(GL2 gl, Scene scene) {
+  public Renderer3D(Scene scene) {
+    this.scene = scene;
+  }
+
+  public void init(GL2 gl) {
     gl.glShadeModel(GLLightingFunc.GL_SMOOTH);
     gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     gl.glClearDepth(1.0f);
@@ -52,11 +57,11 @@ public class Renderer3D {
       gl.glEnable(lightID);
     }
     
-    initActors(gl, scene);
+    initActors(gl);
     gl.glEnable(GL2.GL_LIGHTING);
   }
 
-  private void renderActors(GL2 gl, Scene scene) {
+  private void renderActors(GL2 gl) {
     gl.glEnable(GL2.GL_NORMALIZE);
     synchronized(scene.actors) {
       for(Actor actor : scene.actors) {
@@ -67,7 +72,7 @@ public class Renderer3D {
     }
   }
 
-  private void initActors(GL2 gl, Scene scene) {
+  private void initActors(GL2 gl) {
     synchronized(scene.actors) {
       while(scene.actorqueue.size() > 0) {
         gl.glPushMatrix();
@@ -79,7 +84,7 @@ public class Renderer3D {
     }
   }
   
-  public void render(GL2 gl, Scene scene, Vector3D camera, double ratio) {
+  public void render(GL2 gl, Vector3D camera, double ratio) {
     gl.glMatrixMode(GL2.GL_PROJECTION);
     gl.glLoadIdentity();
     
@@ -94,8 +99,8 @@ public class Renderer3D {
     
     gl.glEnable(GL.GL_MULTISAMPLE);
     
-    initActors(gl, scene);
-    renderActors(gl, scene);
+    initActors(gl);
+    renderActors(gl);
   }
 
 
@@ -119,7 +124,7 @@ public class Renderer3D {
         viewportMatrix, 0,
         player, 0);
     
-    return new Vector2D(player[0], viewportMatrix[3] - player[1]);
+    return new Vector2D(player[0], player[1]);
   }
   
 }

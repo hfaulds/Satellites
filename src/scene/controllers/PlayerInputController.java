@@ -94,9 +94,9 @@ public class PlayerInputController implements Controller {
     }
   }
   
-  public void mouseMoved(MouseEvent e) {
+  public void mouseMoved(Vector2D mouse) {
     if(actor != null) {
-      aimDirection = Renderer3D.project(actor.position).sub(new Vector2D(e.getX(), e.getY()))._normalize()._invertX();
+      aimDirection = mouse.sub(Renderer3D.project(actor.position))._normalize();
     }
   }
   

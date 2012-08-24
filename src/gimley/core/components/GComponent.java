@@ -71,7 +71,9 @@ public abstract class GComponent {
   
   public void setVisible(boolean visible) {
     this.visible = visible;
-    subcomponents.setFocus(this.parent);
+    if(!visible && this.parent.subcomponents.getFocus() == this) {
+      this.parent.subcomponents.setFocus(this.parent);
+    }
   }
 
   public boolean getVisible() {
@@ -115,12 +117,17 @@ public abstract class GComponent {
       if(component.bDragPossible)
         component.mouseDragged(click, e);
   }
+  
+  public void mouseMoved(Vector2D mouse) {
+    for(GComponent component : subcomponents)
+      component.mouseMoved(mouse);
+  }
+  
 
   public void mouseWheelMoved(MouseEvent e) {
     for(GComponent component : subcomponents)
       component.mouseWheelMoved(e);
   }
-  
   
   /* Key Handling */
   
@@ -140,5 +147,6 @@ public abstract class GComponent {
   public void addActionListener(ActionListener listener) {
     this.listeners.add(listener);
   }
+
 
 }

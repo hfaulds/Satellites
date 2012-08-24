@@ -6,8 +6,6 @@ import gimley.core.components.GComponent;
 import java.util.LinkedList;
 import java.util.List;
 
-import scene.Scene;
-
 import com.jogamp.newt.event.MouseAdapter;
 import com.jogamp.newt.event.MouseEvent;
 
@@ -17,11 +15,9 @@ public class MouseRouter extends MouseAdapter {
 
   private final GComponent parent;
   private final GComponentList subcomponents;
-  private final Scene scene;
 
-  public MouseRouter(GComponent parent, Scene scene) {
+  public MouseRouter(GComponent parent) {
     this.parent = parent;
-    this.scene = scene;
     this.subcomponents = parent.subcomponents;
   }
 
@@ -69,16 +65,10 @@ public class MouseRouter extends MouseAdapter {
     Vector2D click = getClick(e);
     subcomponents.getFocus().mouseReleased(click, e);
   }
-  
-  @Override
-  public void mouseClicked(MouseEvent e) {
-    if(subcomponents.getFocus() == parent)
-      scene.input.mouseClicked(e);
-  }
 
   @Override
   public void mouseMoved(MouseEvent e) {
-    scene.input.mouseMoved(e);
+    subcomponents.getFocus().mouseMoved(getClick(e));
   }
 
   @Override

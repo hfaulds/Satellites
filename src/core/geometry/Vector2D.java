@@ -82,11 +82,6 @@ public class Vector2D {
     this.y = y;
     return this;
   }
-
-  public Vector2D _invertX() {
-    this.x *= -1;
-    return this;
-  }
   
   /* Non-Mutable */
   public Vector2D add(Vector2D other) {
