@@ -5,15 +5,12 @@ import gimley.components.FPSCounter;
 import gimley.components.StationDisplay;
 import gimley.components.StationDockRequest;
 import gimley.core.ActionListener;
-import gimley.core.components.GComponent;
+import gimley.core.GFrame;
 import gimley.routers.KeyRouter;
 import gimley.routers.MouseRouter;
+import gimley.routers.WindowRouter;
 
 import javax.media.opengl.GL2;
-import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLCapabilities;
-import javax.media.opengl.GLEventListener;
-import javax.media.opengl.GLProfile;
 
 import scene.Actor;
 import scene.Scene;
@@ -25,32 +22,25 @@ import scene.collisions.CollisionListener;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.jogamp.newt.event.MouseEvent;
-import com.jogamp.newt.event.WindowAdapter;
-import com.jogamp.newt.event.WindowEvent;
-import com.jogamp.newt.opengl.GLWindow;
-import com.jogamp.opengl.util.FPSAnimator;
 
+import core.geometry.Rotation;
 import core.geometry.Vector2D;
 import core.geometry.Vector3D;
 import core.net.MsgListener;
 import core.net.connections.NetworkConnection;
 import core.net.msg.ChatMsg;
 import core.net.msg.ShipDockMsg;
-import core.render.Renderer2D;
 import core.render.Renderer3D;
 
-public class SceneWindow extends GComponent implements GLEventListener {
+public class SceneWindow extends GFrame {
 
   private static final int ZOOM_RATE    = 10;
   private static final int ZOOM_DEFAULT = 20;
   private static final int PAN_BUTTON   = MouseEvent.BUTTON1;
   
-  private final FPSAnimator animator;
-  
   private final Scene scene;
   private final SceneUpdater updater;
   
-  private final Renderer2D renderer2D = new Renderer2D();
   private final Renderer3D renderer3D = new Renderer3D();
   
   private Vector3D cameraPos     = new Vector3D(0, 0, ZOOM_DEFAULT);
@@ -58,47 +48,41 @@ public class SceneWindow extends GComponent implements GLEventListener {
   private Vector2D endMousePos   = new Vector2D();
   private boolean bPanning       = false;
   
+  
   public SceneWindow(final Scene scene, final NetworkConnection connection) {
-    super(null);
-    
-    this.width = 800;
-    this.height = 800;
+    super(null, 800, 800);
 
     this.scene = scene;
     this.updater = new SceneUpdater(scene);
-    this.animator = new FPSAnimator(setupGLWindow(scene, connection), 80);
+    
+    setupListeners(scene, connection);
+    setupComponents(scene, connection);
+    
+    setVisible(true);
+  }
+  
+  
+  /* Listeners */
 
-    add(setupChatBox(scene, connection));
-    add(new FPSCounter(this, new Vector2D(5, height - 50)));
-    
-    setupStationUI(updater, connection);
-    
-    animator.start();
+  private void setupListeners(Scene scene, NetworkConnection connection) {
+    addWindowListener(new WindowRouter(this, connection));
+    addMouseListener(new MouseRouter(this, scene));
+    addKeyListener(new KeyRouter(this, scene));
   }
 
 
-  /* Setup Graphics */
-  
-  private GLWindow setupGLWindow(final Scene scene, final NetworkConnection connection) {
-    final GLWindow window = GLWindow.create(new GLCapabilities(GLProfile.getDefault()));
+  /* Components */
+
+  private void setupComponents(final Scene scene, final NetworkConnection connection) {
+    StationDockRequest stationDockRequest = new StationDockRequest(this);
+    StationDisplay stationDisplay = new StationDisplay(this);
     
-    window.setSize(width, height);
+    setupStationUI(stationDockRequest, stationDisplay, connection);
     
-    window.addWindowListener(new WindowAdapter() {
-      @Override
-      public void windowDestroyNotify(WindowEvent e) {
-        connection.disconnect();
-        animator.stop();
-        window.destroy();
-      }
-    });
-    
-    window.addMouseListener(new MouseRouter(this, scene));
-    window.addKeyListener(new KeyRouter(this, scene));
-    window.addGLEventListener(this);
-    window.setVisible(true);
-    
-    return window;
+    add(setupChatBox(scene, connection));
+    add(new FPSCounter(this, new Vector2D(5, -20)));
+    add(stationDockRequest);
+    add(stationDisplay);
   }
 
   private ChatBox setupChatBox(Scene scene, NetworkConnection connection) {
@@ -119,27 +103,27 @@ public class SceneWindow extends GComponent implements GLEventListener {
   }
 
   @SuppressWarnings("unchecked")
-  private void setupStationUI(SceneUpdater updater, final NetworkConnection connection) {
-    final StationDockRequest stationDockRequest = new StationDockRequest(this);
-    final StationDisplay stationDisplay = new StationDisplay(this);
+  private void setupStationUI(final StationDockRequest stationDockRequest, final StationDisplay stationDisplay, final NetworkConnection connection) {
+    stationDockRequest.setVisible(false);
+    stationDisplay.setVisible(false);
     
-    add(stationDockRequest);
-    add(stationDisplay);
-    
-    updater.addCollisionListener(new CollisionListener(new Class[]{ShipActor.class, StationActor.class}) {
-      @Override
-      public void collisionStart(Collision collision) {
-        if(collision.a == scene.player) {
-          stationDockRequest.setVisible(true);
+    updater.addCollisionListener(
+      new CollisionListener(new Class[]{ShipActor.class, StationActor.class}) {
+        @Override
+        public void collisionStart(Collision collision) {
+          if(collision.a == scene.player) {
+            stationDockRequest.setVisible(true);
+            stationDisplay.setStation((StationActor)collision.b);
+          }
+        }
+        @Override
+        public void collisionEnd(Collision collision) {
+          if(collision.a == scene.player) {
+            stationDockRequest.setVisible(false);
+          }
         }
       }
-      @Override
-      public void collisionEnd(Collision collision) {
-        if(collision.a == scene.player) {
-          stationDockRequest.setVisible(false);
-        }
-      }
-    });
+    );
     
     stationDockRequest.dock.addActionListener(new ActionListener() {
       @Override
@@ -147,6 +131,10 @@ public class SceneWindow extends GComponent implements GLEventListener {
         scene.input.setActor(null);
         
         Actor player = scene.player;
+        StationActor station = stationDisplay.getStation();
+        player.velocity._set(new Vector2D());
+        player.spin._set(new Rotation());
+        player.position._set(station.position.add(new Vector2D(station.shieldRadius, 0)));
         
         connection.sendMsg(new ShipDockMsg(player.id, ShipDockMsg.DOCKING));
         
@@ -154,18 +142,16 @@ public class SceneWindow extends GComponent implements GLEventListener {
         
         stationDockRequest.setVisible(false);
         stationDisplay.setVisible(true);
-        
       }
     });
     
     stationDisplay.undock.addActionListener(new ActionListener() {
       @Override
       public void action() {
-        stationDisplay.setVisible(false);
-        
         Actor player = scene.player;
         connection.sendMsg(new ShipDockMsg(player.id, ShipDockMsg.UNDOCKING));
 
+        stationDisplay.setVisible(false);
         player.setVisible(true);
         scene.input.setActor(player);
       }
@@ -176,37 +162,22 @@ public class SceneWindow extends GComponent implements GLEventListener {
   /* Rendering */
   
   @Override
-  public void init(GLAutoDrawable drawable) {
-    GL2 gl = drawable.getGL().getGL2();
+  public void init(GL2 gl, int width, int height) {
     renderer3D.init(gl, scene);
   }
   
   @Override
-  public void display(GLAutoDrawable drawable) {
+  public void render(GL2 gl, int width, int height) {
     updater.tick();
-    int width = drawable.getWidth();
-    int height = drawable.getHeight();
-    GL2 gl = drawable.getGL().getGL2();
     
     if(bPanning) {
       Vector2D direction = endMousePos.sub(startMousePos).divide(1000);
       cameraPos._add(new Vector3D(direction));
     }
 
-    renderer3D.clear(gl);
     renderer3D.render(gl, scene, cameraPos, (double)width/height);
-    renderer2D.render(gl, subcomponents, width, height);
-  }
-
-  @Override
-  public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-    this.width = width;
-    this.height = height;
   }
   
-  @Override
-  public void dispose(GLAutoDrawable drawable) {}
- 
 
   /* Mouse Handling */
   

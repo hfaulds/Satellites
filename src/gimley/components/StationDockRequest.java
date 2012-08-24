@@ -1,6 +1,5 @@
 package gimley.components;
 
-
 import gimley.core.components.GComponent;
 import gimley.core.components.buttons.GButton;
 
@@ -11,14 +10,12 @@ import com.jogamp.opengl.util.gl2.GLUT;
 import core.geometry.Vector2D;
 import core.render.Renderer2D;
 
-
 public class StationDockRequest extends GComponent {
   
   private static final double HEIGHT = 35;
   private static final double WIDTH = 300;
   
   public final GButton dock = new GButton(this, new Vector2D(200, 5), 65, 25, "DOCK");
-
   public StationDockRequest(GComponent parent) {
     super(parent, new Vector2D(0, 725));
     add(dock);

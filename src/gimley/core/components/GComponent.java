@@ -71,6 +71,7 @@ public abstract class GComponent {
   
   public void setVisible(boolean visible) {
     this.visible = visible;
+    subcomponents.setFocus(this.parent);
   }
 
   public boolean getVisible() {

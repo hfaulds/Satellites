@@ -6,6 +6,8 @@ import gimley.core.components.buttons.GButton;
 
 import javax.media.opengl.GL2;
 
+import scene.actors.StationActor;
+
 import core.geometry.Vector2D;
 import core.render.Renderer2D;
 
@@ -13,7 +15,9 @@ public class StationDisplay extends GComponent {
 
   private static final int WIDTH = 750;
   private static final int HEIGHT = 600;
-  
+
+  private StationActor station;
+
   public final GButton undock = new GButton(this, new Vector2D(675, 10), 65, 20, "UNDOCK");
   
   public StationDisplay(GComponent parent) {
@@ -41,5 +45,13 @@ public class StationDisplay extends GComponent {
     Renderer2D.drawFillRect(gl, position.x + 10, position.y + 40, 730, 80);
     
     super.render(gl, width, height);
+  }
+
+  public void setStation(StationActor station) {
+    this.station = station;
+  }
+  
+  public StationActor getStation() {
+    return this.station;
   }
 }

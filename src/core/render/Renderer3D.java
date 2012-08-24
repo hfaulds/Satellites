@@ -56,12 +56,6 @@ public class Renderer3D {
     gl.glEnable(GL2.GL_LIGHTING);
   }
 
-  public void clear(GL2 gl) {
-    gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-    gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
-    gl.glLoadIdentity();
-  }
-
   private void renderActors(GL2 gl, Scene scene) {
     gl.glEnable(GL2.GL_NORMALIZE);
     synchronized(scene.actors) {
@@ -128,20 +122,4 @@ public class Renderer3D {
     return new Vector2D(player[0], viewportMatrix[3] - player[1]);
   }
   
-
-  public void reshape(GL2 gl, int width, int height) {
-    if (height <= 0) {
-      height = 1;
-    }
-    if(width <= 0) {
-      width = 1;
-    }
-    float ratio = (float) width / (float) height;
-    gl.glMatrixMode(GL2.GL_PROJECTION);
-    gl.glLoadIdentity();
-    glu.gluPerspective(50.0f, ratio, 1.0, 1000.0);
-    gl.glMatrixMode(GL2.GL_MODELVIEW);
-    gl.glLoadIdentity();
-    updateMatrices();
-  }
 }

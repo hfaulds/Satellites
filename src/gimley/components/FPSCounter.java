@@ -27,7 +27,7 @@ public class FPSCounter extends GComponent {
     fps = (fps * 5/6) +  (SECOND / (System.nanoTime() - lastTime) * 1/6);
 
     gl.glColor4d(1.0, 1.0, 1.0, 1.0);
-    gl.glWindowPos2d(position.x, position.y);
+    gl.glWindowPos2d(position.x, height + position.y);
     glut.glutBitmapString(GLUT.BITMAP_HELVETICA_10, String.valueOf(fps));
     lastTime = System.nanoTime();
   }

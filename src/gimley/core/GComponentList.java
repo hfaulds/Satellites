@@ -29,12 +29,16 @@ public class GComponentList implements List<GComponent> {
   }
   
   public void setFocus(GComponent focus) {
-    if(initComponents.contains(focus) && !focus.getVisible()) {
-      initComponents.remove(focus);
-      initComponents.add(focus);
+    if(focus.getVisible()) {
+      if(initComponents.contains(focus)) {
+        initComponents.remove(focus);
+        initComponents.add(focus);
+      }
+      
+      this.focus = focus;
+    } else {
+      setFocus(focus.parent);
     }
-    
-    this.focus = focus;
   }
 
   private void initComponents(GL2 gl, int width, int height) {

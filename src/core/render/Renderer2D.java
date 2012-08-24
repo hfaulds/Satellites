@@ -5,6 +5,7 @@ import gimley.core.GComponentList;
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
@@ -84,4 +85,11 @@ public class Renderer2D {
     }
   
   }
+
+  public void clear(GL2 gl) {
+    gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+    gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
+    gl.glLoadIdentity();
+  }
+  
 }
