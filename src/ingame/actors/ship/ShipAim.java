@@ -31,11 +31,8 @@ public class ShipAim extends Actor {
   
   @Override
   public void render(GL2 gl, GLU glu) {
-    this.rotation.mag = Math.toDegrees(Rotation.XRotFromvector(controller.aimDirection).mag);
-        
-    gl.glTranslated(parent.position.x, parent.position.y, Vector2D.Z);
-    gl.glRotated(rotation.mag, parent.rotation.x, parent.rotation.y, parent.rotation.z);
-
+    this.rotation.mag = Rotation.XRotFromVector(controller.aimDirection).mag;
+    
     double l = PlayerInputController.GUN_COOLDOWN - controller.timeTillNextFire;
     double length = l / PlayerInputController.GUN_COOLDOWN;
     
@@ -45,6 +42,8 @@ public class ShipAim extends Actor {
     gl.glPushMatrix();
     {
       gl.glDisable(GL2.GL_LIGHTING);
+      gl.glTranslated(position.x, position.y, Vector2D.Z);
+      gl.glRotated(rotation.toDegrees(), rotation.x, rotation.y, rotation.z);
       
       gl.glColor4d(1.0, 1.0, 1.0, 1.0);
       gl.glLineWidth(LINE_WIDTH);

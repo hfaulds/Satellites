@@ -1,7 +1,5 @@
 package core;
 
-
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -17,7 +15,6 @@ import core.geometry.Vector2D;
 import core.net.msg.ActorCreateMsg;
 import core.net.msg.ActorUpdateMsg;
 import core.render.material.Material;
-
 
 public abstract class Actor {
 
@@ -45,7 +42,7 @@ public abstract class Actor {
 
   public final double mass;
 
-  private int listID;
+  protected int listID;
 
 
   /* CONSTRUCTORS */
@@ -80,8 +77,8 @@ public abstract class Actor {
 
   protected Actor(Actor parent, Vector2D position, Rotation rotation, double mass, Mesh mesh, boolean visible, int id, int owner, Material material) {
     this.parent = parent;
-    this.position = new Vector2D(position);
-    this.rotation = new Rotation(rotation);
+    this.position = position;
+    this.rotation = rotation;
     this.boundingbox = Box.createBoundingBox(mesh, this.position);
     this.mass = mass;
     this.velocity = new Vector2D();
@@ -129,7 +126,6 @@ public abstract class Actor {
 
   public void render(GL2 gl, GLU glu) {
     if(visible) {
-
       gl.glPushMatrix();
       gl.glTranslated(position.x, position.y, Vector2D.Z);
       gl.glRotated(rotation.toDegrees(), rotation.x, rotation.y, rotation.z);

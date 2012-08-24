@@ -20,7 +20,7 @@ public class ProjectileActor extends Actor {
   }
   
   public ProjectileActor(Vector2D position, Vector2D direction, Vector2D shipVelocity, Actor owner) {
-    super(position, Rotation.XRotFromvector(direction), MASS, MESH, owner.id);
+    super(position, Rotation.XRotFromVector(direction), MASS, MESH, owner.id);
     this.velocity._set(shipVelocity.add(direction._mult(SPEED)));
   }
 }
