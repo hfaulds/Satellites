@@ -21,7 +21,7 @@ public class StationDockRequest extends GComponent {
 
   public StationDockRequest(GComponent parent) {
     super(parent, new Vector2D(0, 725));
-    subcomponents.add(dock);
+    add(dock);
   }
 
   @Override

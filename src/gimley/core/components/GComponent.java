@@ -29,8 +29,19 @@ public abstract class GComponent {
 
   protected final List<ActionListener> listeners = new LinkedList<ActionListener>();
   
+  
+  /* Constructors */
+  
   public GComponent(GComponent parent) {
     this(parent, new Vector2D());
+  }
+
+  public void add(GComponent c) {
+    subcomponents.add(c);
+  }
+
+  public void remove(GComponent c) {
+    subcomponents.remove(c);
   }
   
   public GComponent(GComponent parent, Vector2D position) {
@@ -47,7 +58,9 @@ public abstract class GComponent {
     this.position = position;
   }
 
-
+  
+  /* Rendering */
+  
   public void init(GL2 gl, int width, int height) {
     subcomponents.init(gl, width, height);
   }
@@ -55,7 +68,18 @@ public abstract class GComponent {
   public void render(GL2 gl, int width, int height) {
     subcomponents.render(gl, width, height);
   }
+  
+  public void setVisible(boolean visible) {
+    this.visible = visible;
+  }
 
+  public boolean getVisible() {
+    return this.visible;
+  }
+  
+  
+  /* Mouse Handling */
+  
   public boolean testClick(Vector2D click) {
 
     for(GComponent component : subcomponents)
@@ -95,7 +119,10 @@ public abstract class GComponent {
     for(GComponent component : subcomponents)
       component.mouseWheelMoved(e);
   }
-
+  
+  
+  /* Key Handling */
+  
   public void keyPressed(KeyEvent e) {
     for(GComponent component : subcomponents)
       component.keyPressed(e);
@@ -106,15 +133,11 @@ public abstract class GComponent {
       component.keyReleased(e);
   }
 
+
+  /* ActionListener Handling */
+  
   public void addActionListener(ActionListener listener) {
     this.listeners.add(listener);
   }
 
-  public void setVisible(boolean visible) {
-    this.visible  = visible;
-  }
-
-  public boolean getVisible() {
-    return this.visible;
-  }
 }

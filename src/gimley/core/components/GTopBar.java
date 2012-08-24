@@ -31,14 +31,14 @@ public class GTopBar extends GComponent {
     this.title = title;
     
     if(bMinimise) {
-      subcomponents.add(minimise);
+      add(minimise);
       if(!bClose) {
         minimise.position.x += 11;
       }
     }
     
     if(bClose) {
-      subcomponents.add(close);
+      add(close);
     }
     
     minimise.addActionListener(new ActionListener() {

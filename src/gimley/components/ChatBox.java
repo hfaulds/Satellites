@@ -43,8 +43,8 @@ public class ChatBox extends GComponent {
     });
 
     GTopBar topBar = new GTopBar(this, "Chat", true, true);
-    subcomponents.add(topBar);
-    subcomponents.add(input);
+    add(topBar);
+    add(input);
   }
 
   @Override

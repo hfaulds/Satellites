@@ -22,8 +22,8 @@ public class StationDisplay extends GComponent {
     this.width = WIDTH;
     this.height = HEIGHT;
     
-    subcomponents.add(undock);
-    subcomponents.add(new GTopBar(this, "Station"));
+    add(undock);
+    add(new GTopBar(this, "Station"));
   }
   
   @Override

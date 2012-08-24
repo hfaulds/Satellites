@@ -1,8 +1,5 @@
 package gimley;
 
-
-
-
 import gimley.components.ChatBox;
 import gimley.components.FPSCounter;
 import gimley.components.StationDisplay;
@@ -71,8 +68,8 @@ public class SceneWindow extends GComponent implements GLEventListener {
     this.updater = new SceneUpdater(scene);
     this.animator = new FPSAnimator(setupGLWindow(scene, connection), 80);
 
-    subcomponents.add(setupChatBox(scene, connection));
-    subcomponents.add(new FPSCounter(this, new Vector2D(5, height - 50)));
+    add(setupChatBox(scene, connection));
+    add(new FPSCounter(this, new Vector2D(5, height - 50)));
     
     setupStationUI(updater, connection);
     
@@ -126,17 +123,20 @@ public class SceneWindow extends GComponent implements GLEventListener {
     final StationDockRequest stationDockRequest = new StationDockRequest(this);
     final StationDisplay stationDisplay = new StationDisplay(this);
     
+    add(stationDockRequest);
+    add(stationDisplay);
+    
     updater.addCollisionListener(new CollisionListener(new Class[]{ShipActor.class, StationActor.class}) {
       @Override
       public void collisionStart(Collision collision) {
         if(collision.a == scene.player) {
-          subcomponents.add(stationDockRequest);
+          stationDockRequest.setVisible(true);
         }
       }
       @Override
       public void collisionEnd(Collision collision) {
         if(collision.a == scene.player) {
-          subcomponents.remove(stationDockRequest);
+          stationDockRequest.setVisible(false);
         }
       }
     });
@@ -152,15 +152,16 @@ public class SceneWindow extends GComponent implements GLEventListener {
         
         player.setVisible(false);
         
-        subcomponents.remove(stationDockRequest);
-        subcomponents.add(stationDisplay);
+        stationDockRequest.setVisible(false);
+        stationDisplay.setVisible(true);
+        
       }
     });
     
     stationDisplay.undock.addActionListener(new ActionListener() {
       @Override
       public void action() {
-        subcomponents.remove(stationDisplay);
+        stationDisplay.setVisible(false);
         
         Actor player = scene.player;
         connection.sendMsg(new ShipDockMsg(player.id, ShipDockMsg.UNDOCKING));
