@@ -1,14 +1,15 @@
 package core.net.connections;
 
 
+import ingame.actors.Planet001Actor;
+import ingame.actors.ProjectileActor;
+import ingame.actors.ShipActor;
+import ingame.actors.StationActor;
+import ingame.controllers.ServerActorController;
+import ingame.controllers.ServerShipController;
+
 import java.io.IOException;
 
-import scene.actors.Planet001Actor;
-import scene.actors.ProjectileActor;
-import scene.actors.ShipActor;
-import scene.actors.StationActor;
-import scene.controllers.ServerActorController;
-import scene.controllers.ServerShipController;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;

@@ -1,8 +1,8 @@
 package core.net;
 
-import scene.actors.ShipActor;
-import scene.controllers.Controller;
-import scene.controllers.ServerShipController;
+import ingame.actors.ShipActor;
+import ingame.controllers.Controller;
+import ingame.controllers.ServerShipController;
 
 import com.esotericsoftware.kryonet.Connection;
 

@@ -1,6 +1,8 @@
 package core.net.connections;
 
 
+import ingame.actors.ProjectileActor;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +13,6 @@ import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import scene.actors.ProjectileActor;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
@@ -75,7 +76,7 @@ public abstract class NetworkConnection {
       for(Class<?> klass : getClasses("core.net.msg"))
         kryo.register(klass);
       
-      for(Class<?> klass : getClasses("scene.actors"))
+      for(Class<?> klass : getClasses("ingame.actors"))
         kryo.register(klass);
       
     } catch (ClassNotFoundException e) {

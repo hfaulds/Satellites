@@ -2,11 +2,14 @@ package core.geometry;
 
 import javax.media.opengl.GL2;
 
-
 public class Mesh {
 
   public final Vector3D[] vertices;
   public final Triangle[] triangles;
+  
+  public Mesh() {
+    this(new Vector3D[]{new Vector3D()}, new Triangle[0]);
+  }
   
   public Mesh(Vector3D[] vertices, Triangle[] triangles) {
     this.vertices = vertices;

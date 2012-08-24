@@ -1,20 +1,21 @@
 package core;
 
+import ingame.actors.PointLightActor;
+import ingame.actors.ShipActor;
+import ingame.actors.ship.ShipAim;
+import ingame.actors.ship.ShipControl;
+import ingame.actors.ship.ShipDirection;
+import ingame.actors.ship.ShipHealth;
+import ingame.controllers.ClientShipController;
+import ingame.controllers.Controller;
+import ingame.controllers.PlayerInputController;
+
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import scene.actors.PointLightActor;
-import scene.actors.ShipActor;
-import scene.controllers.ClientShipController;
-import scene.controllers.Controller;
-import scene.controllers.PlayerInputController;
-import scene.controllers.ui.ShipAimGraphic;
-import scene.controllers.ui.ShipControlGraphic;
-import scene.controllers.ui.ShipDirectionGraphic;
-import scene.controllers.ui.ShipHealthGraphic;
 
 import com.esotericsoftware.kryonet.Connection;
 
@@ -66,10 +67,10 @@ public class Scene extends MouseAdapter {
   public void addPlayer(ShipActor player) {
     this.player = player;
     input.setActor(player);
-    player.ui.add(new ShipControlGraphic());
-    player.ui.add(new ShipDirectionGraphic());
-    player.ui.add(new ShipHealthGraphic(player));
-    player.ui.add(new ShipAimGraphic(input));
+    player.subactors.add(new ShipControl(player));
+    player.subactors.add(new ShipDirection(player));
+    player.subactors.add(new ShipHealth(player));
+    player.subactors.add(new ShipAim(player, input));
     queueAddActor(player);
   }
   

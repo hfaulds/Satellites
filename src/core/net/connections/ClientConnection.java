@@ -1,10 +1,11 @@
 package core.net.connections;
 
+import ingame.actors.ProjectileActor;
+
 import java.io.IOException;
 import java.net.InetAddress;
 
 
-import scene.actors.ProjectileActor;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;

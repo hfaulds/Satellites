@@ -18,7 +18,6 @@ import core.net.msg.ActorCreateMsg;
 import core.net.msg.ActorUpdateMsg;
 import core.render.material.Material;
 
-import scene.controllers.ui.Graphic;
 
 public abstract class Actor {
 
@@ -35,7 +34,8 @@ public abstract class Actor {
   public final Box boundingbox;
   public final Material material = new Material();
 
-  public final List<Graphic> ui = new ArrayList<Graphic>();
+  public final Actor parent;
+  public final List<Actor> subactors = new ArrayList<Actor>();
   
   public final Vector2D position;
   public final Vector2D velocity;
@@ -51,6 +51,27 @@ public abstract class Actor {
   /* CONSTRUCTORS */
   
   protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, boolean visible, int id, int owner) {
+    this(null, position, rotation, mass, mesh, visible, id, owner);
+  }
+
+  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh) {
+    this(null, position, rotation, mass, mesh, -1);
+  }
+  
+  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, int owner) {
+    this(null, position, rotation, mass, mesh, owner);
+  }
+
+  protected Actor(Actor parent, Vector2D position, Rotation rotation, double mass, Mesh mesh) {
+    this(parent, position, rotation, mass, mesh, -1);
+  }
+  
+  protected Actor(Actor parent, Vector2D position, Rotation rotation, double mass, Mesh mesh, int owner) {
+    this(parent, position, rotation, mass, mesh, true, NEXT_ID(), owner);
+  }
+  
+  protected Actor(Actor parent, Vector2D position, Rotation rotation, double mass, Mesh mesh, boolean visible, int id, int owner) {
+    this.parent = parent;
     this.position = new Vector2D(position);
     this.rotation = new Rotation(rotation);
     this.boundingbox = Box.createBoundingBox(mesh, this.position);
@@ -63,22 +84,14 @@ public abstract class Actor {
     ID_COUNT = Math.max(ID_COUNT, id);
   }
 
-  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh) {
-    this(position, rotation, mass, mesh, -1);
-  }
   
-  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, int owner) {
-    this(position, rotation, mass, mesh, true, NEXT_ID(), owner);
-  }
-  
-
   /* TICK */
-  
 
   public void tick(long dt) {
     this.position._add(velocity.mult(dt));
     this.rotation._add(spin.mult(dt));
   }
+  
   
   /* RENDERING */
   
@@ -92,18 +105,18 @@ public abstract class Actor {
     }
     gl.glEndList();
 
-    for(Graphic uiElem : ui) {
+    for(Actor actor : subactors) {
       gl.glPushMatrix();
-      uiElem.init(gl, glu);
+      actor.init(gl, glu);
       gl.glPopMatrix();
     }
   }
 
   public void render(GL2 gl, GLU glu) {
     if(visible) {
-      for(Graphic uiElem : ui) {
+      for(Actor actor : subactors) {
         gl.glPushMatrix();
-        uiElem.render(gl, glu, position, rotation);
+        actor.render(gl, glu);
         gl.glPopMatrix();
       }
       
@@ -134,6 +147,7 @@ public abstract class Actor {
   public Vector2D gravForceFrom(Actor actor) {
 	return gravForceFrom(actor, new Vector2D());
   }
+  
   
   /* SYNCING*/
 
