@@ -3,7 +3,7 @@ package gimley.components;
 import gimley.core.ActionListener;
 import gimley.core.components.GComponent;
 import gimley.core.components.GTextInput;
-import gimley.core.components.TopBar;
+import gimley.core.components.GTopBar;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -42,7 +42,7 @@ public class ChatBox extends GComponent {
       }
     });
 
-    TopBar topBar = new TopBar(this, "Chat", true, true);
+    GTopBar topBar = new GTopBar(this, "Chat", true, true);
     subcomponents.add(topBar);
     subcomponents.add(input);
   }

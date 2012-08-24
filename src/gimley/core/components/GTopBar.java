@@ -12,7 +12,7 @@ import core.geometry.Vector2D;
 import core.render.Renderer2D;
 
 
-public class TopBar extends GComponent {
+public class GTopBar extends GComponent {
 
   private Vector2D mouseDragOffset;
   private final String title;
@@ -20,11 +20,11 @@ public class TopBar extends GComponent {
   private final GButton minimise = new GButton(parent, new Vector2D(parent.width - 28, parent.height + 2), 11, 11, "_");
   private final GButton close = new GButton(parent, new Vector2D(parent.width - 13, parent.height + 2), 11, 11, "X");
   
-  public TopBar(GComponent parent, String title) {
+  public GTopBar(GComponent parent, String title) {
     this(parent, title, true, false);
   }
 
-  public TopBar(final GComponent parent, String title, boolean bMinimise, boolean bClose) {
+  public GTopBar(final GComponent parent, String title, boolean bMinimise, boolean bClose) {
     super(parent, new Vector2D(0, parent.height));
     this.width = parent.width;
     this.height = 15;

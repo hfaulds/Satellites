@@ -1,7 +1,7 @@
 package gimley.components;
 
 import gimley.core.components.GComponent;
-import gimley.core.components.TopBar;
+import gimley.core.components.GTopBar;
 import gimley.core.components.buttons.GButton;
 
 import javax.media.opengl.GL2;
@@ -23,7 +23,7 @@ public class StationDisplay extends GComponent {
     this.height = HEIGHT;
     
     subcomponents.add(undock);
-    subcomponents.add(new TopBar(this, "Station"));
+    subcomponents.add(new GTopBar(this, "Station"));
   }
   
   @Override
