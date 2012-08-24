@@ -193,7 +193,7 @@ public class SceneWindow extends GFrame {
   @Override
   public void mouseReleased(Vector2D click, MouseEvent e) {
     bPanning = false;
-    scene.input.mouseClicked(e);
+    scene.input.mouseReleased(e);
   }
   
   @Override

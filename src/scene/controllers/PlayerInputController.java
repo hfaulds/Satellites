@@ -100,7 +100,7 @@ public class PlayerInputController implements Controller {
     }
   }
   
-  public void mouseClicked(MouseEvent e) {
+  public void mouseReleased(MouseEvent e) {
     if(actor != null && e.getButton() == FIRE_BUTTON && timeTillNextFire <= 0) {
       if(connection != null) {
         Vector2D position = actor.position.add(aimDirection.mult(2));

@@ -70,10 +70,7 @@ public abstract class GComponent {
   }
   
   public void setVisible(boolean visible) {
-    this.visible = visible;
-    if(!visible && this.parent.subcomponents.getFocus() == this) {
-      this.parent.subcomponents.setFocus(this.parent);
-    }
+    this.visible = visible; //An assumption is made that visibility is changed on mouseRelease, changing focus
   }
 
   public boolean getVisible() {

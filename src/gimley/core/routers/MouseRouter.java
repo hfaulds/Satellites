@@ -64,6 +64,7 @@ public class MouseRouter extends MouseAdapter {
   public void mouseReleased(MouseEvent e) {
     Vector2D click = getClick(e);
     subcomponents.getFocus().mouseReleased(click, e);
+    refreshFocus(click);
   }
 
   @Override
