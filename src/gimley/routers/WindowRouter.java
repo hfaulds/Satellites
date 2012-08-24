@@ -12,8 +12,8 @@ public class WindowRouter extends WindowAdapter {
   private final SceneWindow window;
   private final NetworkConnection connection;
 
-  public WindowRouter(SceneWindow sceneWindow, NetworkConnection connection) {
-    window = sceneWindow;
+  public WindowRouter(SceneWindow window, NetworkConnection connection) {
+    this.window = window;
     this.connection = connection;
   }
 
