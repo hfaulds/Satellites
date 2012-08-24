@@ -1,9 +1,10 @@
 package ingame.gimley;
 
-import ingame.actors.ShipActor;
 import ingame.actors.StationActor;
+import ingame.actors.ship.ShipActor;
 import ingame.collisions.Collision;
 import ingame.collisions.CollisionListener;
+import ingame.controllers.PlayerInputController;
 import ingame.gimley.components.ChatBox;
 import ingame.gimley.components.FPSCounter;
 import ingame.gimley.components.StationDisplay;
@@ -35,7 +36,7 @@ public class SceneWindow extends GWindow {
 
   private static final int ZOOM_RATE    = 10;
   private static final int ZOOM_DEFAULT = 20;
-  private static final int PAN_BUTTON   = MouseEvent.BUTTON1;
+  private static final int PAN_BUTTON   = MouseEvent.BUTTON3;
   
   private final Scene scene;
   private final SceneUpdater updater;
@@ -132,6 +133,7 @@ public class SceneWindow extends GWindow {
         
         stationDockRequest.setVisible(false);
         stationDisplay.setVisible(true);
+        subcomponents.setFocus(stationDisplay);
       }
     });
     
@@ -163,6 +165,7 @@ public class SceneWindow extends GWindow {
     updater.tick();
     
     if(bPanning) {
+      //System.out.println(endMousePos);
       Vector2D direction = endMousePos.sub(startMousePos).divide(1000);
       cameraPos._add(new Vector3D(direction));
     }
@@ -180,20 +183,22 @@ public class SceneWindow extends GWindow {
   
   @Override
   public void mouseDragged(Vector2D click, MouseEvent e) {
-    bPanning = !(e.getButton() == PAN_BUTTON);
     endMousePos._set(click);
+    scene.input.mouseMoved(click);
   }
   
   @Override
   public void mousePressed(Vector2D click, MouseEvent e) {
-    bPanning = !(e.getButton() == PAN_BUTTON);
+    bPanning = e.getButton() == PAN_BUTTON;
     endMousePos._set(startMousePos._set(click));
   }
   
   @Override
   public void mouseReleased(Vector2D click, MouseEvent e) {
     bPanning = false;
-    scene.input.mouseReleased(e);
+    if(e.getButton() == PlayerInputController.FIRE_BUTTON) {
+      scene.input.mouseReleased(click);
+    }
   }
   
   @Override

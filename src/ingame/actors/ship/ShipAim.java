@@ -1,7 +1,5 @@
 package ingame.actors.ship;
 
-
-import ingame.actors.ShipActor;
 import ingame.controllers.PlayerInputController;
 
 import javax.media.opengl.GL2;
@@ -11,7 +9,6 @@ import core.Actor;
 import core.geometry.Mesh;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
-
 
 public class ShipAim extends Actor {
 
@@ -27,6 +24,7 @@ public class ShipAim extends Actor {
 
   public ShipAim(ShipActor parent, PlayerInputController controller) {
     super(parent, new Vector2D(), new Rotation(), 0, new Mesh());
+    add(new Canon(this));
     this.controller = controller;
   }
   
@@ -35,9 +33,10 @@ public class ShipAim extends Actor {
   
   @Override
   public void render(GL2 gl, GLU glu) {
-    
+    this.rotation.mag = Math.toDegrees(Rotation.XRotFromvector(controller.aimDirection).mag);
+        
     gl.glTranslated(parent.position.x, parent.position.y, Vector2D.Z);
-    gl.glRotated(Math.toDegrees(Rotation.XRotFromvector(controller.aimDirection).mag), parent.rotation.x, parent.rotation.y, parent.rotation.z);
+    gl.glRotated(rotation.mag, parent.rotation.x, parent.rotation.y, parent.rotation.z);
     
     double l = PlayerInputController.GUN_COOLDOWN - controller.timeTillNextFire;
     double length = l / PlayerInputController.GUN_COOLDOWN;
@@ -66,6 +65,7 @@ public class ShipAim extends Actor {
     }
     gl.glPopMatrix();
     
+    super.render(gl, glu);
   }
   
 }

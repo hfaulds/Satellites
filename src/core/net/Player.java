@@ -1,6 +1,6 @@
 package core.net;
 
-import ingame.actors.ShipActor;
+import ingame.actors.ship.ShipActor;
 import ingame.controllers.Controller;
 import ingame.controllers.ServerShipController;
 

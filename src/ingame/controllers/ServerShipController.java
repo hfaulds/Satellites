@@ -1,7 +1,7 @@
 package ingame.controllers;
 
 
-import ingame.actors.ShipActor;
+import ingame.actors.ship.ShipActor;
 
 import java.util.List;
 

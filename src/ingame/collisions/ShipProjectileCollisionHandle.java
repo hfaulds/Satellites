@@ -1,7 +1,7 @@
 package ingame.collisions;
 
 import ingame.actors.ProjectileActor;
-import ingame.actors.ShipActor;
+import ingame.actors.ship.ShipActor;
 import core.SceneUpdater;
 
 public class ShipProjectileCollisionHandle extends

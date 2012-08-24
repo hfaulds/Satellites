@@ -13,7 +13,7 @@ import core.render.Renderer2D;
 public class StationDockRequest extends GComponent {
   
   private static final double HEIGHT = 35;
-  private static final double WIDTH = 300;
+  private static final double WIDTH = 275;
   
   public final GButton dock = new GButton(this, new Vector2D(200, 5), 65, 25, "DOCK");
   public StationDockRequest(GComponent parent) {

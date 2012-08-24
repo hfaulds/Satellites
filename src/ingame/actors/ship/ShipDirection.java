@@ -1,6 +1,5 @@
 package ingame.actors.ship;
 
-import ingame.actors.ShipActor;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;

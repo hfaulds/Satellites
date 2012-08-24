@@ -4,14 +4,14 @@ package core.gimley.routers;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.jogamp.newt.event.MouseAdapter;
 import com.jogamp.newt.event.MouseEvent;
+import com.jogamp.newt.event.MouseListener;
 
 import core.geometry.Vector2D;
 import core.gimley.GComponentList;
 import core.gimley.components.GComponent;
 
-public class MouseRouter extends MouseAdapter {
+public class MouseRouter implements MouseListener {
 
   private final GComponent parent;
   private final GComponentList subcomponents;
@@ -76,5 +76,12 @@ public class MouseRouter extends MouseAdapter {
   public void mouseWheelMoved(MouseEvent e) {
     subcomponents.getFocus().mouseWheelMoved(e);
   }
+
+  @Override
+  public void mouseClicked(MouseEvent arg0) {}
+  @Override
+  public void mouseEntered(MouseEvent arg0) {}
+  @Override
+  public void mouseExited(MouseEvent arg0) {}
   
 }

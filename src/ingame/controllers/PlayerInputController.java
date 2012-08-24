@@ -31,12 +31,12 @@ public class PlayerInputController implements Controller {
   private double accelMag = 0;
   private double spinMag  = 0;
 
+  public Vector2D aimDirection = START_DIRECTION;
+  
   public Actor actor;
 
   private NetworkConnection connection;
   public long timeTillNextFire = 0;
-  
-  public Vector2D aimDirection = START_DIRECTION;
   
   public void setActor(Actor actor) {
     this.actor = actor;
@@ -100,10 +100,12 @@ public class PlayerInputController implements Controller {
       aimDirection = mouse.sub(Renderer3D.project(actor.position))._normalize();
     }
   }
+
   
-  public void mouseReleased(MouseEvent e) {
-    if(actor != null && e.getButton() == FIRE_BUTTON && timeTillNextFire <= 0) {
+  public void mouseReleased(Vector2D click) {
+    if(actor != null && timeTillNextFire <= 0) {
       if(connection != null) {
+        aimDirection = click.sub(Renderer3D.project(actor.position))._normalize();
         Vector2D position = actor.position.add(aimDirection.mult(2));
         ProjectileActor projectile = new ProjectileActor(position, aimDirection, actor.velocity, actor);
         

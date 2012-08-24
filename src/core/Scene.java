@@ -1,7 +1,7 @@
 package core;
 
 import ingame.actors.PointLightActor;
-import ingame.actors.ShipActor;
+import ingame.actors.ship.ShipActor;
 import ingame.actors.ship.ShipAim;
 import ingame.actors.ship.ShipControl;
 import ingame.actors.ship.ShipDirection;
@@ -67,10 +67,10 @@ public class Scene extends MouseAdapter {
   public void addPlayer(ShipActor player) {
     this.player = player;
     input.setActor(player);
-    player.subactors.add(new ShipControl(player));
-    player.subactors.add(new ShipDirection(player));
-    player.subactors.add(new ShipHealth(player));
-    player.subactors.add(new ShipAim(player, input));
+    player.add(new ShipControl(player));
+    player.add(new ShipDirection(player));
+    player.add(new ShipHealth(player));
+    player.add(new ShipAim(player, input));
     queueAddActor(player);
   }
   

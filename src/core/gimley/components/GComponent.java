@@ -86,7 +86,8 @@ public abstract class GComponent {
       if(component.testClick(click))
         return true;
     
-    return click.x >= parent.position.x + position.x 
+    return visible
+        && click.x >= parent.position.x + position.x 
         && click.y >= parent.position.y + position.y 
         && click.x <= parent.position.x + position.x + width 
         && click.y <= parent.position.y + position.y + height;

@@ -84,6 +84,12 @@ public abstract class Actor {
     ID_COUNT = Math.max(ID_COUNT, id);
   }
 
+
+  
+  public void add(Actor actor) {
+    subactors.add(actor); 
+  }
+  
   
   /* TICK */
 
