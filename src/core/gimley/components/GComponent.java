@@ -16,7 +16,7 @@ import core.gimley.GComponentList;
 
 public abstract class GComponent {
 
-  public final GComponent parent;
+  public GComponent parent;
   public final GComponentList subcomponents;
 
   public int width;

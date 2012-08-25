@@ -14,7 +14,7 @@ public class AmmoIcon extends GComponent {
   Colour colour = new Colour(1,1,1,1);
   
   public AmmoIcon(String string, int quantity) {
-    super(null);
+    super(null, new Vector2D());
     this.width = 25;
     this.height = 25;
   }
