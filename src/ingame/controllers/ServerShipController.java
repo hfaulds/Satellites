@@ -1,19 +1,18 @@
 package ingame.controllers;
 
-
 import ingame.actors.ShipActor;
 
 import java.util.List;
 
 import core.Actor;
+import core.Controller;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
 import core.net.connections.ServerConnection;
 
-
-
 public class ServerShipController implements Controller {
 
+  // TODO : Replace using bounding box
   private Vector2D[] corners = new Vector2D[]{
     new Vector2D( ShipActor.WIDTH /-2, ShipActor.LENGTH / 2),
     new Vector2D( ShipActor.WIDTH / 2, ShipActor.LENGTH / 2),

@@ -7,6 +7,7 @@ import java.util.List;
 import com.esotericsoftware.kryonet.Connection;
 
 import core.Actor;
+import core.Controller;
 import core.net.msg.PlayerUpdateMsg;
 
 public class ClientShipController implements Controller {

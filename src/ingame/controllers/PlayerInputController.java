@@ -10,6 +10,7 @@ import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.MouseEvent;
 
 import core.Actor;
+import core.Controller;
 import core.geometry.Vector2D;
 import core.net.connections.NetworkConnection;
 import core.render.Renderer3D;

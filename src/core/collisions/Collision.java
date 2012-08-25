@@ -1,4 +1,4 @@
-package ingame.collisions;
+package core.collisions;
 
 import core.Actor;
 

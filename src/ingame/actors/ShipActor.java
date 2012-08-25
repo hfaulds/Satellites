@@ -1,6 +1,13 @@
 package ingame.actors;
 
+import ingame.items.Ammo001Item;
+import ingame.items.Ammo002Item;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import core.Actor;
+import core.Item;
 import core.geometry.Mesh;
 import core.geometry.MeshLoader;
 import core.geometry.Rotation;
@@ -21,6 +28,12 @@ public class ShipActor extends Actor {
 
   public int health = MAX_HEALTH;
   public int shield = MAX_SHIELD;
+  
+  @SuppressWarnings("serial")
+  private final List<Item> inventory = new ArrayList<Item>() {{
+    add(new Ammo001Item());
+    add(new Ammo002Item());
+  }};
 
   public ShipActor(Vector2D position, Rotation rotation, double mass, boolean visible, int id, int owner) {
     super(position, rotation, mass, MESH, visible, id, owner);
@@ -38,4 +51,7 @@ public class ShipActor extends Actor {
     }
   }
   
+  public List<Item> getInventory() {
+    return inventory;
+  }
 }

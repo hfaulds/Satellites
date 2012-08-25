@@ -1,15 +1,14 @@
 package core;
 
-import ingame.collisions.Collision;
-import ingame.collisions.CollisionHandler;
-import ingame.collisions.CollisionListener;
 import ingame.collisions.ShipProjectileCollisionHandle;
-import ingame.controllers.Controller;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import core.collisions.Collision;
+import core.collisions.CollisionHandler;
+import core.collisions.CollisionListener;
 import core.geometry.Box;
 
 public class SceneUpdater {

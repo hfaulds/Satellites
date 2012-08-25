@@ -89,7 +89,7 @@ public class ServerConnection extends NetworkConnection {
     });
     
     ShipActor player = new ShipActor(0, 0);
-    scene.addPlayer(player);
+    scene.setPlayer(player);
     scene.addController(new ServerShipController(player, this));
     
     Planet001Actor planet = new Planet001Actor(17, 17);

@@ -1,12 +1,12 @@
 package core.net;
 
 import ingame.actors.ShipActor;
-import ingame.controllers.Controller;
 import ingame.controllers.ServerShipController;
 
 import com.esotericsoftware.kryonet.Connection;
 
 import core.Actor;
+import core.Controller;
 import core.net.connections.ServerConnection;
 import core.net.msg.PlayerUpdateMsg;
 

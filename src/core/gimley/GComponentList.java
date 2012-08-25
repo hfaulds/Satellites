@@ -31,9 +31,11 @@ public class GComponentList implements List<GComponent> {
   
   public void setFocus(GComponent focus) {
     if(focus.getVisible()) {
-      if(initComponents.contains(focus)) {
-        initComponents.remove(focus);
-        initComponents.add(focus);
+      synchronized(this) {
+        if(initComponents.contains(focus)) {
+          initComponents.remove(focus);
+          initComponents.add(focus);
+        }
       }
       
       this.focus = focus;

@@ -7,7 +7,6 @@ import ingame.actors.ship.ShipControl;
 import ingame.actors.ship.ShipDirection;
 import ingame.actors.ship.ShipHealth;
 import ingame.controllers.ClientShipController;
-import ingame.controllers.Controller;
 import ingame.controllers.PlayerInputController;
 
 import java.awt.event.MouseAdapter;
@@ -25,7 +24,7 @@ import core.net.msg.ActorCreateMsg;
 public class Scene extends MouseAdapter {
 
   public final String username;
-  public Actor player;
+  public ShipActor player;
   
   public final PlayerInputController input = new PlayerInputController();
 
@@ -64,7 +63,7 @@ public class Scene extends MouseAdapter {
     }
   }
 
-  public void addPlayer(ShipActor player) {
+  public void setPlayer(ShipActor player) {
     this.player = player;
     input.setActor(player);
     player.add(new ShipControl(player));
@@ -79,7 +78,7 @@ public class Scene extends MouseAdapter {
       Actor actor = Actor.fromInfo(info);
       if(info.id == playerID) {
         addController(new ClientShipController(actor, connection));
-        addPlayer((ShipActor)actor);
+        setPlayer((ShipActor)actor);
       }
       queueAddActor(actor);
     }

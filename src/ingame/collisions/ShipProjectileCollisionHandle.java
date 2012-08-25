@@ -3,6 +3,8 @@ package ingame.collisions;
 import ingame.actors.ProjectileActor;
 import ingame.actors.ShipActor;
 import core.SceneUpdater;
+import core.collisions.Collision;
+import core.collisions.CollisionListener;
 
 public class ShipProjectileCollisionHandle extends
     CollisionListener {

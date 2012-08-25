@@ -3,11 +3,10 @@ package ingame.gimley;
 import ingame.actors.ShipActor;
 import ingame.actors.StationActor;
 import ingame.actors.StationShieldActor;
-import ingame.collisions.Collision;
-import ingame.collisions.CollisionListener;
 import ingame.controllers.PlayerInputController;
 import ingame.gimley.components.ChatBox;
 import ingame.gimley.components.FPSCounter;
+import ingame.gimley.components.InventoryDisplay;
 import ingame.gimley.components.StationDisplay;
 import ingame.gimley.components.StationDockRequest;
 import ingame.gimley.routers.WindowRouter;
@@ -22,6 +21,8 @@ import com.jogamp.newt.event.MouseEvent;
 import core.Actor;
 import core.Scene;
 import core.SceneUpdater;
+import core.collisions.Collision;
+import core.collisions.CollisionListener;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
 import core.geometry.Vector3D;
@@ -48,7 +49,6 @@ public class SceneWindow extends GWindow {
   private Vector2D endMousePos   = new Vector2D();
   private boolean bPanning       = false;
   
-  
   public SceneWindow(final Scene scene, final NetworkConnection connection) {
     super(null, 800, 800);
     
@@ -71,6 +71,7 @@ public class SceneWindow extends GWindow {
     setupStationUI(stationDockRequest, stationDisplay, scene, connection);
     
     add(setupChatBox(scene, connection));
+    add(new InventoryDisplay(this, scene.player));
     add(new FPSCounter(this, new Vector2D(5, -20)));
     add(stationDockRequest);
     add(stationDisplay);
