@@ -63,8 +63,9 @@ public class AmmoIcon extends GComponent {
   @Override
   public void mouseReleased(Vector2D click, MouseEvent e) {
     this.colour.a = 1;
-    if(!this.parent.testClick(click, false))
+    if(!this.parent.testClick(click, false)) {
       System.out.println("Do you want to drop this item?");
+    }
   }
   
 }
