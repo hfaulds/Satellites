@@ -13,26 +13,26 @@ import core.gimley.components.GTopBar;
 import core.render.Renderer2D;
 
 public class InventoryDisplay extends GComponent {
+
+  private static final int MAX_ITEMS_X = 5;
+  private static final int MAX_ITEMS_Y = 5;
   
-  private static final int HEIGHT = 110;
-  private static final int WIDTH  = 200;
+  private static final int WIDTH = MAX_ITEMS_X * 75;
+  private static final int HEIGHT = MAX_ITEMS_Y * 75;
 
   public InventoryDisplay(GComponent parent, ShipActor player) {
     super(parent);
     this.width = WIDTH;
     this.height = HEIGHT;
+    
     add(new GTopBar(this, "Inventory", true, true));
 
-    
-    int maxInvX = 5;
-    int maxInvY = 5;
-    
     List<Item> inventory = player.getInventory();
     for(int i=0; i < inventory.size(); i++) {
-      int x = ((i % maxInvX) * 30) + 4;
-      int y = this.height - (((i / maxInvY) + 1) * 30) - 2;
-      
       GComponent icon = inventory.get(i).getIcon();
+      int x = ((i % MAX_ITEMS_X) * icon.width) + 4;
+      int y = this.height - (((i / MAX_ITEMS_Y) + 1) * icon.height) - 2;
+      
       icon.parent = this;
       icon.position._set(new Vector2D(x, y));
       this.add(icon);
