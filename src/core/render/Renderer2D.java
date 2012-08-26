@@ -70,18 +70,72 @@ public class Renderer2D {
     gl.glEnd();
   }
 
-  private static void drawRect(GL2 gl, double x, double y, double width,
-      double height) {
+  private static void drawRect(GL2 gl, double x, double y, double width, double height) {
     gl.glVertex2d(x        , y + height);
     gl.glVertex2d(x + width, y + height);
     gl.glVertex2d(x + width, y         );
     gl.glVertex2d(x        , y         );
   }
 
+  public static void drawRoundedRect(GL2 gl, double x, double y, int width, int height) {
+    int CIRCLE_SAMPLES = 40;
+    double CIRCLE_INCREMENT = 2*Math.PI/CIRCLE_SAMPLES;
+    double radius = 5;
+    
+    width -= radius;
+    height -= radius;
+    
+    gl.glBegin(GL2.GL_LINE_LOOP);
+    
+    for(int i=0; i < CIRCLE_SAMPLES * 1/ 4 ; i++) {
+      drawCorner(gl, 
+          x + width, 
+          y + height, 
+          CIRCLE_INCREMENT, 
+          radius, 
+          i);
+    }
+    for(int i=CIRCLE_SAMPLES * 1/4; i < CIRCLE_SAMPLES * 2/4 ; i++) {
+      drawCorner(gl, 
+          x, 
+          y + height, 
+          CIRCLE_INCREMENT, 
+          radius, 
+          i);
+    }
+    for(int i=CIRCLE_SAMPLES * 2/4; i < CIRCLE_SAMPLES * 3/4 ; i++) {
+      drawCorner(gl, 
+          x, 
+          y, 
+          CIRCLE_INCREMENT, 
+          radius, 
+          i);
+    }
+    for(int i=CIRCLE_SAMPLES * 3/4; i < CIRCLE_SAMPLES; i++) {
+      drawCorner(gl, 
+          x + width, 
+          y, 
+          CIRCLE_INCREMENT, 
+          radius, 
+          i);
+    }
+    
+    
+    gl.glEnd();
+  }
+
+  private static void drawCorner(GL2 gl, double x, double y, double CIRCLE_INCREMENT, double radius, int i) {
+    gl.glVertex3d(
+        x + Math.cos(i * CIRCLE_INCREMENT) * radius, 
+        y + Math.sin(i * CIRCLE_INCREMENT) * radius,
+        Vector2D.Z
+      );
+  }
+
+  
   public static void drawText(GL2 gl, double x, double y, String text) {
     drawText(gl, x, y, GLUT.BITMAP_HELVETICA_12, text);
   }
-  
 
   public static void drawText(GL2 gl, double x, double y, int font, String text) {
     GLUT glut = new GLUT();
