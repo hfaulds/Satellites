@@ -43,13 +43,13 @@ public class AmmoIcon extends GComponent {
     double nameHeight = Renderer2D.getTextSize(gl, name).y;
     Renderer2D.drawText(gl, 
         this.parent.position.x + this.position.x + 5,
-        this.parent.position.y + this.position.y + this.height - nameHeight - 2,
+        this.parent.position.y + this.position.y + this.height - nameHeight - 5,
         name);
 
     String quantityString = Integer.toString(quantity);
     double quantityWidth = Renderer2D.getTextSize(gl, quantityString).x;
     Renderer2D.drawText(gl, 
-        this.parent.position.x + this.position.x + this.width - quantityWidth - 2,
+        this.parent.position.x + this.position.x + this.width - quantityWidth - 5,
         this.parent.position.y + this.position.y + 5,
         quantityString);
   }
@@ -63,7 +63,9 @@ public class AmmoIcon extends GComponent {
   @Override
   public void mouseReleased(Vector2D click, MouseEvent e) {
     this.colour.a = 1;
-    if(!this.parent.testClick(click, false)) {
+    if(this.parent.testClickNonRecursive(click)) {
+     
+    } else {
       System.out.println("Do you want to drop this item?");
     }
   }

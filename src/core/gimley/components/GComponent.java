@@ -84,16 +84,16 @@ public abstract class GComponent {
   
   
   /* Mouse Handling */
-  public boolean testClick(Vector2D click) {
-    return testClick(click, true);
-  }
   
-  public boolean testClick(Vector2D click, boolean recursive) {
-    if(recursive)
+  public boolean testClick(Vector2D click) {
       for(GComponent component : subcomponents)
         if(component.testClick(click))
           return true;
     
+    return testClickNonRecursive(click);
+  }
+  
+  public boolean testClickNonRecursive(Vector2D click) {
     return visible
         && click.x >= parent.position.x + position.x 
         && click.y >= parent.position.y + position.y 
