@@ -184,9 +184,9 @@ public class SceneWindow extends GWindow {
   }
   
   @Override
-  public void mouseDragged(Vector2D click, MouseEvent e) {
-    endMousePos._set(click);
-    scene.input.mouseMoved(click);
+  public void mouseDragged(Vector2D start, Vector2D end, Vector2D offset, MouseEvent e) {
+    endMousePos._set(end);
+    scene.input.mouseMoved(end);
   }
   
   @Override

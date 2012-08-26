@@ -1,7 +1,5 @@
 package core.gimley.components;
 
-
-
 import javax.media.opengl.GL2;
 
 import com.jogamp.newt.event.MouseEvent;
@@ -11,14 +9,14 @@ import core.gimley.ActionListener;
 import core.gimley.components.buttons.GButton;
 import core.render.Renderer2D;
 
-
 public class GTopBar extends GComponent {
 
-  private Vector2D mouseDragOffset;
   private final String title;
   
   private final GButton minimise = new GButton(parent, new Vector2D(parent.width - 28, parent.height + 2), 11, 11, "_");
   private final GButton close = new GButton(parent, new Vector2D(parent.width - 13, parent.height + 2), 11, 11, "X");
+
+  private Vector2D dragOffset;
   
   public GTopBar(GComponent parent, String title) {
     this(parent, title, true, false);
@@ -62,14 +60,12 @@ public class GTopBar extends GComponent {
   
   @Override
   public void mousePressed(Vector2D click, MouseEvent e) {
-    mouseDragOffset = click.sub(parent.position);
+    this.dragOffset = click.sub(parent.position);
   }
   
   @Override
-  public void mouseDragged(Vector2D click, MouseEvent e) {
-    if(mouseDragOffset != null) {
-      this.parent.position._set(click.sub(mouseDragOffset));
-    }
+  public void mouseDragged(Vector2D start, Vector2D end, Vector2D offset, MouseEvent e) {
+    this.parent.position._set(end.sub(this.dragOffset));
   }
   
   

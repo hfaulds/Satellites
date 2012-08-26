@@ -15,6 +15,8 @@ public class MouseRouter implements MouseListener {
 
   private final GComponent parent;
   private final GComponentList subcomponents;
+  private Vector2D dragStart;
+  private Vector2D dragOffset;
 
   public MouseRouter(GComponent parent) {
     this.parent = parent;
@@ -51,13 +53,16 @@ public class MouseRouter implements MouseListener {
   @Override
   public void mousePressed(MouseEvent e) {
     Vector2D click = getClick(e);
-    refreshFocus(click).mousePressed(click, e);
+    GComponent focus = refreshFocus(click);
+    dragStart = click;
+    dragOffset = click.sub(focus.position);
+    focus.mousePressed(click, e);
   }
 
   @Override
   public void mouseDragged(MouseEvent e) {
-    Vector2D click = getClick(e);
-    subcomponents.getFocus().mouseDragged(click, e);
+    Vector2D end = getClick(e);
+    subcomponents.getFocus().mouseDragged(dragStart, end, dragOffset, e);
   }
 
   @Override

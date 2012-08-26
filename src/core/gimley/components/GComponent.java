@@ -25,6 +25,8 @@ public abstract class GComponent {
   public final Vector2D position;
   
   private boolean bDragPossible;
+  private Vector2D dragOffset;
+  
   private boolean visible = true;
 
   protected final List<ActionListener> listeners = new LinkedList<ActionListener>();
@@ -101,10 +103,19 @@ public abstract class GComponent {
       for(GComponent component : subcomponents) {
         if(component.testClick(click)) {
           component.bDragPossible = true;
-          component.mousePressed(click, e);
+          dragOffset = click.sub(globalPosition(component));
+          component.mousePressed(click, e); 
+          break;
         }
       }
     }
+  }
+
+  private Vector2D globalPosition(GComponent component) {
+    if(component.parent != null)
+      return component.position.add(globalPosition(parent));
+    else
+      return component.position;
   }
 
   public void mouseReleased(Vector2D click, MouseEvent e) {
@@ -112,17 +123,19 @@ public abstract class GComponent {
       for(GComponent component : subcomponents) {
         component.bDragPossible = false;
         if(component.testClick(click)) {
-          component.mouseReleased(click, e);
+          component.mouseReleased(click, e); 
+          break;
         }
       }
     }
   }
 
-  public void mouseDragged(Vector2D click, MouseEvent e) {
+  public void mouseDragged(Vector2D start, Vector2D end, Vector2D offset, MouseEvent e) {
     synchronized(subcomponents) {
       for(GComponent component : subcomponents) {
         if(component.bDragPossible) {
-          component.mouseDragged(click, e);
+          component.mouseDragged(start, end, dragOffset, e); 
+          break;
         }
       }
     }

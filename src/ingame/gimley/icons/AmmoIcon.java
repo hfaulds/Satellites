@@ -11,7 +11,7 @@ import core.render.material.Colour;
 
 public class AmmoIcon extends GComponent {
 
-  Colour colour = new Colour(1,1,1,1);
+  private final Colour colour = new Colour(1,1,1,1);
   
   public AmmoIcon(String string, int quantity) {
     super(null, new Vector2D());
@@ -23,13 +23,15 @@ public class AmmoIcon extends GComponent {
   public void render(GL2 gl, int width, int height) {
     gl.glColor4fv(colour.toFloat(), 0);
     Renderer2D.drawFillRect(gl, 
-        this.position.x, this.position.y,
+        this.parent.position.x + this.position.x, 
+        this.parent.position.y + this.position.y,
         this.width, this.height);
   }
+
   
   @Override
-  public void mouseDragged(Vector2D click, MouseEvent e) {
-    this.position._set(click);
+  public void mouseDragged(Vector2D start, Vector2D end, Vector2D offset, MouseEvent e) {
+    this.position._set(end.sub(offset));
     this.colour.a = 0.5;
   }
 
