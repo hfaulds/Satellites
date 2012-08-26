@@ -80,52 +80,64 @@ public class Renderer2D {
   }
 
   // Rounded Rectangles
-  public static void drawFillRect(GL2 gl, double x, double y, int width, int height, int radius) {
+  public static void drawFillRect(GL2 gl, double x, double y, double width, double height, double radius) {
     int CIRCLE_SAMPLES = 40;
-    double cornerx = x + radius;
-    double cornery = y + radius;
-    double cornerwidth = (double) width - 2 *  radius;
-    double cornerheight = (double) height - 2 * radius;
+    
+    double cornerwidth = width - 2 *  radius;
+    double cornerheight = height - 2 * radius;
     
     gl.glBegin(GL2.GL_QUAD_STRIP);
     double increment = 2 * Math.PI / CIRCLE_SAMPLES;
     for(int i=0; i < CIRCLE_SAMPLES; i++) {
-      drawCorner(gl,
-          cornerx + (cornerwidth * ((i < CIRCLE_SAMPLES * 1/ 4  || i > CIRCLE_SAMPLES * 3/4) ? 1 : 0 )),
-          cornery + (cornerheight * ((i < CIRCLE_SAMPLES / 2) ? 1 : 0 )),
+      double cx = x + (cornerwidth * ((i < CIRCLE_SAMPLES * 1/ 4  || i > CIRCLE_SAMPLES * 3/4) ? 1 : 0 ));
+      double cy = y + (cornerheight * ((i < CIRCLE_SAMPLES / 2) ? 1 : 0 ));
+      
+      drawCornerPoint(gl,
+          cx,
+          cy,
           i * increment,
           radius);
+      
+      gl.glVertex3d(
+          cx + radius, 
+          cy + radius,
+          Vector2D.Z);
     }
     gl.glEnd();
     drawFillRect(gl, x + radius, y + radius, width - radius, height - 2 * radius);
   }
   
-  public static void drawLineRect(GL2 gl, double x, double y, int width, int height, float thickness, int radius) {
+  public static void drawLineRect(GL2 gl, double x, double y, double width, double height, float thickness, double radius) {
     int CIRCLE_SAMPLES = 40;
-    double cornerx = x + radius;
-    double cornery = y + radius;
-    double cornerwidth = (double) width - 2 *  radius;
-    double cornerheight = (double) height - 2 * radius;
     
-    gl.glBegin(GL2.GL_LINE_STRIP);
-
+    double increment = 2 * Math.PI / CIRCLE_SAMPLES;
+    
+    double cornerwidth = width - 2 *  radius;
+    double cornerheight = height - 2 * radius;
+    
+    gl.glBegin(GL2.GL_LINE_LOOP);
+    for(int i=0; i < CIRCLE_SAMPLES; i++) {
+      double cx = x + (cornerwidth * ((i < CIRCLE_SAMPLES * 1/ 4  || i > CIRCLE_SAMPLES * 3/4) ? 1 : 0 ));
+      double cy = y + (cornerheight * ((i < CIRCLE_SAMPLES / 2) ? 1 : 0 ));
+      
+      drawCornerPoint(gl,
+          cx,
+          cy,
+          i * increment,
+          radius);
+    }
     gl.glEnd();
-    drawLineRect(gl, x + radius, y + radius, width - radius, height - 2 * radius, thickness);
   }
 
-  private static void drawCorner(GL2 gl, double x, double y, double angle, double radius) {
+  private static void drawCornerPoint(GL2 gl, double x, double y, double angle, double radius) {
     gl.glVertex3d(
-        x + Math.cos(angle) * radius, 
-        y + Math.sin(angle) * radius,
+        x + radius + Math.cos(angle) * radius, 
+        y + radius + Math.sin(angle) * radius,
         Vector2D.Z
       );
-    gl.glVertex3d(
-        x, 
-        y,
-        Vector2D.Z);
   }
 
-  
+  // Text
   public static void drawText(GL2 gl, double x, double y, String text) {
     drawText(gl, x, y, GLUT.BITMAP_HELVETICA_12, text);
   }

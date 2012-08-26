@@ -26,15 +26,14 @@ public class AmmoIcon extends GComponent {
         this.parent.position.x + this.position.x, 
         this.parent.position.y + this.position.y,
         this.width, this.height, 
-        3);
-    
+        5);
     gl.glColor4d(0.5,0.5,0.5,1);
     Renderer2D.drawLineRect(gl,
         this.parent.position.x + this.position.x, 
         this.parent.position.y + this.position.y,
         this.width, this.height, 
         1f, 
-        3);
+        5);
   }
 
   @Override
