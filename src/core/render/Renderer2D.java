@@ -79,13 +79,16 @@ public class Renderer2D {
 
   public static void drawRoundedRect(GL2 gl, double x, double y, int width, int height) {
     int CIRCLE_SAMPLES = 40;
-    double CIRCLE_INCREMENT = 2*Math.PI/CIRCLE_SAMPLES;
-    double radius = 5;
+    double CIRCLE_INCREMENT = 2 * Math.PI / CIRCLE_SAMPLES;
+    double radius = 3;
     
-    width -= radius;
-    height -= radius;
+    x+=radius;
+    y+=radius;
     
-    gl.glBegin(GL2.GL_LINE_LOOP);
+    width -= 2*radius;
+    height -= 2*radius;
+    
+    gl.glBegin(GL2.GL_QUAD_STRIP);
     
     for(int i=0; i < CIRCLE_SAMPLES * 1/ 4 ; i++) {
       drawCorner(gl, 
@@ -112,16 +115,25 @@ public class Renderer2D {
           i);
     }
     for(int i=CIRCLE_SAMPLES * 3/4; i < CIRCLE_SAMPLES; i++) {
-      drawCorner(gl, 
+      drawCorner(gl,
           x + width, 
           y, 
           CIRCLE_INCREMENT, 
           radius, 
           i);
     }
-    
+    gl.glVertex3d(
+        x + width + radius, 
+        y + height, 
+        Vector2D.Z);    
+    gl.glVertex3d(
+        x + width, 
+        y + height, 
+        Vector2D.Z);
     
     gl.glEnd();
+    drawFillRect(gl, x, y, width, height);
+    
   }
 
   private static void drawCorner(GL2 gl, double x, double y, double CIRCLE_INCREMENT, double radius, int i) {
@@ -130,6 +142,10 @@ public class Renderer2D {
         y + Math.sin(i * CIRCLE_INCREMENT) * radius,
         Vector2D.Z
       );
+    gl.glVertex3d(
+        x, 
+        y,
+        Vector2D.Z);
   }
 
   

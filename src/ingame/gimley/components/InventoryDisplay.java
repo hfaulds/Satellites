@@ -33,7 +33,7 @@ public class InventoryDisplay extends GComponent {
       int y = this.height - (((i / maxInvY) + 1) * 30) - 2;
       GComponent icon = inventory.get(i).getIcon();
       icon.parent = this;
-      icon.position._set(this.position.add(new Vector2D(x, y)));
+      icon.position._set(new Vector2D(x, y));
       this.add(icon);
     }
   }

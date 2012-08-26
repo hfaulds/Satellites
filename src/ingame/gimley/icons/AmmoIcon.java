@@ -28,10 +28,9 @@ public class AmmoIcon extends GComponent {
         this.width, this.height);
   }
 
-  
   @Override
   public void mouseDragged(Vector2D start, Vector2D end, Vector2D offset, MouseEvent e) {
-    this.position._set(end.sub(offset));
+    this.position._set(end.sub(offset).sub(parent.position));
     this.colour.a = 0.5;
   }
 

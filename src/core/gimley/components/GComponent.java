@@ -104,7 +104,6 @@ public abstract class GComponent {
         if(component.testClick(click)) {
           component.bDragPossible = true;
           Vector2D pos = globalPosition(component);
-          System.out.println(pos);
           dragOffset = click.sub(pos);
           component.mousePressed(click, e); 
           break;
@@ -114,10 +113,11 @@ public abstract class GComponent {
   }
 
   private Vector2D globalPosition(GComponent component) {
-    if(component.parent != null)
+    if(component.parent != null) {
       return component.position.add(globalPosition(component.parent));
-    else
+    } else {
       return component.position;
+    }
   }
 
   public void mouseReleased(Vector2D click, MouseEvent e) {
