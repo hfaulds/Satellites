@@ -15,8 +15,6 @@ public class GTopBar extends GComponent {
   
   private final GButton minimise = new GButton(parent, new Vector2D(parent.width - 28, parent.height + 2), 11, 11, "_");
   private final GButton close = new GButton(parent, new Vector2D(parent.width - 13, parent.height + 2), 11, 11, "X");
-
-  private Vector2D dragOffset;
   
   public GTopBar(GComponent parent, String title) {
     this(parent, title, true, false);
@@ -59,13 +57,8 @@ public class GTopBar extends GComponent {
   /* Mouse Controls */
   
   @Override
-  public void mousePressed(Vector2D click, MouseEvent e) {
-    this.dragOffset = click.sub(parent.position);
-  }
-  
-  @Override
   public void mouseDragged(Vector2D start, Vector2D end, Vector2D offset, MouseEvent e) {
-    this.parent.position._set(end.sub(this.dragOffset));
+    this.parent.position._set(end.sub(offset).sub(this.position));
   }
   
   
