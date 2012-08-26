@@ -22,10 +22,19 @@ public class AmmoIcon extends GComponent {
   @Override
   public void render(GL2 gl, int width, int height) {
     gl.glColor4fv(colour.toFloat(), 0);
-    Renderer2D.drawRoundedRect(gl, 
+    Renderer2D.drawFillRect(gl, 
         this.parent.position.x + this.position.x, 
         this.parent.position.y + this.position.y,
-        this.width, this.height);
+        this.width, this.height, 
+        3);
+    
+    gl.glColor4d(0.5,0.5,0.5,1);
+    Renderer2D.drawLineRect(gl,
+        this.parent.position.x + this.position.x, 
+        this.parent.position.y + this.position.y,
+        this.width, this.height, 
+        1f, 
+        3);
   }
 
   @Override
