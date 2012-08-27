@@ -11,10 +11,11 @@ import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.MouseEvent;
 
 import core.geometry.Vector2D;
-import core.gimley.ActionListener;
 import core.gimley.GComponentList;
+import core.gimley.listeners.ActionListener;
+import core.gimley.listeners.MouseListener;
 
-public abstract class GComponent {
+public abstract class GComponent implements MouseListener {
 
   public GComponent parent;
   public final GComponentList subcomponents;
@@ -29,7 +30,8 @@ public abstract class GComponent {
   
   private boolean visible = true;
 
-  protected final List<ActionListener> listeners = new LinkedList<ActionListener>();
+  protected final List<ActionListener> actionListeners = new LinkedList<ActionListener>();
+  protected final List<MouseListener> mouseListeners = new LinkedList<MouseListener>();
   
   
   /* Constructors */
@@ -101,6 +103,15 @@ public abstract class GComponent {
         && click.y <= parent.position.y + position.y + height;
   }
   
+  private Vector2D globalPosition(GComponent component) {
+    if(component.parent != null) {
+      return component.position.add(globalPosition(component.parent));
+    } else {
+      return component.position;
+    }
+  }
+
+  @Override
   public void mousePressed(Vector2D click, MouseEvent e) {
     synchronized(subcomponents) {
       for(GComponent component : subcomponents) {
@@ -113,16 +124,12 @@ public abstract class GComponent {
         }
       }
     }
-  }
-
-  private Vector2D globalPosition(GComponent component) {
-    if(component.parent != null) {
-      return component.position.add(globalPosition(component.parent));
-    } else {
-      return component.position;
+    for(MouseListener listener : mouseListeners) {
+      listener.mousePressed(click, e);
     }
   }
 
+  @Override
   public void mouseReleased(Vector2D click, MouseEvent e) {
     synchronized(subcomponents) {
       for(GComponent component : subcomponents) {
@@ -133,8 +140,12 @@ public abstract class GComponent {
         }
       }
     }
+    for(MouseListener listener : mouseListeners) {
+      listener.mouseReleased(click, e);
+    }
   }
 
+  @Override
   public void mouseDragged(Vector2D start, Vector2D end, Vector2D offset, MouseEvent e) {
     synchronized(subcomponents) {
       for(GComponent component : subcomponents) {
@@ -144,21 +155,32 @@ public abstract class GComponent {
         }
       }
     }
+    for(MouseListener listener : mouseListeners) {
+      listener.mouseDragged(start, end , offset, e);
+    }
   }
-  
+
+  @Override
   public void mouseMoved(Vector2D mouse) {
     synchronized(subcomponents) {
       for(GComponent component : subcomponents) {
         component.mouseMoved(mouse);
       }
     }
+    for(MouseListener listener : mouseListeners) {
+      listener.mouseMoved(mouse);
+    }
   }
 
+  @Override
   public void mouseWheelMoved(MouseEvent e) {
     synchronized(subcomponents) {
       for(GComponent component : subcomponents) {
         component.mouseWheelMoved(e);
       }
+    }
+    for(MouseListener listener : mouseListeners) {
+      listener.mouseWheelMoved(e);
     }
   }
   
@@ -166,21 +188,26 @@ public abstract class GComponent {
   /* Key Handling */
   
   public void keyPressed(KeyEvent e) {
-    for(GComponent component : subcomponents)
+    for(GComponent component : subcomponents) {
       component.keyPressed(e);
+    }
   }
   
   public void keyReleased(KeyEvent e) {
-    for(GComponent component : subcomponents)
+    for(GComponent component : subcomponents) {
       component.keyReleased(e);
+    }
   }
 
 
   /* ActionListener Handling */
   
   public void addActionListener(ActionListener listener) {
-    this.listeners.add(listener);
+    this.actionListeners.add(listener);
   }
-
+  
+  public void addMouseListener(MouseListener listener) {
+    this.mouseListeners.add(listener);
+  }
 
 }

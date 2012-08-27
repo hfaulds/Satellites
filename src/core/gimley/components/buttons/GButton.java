@@ -6,8 +6,8 @@ import javax.media.opengl.GL2;
 import com.jogamp.newt.event.MouseEvent;
 
 import core.geometry.Vector2D;
-import core.gimley.ActionListener;
 import core.gimley.components.GComponent;
+import core.gimley.listeners.ActionListener;
 import core.render.Renderer2D;
 
 
@@ -42,7 +42,7 @@ public class GButton extends GComponent {
   @Override
   public void mouseReleased(Vector2D click, MouseEvent e) {
     super.mouseReleased(click, e);
-    for(ActionListener listener : listeners) {
+    for(ActionListener listener : actionListeners) {
       listener.action();
     }
   }

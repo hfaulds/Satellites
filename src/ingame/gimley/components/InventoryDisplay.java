@@ -1,15 +1,18 @@
 package ingame.gimley.components;
 
-import java.util.List;
-
 import ingame.actors.ShipActor;
 
+import java.util.List;
+
 import javax.media.opengl.GL2;
+
+import com.jogamp.newt.event.MouseEvent;
 
 import core.Item;
 import core.geometry.Vector2D;
 import core.gimley.components.GComponent;
 import core.gimley.components.GTopBar;
+import core.gimley.listeners.MouseAdapter;
 import core.render.Renderer2D;
 
 public class InventoryDisplay extends GComponent {
@@ -29,12 +32,22 @@ public class InventoryDisplay extends GComponent {
 
     List<Item> inventory = player.getInventory();
     for(int i=0; i < inventory.size(); i++) {
-      GComponent icon = inventory.get(i).getIcon();
-      int x = ((i % MAX_ITEMS_X) * icon.width) + 4;
-      int y = this.height - (((i / MAX_ITEMS_Y) + 1) * icon.height) - 2;
+      final GComponent icon = inventory.get(i).getIcon();
+      final int x = ((i % MAX_ITEMS_X) * icon.width) + 4;
+      final int y = this.height - (((i / MAX_ITEMS_Y) + 1) * icon.height) - 2;
       
       icon.parent = this;
       icon.position._set(new Vector2D(x, y));
+      icon.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseReleased(Vector2D click, MouseEvent e) {
+          if(testClickNonRecursive(click)) {
+            icon.position._set(new Vector2D(x, y));
+          } else {
+            System.out.println("Do you want to drop this item?");
+          }
+        }
+      });
       this.add(icon);
     }
   }

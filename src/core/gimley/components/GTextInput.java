@@ -6,7 +6,7 @@ import javax.media.opengl.GL2;
 import com.jogamp.newt.event.KeyEvent;
 
 import core.geometry.Vector2D;
-import core.gimley.ActionListener;
+import core.gimley.listeners.ActionListener;
 import core.render.Renderer2D;
 
 public class GTextInput extends GComponent {
@@ -69,7 +69,7 @@ public class GTextInput extends GComponent {
     switch(keyCode) {
       case 10: // enter
         if(getInput().length() > 0) {
-          for(ActionListener listener : listeners)
+          for(ActionListener listener : actionListeners)
             listener.action();
         }
         break;
