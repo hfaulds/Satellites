@@ -24,26 +24,28 @@ public class MouseRouter implements MouseListener {
   }
 
   private GComponent refreshFocus(Vector2D click) {
-    GComponent focus = subcomponents.getFocus();
-    
-    if(!focus.testClick(click) || focus == parent) {
-      List<GComponent> componentsHit = new LinkedList<GComponent>();
+    synchronized(subcomponents) {
+      GComponent focus = subcomponents.getFocus();
       
-      for(GComponent component : subcomponents) {
-        if(component.testClick(click)) {
-          componentsHit.add(component);
+      if(!focus.testClick(click) || focus == parent) {
+        List<GComponent> componentsHit = new LinkedList<GComponent>();
+        
+        for(GComponent component : subcomponents) {
+          if(component.testClick(click)) {
+            componentsHit.add(component);
+          }
+        }
+        
+        if(componentsHit.size() > 0) {
+          focus = componentsHit.get(0);
+        } else {
+          focus = parent;
         }
       }
-      
-      if(componentsHit.size() > 0) {
-        focus = componentsHit.get(0);
-      } else {
-        focus = parent;
-      }
+  
+      subcomponents.setFocus(focus);
+      return focus;
     }
-
-    subcomponents.setFocus(focus);
-    return focus;
   }
 
   private Vector2D getClick(MouseEvent e) {
