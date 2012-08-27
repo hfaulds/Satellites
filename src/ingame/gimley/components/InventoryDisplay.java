@@ -1,6 +1,7 @@
 package ingame.gimley.components;
 
 import ingame.actors.ShipActor;
+import ingame.gimley.icons.Icon;
 
 import java.util.List;
 
@@ -20,8 +21,8 @@ public class InventoryDisplay extends GComponent {
   private static final int MAX_ITEMS_X = 5;
   private static final int MAX_ITEMS_Y = 5;
   
-  private static final int WIDTH = MAX_ITEMS_X * 75;
-  private static final int HEIGHT = MAX_ITEMS_Y * 75;
+  private static final int WIDTH = MAX_ITEMS_X * Icon.SIZE;
+  private static final int HEIGHT = MAX_ITEMS_Y * Icon.SIZE;
 
   public InventoryDisplay(GComponent parent, ShipActor player) {
     super(parent);

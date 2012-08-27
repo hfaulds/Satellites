@@ -28,6 +28,7 @@ import core.geometry.Vector2D;
 import core.geometry.Vector3D;
 import core.gimley.GWindow;
 import core.gimley.listeners.ActionListener;
+import core.gimley.listeners.MouseAdapter;
 import core.net.MsgListener;
 import core.net.connections.NetworkConnection;
 import core.net.msg.ChatMsg;
@@ -71,7 +72,16 @@ public class SceneWindow extends GWindow {
     setupStationUI(stationDockRequest, stationDisplay, scene, connection);
     
     add(setupChatBox(scene, connection));
-    add(new InventoryDisplay(this, scene.player));
+    
+    final InventoryDisplay inventory = new InventoryDisplay(this, scene.player);
+    inventory.addMouseListener(new MouseAdapter(){
+      @Override
+      public void mouseReleased(Vector2D click, MouseEvent e) {
+        System.out.println(inventory.subcomponents.getFocus());
+      }
+    });
+    
+    add(inventory);
     add(new FPSCounter(this, new Vector2D(5, -20)));
     add(stationDockRequest);
     add(stationDisplay);

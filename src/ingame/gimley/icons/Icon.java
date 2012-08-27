@@ -9,16 +9,18 @@ import core.gimley.components.GComponent;
 import core.render.Renderer2D;
 import core.render.material.Colour;
 
-public class AmmoIcon extends GComponent {
+public class Icon extends GComponent {
+
+  public static final int SIZE = 75;
 
   private final Colour colour = new Colour(1,1,1,1);
   
   private final String name;
   private final int quantity;
   
-  public AmmoIcon(String name, int quantity) {
+  public Icon(String name, int quantity) {
     super(null, new Vector2D());
-    this.width = this.height = 75;
+    this.width = this.height = SIZE;
     this.name = name;
     this.quantity = quantity;
   }
