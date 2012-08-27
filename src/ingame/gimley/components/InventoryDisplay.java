@@ -11,8 +11,10 @@ import com.jogamp.newt.event.MouseEvent;
 
 import core.Item;
 import core.geometry.Vector2D;
+import core.gimley.actions.IconMoved;
 import core.gimley.components.GComponent;
 import core.gimley.components.GTopBar;
+import core.gimley.listeners.ActionListener;
 import core.gimley.listeners.MouseAdapter;
 import core.render.Renderer2D;
 
@@ -45,7 +47,9 @@ public class InventoryDisplay extends GComponent {
           if(testClickNonRecursive(click)) {
             icon.position._set(new Vector2D(x, y));
           } else {
-            System.out.println("Do you want to drop this item?");
+            for(ActionListener listener : actionListeners) {
+              listener.action(new IconMoved(icon));
+            }
           }
         }
       });

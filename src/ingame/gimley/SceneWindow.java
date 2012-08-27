@@ -13,7 +13,6 @@ import ingame.gimley.routers.WindowRouter;
 
 import javax.media.opengl.GL2;
 
-
 import com.esotericsoftware.kryonet.Connection;
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.MouseEvent;
@@ -27,8 +26,9 @@ import core.geometry.Rotation;
 import core.geometry.Vector2D;
 import core.geometry.Vector3D;
 import core.gimley.GWindow;
+import core.gimley.actions.Action;
+import core.gimley.actions.IconMoved;
 import core.gimley.listeners.ActionListener;
-import core.gimley.listeners.MouseAdapter;
 import core.net.MsgListener;
 import core.net.connections.NetworkConnection;
 import core.net.msg.ChatMsg;
@@ -63,6 +63,7 @@ public class SceneWindow extends GWindow {
     setVisible(true);
   }
   
+  
   /* Components */
 
   private void setupComponents(final Scene scene, final NetworkConnection connection) {
@@ -72,19 +73,28 @@ public class SceneWindow extends GWindow {
     setupStationUI(stationDockRequest, stationDisplay, scene, connection);
     
     add(setupChatBox(scene, connection));
-    
-    final InventoryDisplay inventory = new InventoryDisplay(this, scene.player);
-    inventory.addMouseListener(new MouseAdapter(){
-      @Override
-      public void mouseReleased(Vector2D click, MouseEvent e) {
-        System.out.println(inventory.subcomponents.getFocus());
-      }
-    });
-    
-    add(inventory);
+    add(setupInventory(scene));
     add(new FPSCounter(this, new Vector2D(5, -20)));
     add(stationDockRequest);
     add(stationDisplay);
+    
+    
+    createPopup();
+  }
+
+
+  private InventoryDisplay setupInventory(final Scene scene) {
+    final InventoryDisplay inventory = new InventoryDisplay(this, scene.player);
+    inventory.addActionListener(new ActionListener(){
+      @Override
+      public void action(Action action) {
+        if(action instanceof IconMoved) {
+          IconMoved iconAction = (IconMoved)action;
+          System.out.println("Are you sure you want to drop this item?" + iconAction.icon);
+        }
+      }
+    });
+    return inventory;
   }
 
   private ChatBox setupChatBox(Scene scene, NetworkConnection connection) {
@@ -130,7 +140,7 @@ public class SceneWindow extends GWindow {
     
     stationDockRequest.dock.addActionListener(new ActionListener() {
       @Override
-      public void action() {
+      public void action(Action action) {
         scene.input.setActor(null);
         
         Actor player = scene.player;
@@ -151,7 +161,7 @@ public class SceneWindow extends GWindow {
     
     stationDisplay.undock.addActionListener(new ActionListener() {
       @Override
-      public void action() {
+      public void action(Action action) {
         Actor player = scene.player;
         connection.sendMsg(new ShipDockMsg(player.id, ShipDockMsg.UNDOCKING));
 

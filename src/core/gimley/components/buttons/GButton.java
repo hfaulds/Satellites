@@ -6,6 +6,7 @@ import javax.media.opengl.GL2;
 import com.jogamp.newt.event.MouseEvent;
 
 import core.geometry.Vector2D;
+import core.gimley.actions.ButtonClick;
 import core.gimley.components.GComponent;
 import core.gimley.listeners.ActionListener;
 import core.render.Renderer2D;
@@ -43,7 +44,7 @@ public class GButton extends GComponent {
   public void mouseReleased(Vector2D click, MouseEvent e) {
     super.mouseReleased(click, e);
     for(ActionListener listener : actionListeners) {
-      listener.action();
+      listener.action(new ButtonClick());
     }
   }
 }

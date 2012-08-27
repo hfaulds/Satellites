@@ -5,6 +5,7 @@ import javax.media.opengl.GL2;
 import com.jogamp.newt.event.MouseEvent;
 
 import core.geometry.Vector2D;
+import core.gimley.actions.Action;
 import core.gimley.components.buttons.GButton;
 import core.gimley.listeners.ActionListener;
 import core.render.Renderer2D;
@@ -39,14 +40,13 @@ public class GTopBar extends GComponent {
     
     minimise.addActionListener(new ActionListener() {
       @Override
-      public void action() {
-        
+      public void action(Action action) {
       }
     });
 
     close.addActionListener(new ActionListener() {
       @Override
-      public void action() {
+      public void action(Action action) {
         parent.setVisible(false);
       }
     });

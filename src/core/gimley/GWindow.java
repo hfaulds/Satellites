@@ -1,6 +1,5 @@
 package core.gimley;
 
-
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
@@ -11,7 +10,9 @@ import com.jogamp.newt.event.WindowListener;
 import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.util.FPSAnimator;
 
+import core.gimley.actions.Action;
 import core.gimley.components.GComponent;
+import core.gimley.listeners.ActionListener;
 import core.gimley.routers.KeyRouter;
 import core.gimley.routers.MouseRouter;
 import core.render.Renderer2D;
@@ -36,6 +37,18 @@ public class GWindow extends GComponent implements GLEventListener {
 
   public void destroy() {
     window.destroy();
+  }
+  
+  public void createPopup() {
+    final GPopup popup = new GPopup(this);
+    popup.addActionListener(new ActionListener() {
+      @Override
+      public void action(Action action) {
+        remove(popup);
+      }
+    });
+    add(popup);
+    subcomponents.setFocus(popup);
   }
   
   /* Rendering */

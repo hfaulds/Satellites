@@ -7,6 +7,8 @@ import java.util.List;
 import javax.media.opengl.GL2;
 
 import core.geometry.Vector2D;
+import core.gimley.actions.Action;
+import core.gimley.actions.InputEntered;
 import core.gimley.components.GComponent;
 import core.gimley.components.GTextInput;
 import core.gimley.components.GTopBar;
@@ -34,11 +36,13 @@ public class ChatBox extends GComponent {
     
     input.addActionListener(new ActionListener(){
       @Override
-      public void action() {
-        ChatMsg msg = new ChatMsg(input.getInput(), connection.getUsername());
-        displayMessage(msg);
-        connection.sendMsg(msg);
-        input.clearInput();
+      public void action(Action action) {
+        if(action instanceof InputEntered) {
+          InputEntered inputAction = (InputEntered) action;
+          ChatMsg msg = new ChatMsg(inputAction.input, connection.getUsername());
+          displayMessage(msg);
+          connection.sendMsg(msg);
+        }
       }
     });
 

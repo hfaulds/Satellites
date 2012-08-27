@@ -6,6 +6,7 @@ import javax.media.opengl.GL2;
 import com.jogamp.newt.event.KeyEvent;
 
 import core.geometry.Vector2D;
+import core.gimley.actions.InputEntered;
 import core.gimley.listeners.ActionListener;
 import core.render.Renderer2D;
 
@@ -44,10 +45,6 @@ public class GTextInput extends GComponent {
         );
   }
   
-  public String getInput() {
-    return input;
-  }
-
   public void addChar(char c) {
     if(input.length() <= MAX_INPUT)
       input = input + c;
@@ -68,9 +65,11 @@ public class GTextInput extends GComponent {
     int keyCode = e.getKeyCode();
     switch(keyCode) {
       case 10: // enter
-        if(getInput().length() > 0) {
-          for(ActionListener listener : actionListeners)
-            listener.action();
+        if(input.length() > 0) {
+          for(ActionListener listener : actionListeners) {
+            listener.action(new InputEntered(input));
+          }
+          clearInput();
         }
         break;
       case 8: // backspace
