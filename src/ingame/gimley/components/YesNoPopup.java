@@ -5,6 +5,7 @@ import javax.media.opengl.GL2;
 import core.geometry.Vector2D;
 import core.gimley.components.GComponent;
 import core.gimley.components.GPanel;
+import core.gimley.components.buttons.GButton;
 import core.render.Renderer2D;
 
 public class YesNoPopup extends GPanel {
@@ -13,10 +14,15 @@ public class YesNoPopup extends GPanel {
   public static final int WIDTH = 250;
   
   private final String message;
+  
+  public final GButton drop = new GButton(this, new Vector2D(5,5), 45, 22, "Drop");
+  public final GButton cancel = new GButton(this, new Vector2D(55,5), 45, 22, "Cancel");
 
   public YesNoPopup(GComponent parent, String title, String message, Vector2D position) {
     super(parent, title, position, WIDTH, HEIGHT);
     this.message = message;
+    add(drop);
+    add(cancel);
   }
   
   @Override

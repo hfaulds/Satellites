@@ -84,19 +84,32 @@ public class SceneWindow extends GWindow {
 
   private InventoryDisplay setupInventory(final Scene scene) {
     final InventoryDisplay inventory = new InventoryDisplay(this, scene.player);
+    
     inventory.addActionListener(new ActionListener(){
       @Override
       public void action(Action action) {
         if(action instanceof IconMoved) {
           ItemIcon icon = ((IconMoved)action).icon;
           icon.setVisible(false);
-          createPopup(
-              new YesNoPopup(
-                SceneWindow.this, 
-                "Drop Item", 
-                "Are you sure you want to drop " + icon.name, 
-                new Vector2D(width/2 - YesNoPopup.WIDTH/2, height/2 - YesNoPopup.HEIGHT/2)
-              ));
+          final YesNoPopup popup = new YesNoPopup(
+            SceneWindow.this, 
+            "Drop Item", 
+            "Are you sure you want to drop " + icon.name, 
+            new Vector2D(width/2 - YesNoPopup.WIDTH/2, height/2 - YesNoPopup.HEIGHT/2)
+          );
+          popup.drop.addActionListener(new ActionListener() {
+            @Override
+            public void action(Action action) {
+              remove(popup);
+            }
+          });
+          popup.cancel.addActionListener(new ActionListener() {
+            @Override
+            public void action(Action action) {
+              remove(popup);
+            }
+          });
+          createPopup(popup);
         }
       }
     });
