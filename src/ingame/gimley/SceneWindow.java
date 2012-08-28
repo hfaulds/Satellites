@@ -27,6 +27,7 @@ import core.collisions.CollisionListener;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
 import core.geometry.Vector3D;
+import core.gimley.GPopup;
 import core.gimley.GWindow;
 import core.gimley.actions.Action;
 import core.gimley.actions.IconMoved;
@@ -91,25 +92,30 @@ public class SceneWindow extends GWindow {
         if(action instanceof IconMoved) {
           ItemIcon icon = ((IconMoved)action).icon;
           icon.setVisible(false);
-          final YesNoPopup popup = new YesNoPopup(
+          
+          final YesNoPopup yesNoPopup = new YesNoPopup(
             SceneWindow.this, 
             "Drop Item", 
             "Are you sure you want to drop " + icon.name, 
             new Vector2D(width/2 - YesNoPopup.WIDTH/2, height/2 - YesNoPopup.HEIGHT/2)
           );
-          popup.drop.addActionListener(new ActionListener() {
+          
+          final GPopup popup = createPopup(yesNoPopup);
+          
+          yesNoPopup.drop.addActionListener(new ActionListener() {
             @Override
             public void action(Action action) {
               remove(popup);
             }
           });
-          popup.cancel.addActionListener(new ActionListener() {
+          
+          yesNoPopup.cancel.addActionListener(new ActionListener() {
             @Override
             public void action(Action action) {
               remove(popup);
             }
           });
-          createPopup(popup);
+          
         }
       }
     });

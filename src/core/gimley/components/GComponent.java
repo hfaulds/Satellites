@@ -82,9 +82,13 @@ public abstract class GComponent implements MouseListener {
   /* Mouse Handling */
   
   public boolean testClick(Vector2D click) {
-      for(GComponent component : subcomponents)
-        if(component.testClick(click))
-          return true;
+    synchronized(subcomponents) {
+      for(GComponent component : subcomponents) {
+        if(component.testClick(click)) {
+          return component.testClick(click);
+        }
+      }
+    }
     
     return testClickNonRecursive(click);
   }

@@ -77,8 +77,10 @@ public class GComponentList implements List<GComponent> {
       component.init(gl, width, height);
     }
     
-    initComponents.addAll(unInitComponents);
-    unInitComponents.clear();
+    synchronized(this) {
+      initComponents.addAll(unInitComponents);
+      unInitComponents.clear();
+    }
   }
   
   private void renderComponents(GL2 gl, int width, int height) {
@@ -108,28 +110,38 @@ public class GComponentList implements List<GComponent> {
   /* List functions */
   
   public boolean add(GComponent component) {
-    return unInitComponents.add(component);
+    synchronized(this) {
+      return unInitComponents.add(component);
+    }
   }
   
   @Override
   public void add(int index, GComponent component) {
-    unInitComponents.add(index, component);
+    synchronized(this) {
+      unInitComponents.add(index, component);
+    }
   }
 
   @Override
   public boolean addAll(Collection<? extends GComponent> components) {
-    return unInitComponents.addAll(components);
+    synchronized(this) {
+      return unInitComponents.addAll(components);
+    }
   }
 
   @Override
   public boolean addAll(int index, Collection<? extends GComponent> components) {
-    return unInitComponents.addAll(index, components);
+    synchronized(this) {
+      return unInitComponents.addAll(index, components);
+    }
   }
 
   @Override
   public void clear() {
-    unInitComponents.clear();
-    initComponents.clear();
+    synchronized(this) {
+      unInitComponents.clear();
+      initComponents.clear();
+    }
   }
 
   @Override
@@ -179,25 +191,33 @@ public class GComponentList implements List<GComponent> {
 
   @Override
   public boolean remove(Object component) {
-    if(focus == component) {
-      focus = focus.parent;
+    synchronized(this) {
+      if(focus == component) {
+        focus = focus.parent;
+      }
+      return initComponents.remove(component) || unInitComponents.remove(component);
     }
-    return initComponents.remove(component) || unInitComponents.remove(component);
   }
 
   @Override
   public GComponent remove(int index) {
-    return initComponents.remove(index);
+    synchronized(this) {
+      return initComponents.remove(index);
+    }
   }
 
   @Override
   public boolean removeAll(Collection<?> components) {
-    return initComponents.removeAll(components);
+    synchronized(this) {
+      return initComponents.removeAll(components);
+    }
   }
 
   @Override
   public boolean retainAll(Collection<?> components) {
-    return initComponents.retainAll(components);
+    synchronized(this) {
+      return initComponents.retainAll(components);
+    }
   }
 
   @Override

@@ -34,10 +34,11 @@ public class GWindow extends GComponent implements GLEventListener {
     window.destroy();
   }
   
-  public void createPopup(GComponent component) {
+  public GPopup createPopup(GComponent component) {
     final GPopup popup = new GPopup(this, component);
     add(popup);
     subcomponents.setFocus(popup);
+    return popup;
   }
   
   /* Rendering */

@@ -7,11 +7,9 @@ import core.render.Renderer2D;
 
 public class GPopup extends GComponent {
 
-  private GComponent component;
-
   public GPopup(GComponent parent, GComponent component) {
     super(parent, parent.width, parent.height);
-    this.component = component;
+    add(component);
   }
   
   @Override
@@ -19,8 +17,8 @@ public class GPopup extends GComponent {
     gl.glColor4d(1, 1, 1, 0.1);
    
     Renderer2D.drawFillRect(gl, 0, 0, width, height);
-    
-    component.render(gl, width, height);
+
+    super.render(gl, width, height);
   }
 
 }
