@@ -25,34 +25,58 @@ public class InventoryDisplay extends GComponent {
   
   private static final int WIDTH = MAX_ITEMS_X * ItemIcon.SIZE;
   private static final int HEIGHT = MAX_ITEMS_Y * ItemIcon.SIZE;
+  
+  private List<Item> inventory;
 
   public InventoryDisplay(GComponent parent, ShipActor player) {
     super(parent, WIDTH, HEIGHT);
     
     add(new GTopBar(this, "Inventory", true, true));
 
-    List<Item> inventory = player.getInventory();
-    for(int i=0; i < inventory.size(); i++) {
-      final ItemIcon icon = inventory.get(i).getIcon();
-      final int x = ((i % MAX_ITEMS_X) * icon.width) + 4;
-      final int y = this.height - (((i / MAX_ITEMS_Y) + 1) * icon.height) - 2;
-      
+    this.inventory = player.getInventory();
+    
+    for(Item item : inventory) {
+      final ItemIcon icon = item.getIcon();
+      add(icon);
       icon.parent = this;
-      icon.position._set(new Vector2D(x, y));
       icon.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseReleased(Vector2D click, MouseEvent e) {
           if(testClickNonRecursive(click)) {
-            icon.position._set(new Vector2D(x, y));
+            updateIconPositions();
           } else {
+            removeItem(icon);
             for(ActionListener listener : actionListeners) {
               listener.action(new IconMoved(icon));
             }
           }
         }
+       
       });
-      this.add(icon);
+      
     }
+    updateIconPositions();
+  }
+
+  public void addItem(ItemIcon icon) {
+    super.add(icon);
+    inventory.add(icon.item);
+    
+    updateIconPositions();
+  }
+  
+  private void updateIconPositions() {
+    for(int i=0; i < inventory.size(); i++) {
+      final ItemIcon icon = inventory.get(i).getIcon();
+      final int x = ((i % MAX_ITEMS_X) * icon.width) + 4;
+      final int y = this.height - (((i / MAX_ITEMS_Y) + 1) * icon.height) - 2;
+      icon.position._set(new Vector2D(x, y));
+    }
+  }
+
+  public void removeItem(ItemIcon icon) {
+    super.remove(icon);
+    inventory.remove(icon.item);
   }
 
   @Override

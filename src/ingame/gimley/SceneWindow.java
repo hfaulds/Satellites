@@ -90,13 +90,12 @@ public class SceneWindow extends GWindow {
       @Override
       public void action(Action action) {
         if(action instanceof IconMoved) {
-          ItemIcon icon = ((IconMoved)action).icon;
-          icon.setVisible(false);
+          final ItemIcon icon = ((IconMoved)action).icon;
           
           final YesNoPopup yesNoPopup = new YesNoPopup(
             SceneWindow.this, 
             "Drop Item", 
-            "Are you sure you want to drop " + icon.name, 
+            "Are you sure you want to drop " + icon.item.getName(), 
             new Vector2D(width/2 - YesNoPopup.WIDTH/2, height/2 - YesNoPopup.HEIGHT/2)
           );
           
@@ -106,6 +105,7 @@ public class SceneWindow extends GWindow {
             @Override
             public void action(Action action) {
               remove(popup);
+              inventory.removeItem(icon);
             }
           });
           
@@ -113,6 +113,7 @@ public class SceneWindow extends GWindow {
             @Override
             public void action(Action action) {
               remove(popup);
+              inventory.addItem(icon);
             }
           });
           

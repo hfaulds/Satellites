@@ -4,5 +4,6 @@ import ingame.gimley.icons.ItemIcon;
 
 public interface Item {
   public ItemIcon getIcon();
+  public String getName();
   public int getQuantity();
 }

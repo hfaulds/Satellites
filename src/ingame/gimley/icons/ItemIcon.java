@@ -4,6 +4,7 @@ import javax.media.opengl.GL2;
 
 import com.jogamp.newt.event.MouseEvent;
 
+import core.Item;
 import core.geometry.Vector2D;
 import core.gimley.components.GComponent;
 import core.render.Renderer2D;
@@ -14,14 +15,17 @@ public class ItemIcon extends GComponent {
   public static final int SIZE = 75;
 
   private final Colour colour = new Colour(1,1,1,1);
-  
-  public final String name;
+
+  public final Item item;
+  private final String name;
   private final int quantity;
+
   
-  public ItemIcon(String name, int quantity) {
+  public ItemIcon(Item item) {
     super(null, new Vector2D(), SIZE, SIZE);
-    this.name = name;
-    this.quantity = quantity;
+    this.item = item;
+    this.name = item.getName();
+    this.quantity = item.getQuantity();
   }
 
   @Override
@@ -59,11 +63,12 @@ public class ItemIcon extends GComponent {
   public void mouseDragged(Vector2D start, Vector2D end, Vector2D offset, MouseEvent e) {
     this.position._set(end.sub(offset).sub(parent.position));
     this.colour.a = 0.5;
+    super.mouseDragged(start, end, offset, e);
   }
 
   @Override
   public void mouseReleased(Vector2D click, MouseEvent e) {
-    this.colour.a = 1;
+    this.colour.a = 1.0;
     super.mouseReleased(click, e);
   }
   

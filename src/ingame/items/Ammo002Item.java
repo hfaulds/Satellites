@@ -5,11 +5,16 @@ import core.Item;
 
 public class Ammo002Item implements Item {
   
-  private final ItemIcon icon = new ItemIcon("Ammo002", getQuantity());
+  private final ItemIcon icon = new ItemIcon(this);
 
   @Override
   public ItemIcon getIcon() {
     return icon;
+  }
+
+  @Override
+  public String getName() {
+    return "Ammo002";
   }
 
   @Override
