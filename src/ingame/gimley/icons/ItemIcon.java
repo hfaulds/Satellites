@@ -31,6 +31,7 @@ public class ItemIcon extends GComponent {
   @Override
   public void render(GL2 gl, int width, int height) {
     gl.glColor4fv(colour.toFloat(), 0);
+    
     Renderer2D.drawFillRect(gl, 
         this.parent.position.x + this.position.x,
         this.parent.position.y + this.position.y,

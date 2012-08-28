@@ -6,7 +6,8 @@ import ingame.actors.StationShieldActor;
 import ingame.controllers.PlayerInputController;
 import ingame.gimley.components.ChatBox;
 import ingame.gimley.components.FPSCounter;
-import ingame.gimley.components.InventoryDisplay;
+import ingame.gimley.components.PlayerInventory;
+import ingame.gimley.components.InventoryPanel;
 import ingame.gimley.components.StationDisplay;
 import ingame.gimley.components.StationDockRequest;
 import ingame.gimley.components.YesNoPopup;
@@ -30,7 +31,8 @@ import core.geometry.Vector3D;
 import core.gimley.GPopup;
 import core.gimley.GWindow;
 import core.gimley.actions.Action;
-import core.gimley.actions.IconMoved;
+import core.gimley.actions.ItemMoved;
+import core.gimley.components.GComponent;
 import core.gimley.listeners.ActionListener;
 import core.net.MsgListener;
 import core.net.connections.NetworkConnection;
@@ -83,40 +85,46 @@ public class SceneWindow extends GWindow {
   }
 
 
-  private InventoryDisplay setupInventory(final Scene scene) {
-    final InventoryDisplay inventory = new InventoryDisplay(this, scene.player);
+  private PlayerInventory setupInventory(final Scene scene) {
+    final PlayerInventory inventory = new PlayerInventory(this, scene.player);
     
     inventory.addActionListener(new ActionListener(){
       @Override
       public void action(Action action) {
-        if(action instanceof IconMoved) {
-          final ItemIcon icon = ((IconMoved)action).icon;
+        if(action instanceof ItemMoved) {
+          ItemMoved itemAction = (ItemMoved)action;
+          final ItemIcon icon = itemAction.icon;
           
-          final YesNoPopup yesNoPopup = new YesNoPopup(
-            SceneWindow.this, 
-            "Drop Item", 
-            "Are you sure you want to drop " + icon.item.getName(), 
-            new Vector2D(width/2 - YesNoPopup.WIDTH/2, height/2 - YesNoPopup.HEIGHT/2)
-          );
-          
-          final GPopup popup = createPopup(yesNoPopup);
-          
-          yesNoPopup.drop.addActionListener(new ActionListener() {
-            @Override
-            public void action(Action action) {
-              remove(popup);
-              inventory.removeItem(icon);
-            }
-          });
-          
-          yesNoPopup.cancel.addActionListener(new ActionListener() {
-            @Override
-            public void action(Action action) {
-              remove(popup);
-              inventory.addItem(icon);
-            }
-          });
-          
+          GComponent newParent = subcomponents.getComponentAt(itemAction.location);
+          if(newParent instanceof InventoryPanel) {
+            inventory.removeItem(icon);
+            ((InventoryPanel)newParent).addItem(icon);
+          } else {
+            final YesNoPopup yesNoPopup = new YesNoPopup(
+              SceneWindow.this, 
+              "Drop Item", 
+              "Are you sure you want to drop " + icon.item.getName(), 
+              new Vector2D(width/2 - YesNoPopup.WIDTH/2, height/2 - YesNoPopup.HEIGHT/2)
+            );
+            
+            final GPopup popup = createPopup(yesNoPopup);
+            
+            yesNoPopup.drop.addActionListener(new ActionListener() {
+              @Override
+              public void action(Action action) {
+                remove(popup);
+                inventory.removeItem(icon);
+              }
+            });
+            
+            yesNoPopup.cancel.addActionListener(new ActionListener() {
+              @Override
+              public void action(Action action) {
+                remove(popup);
+                inventory.addItem(icon);
+              }
+            });
+          }
         }
       }
     });

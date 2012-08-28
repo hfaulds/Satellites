@@ -33,7 +33,7 @@ public class GComponentList implements List<GComponent> {
     return focus;
   }
   
-  public GComponent getFocusAt(Vector2D click) {
+  public GComponent getComponentAt(Vector2D click) {
     synchronized(this) {
       GComponent focus = getFocus();
       

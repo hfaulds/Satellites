@@ -20,7 +20,7 @@ public class MouseRouter implements MouseListener {
   }
 
   private GComponent refreshFocus(Vector2D click) {
-    GComponent focus = subcomponents.getFocusAt(click);
+    GComponent focus = subcomponents.getComponentAt(click);
     subcomponents.setFocus(focus);
     return focus;
   }

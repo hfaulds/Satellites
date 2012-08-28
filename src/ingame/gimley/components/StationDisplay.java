@@ -2,8 +2,12 @@ package ingame.gimley.components;
 
 import ingame.actors.StationActor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.media.opengl.GL2;
 
+import core.Item;
 import core.geometry.Vector2D;
 import core.gimley.components.GComponent;
 import core.gimley.components.GPanel;
@@ -18,10 +22,11 @@ public class StationDisplay extends GPanel {
   private StationActor station;
 
   public final GButton undock = new GButton(this, new Vector2D(675, 10), 65, 20, "UNDOCK");
+  public final List<Item> inventory = new ArrayList<Item>();
   
   public StationDisplay(GComponent parent) {
     super(parent, "Station", new Vector2D(20, 20), WIDTH, HEIGHT);
-    
+    add(new InventoryPanel(this, new Vector2D(10, 130), inventory, 730, HEIGHT - 140));
     add(undock);
   }
   
@@ -33,8 +38,8 @@ public class StationDisplay extends GPanel {
     gl.glColor4d(1.0, 1.0, 1.0, 1.0);
     Renderer2D.drawLineRect(gl, position.x, position.y, WIDTH, HEIGHT, 0.9f);
 
-    gl.glColor4d(1.0, 1.0, 1.0, 1.0);
-    Renderer2D.drawFillRect(gl, position.x + 10, position.y + 130, 730, HEIGHT - 140);
+    //gl.glColor4d(1.0, 1.0, 1.0, 1.0);
+    //Renderer2D.drawFillRect(gl, position.x + 10, position.y + 130, 730, HEIGHT - 140);
 
     gl.glColor4d(1.0, 1.0, 1.0, 1.0);
     Renderer2D.drawFillRect(gl, position.x + 10, position.y + 40, 730, 80);
