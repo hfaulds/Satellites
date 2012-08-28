@@ -9,18 +9,17 @@ import core.gimley.components.GComponent;
 import core.render.Renderer2D;
 import core.render.material.Colour;
 
-public class Icon extends GComponent {
+public class ItemIcon extends GComponent {
 
   public static final int SIZE = 75;
 
   private final Colour colour = new Colour(1,1,1,1);
   
-  private final String name;
+  public final String name;
   private final int quantity;
   
-  public Icon(String name, int quantity) {
-    super(null, new Vector2D());
-    this.width = this.height = SIZE;
+  public ItemIcon(String name, int quantity) {
+    super(null, new Vector2D(), SIZE, SIZE);
     this.name = name;
     this.quantity = quantity;
   }

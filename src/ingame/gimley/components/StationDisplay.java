@@ -1,18 +1,16 @@
 package ingame.gimley.components;
 
-
 import ingame.actors.StationActor;
 
 import javax.media.opengl.GL2;
 
-
 import core.geometry.Vector2D;
 import core.gimley.components.GComponent;
-import core.gimley.components.GTopBar;
+import core.gimley.components.GPanel;
 import core.gimley.components.buttons.GButton;
 import core.render.Renderer2D;
 
-public class StationDisplay extends GComponent {
+public class StationDisplay extends GPanel {
 
   private static final int WIDTH = 750;
   private static final int HEIGHT = 600;
@@ -22,13 +20,9 @@ public class StationDisplay extends GComponent {
   public final GButton undock = new GButton(this, new Vector2D(675, 10), 65, 20, "UNDOCK");
   
   public StationDisplay(GComponent parent) {
-    super(parent, new Vector2D(20, 20));
-    
-    this.width = WIDTH;
-    this.height = HEIGHT;
+    super(parent, "Station", new Vector2D(20, 20), WIDTH, HEIGHT);
     
     add(undock);
-    add(new GTopBar(this, "Station"));
   }
   
   @Override

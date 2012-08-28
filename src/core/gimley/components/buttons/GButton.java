@@ -18,9 +18,7 @@ public class GButton extends GComponent {
   protected Vector2D textPos;
   
   public GButton(GComponent parent, Vector2D position, int width, int height, String label) {
-    super(parent, position);
-    this.width = width;
-    this.height = height;
+    super(parent, position, width, height);
     this.label = label;
   }
   

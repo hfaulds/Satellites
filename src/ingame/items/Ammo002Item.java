@@ -1,15 +1,14 @@
 package ingame.items;
 
-import ingame.gimley.icons.Icon;
+import ingame.gimley.icons.ItemIcon;
 import core.Item;
-import core.gimley.components.GComponent;
 
 public class Ammo002Item implements Item {
   
-  private final GComponent icon = new Icon("Ammo002", getQuantity());
+  private final ItemIcon icon = new ItemIcon("Ammo002", getQuantity());
 
   @Override
-  public GComponent getIcon() {
+  public ItemIcon getIcon() {
     return icon;
   }
 

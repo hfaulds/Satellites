@@ -17,9 +17,7 @@ public class GTextInput extends GComponent {
   public String input = "";
 
   public GTextInput(GComponent parent, Vector2D position, int width, int height) {
-    super(parent, position);
-    this.width = width;
-    this.height = height;
+    super(parent, position, width, height);
   }
 
   @Override

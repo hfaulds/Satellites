@@ -21,7 +21,9 @@ public class ChatBox extends GComponent {
   
   private static final int MAX_MSGS       = 6;
   private static final int MESSAGE_HEIGHT = 15;
+  
   private static final int WIDTH          = 200;
+  private static final int HEIGHT = MESSAGE_HEIGHT * (MAX_MSGS + 1) + 5;
   
   private final Vector2D messageOffset = new Vector2D(2, MESSAGE_HEIGHT + 5);
   private final List<ChatMsg> messages = new LinkedList<ChatMsg>();
@@ -29,10 +31,7 @@ public class ChatBox extends GComponent {
   private final GTextInput input = new GTextInput(this, new Vector2D(), WIDTH, MESSAGE_HEIGHT + 5);
 
   public ChatBox(GComponent parent, Vector2D position, final NetworkConnection connection) {
-    super(parent, position);
-    
-    this.width = WIDTH;
-    this.height = MESSAGE_HEIGHT * (MAX_MSGS + 1) + 5;
+    super(parent, position, WIDTH, HEIGHT);
     
     input.addActionListener(new ActionListener(){
       @Override

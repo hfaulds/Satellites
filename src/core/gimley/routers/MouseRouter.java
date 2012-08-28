@@ -1,9 +1,5 @@
 package core.gimley.routers;
 
-
-import java.util.LinkedList;
-import java.util.List;
-
 import com.jogamp.newt.event.MouseEvent;
 import com.jogamp.newt.event.MouseListener;
 
@@ -24,28 +20,9 @@ public class MouseRouter implements MouseListener {
   }
 
   private GComponent refreshFocus(Vector2D click) {
-    synchronized(subcomponents) {
-      GComponent focus = subcomponents.getFocus();
-      
-      if(!focus.testClick(click) || focus == parent) {
-        List<GComponent> componentsHit = new LinkedList<GComponent>();
-        
-        for(GComponent component : subcomponents) {
-          if(component.testClick(click)) {
-            componentsHit.add(component);
-          }
-        }
-        
-        if(componentsHit.size() > 0) {
-          focus = componentsHit.get(0);
-        } else {
-          focus = parent;
-        }
-      }
-  
-      subcomponents.setFocus(focus);
-      return focus;
-    }
+    GComponent focus = subcomponents.getFocusAt(click);
+    subcomponents.setFocus(focus);
+    return focus;
   }
 
   private Vector2D getClick(MouseEvent e) {

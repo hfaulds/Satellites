@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
 import javax.media.opengl.GL2;
 
+import core.geometry.Vector2D;
 import core.gimley.components.GComponent;
 
 public class GComponentList implements List<GComponent> {
@@ -18,15 +20,41 @@ public class GComponentList implements List<GComponent> {
   private final ArrayList<GComponent> unInitComponents = new ArrayList<GComponent>();
   
   private static final double MAX_COMPONENTS = 15;
+  
+  private final GComponent parent;
   private GComponent focus;
   
-  public GComponentList(GComponent focus, GComponent ... components) {
+  public GComponentList(GComponent parent, GComponent ... components) {
     unInitComponents.addAll(Arrays.asList(components));
-    this.focus = focus;
+    this.focus = this.parent = parent;
   }
   
   public GComponent getFocus() {
     return focus;
+  }
+  
+  public GComponent getFocusAt(Vector2D click) {
+    synchronized(this) {
+      GComponent focus = getFocus();
+      
+      if(!focus.testClick(click) || focus == parent) {
+        List<GComponent> componentsHit = new LinkedList<GComponent>();
+        
+        for(GComponent component : initComponents) {
+          if(component.testClick(click)) {
+            componentsHit.add(component);
+          }
+        }
+        
+        if(componentsHit.size() > 0) {
+          return componentsHit.get(0);
+        } else {
+          return parent;
+        }
+      }
+      
+      return focus;
+    }
   }
   
   public void setFocus(GComponent focus) {
@@ -45,8 +73,9 @@ public class GComponentList implements List<GComponent> {
   }
 
   private void initComponents(GL2 gl, int width, int height) {
-    for(GComponent component : unInitComponents)
+    for(GComponent component : unInitComponents) {
       component.init(gl, width, height);
+    }
     
     initComponents.addAll(unInitComponents);
     unInitComponents.clear();
@@ -150,9 +179,9 @@ public class GComponentList implements List<GComponent> {
 
   @Override
   public boolean remove(Object component) {
-    if(focus == component)
+    if(focus == component) {
       focus = focus.parent;
-    
+    }
     return initComponents.remove(component) || unInitComponents.remove(component);
   }
 

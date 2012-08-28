@@ -9,6 +9,8 @@ import ingame.gimley.components.FPSCounter;
 import ingame.gimley.components.InventoryDisplay;
 import ingame.gimley.components.StationDisplay;
 import ingame.gimley.components.StationDockRequest;
+import ingame.gimley.components.YesNoPopup;
+import ingame.gimley.icons.ItemIcon;
 import ingame.gimley.routers.WindowRouter;
 
 import javax.media.opengl.GL2;
@@ -77,9 +79,6 @@ public class SceneWindow extends GWindow {
     add(new FPSCounter(this, new Vector2D(5, -20)));
     add(stationDockRequest);
     add(stationDisplay);
-    
-    
-    createPopup();
   }
 
 
@@ -89,8 +88,15 @@ public class SceneWindow extends GWindow {
       @Override
       public void action(Action action) {
         if(action instanceof IconMoved) {
-          IconMoved iconAction = (IconMoved)action;
-          System.out.println("Are you sure you want to drop this item?" + iconAction.icon);
+          ItemIcon icon = ((IconMoved)action).icon;
+          icon.setVisible(false);
+          createPopup(
+              new YesNoPopup(
+                SceneWindow.this, 
+                "Drop Item", 
+                "Are you sure you want to drop " + icon.name, 
+                new Vector2D(width/2 - YesNoPopup.WIDTH/2, height/2 - YesNoPopup.HEIGHT/2)
+              ));
         }
       }
     });

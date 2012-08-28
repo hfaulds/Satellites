@@ -1,12 +1,12 @@
 package core.gimley.actions;
 
-import core.gimley.components.GComponent;
+import ingame.gimley.icons.ItemIcon;
 
 public class IconMoved extends Action {
 
-  public final GComponent icon;
+  public final ItemIcon icon;
 
-  public IconMoved(GComponent icon) {
+  public IconMoved(ItemIcon icon) {
     this.icon = icon;
   }
 

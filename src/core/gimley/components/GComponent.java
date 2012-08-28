@@ -36,22 +36,16 @@ public abstract class GComponent implements MouseListener {
   
   /* Constructors */
   
-  public GComponent(GComponent parent) {
-    this(parent, new Vector2D());
+  public GComponent(GComponent parent, int width, int height) {
+    this(parent, new Vector2D(), width, height);
   }
 
-  public GComponent(GComponent parent, Vector2D position) {
-    this(parent, new GComponent[0], position);
-  }
-
-  public GComponent(GComponent parent, GComponent[] subcomponents) {
-    this(parent, subcomponents, new Vector2D());
-  }
-  
-  public GComponent(GComponent parent, GComponent[] subcomponents, Vector2D position) {
+  public GComponent(GComponent parent, Vector2D position, int width, int height) {
     this.parent = parent;
-    this.subcomponents = new GComponentList(this, subcomponents);
     this.position = position;
+    this.subcomponents = new GComponentList(this, new GComponent[0]);
+    this.width = width;
+    this.height = height;
   }
 
   

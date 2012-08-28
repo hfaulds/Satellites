@@ -12,6 +12,8 @@ import core.render.Renderer2D;
 
 public class GTopBar extends GComponent {
 
+  private static final int HEIGHT = 15;
+
   private final String title;
   
   private final GButton minimise = new GButton(parent, new Vector2D(parent.width - 28, parent.height + 2), 11, 11, "_");
@@ -22,9 +24,7 @@ public class GTopBar extends GComponent {
   }
 
   public GTopBar(final GComponent parent, String title, boolean bMinimise, boolean bClose) {
-    super(parent, new Vector2D(0, parent.height));
-    this.width = parent.width;
-    this.height = 15;
+    super(parent, new Vector2D(0, parent.height), parent.width, HEIGHT);
     this.title = title;
     
     if(bMinimise) {

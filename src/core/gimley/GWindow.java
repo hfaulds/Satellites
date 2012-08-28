@@ -24,10 +24,7 @@ public class GWindow extends GComponent implements GLEventListener {
   private final FPSAnimator animator = new FPSAnimator(window, 80);
 
   public GWindow(GComponent parent, int width, int height) {
-    super(parent);
-    
-    this.width = 800;
-    this.height = 800;
+    super(parent, width, height);
 
     window.addMouseListener(new MouseRouter(this));
     window.addKeyListener(new KeyRouter(this));
@@ -39,8 +36,8 @@ public class GWindow extends GComponent implements GLEventListener {
     window.destroy();
   }
   
-  public void createPopup() {
-    final GPopup popup = new GPopup(this);
+  public void createPopup(GComponent component) {
+    final GPopup popup = new GPopup(this, component);
     popup.addActionListener(new ActionListener() {
       @Override
       public void action(Action action) {

@@ -16,7 +16,7 @@ public class FPSCounter extends GComponent {
   private long fps = 0;
 
   public FPSCounter(GComponent parent, Vector2D position) {
-    super(parent, position);
+    super(parent, position, 0, 0);
   }
 
   @Override
