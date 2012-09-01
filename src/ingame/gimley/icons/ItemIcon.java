@@ -32,32 +32,35 @@ public class ItemIcon extends GComponent {
   public void render(GL2 gl, int width, int height) {
     gl.glColor4fv(colour.toFloat(), 0);
     
+    Vector2D position = this.getScreenPosition();
     Renderer2D.drawFillRect(gl, 
-        this.parent.position.x + this.position.x,
-        this.parent.position.y + this.position.y,
-        this.width, this.height,
+        position.x, 
+        position.y, 
+        this.width, 
+        this.height, 
         5);
     
     gl.glColor4d(0.5,0.5,0.5,1);
-    Renderer2D.drawLineRect(gl,
-        this.parent.position.x + this.position.x,
-        this.parent.position.y + this.position.y,
-        this.width, this.height,
-        1f, 
+    Renderer2D.drawLineRect(gl, 
+        position.x, 
+        position.y, 
+        this.width, 
+        this.height, 
+        1, 
         5);
     
     double nameHeight = Renderer2D.getTextSize(gl, name).y;
-    Renderer2D.drawText(gl, 
-        this.parent.position.x + this.position.x + 5,
-        this.parent.position.y + this.position.y + this.height - nameHeight - 5,
+    Renderer2D.drawText(gl,
+        this.getScreenPosition().x + 5,
+        this.getScreenPosition().y + this.height - nameHeight - 5,
         name);
 
-    String quantityString = Integer.toString(quantity);
-    double quantityWidth = Renderer2D.getTextSize(gl, quantityString).x;
+    double quantityWidth = Renderer2D.getTextSize(gl, Integer.toString(quantity)).x;
+    
     Renderer2D.drawText(gl, 
-        this.parent.position.x + this.position.x + this.width - quantityWidth - 5,
-        this.parent.position.y + this.position.y + 5,
-        quantityString);
+        this.getScreenPosition().x + this.width - quantityWidth - 5,
+        this.getScreenPosition().y + 5,
+        Integer.toString(quantity));
   }
 
   @Override

@@ -101,9 +101,14 @@ public abstract class GComponent implements MouseListener {
         && click.y <= parent.position.y + position.y + height;
   }
   
-  private Vector2D globalPosition(GComponent component) {
+
+  public Vector2D getScreenPosition() {
+    return getScreenPosition(this);
+  }
+  
+  private Vector2D getScreenPosition(GComponent component) {
     if(component.parent != null) {
-      return component.position.add(globalPosition(component.parent));
+      return component.position.add(getScreenPosition(component.parent));
     } else {
       return component.position;
     }
@@ -115,7 +120,7 @@ public abstract class GComponent implements MouseListener {
       for(GComponent component : subcomponents) {
         if(component.testClick(click)) {
           component.bDragPossible = true;
-          Vector2D pos = globalPosition(component);
+          Vector2D pos = getScreenPosition(component);
           dragOffset = click.sub(pos);
           component.mousePressed(click, e); 
           break;
