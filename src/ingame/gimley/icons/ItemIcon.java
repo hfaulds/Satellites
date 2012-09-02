@@ -20,7 +20,6 @@ public class ItemIcon extends GComponent {
   private final String name;
   private final int quantity;
 
-  
   public ItemIcon(Item item) {
     super(null, new Vector2D(), SIZE, SIZE);
     this.item = item;

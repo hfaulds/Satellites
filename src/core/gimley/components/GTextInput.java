@@ -22,23 +22,25 @@ public class GTextInput extends GComponent {
 
   @Override
   public void render(GL2 gl, int width, int height) {
+    Vector2D screenPosition = getScreenPosition();
+    
     gl.glColor4d(0.6, 0.6, 0.6, 1.0);
     Renderer2D.drawFillRect(gl, 
-        parent.position.x + position.x , 
-        parent.position.y + position.y, 
+        screenPosition.x, 
+        screenPosition.y, 
         this.width, this.height
         );
     
     gl.glColor4d(1.0, 1.0, 1.0, 1.0);
     Renderer2D.drawLineRect(gl, 
-        parent.position.x + position.x ,
-        parent.position.y + position.y, 
+        screenPosition.x ,
+        screenPosition.y, 
         this.width, this.height, 0.9f
         );
     
     Renderer2D.drawText(gl, 
-        parent.position.x + position.x + 2 , 
-        parent.position.y + position.y + 5, 
+        screenPosition.x + 2 , 
+        screenPosition.y + 5, 
         Renderer2D.fitString(gl, input, this.width)
         );
   }

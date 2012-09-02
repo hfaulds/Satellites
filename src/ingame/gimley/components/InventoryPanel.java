@@ -1,12 +1,13 @@
 package ingame.gimley.components;
 
-import java.util.List;
+import ingame.gimley.icons.ItemIcon;
+
+import java.util.LinkedList;
 
 import javax.media.opengl.GL2;
 
 import com.jogamp.newt.event.MouseEvent;
 
-import ingame.gimley.icons.ItemIcon;
 import core.Item;
 import core.geometry.Vector2D;
 import core.gimley.actions.ItemMoved;
@@ -17,9 +18,9 @@ import core.render.Renderer2D;
 
 public class InventoryPanel extends GComponent {
 
-  private final List<Item> inventory;
+  private final LinkedList<Item> inventory;
   
-  public InventoryPanel(GComponent parent, Vector2D position, List<Item> inventory, int width, int height) {
+  public InventoryPanel(GComponent parent, Vector2D position, LinkedList<Item> inventory, int width, int height) {
     super(parent, parent.position, width, height);
     this.inventory = inventory;
     
@@ -28,16 +29,28 @@ public class InventoryPanel extends GComponent {
       add(icon);
       icon.parent = this;
       icon.addMouseListener(new MouseAdapter() {
+        boolean dragging = false;
+        @Override
+        public void mousePressed(Vector2D click, MouseEvent e) {
+          dragging = true;
+        }
         @Override
         public void mouseReleased(Vector2D click, MouseEvent e) {
-          if(testClickNonRecursive(click)) {
-            updateIconPositions();
-          } else {
-            removeItem(icon);
-            for(ActionListener listener : actionListeners) {
-              listener.action(new ItemMoved(icon, click));
+          if(dragging) {
+            if(testClickNonRecursive(click)) {
+              int itemIndex = getIconIndexAt(icon.position);
+              if(itemIndex != -1) {
+                moveItem(icon, itemIndex);
+              }
+              updateIconPositions();
+            } else {
+              removeItem(icon);
+              for(ActionListener listener : actionListeners) {
+                listener.action(new ItemMoved(icon, click));
+              }
             }
           }
+          dragging = false;
         }
        
       });
@@ -46,6 +59,20 @@ public class InventoryPanel extends GComponent {
     updateIconPositions();
   }
   
+  protected void moveItem(ItemIcon icon, int newIndex) {
+    int currentIndex = inventory.indexOf(icon.item);
+
+    if(newIndex != currentIndex) {
+      inventory.remove(icon.item);
+      
+      if(newIndex > inventory.size()) {
+        inventory.add(icon.item);
+      } else {
+        inventory.add(newIndex, icon.item);
+      }
+    }
+  }
+
   public void addItem(ItemIcon icon) {
     super.add(icon);
     inventory.add(icon.item);
@@ -66,6 +93,19 @@ public class InventoryPanel extends GComponent {
       
       icon.position._set(new Vector2D(x, y));
     }
+  }
+  
+  private int getIconIndexAt(Vector2D position) {
+    if(position.x > width || position.y > height)
+      return -1;
+
+    int xIndex = (int)(position.x / ItemIcon.SIZE);
+    int yIndex = (int)(position.y / ItemIcon.SIZE) + 1;
+    
+    int maxItemsX = this.width / ItemIcon.SIZE;
+    int maxItemsY = this.height / ItemIcon.SIZE;
+    
+    return xIndex + (maxItemsY - yIndex) * maxItemsX;
   }
   
   public void removeItem(ItemIcon icon) {

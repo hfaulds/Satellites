@@ -3,8 +3,7 @@ package ingame.actors;
 import ingame.items.Ammo001Item;
 import ingame.items.Ammo002Item;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 import core.Actor;
 import core.Item;
@@ -30,8 +29,11 @@ public class ShipActor extends Actor {
   public int shield = MAX_SHIELD;
   
   @SuppressWarnings("serial")
-  private final List<Item> inventory = new ArrayList<Item>() {{
+  private final LinkedList<Item> inventory = new LinkedList<Item>() {{
     add(new Ammo001Item());
+    add(new Ammo002Item());
+    add(new Ammo001Item());
+    add(new Ammo002Item());
     add(new Ammo002Item());
   }};
 
@@ -51,7 +53,7 @@ public class ShipActor extends Actor {
     }
   }
   
-  public List<Item> getInventory() {
+  public LinkedList<Item> getInventory() {
     return inventory;
   }
 }

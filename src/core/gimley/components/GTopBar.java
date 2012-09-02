@@ -66,25 +66,26 @@ public class GTopBar extends GComponent {
   
   @Override
   public void render(GL2 gl, int width, int height) {
+    Vector2D screenPosition = getScreenPosition();
     gl.glColor4d(1.0, 1.0, 1.0, 0.8);
     Renderer2D.drawFillRect(gl, 
-        parent.position.x + position.x, 
-        parent.position.y + position.y, 
+        screenPosition.x, 
+        screenPosition.y, 
         parent.width, 
         this.height);
     
     gl.glColor4d(1.0, 1.0, 1.0, 1);
     Renderer2D.drawLineRect(gl, 
-        parent.position.x + position.x, 
-        parent.position.y + position.y, 
+        screenPosition.x, 
+        screenPosition.y, 
         parent.width, 
         this.height, 
         0.9f);
     
     gl.glColor4d(0.4, 0.4, 0.4, 1.0);
     Renderer2D.drawText(gl, 
-        parent.position.x + position.x + 5, 
-        parent.position.y + position.y + 3, 
+        screenPosition.x + 5, 
+        screenPosition.y + 3, 
         Renderer2D.fitString(gl, title, parent.width - 10));
     
     super.render(gl, width, height);

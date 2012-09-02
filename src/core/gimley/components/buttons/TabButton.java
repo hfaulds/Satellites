@@ -15,11 +15,13 @@ public class TabButton extends GButton {
 
   @Override
   public void render(GL2 gl, int width, int height) {
+    Vector2D screenPosition = getScreenPosition();
+    
     gl.glColor4d(1.0, 1.0, 1.0, 1.0);
-    Renderer2D.drawFillRect(gl, parent.position.x + position.x, parent.position.y + position.y, this.width, this.height);
+    Renderer2D.drawFillRect(gl, screenPosition.x, screenPosition.y, this.width, this.height);
 
     gl.glColor4d(0.3, 0.3, 0.3, 1.0);
-    Renderer2D.drawText(gl, parent.position.x + textPos.x, parent.position.y + textPos.y, label);
+    Renderer2D.drawText(gl, screenPosition.x + textPos.x, screenPosition.y + textPos.y, label);
   }
 
 }

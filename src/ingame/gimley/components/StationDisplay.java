@@ -2,8 +2,7 @@ package ingame.gimley.components;
 
 import ingame.actors.StationActor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 import javax.media.opengl.GL2;
 
@@ -22,7 +21,7 @@ public class StationDisplay extends GPanel {
   private StationActor station;
 
   public final GButton undock = new GButton(this, new Vector2D(675, 10), 65, 20, "UNDOCK");
-  public final List<Item> inventory = new ArrayList<Item>();
+  public final LinkedList<Item> inventory = new LinkedList<Item>();
   
   public StationDisplay(GComponent parent) {
     super(parent, "Station", new Vector2D(20, 20), WIDTH, HEIGHT);
