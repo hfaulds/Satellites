@@ -22,7 +22,7 @@ public class GButton extends GComponent {
   
   @Override
   public void init(GL2 gl, int width, int height) {
-    Vector2D center = position.add(new Vector2D(this.width, this.height).divide(2));
+    Vector2D center = new Vector2D(this.width, this.height).divide(2);
     Vector2D text = Renderer2D.getTextSize(gl, label).divide(2);
     textPos = center.sub(text);
   }

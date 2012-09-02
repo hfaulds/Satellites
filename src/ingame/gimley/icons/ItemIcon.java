@@ -31,18 +31,19 @@ public class ItemIcon extends GComponent {
   public void render(GL2 gl, int width, int height) {
     gl.glColor4fv(colour.toFloat(), 0);
     
-    Vector2D position = this.getScreenPosition();
+    Vector2D screenPosition = this.getScreenPosition();
+    
     Renderer2D.drawFillRect(gl, 
-        position.x, 
-        position.y, 
+        screenPosition.x, 
+        screenPosition.y, 
         this.width, 
         this.height, 
         5);
     
     gl.glColor4d(0.5,0.5,0.5,1);
     Renderer2D.drawLineRect(gl, 
-        position.x, 
-        position.y, 
+        screenPosition.x, 
+        screenPosition.y, 
         this.width, 
         this.height, 
         1, 
@@ -50,15 +51,15 @@ public class ItemIcon extends GComponent {
     
     double nameHeight = Renderer2D.getTextSize(gl, name).y;
     Renderer2D.drawText(gl,
-        this.getScreenPosition().x + 5,
-        this.getScreenPosition().y + this.height - nameHeight - 5,
+        screenPosition.x + 5,
+        screenPosition.y + this.height - nameHeight - 5,
         name);
 
     double quantityWidth = Renderer2D.getTextSize(gl, Integer.toString(quantity)).x;
     
     Renderer2D.drawText(gl, 
-        this.getScreenPosition().x + this.width - quantityWidth - 5,
-        this.getScreenPosition().y + 5,
+        screenPosition.x + this.width - quantityWidth - 5,
+        screenPosition.y + 5,
         Integer.toString(quantity));
   }
 

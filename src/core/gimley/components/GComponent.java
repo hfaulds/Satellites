@@ -32,6 +32,7 @@ public abstract class GComponent implements MouseListener {
 
   protected final List<ActionListener> actionListeners = new LinkedList<ActionListener>();
   protected final List<MouseListener> mouseListeners = new LinkedList<MouseListener>();
+  private GComponent dragComponent;
   
   
   /* Constructors */
@@ -82,26 +83,14 @@ public abstract class GComponent implements MouseListener {
   /* Mouse Handling */
   
   public boolean testClick(Vector2D click) {
-    synchronized(subcomponents) {
-      for(GComponent component : subcomponents) {
-        if(component.testClick(click)) {
-          return component.testClick(click);
-        }
-      }
-    }
-    
-    return testClickNonRecursive(click);
-  }
-  
-  public boolean testClickNonRecursive(Vector2D click) {
+    Vector2D screenPosition = getScreenPosition();
     return visible
-        && click.x >= parent.position.x + position.x 
-        && click.y >= parent.position.y + position.y 
-        && click.x <= parent.position.x + position.x + width 
-        && click.y <= parent.position.y + position.y + height;
+        && click.x >= screenPosition.x 
+        && click.y >= screenPosition.y 
+        && click.x <= screenPosition.x + width 
+        && click.y <= screenPosition.y + height;
   }
   
-
   public Vector2D getScreenPosition() {
     return getScreenPosition(this);
   }
@@ -135,13 +124,18 @@ public abstract class GComponent implements MouseListener {
   @Override
   public void mouseReleased(Vector2D click, MouseEvent e) {
     synchronized(subcomponents) {
-      for(GComponent component : subcomponents) {
-        component.bDragPossible = false;
-        if(component.testClick(click)) {
-          component.mouseReleased(click, e); 
-          break;
+      if(dragComponent == null) {
+        for(GComponent component : subcomponents) {
+          component.bDragPossible = false;
+          if(component.testClick(click)) {
+            component.mouseReleased(click, e); 
+            break;
+          }
         }
+      } else {
+        dragComponent.mouseReleased(click, e);
       }
+      dragComponent = null;
     }
     for(MouseListener listener : mouseListeners) {
       listener.mouseReleased(click, e);
@@ -153,6 +147,7 @@ public abstract class GComponent implements MouseListener {
     synchronized(subcomponents) {
       for(GComponent component : subcomponents) {
         if(component.bDragPossible) {
+          dragComponent = component;
           component.mouseDragged(start, end, dragOffset, e); 
           break;
         }

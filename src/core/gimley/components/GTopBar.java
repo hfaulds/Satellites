@@ -25,6 +25,7 @@ public class GTopBar extends GComponent {
 
   public GTopBar(final GComponent parent, String title, boolean bMinimise, boolean bClose) {
     super(parent, new Vector2D(0, parent.height), parent.width, HEIGHT);
+    parent.height += HEIGHT;
     this.title = title;
     
     if(bMinimise) {

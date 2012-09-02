@@ -21,7 +21,7 @@ public class InventoryPanel extends GComponent {
   private final LinkedList<Item> inventory;
   
   public InventoryPanel(GComponent parent, Vector2D position, LinkedList<Item> inventory, int width, int height) {
-    super(parent, parent.position, width, height);
+    super(parent, new Vector2D(), width, height);
     this.inventory = inventory;
     
     for(Item item : inventory) {
@@ -37,7 +37,7 @@ public class InventoryPanel extends GComponent {
         @Override
         public void mouseReleased(Vector2D click, MouseEvent e) {
           if(dragging) {
-            if(testClickNonRecursive(click)) {
+            if(testClick(click)) {
               int itemIndex = getIconIndexAt(icon.position);
               if(itemIndex != -1) {
                 moveItem(icon, itemIndex);
@@ -115,14 +115,16 @@ public class InventoryPanel extends GComponent {
   
   @Override
   public void render(GL2 gl, int width, int height) {
+    Vector2D screenPosition = getScreenPosition();
+    
     gl.glColor4d(0.4, 0.4, 0.4, 1.0);
     Renderer2D.drawFillRect(gl, 
-        position.x, position.y, 
+        screenPosition.x, screenPosition.y, 
         this.width, this.height);
 
     gl.glColor4d(1.0, 1.0, 1.0, 1.0);
     Renderer2D.drawLineRect(gl, 
-        position.x, position.y, 
+        screenPosition.x, screenPosition.y, 
         this.width, this.height, 0.9f);
     
     super.render(gl, width, height);
