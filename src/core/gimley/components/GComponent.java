@@ -105,13 +105,13 @@ public abstract class GComponent implements MouseListener {
 
   @Override
   public void mousePressed(Vector2D click, MouseEvent e) {
+    dragComponent = null;
     synchronized(subcomponents) {
       for(GComponent component : subcomponents) {
         if(component.testClick(click)) {
           component.bDragPossible = true;
-          Vector2D pos = getScreenPosition(component);
-          dragOffset = click.sub(pos);
           component.mousePressed(click, e); 
+          dragOffset = click.sub(getScreenPosition(component));
           break;
         }
       }

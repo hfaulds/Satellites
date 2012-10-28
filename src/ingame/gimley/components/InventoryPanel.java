@@ -18,6 +18,43 @@ import core.render.Renderer2D;
 
 public class InventoryPanel extends GComponent {
 
+  private final class IconMouseListener extends MouseAdapter {
+    private final ItemIcon icon;
+    boolean dragging = false;
+
+    private IconMouseListener(ItemIcon icon) {
+      this.icon = icon;
+    }
+
+    @Override
+    public void mousePressed(Vector2D click, MouseEvent e) {
+      dragging = true;
+    }
+
+    @Override
+    public void mouseReleased(Vector2D click, MouseEvent e) {
+      if(dragging) {
+        if(testClick(click)) {
+          int itemIndex = getIconIndexAt(icon.position);
+          if(itemIndex != -1) {
+            moveItem(icon, itemIndex);
+          }
+          updateIconPositions();
+        } else {
+          removeItem(icon);
+          for(ActionListener listener : actionListeners) {
+            listener.action(new ItemMoved(icon, click));
+          }
+        }
+      }
+      dragging = false;
+    }
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+
   private final LinkedList<Item> inventory;
   
   public InventoryPanel(GComponent parent, Vector2D position, LinkedList<Item> inventory, int width, int height) {
@@ -28,34 +65,10 @@ public class InventoryPanel extends GComponent {
       final ItemIcon icon = item.getIcon();
       add(icon);
       icon.parent = this;
-      icon.addMouseListener(new MouseAdapter() {
-        boolean dragging = false;
-        @Override
-        public void mousePressed(Vector2D click, MouseEvent e) {
-          dragging = true;
-        }
-        @Override
-        public void mouseReleased(Vector2D click, MouseEvent e) {
-          if(dragging) {
-            if(testClick(click)) {
-              int itemIndex = getIconIndexAt(icon.position);
-              if(itemIndex != -1) {
-                moveItem(icon, itemIndex);
-              }
-              updateIconPositions();
-            } else {
-              removeItem(icon);
-              for(ActionListener listener : actionListeners) {
-                listener.action(new ItemMoved(icon, click));
-              }
-            }
-          }
-          dragging = false;
-        }
-       
-      });
+      icon.addMouseListener(new IconMouseListener(icon));
       
     }
+      
     updateIconPositions();
   }
   
