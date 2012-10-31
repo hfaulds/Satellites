@@ -244,16 +244,16 @@ public class SceneWindow extends GWindow {
   }
   
   @Override
-  public void mousePressed(Vector2D click, MouseEvent e) {
+  public void mousePressed(MouseEvent e) {
     bPanning = e.getButton() == PAN_BUTTON;
-    endMousePos._set(startMousePos._set(click));
+    endMousePos._set(startMousePos._set(new Vector2D(e.getX(), e.getY())));
   }
   
   @Override
-  public void mouseReleased(Vector2D click, MouseEvent e) {
+  public void mouseReleased(MouseEvent e) {
     bPanning = false;
     if(e.getButton() == PlayerInputController.FIRE_BUTTON) {
-      scene.input.mouseReleased(click);
+      scene.input.mouseReleased(new Vector2D(e.getX(), e.getY()));
     }
   }
   
@@ -264,8 +264,8 @@ public class SceneWindow extends GWindow {
   } 
 
   @Override
-  public void mouseMoved(Vector2D mouse) {
-    scene.input.mouseMoved(mouse);
+  public void mouseMoved(MouseEvent e) {
+    scene.input.mouseMoved(new Vector2D(e.getX(), e.getY()));
   }
   
   

@@ -38,8 +38,8 @@ public class GButton extends GComponent {
   }
 
   @Override
-  public void mouseReleased(Vector2D click, MouseEvent e) {
-    super.mouseReleased(click, e);
+  public void mouseReleased(MouseEvent e) {
+    super.mouseReleased(e);
     for(ActionListener listener : actionListeners) {
       listener.action(new ButtonClick());
     }

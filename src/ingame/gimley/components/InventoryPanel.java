@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 import javax.media.opengl.GL2;
 
+import com.jogamp.newt.event.MouseAdapter;
 import com.jogamp.newt.event.MouseEvent;
 
 import core.Item;
@@ -13,7 +14,6 @@ import core.geometry.Vector2D;
 import core.gimley.actions.ItemMoved;
 import core.gimley.components.GComponent;
 import core.gimley.listeners.ActionListener;
-import core.gimley.listeners.MouseAdapter;
 import core.render.Renderer2D;
 
 public class InventoryPanel extends GComponent {
@@ -27,14 +27,14 @@ public class InventoryPanel extends GComponent {
     }
 
     @Override
-    public void mousePressed(Vector2D click, MouseEvent e) {
+    public void mousePressed(MouseEvent e) {
       dragging = true;
     }
 
     @Override
-    public void mouseReleased(Vector2D click, MouseEvent e) {
+    public void mouseReleased(MouseEvent e) {
       if(dragging) {
-        if(testClick(click)) {
+        if(testClick(e)) {
           int itemIndex = getIconIndexAt(icon.position);
           if(itemIndex != -1) {
             moveItem(icon, itemIndex);
@@ -43,7 +43,7 @@ public class InventoryPanel extends GComponent {
         } else {
           removeItem(icon);
           for(ActionListener listener : actionListeners) {
-            listener.action(new ItemMoved(icon, click));
+            listener.action(new ItemMoved(icon, new Vector2D(e.getX(), e.getY())));
           }
         }
       }

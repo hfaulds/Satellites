@@ -53,6 +53,7 @@ public class Vector2D {
     this.y -= other.y;
     return this;
   }
+
   
   public Vector2D _mult(double n) {
     this.x *= n;
@@ -90,6 +91,10 @@ public class Vector2D {
   
   public Vector2D sub(Vector2D other) {
     return new Vector2D(x - other.x, y - other.y);
+  }
+
+  public Vector2D sub(int x, int y) {
+    return new Vector2D(this.x - x, this.y - y);
   }
 
   public Vector2D mult(double n) {
