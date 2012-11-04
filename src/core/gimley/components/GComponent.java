@@ -110,7 +110,7 @@ public abstract class GComponent implements MouseListener {
     if(component != this) {
       component.mousePressed(click, e);
       dragComponent = component;
-      dragOffset = dragComponent.getScreenPosition().sub(click);
+      dragOffset = click.sub(dragComponent.getScreenPosition());
     }
     
     for(MouseListener listener : mouseListeners) {
@@ -136,8 +136,10 @@ public abstract class GComponent implements MouseListener {
   }
 
   @Override
-  public void mouseDragged(Vector2D start, Vector2D end, Vector2D offset, MouseEvent e) {    
-    dragComponent.mouseDragged(start, end, dragOffset, e);
+  public void mouseDragged(Vector2D start, Vector2D end, Vector2D offset, MouseEvent e) {  
+    if(dragComponent != null) {
+      dragComponent.mouseDragged(start, end, dragOffset, e);
+    }
     
     for(MouseListener listener : mouseListeners) {
       listener.mouseDragged(start, end, offset, e);
