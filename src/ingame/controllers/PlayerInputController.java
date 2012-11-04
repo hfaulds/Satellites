@@ -5,7 +5,6 @@ import ingame.actors.ProjectileActor;
 
 import java.util.List;
 
-
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.MouseEvent;
 

@@ -2,8 +2,6 @@ package ingame.controllers;
 
 import java.util.List;
 
-
-
 import com.esotericsoftware.kryonet.Connection;
 
 import core.Actor;

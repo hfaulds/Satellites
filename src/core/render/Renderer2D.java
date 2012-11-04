@@ -148,7 +148,8 @@ public class Renderer2D {
   }
 
   public static String fitString(GL2 gl, String message, int width) {
-    if(Renderer2D.getTextSize(gl, message).y > width) {
+    Vector2D messageWidth = Renderer2D.getTextSize(gl, message);
+    if(message.length() > 0 && messageWidth.y > width) {
       return fitString(gl, message.substring(1), width);
     } else {
       return message;

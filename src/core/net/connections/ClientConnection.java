@@ -5,8 +5,6 @@ import ingame.actors.ProjectileActor;
 import java.io.IOException;
 import java.net.InetAddress;
 
-
-
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 

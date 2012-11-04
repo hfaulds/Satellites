@@ -2,7 +2,6 @@ package core.net.listeners;
 
 import java.util.List;
 
-
 import com.esotericsoftware.kryonet.Connection;
 
 import core.Scene;

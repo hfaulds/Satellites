@@ -12,19 +12,21 @@ import com.jogamp.opengl.util.FPSAnimator;
 
 import core.gimley.components.GComponent;
 import core.gimley.routers.KeyRouter;
+import core.gimley.routers.MouseRouter;
 import core.render.Renderer2D;
 
-public class GWindow extends GComponent implements GLEventListener {
+public class GFrame extends GComponent implements GLEventListener {
   
   private final GLWindow window = GLWindow.create(new GLCapabilities(GLProfile.getDefault()));
   
   private final Renderer2D renderer2D = new Renderer2D();
   private final FPSAnimator animator = new FPSAnimator(window, 80);
 
-  public GWindow(GComponent parent, int width, int height) {
+  public GFrame(GComponent parent, String title, int width, int height) {
     super(parent, width, height);
 
-    window.addMouseListener(this);
+    window.setTitle(title);
+    window.addMouseListener(new MouseRouter(this));
     window.addKeyListener(new KeyRouter(this));
     
     window.setSize(width, height);
@@ -91,5 +93,6 @@ public class GWindow extends GComponent implements GLEventListener {
   public void addWindowListener(WindowListener listener) {
     window.addWindowListener(listener);
   }
+
   
 }

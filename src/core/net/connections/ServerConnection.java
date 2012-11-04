@@ -10,7 +10,6 @@ import ingame.controllers.ServerShipController;
 
 import java.io.IOException;
 
-
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 

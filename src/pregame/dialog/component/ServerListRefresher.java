@@ -6,7 +6,6 @@ import java.util.List;
 
 import pregame.dialog.SelectServerDialog;
 
-
 import com.esotericsoftware.kryonet.Client;
 
 import core.net.connections.NetworkConnection;

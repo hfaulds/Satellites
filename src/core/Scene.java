@@ -15,7 +15,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-
 import com.esotericsoftware.kryonet.Connection;
 
 import core.geometry.Vector3D;

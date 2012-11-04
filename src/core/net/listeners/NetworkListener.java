@@ -3,7 +3,6 @@ package core.net.listeners;
 import java.util.LinkedList;
 import java.util.List;
 
-
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 

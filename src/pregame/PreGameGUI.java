@@ -17,7 +17,6 @@ import javax.swing.border.EmptyBorder;
 
 import pregame.dialog.CreateServerDialog;
 import pregame.dialog.SelectServerDialog;
-
 import core.Scene;
 import core.net.connections.ClientConnection;
 import core.net.connections.ServerConnection;

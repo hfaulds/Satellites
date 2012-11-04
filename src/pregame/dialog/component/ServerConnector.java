@@ -8,7 +8,6 @@ import java.net.UnknownHostException;
 import javax.swing.JOptionPane;
 
 import pregame.dialog.SelectServerDialog;
-
 import core.net.connections.ClientConnection;
 
 

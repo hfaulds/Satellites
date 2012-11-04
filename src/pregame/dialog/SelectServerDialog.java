@@ -30,7 +30,6 @@ import pregame.dialog.component.IPInputField;
 import pregame.dialog.component.SelectServerListener;
 import pregame.dialog.component.ServerConnector;
 import pregame.dialog.component.ServerListRefresher;
-
 import core.net.connections.ClientConnection;
 
 

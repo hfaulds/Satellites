@@ -71,9 +71,9 @@ public class ItemIcon extends GComponent {
   }
 
   @Override
-  public void mouseReleased(MouseEvent e) {
+  public void mouseReleased(Vector2D mouse, MouseEvent e) {
     this.colour.a = 1.0;
-    super.mouseReleased(e);
+    super.mouseReleased(mouse, e);
   }
   
 }

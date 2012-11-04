@@ -4,61 +4,45 @@ import com.jogamp.newt.event.MouseEvent;
 import com.jogamp.newt.event.MouseListener;
 
 import core.geometry.Vector2D;
-import core.gimley.GComponentList;
 import core.gimley.components.GComponent;
 
 public class MouseRouter implements MouseListener {
 
-  private final GComponent parent;
-  private final GComponentList subcomponents;
+  private final GComponent component;
   private Vector2D dragStart;
-  private Vector2D dragOffset;
 
-  public MouseRouter(GComponent parent) {
-    this.parent = parent;
-    this.subcomponents = parent.subcomponents;
+  public MouseRouter(GComponent component) {
+    this.component = component;
   }
 
-  private GComponent refreshFocus(Vector2D click) {
-    GComponent focus = subcomponents.getComponentAt(click);
-    subcomponents.setFocus(focus);
-    return focus;
-  }
-
-  private Vector2D getClick(MouseEvent e) {
-    return new Vector2D(e.getX(), parent.height - e.getY());
+  private Vector2D getVectorFromEvent(MouseEvent e) {
+    return new Vector2D(e.getX(), component.height - e.getY());
   }
 
   @Override
   public void mousePressed(MouseEvent e) {
-    Vector2D click = getClick(e);
-    GComponent focus = refreshFocus(click);
-    dragStart = click;
-    dragOffset = click.sub(focus.position);
-    focus.mousePressed(click, e);
+    dragStart = getVectorFromEvent(e);
+    component.mousePressed(dragStart, e);
   }
 
   @Override
   public void mouseDragged(MouseEvent e) {
-    Vector2D end = getClick(e);
-    subcomponents.getFocus().mouseDragged(dragStart, end, dragOffset, e);
+    component.mouseDragged(dragStart, getVectorFromEvent(e), new Vector2D(50,0), e);
   }
 
   @Override
   public void mouseReleased(MouseEvent e) {
-    Vector2D click = getClick(e);
-    subcomponents.getFocus().mouseReleased(click, e);
-    refreshFocus(click);
+    component.mouseReleased(getVectorFromEvent(e), e);
   }
 
   @Override
   public void mouseMoved(MouseEvent e) {
-    subcomponents.getFocus().mouseMoved(getClick(e));
+    component.mouseMoved(getVectorFromEvent(e));
   }
 
   @Override
   public void mouseWheelMoved(MouseEvent e) {
-    subcomponents.getFocus().mouseWheelMoved(e);
+    component.mouseWheelMoved(e);
   }
 
   @Override

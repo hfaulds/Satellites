@@ -6,8 +6,8 @@ import ingame.actors.StationShieldActor;
 import ingame.controllers.PlayerInputController;
 import ingame.gimley.components.ChatBox;
 import ingame.gimley.components.FPSCounter;
-import ingame.gimley.components.PlayerInventory;
 import ingame.gimley.components.InventoryPanel;
+import ingame.gimley.components.PlayerInventory;
 import ingame.gimley.components.StationDisplay;
 import ingame.gimley.components.StationDockRequest;
 import ingame.gimley.components.YesNoPopup;
@@ -29,7 +29,7 @@ import core.geometry.Rotation;
 import core.geometry.Vector2D;
 import core.geometry.Vector3D;
 import core.gimley.GPopup;
-import core.gimley.GWindow;
+import core.gimley.GFrame;
 import core.gimley.actions.Action;
 import core.gimley.actions.ItemMoved;
 import core.gimley.components.GComponent;
@@ -40,7 +40,7 @@ import core.net.msg.ChatMsg;
 import core.net.msg.ShipDockMsg;
 import core.render.Renderer3D;
 
-public class SceneWindow extends GWindow {
+public class SceneWindow extends GFrame {
 
   private static final int ZOOM_RATE    = 10;
   private static final int ZOOM_DEFAULT = 20;
@@ -56,7 +56,7 @@ public class SceneWindow extends GWindow {
   private boolean bPanning       = false;
   
   public SceneWindow(final Scene scene, final NetworkConnection connection) {
-    super(null, 800, 800);
+    super(null, scene.username, 800, 800);
     
     this.scene = scene;
     this.renderer3D = new Renderer3D(scene);
@@ -244,16 +244,16 @@ public class SceneWindow extends GWindow {
   }
   
   @Override
-  public void mousePressed(MouseEvent e) {
+  public void mousePressed(Vector2D mouse, MouseEvent e) {
     bPanning = e.getButton() == PAN_BUTTON;
-    endMousePos._set(startMousePos._set(new Vector2D(e.getX(), e.getY())));
+    endMousePos._set(startMousePos._set(mouse));
   }
   
   @Override
-  public void mouseReleased(MouseEvent e) {
+  public void mouseReleased(Vector2D mouse, MouseEvent e) {
     bPanning = false;
     if(e.getButton() == PlayerInputController.FIRE_BUTTON) {
-      scene.input.mouseReleased(new Vector2D(e.getX(), e.getY()));
+      scene.input.mouseReleased(mouse);
     }
   }
   
@@ -264,8 +264,8 @@ public class SceneWindow extends GWindow {
   } 
 
   @Override
-  public void mouseMoved(MouseEvent e) {
-    scene.input.mouseMoved(new Vector2D(e.getX(), e.getY()));
+  public void mouseMoved(Vector2D mouse) {
+    scene.input.mouseMoved(mouse);
   }
   
   
