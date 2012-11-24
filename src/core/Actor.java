@@ -84,7 +84,6 @@ public abstract class Actor {
     this.velocity = new Vector2D();
     this.mesh = mesh;
     this.id = id;
-    System.out.println(" IAMA " + this.getClass() + " ID " + id);
     this.owner = owner;
     this.visible = visible;
     this.material = material;

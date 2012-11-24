@@ -42,9 +42,6 @@ public class ClientConnection extends NetworkConnection {
         
         if(actor != null) {
           actor._update(actorInfo);
-        } else {
-          for(Actor actor2 : scene.actors)
-            System.out.println("     " + actor2.id);
         }
       }
 

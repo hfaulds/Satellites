@@ -43,7 +43,6 @@ public class ServerConnection extends NetworkConnection {
         @Override
         public void msgReceived(Object msg, Connection connection) {
           Player player = (Player)connection;
-          System.out.println("Server felt moved " + player.actor.id);
           player.updateActor((PlayerUpdateMsg)msg);
         }
         @Override
