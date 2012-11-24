@@ -1,60 +1,20 @@
 package ingame.gimley.components;
 
-import ingame.gimley.icons.ItemIcon;
 
 import java.util.LinkedList;
 
 import javax.media.opengl.GL2;
 
-import com.jogamp.newt.event.MouseEvent;
-
 import core.Item;
 import core.geometry.Vector2D;
+import core.gimley.actions.ActionEvent;
 import core.gimley.actions.ItemMoved;
 import core.gimley.components.GComponent;
 import core.gimley.listeners.ActionListener;
-import core.gimley.listeners.MouseAdapter;
 import core.render.Renderer2D;
 
 public class InventoryPanel extends GComponent {
-
-  private final class IconMouseListener extends MouseAdapter {
-    private final ItemIcon icon;
-    boolean dragging = false;
-
-    private IconMouseListener(ItemIcon icon) {
-      this.icon = icon;
-    }
-
-    @Override
-    public void mousePressed(Vector2D mouse, MouseEvent e) {
-      dragging = true;
-    }
-
-    @Override
-    public void mouseReleased(Vector2D mouse, MouseEvent e) {
-      if(dragging) {
-        if(testClick(new Vector2D(e.getX(), e.getY()))) {
-          int itemIndex = getIconIndexAt(icon.position);
-          if(itemIndex != -1) {
-            moveItem(icon, itemIndex);
-          }
-          updateIconPositions();
-        } else {
-          removeItem(icon);
-          for(ActionListener listener : actionListeners) {
-            listener.action(new ItemMoved(icon, new Vector2D(e.getX(), e.getY())));
-          }
-        }
-      }
-      dragging = false;
-    }
-  }
-
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-
+  
   private final LinkedList<Item> inventory;
   
   public InventoryPanel(GComponent parent, Vector2D position, LinkedList<Item> inventory, int width, int height) {
@@ -64,11 +24,22 @@ public class InventoryPanel extends GComponent {
     for(Item item : inventory) {
       final ItemIcon icon = item.getIcon();
       add(icon);
-      icon.parent = this;
-      icon.addMouseListener(new IconMouseListener(icon));
+      icon.addActionListener(new ActionListener() {
+
+        @Override
+        public void action(ActionEvent obj) {
+          ItemMoved event = (ItemMoved) obj;
+          int index = getIconIndexAt(event.location);
+          if(index > 0) {
+            moveItem(icon, index);
+          }
+          updateIconPositions();
+        }
+        
+      });
       
     }
-      
+    
     updateIconPositions();
   }
   
@@ -92,7 +63,7 @@ public class InventoryPanel extends GComponent {
     updateIconPositions();
   }
   
-  private void updateIconPositions() {
+  public void updateIconPositions() {
     int maxItemsX = this.width / ItemIcon.SIZE;
     
     for(int i=0; i < inventory.size(); i++) {
@@ -104,21 +75,22 @@ public class InventoryPanel extends GComponent {
       if(y < position.y)
         break;
       
-      icon.position._set(new Vector2D(x, y));
+      icon.position._set(this.getScreenPosition().add(new Vector2D(x, y)));
     }
   }
   
   private int getIconIndexAt(Vector2D position) {
+    Vector2D localPosition = position.sub(this.getScreenPosition());
+    localPosition.y = this.height - position.y;
+
     if(position.x > width || position.y > height)
       return -1;
+    
+    int xIndex = (int)(localPosition.x / ItemIcon.SIZE);
+    int yIndex = (int)(localPosition.y / ItemIcon.SIZE);
 
-    int xIndex = (int)(position.x / ItemIcon.SIZE);
-    int yIndex = (int)(position.y / ItemIcon.SIZE) + 1;
-    
     int maxItemsX = this.width / ItemIcon.SIZE;
-    int maxItemsY = this.height / ItemIcon.SIZE;
-    
-    return xIndex + (maxItemsY - yIndex) * maxItemsX;
+    return xIndex + (yIndex * maxItemsX);
   }
   
   public void removeItem(ItemIcon icon) {

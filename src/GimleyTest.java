@@ -1,5 +1,5 @@
-import ingame.gimley.components.ChatBox;
-import core.geometry.Vector2D;
+import ingame.actors.ShipActor;
+import ingame.gimley.components.PlayerInventory;
 import core.gimley.GFrame;
 
 public class GimleyTest {
@@ -7,9 +7,10 @@ public class GimleyTest {
   public static void main(String ... args) {
     GFrame window = new GFrame(null, "test window", 500, 500);
     
+    ShipActor player = new ShipActor(1000,100);
+    final PlayerInventory inventory = new PlayerInventory(window, player);
+    window.add(inventory);
     
-    ChatBox chat = new ChatBox(window, new Vector2D(20,20), null);
-    window.add(chat);
     window.setVisible(true);
   }
 }

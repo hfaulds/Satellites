@@ -1,6 +1,6 @@
 package core.gimley.actions;
 
-public class InputEntered extends Action {
+public class InputEntered extends ActionEvent {
 
   public final String input;
 

@@ -6,12 +6,9 @@ import ingame.actors.StationShieldActor;
 import ingame.controllers.PlayerInputController;
 import ingame.gimley.components.ChatBox;
 import ingame.gimley.components.FPSCounter;
-import ingame.gimley.components.InventoryPanel;
 import ingame.gimley.components.PlayerInventory;
 import ingame.gimley.components.StationDisplay;
 import ingame.gimley.components.StationDockRequest;
-import ingame.gimley.components.YesNoPopup;
-import ingame.gimley.icons.ItemIcon;
 import ingame.gimley.routers.WindowRouter;
 
 import javax.media.opengl.GL2;
@@ -28,11 +25,8 @@ import core.collisions.CollisionListener;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
 import core.geometry.Vector3D;
-import core.gimley.GPopup;
 import core.gimley.GFrame;
-import core.gimley.actions.Action;
-import core.gimley.actions.ItemMoved;
-import core.gimley.components.GComponent;
+import core.gimley.actions.ActionEvent;
 import core.gimley.listeners.ActionListener;
 import core.net.MsgListener;
 import core.net.connections.NetworkConnection;
@@ -87,47 +81,7 @@ public class SceneWindow extends GFrame {
 
   private PlayerInventory setupInventory(final Scene scene) {
     final PlayerInventory inventory = new PlayerInventory(this, scene.player);
-    
-    inventory.addActionListener(new ActionListener(){
-      @Override
-      public void action(Action action) {
-        if(action instanceof ItemMoved) {
-          ItemMoved itemAction = (ItemMoved)action;
-          final ItemIcon icon = itemAction.icon;
-          
-          GComponent newParent = subcomponents.getComponentAt(itemAction.location);
-          if(newParent instanceof InventoryPanel) {
-            inventory.removeItem(icon);
-            ((InventoryPanel)newParent).addItem(icon);
-          } else {
-            final YesNoPopup yesNoPopup = new YesNoPopup(
-              SceneWindow.this, 
-              "Drop Item", 
-              "Are you sure you want to drop " + icon.item.getName(), 
-              new Vector2D(width/2 - YesNoPopup.WIDTH/2, height/2 - YesNoPopup.HEIGHT/2)
-            );
-            
-            final GPopup popup = createPopup(yesNoPopup);
-            
-            yesNoPopup.drop.addActionListener(new ActionListener() {
-              @Override
-              public void action(Action action) {
-                remove(popup);
-                inventory.removeItem(icon);
-              }
-            });
-            
-            yesNoPopup.cancel.addActionListener(new ActionListener() {
-              @Override
-              public void action(Action action) {
-                remove(popup);
-                inventory.addItem(icon);
-              }
-            });
-          }
-        }
-      }
-    });
+    inventory.setVisible(false);
     return inventory;
   }
 
@@ -174,7 +128,7 @@ public class SceneWindow extends GFrame {
     
     stationDockRequest.dock.addActionListener(new ActionListener() {
       @Override
-      public void action(Action action) {
+      public void action(ActionEvent action) {
         scene.input.setActor(null);
         
         Actor player = scene.player;
@@ -195,7 +149,7 @@ public class SceneWindow extends GFrame {
     
     stationDisplay.undock.addActionListener(new ActionListener() {
       @Override
-      public void action(Action action) {
+      public void action(ActionEvent action) {
         Actor player = scene.player;
         connection.sendMsg(new ShipDockMsg(player.id, ShipDockMsg.UNDOCKING));
 
@@ -239,18 +193,21 @@ public class SceneWindow extends GFrame {
   
   @Override
   public void mouseDragged(Vector2D start, Vector2D end, Vector2D offset, MouseEvent e) {
+    super.mouseDragged(start, end, offset, e);
     endMousePos._set(end);
     scene.input.mouseMoved(end);
   }
   
   @Override
   public void mousePressed(Vector2D mouse, MouseEvent e) {
+    super.mousePressed(mouse, e);
     bPanning = e.getButton() == PAN_BUTTON;
     endMousePos._set(startMousePos._set(mouse));
   }
   
   @Override
   public void mouseReleased(Vector2D mouse, MouseEvent e) {
+    super.mouseReleased(mouse, e);
     bPanning = false;
     if(e.getButton() == PlayerInputController.FIRE_BUTTON) {
       scene.input.mouseReleased(mouse);
@@ -259,12 +216,14 @@ public class SceneWindow extends GFrame {
   
   @Override
   public void mouseWheelMoved(MouseEvent e) {
+    super.mouseWheelMoved(e);
     cameraPos.z = Math.max(Math.abs(cameraPos.z - e.getWheelRotation() * ZOOM_RATE), ZOOM_RATE);
     renderer3D.updateMatrices();
   } 
 
   @Override
   public void mouseMoved(Vector2D mouse) {
+    super.mouseMoved(mouse);
     scene.input.mouseMoved(mouse);
   }
   

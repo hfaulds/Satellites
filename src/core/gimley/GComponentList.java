@@ -26,6 +26,7 @@ public class GComponentList implements List<GComponent> {
   
   public GComponentList(GComponent parent, GComponent ... components) {
     unInitComponents.addAll(Arrays.asList(components));
+    
     this.focus = this.parent = parent;
   }
   
@@ -57,7 +58,7 @@ public class GComponentList implements List<GComponent> {
     }
   }
   
-  public void setFocus(GComponent focus) {
+  public GComponent setFocus(GComponent focus) {
     if(focus.getVisible()) {
       synchronized(this) {
         if(initComponents.contains(focus)) {
@@ -70,6 +71,7 @@ public class GComponentList implements List<GComponent> {
     } else {
       setFocus(focus.parent);
     }
+    return focus;
   }
 
   private void initComponents(GL2 gl, int width, int height) {

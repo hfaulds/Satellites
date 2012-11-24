@@ -1,6 +1,6 @@
 package core;
 
-import ingame.gimley.icons.ItemIcon;
+import ingame.gimley.components.ItemIcon;
 
 public interface Item {
   public ItemIcon getIcon();

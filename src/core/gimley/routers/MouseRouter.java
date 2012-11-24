@@ -1,12 +1,12 @@
 package core.gimley.routers;
 
+import com.jogamp.newt.event.MouseAdapter;
 import com.jogamp.newt.event.MouseEvent;
-import com.jogamp.newt.event.MouseListener;
 
 import core.geometry.Vector2D;
 import core.gimley.components.GComponent;
 
-public class MouseRouter implements MouseListener {
+public class MouseRouter extends MouseAdapter {
 
   private final GComponent component;
   private Vector2D dragStart;
@@ -44,12 +44,5 @@ public class MouseRouter implements MouseListener {
   public void mouseWheelMoved(MouseEvent e) {
     component.mouseWheelMoved(e);
   }
-
-  @Override
-  public void mouseClicked(MouseEvent arg0) {}
-  @Override
-  public void mouseEntered(MouseEvent arg0) {}
-  @Override
-  public void mouseExited(MouseEvent arg0) {}
   
 }

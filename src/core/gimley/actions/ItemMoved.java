@@ -1,9 +1,9 @@
 package core.gimley.actions;
 
-import ingame.gimley.icons.ItemIcon;
+import ingame.gimley.components.ItemIcon;
 import core.geometry.Vector2D;
 
-public class ItemMoved extends Action {
+public class ItemMoved extends ActionEvent {
 
   public final ItemIcon icon;
   public final Vector2D location;

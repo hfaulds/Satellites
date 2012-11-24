@@ -8,22 +8,20 @@ import core.gimley.components.GComponent;
 
 public class KeyRouter implements KeyListener {
 
-  private final GComponent root;
+  private final GComponent component;
 
-  public KeyRouter(GComponent root) {
-    this.root = root;
+  public KeyRouter(GComponent component) {
+    this.component = component;
   }
 
   @Override
   public void keyReleased(KeyEvent e) {
-    GComponent focus = root.subcomponents.getFocus();
-    focus.keyReleased(e);
+    component.keyReleased(e);
   }
 
   @Override
   public void keyPressed(KeyEvent e) {
-    GComponent focus = root.subcomponents.getFocus();
-    focus.keyPressed(e);
+    component.keyPressed(e);
   }
 
   @Override

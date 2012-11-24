@@ -106,6 +106,7 @@ public abstract class GComponent implements MouseListener {
   @Override
   public void mousePressed(Vector2D click, MouseEvent e) {
     GComponent component = subcomponents.getComponentAt(click);
+    subcomponents.setFocus(component);
     
     if(component != this) {
       component.mousePressed(click, e);
@@ -120,13 +121,13 @@ public abstract class GComponent implements MouseListener {
 
   @Override
   public void mouseReleased(Vector2D click, MouseEvent e) {
-    GComponent component = subcomponents.getComponentAt(click);
+    GComponent focus = subcomponents.getFocus();
     
-    if(component != this) {
-      if(dragComponent != null) {
+    if(focus != this) {
+      if(dragComponent != null && dragComponent != focus) {
         dragComponent.mouseReleased(click, e);
       }
-      component.mouseReleased(click, e);
+      focus.mouseReleased(click, e);
       dragComponent = null;
     }
 

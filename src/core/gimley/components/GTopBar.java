@@ -5,14 +5,14 @@ import javax.media.opengl.GL2;
 import com.jogamp.newt.event.MouseEvent;
 
 import core.geometry.Vector2D;
-import core.gimley.actions.Action;
+import core.gimley.actions.ActionEvent;
 import core.gimley.components.buttons.GButton;
 import core.gimley.listeners.ActionListener;
 import core.render.Renderer2D;
 
 public class GTopBar extends GComponent {
 
-  private static final int HEIGHT = 15;
+  public static final int HEIGHT = 15;
 
   private final String title;
   
@@ -41,13 +41,13 @@ public class GTopBar extends GComponent {
     
     minimise.addActionListener(new ActionListener() {
       @Override
-      public void action(Action action) {
+      public void action(ActionEvent action) {
       }
     });
 
     close.addActionListener(new ActionListener() {
       @Override
-      public void action(Action action) {
+      public void action(ActionEvent action) {
         parent.setVisible(false);
       }
     });
@@ -60,6 +60,7 @@ public class GTopBar extends GComponent {
   @Override
   public void mouseDragged(Vector2D start, Vector2D end, Vector2D offset, MouseEvent e) {
     this.parent.position._set(end.sub(offset).sub(this.position));
+    super.mouseDragged(start, end, offset, e);
   }
   
   

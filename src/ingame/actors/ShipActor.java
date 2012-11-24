@@ -1,7 +1,6 @@
 package ingame.actors;
 
-import ingame.items.Ammo001Item;
-import ingame.items.Ammo002Item;
+import ingame.items.AmmoItem;
 
 import java.util.LinkedList;
 
@@ -30,11 +29,12 @@ public class ShipActor extends Actor {
   
   @SuppressWarnings("serial")
   private final LinkedList<Item> inventory = new LinkedList<Item>() {{
-    add(new Ammo001Item());
-    add(new Ammo002Item());
-    add(new Ammo001Item());
-    add(new Ammo002Item());
-    add(new Ammo002Item());
+    add(new AmmoItem("aaasdfasdf"));
+    add(new AmmoItem("basdfasdfb"));
+    add(new AmmoItem("casdfasdfc"));
+    add(new AmmoItem("dasdfasdfd"));
+    add(new AmmoItem("esadfasdfe"));
+    add(new AmmoItem("ffsdafasdf"));
   }};
 
   public ShipActor(Vector2D position, Rotation rotation, double mass, boolean visible, int id, int owner) {
