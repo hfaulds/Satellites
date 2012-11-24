@@ -37,8 +37,8 @@ public class ShipActor extends Actor {
     add(new AmmoItem("ffsdafasdf"));
   }};
 
-  public ShipActor(Vector2D position, Rotation rotation, double mass, boolean visible, int id) {
-    super(position, rotation, mass, MESH, visible, id);
+  public ShipActor(Vector2D position, Rotation rotation, double mass, int id) {
+    super(position, rotation, mass, MESH, id);
   }
   
   public ShipActor(double x, double y) {

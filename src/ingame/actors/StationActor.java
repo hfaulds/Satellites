@@ -11,8 +11,8 @@ public class StationActor extends Actor {
   private static final double MASS = 0.1;
   private static final Mesh MESH   = MeshLoader.loadMesh("Station-Mk2.obj");
   
-  public StationActor(Vector2D position, Rotation rotation, double mass, boolean visible, int id) {
-    super(position, rotation, mass, MESH, visible, id);
+  public StationActor(Vector2D position, Rotation rotation, double mass, int id) {
+    super(position, rotation, mass, MESH, id);
     add(new StationShieldActor(this));
   }
   

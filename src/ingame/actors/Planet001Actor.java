@@ -16,8 +16,8 @@ public class Planet001Actor extends Actor {
   
   public static final int MASS = 10; 
 
-  public Planet001Actor(Vector2D position, Rotation rotation, double mass, boolean visible, int id) {
-    super(position, rotation, mass, MESH, visible, id);
+  public Planet001Actor(Vector2D position, Rotation rotation, double mass, int id) {
+    super(position, rotation, mass, MESH, id);
   }
   
   public Planet001Actor(double x, double y) {

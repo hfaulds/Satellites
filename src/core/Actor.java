@@ -44,10 +44,10 @@ public abstract class Actor {
   /* CONSTRUCTORS */
   
   protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh) {
-    this(position, rotation, mass, mesh, true, NEXT_ID());
+    this(position, rotation, mass, mesh, NEXT_ID());
   }
 
-  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, boolean visible, int id) {
+  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, int id) {
     this.position = position;
     this.rotation = rotation;
     this.boundingbox = Box.createBoundingBox(mesh, this.position);
@@ -55,7 +55,6 @@ public abstract class Actor {
     this.velocity = new Vector2D();
     this.mesh = mesh;
     this.id = id;
-    this.visible = visible;
     ID_COUNT = Math.max(ID_COUNT, id);
   }
 
@@ -137,7 +136,7 @@ public abstract class Actor {
 
   @SuppressWarnings("unchecked")
   public ActorCreateMsg getCreateMsg() {
-    return new ActorCreateMsg(position, rotation, visible, id, mass, (Class<Actor>) getClass());
+    return new ActorCreateMsg(position, rotation, id, mass, (Class<Actor>) getClass());
   }
   
   public ActorUpdateMsg getUpdateMsg() {
@@ -155,8 +154,8 @@ public abstract class Actor {
 
   public static Actor fromInfo(ActorCreateMsg info) {
     try {
-      Constructor<? extends Actor> constructor = info.actorClass.getConstructor(Vector2D.class, Rotation.class, double.class, boolean.class, int.class);
-      return constructor.newInstance(info.position, info.rotation, info.mass, info.visible, info.id);
+      Constructor<? extends Actor> constructor = info.actorClass.getConstructor(Vector2D.class, Rotation.class, double.class, int.class);
+      return constructor.newInstance(info.position, info.rotation, info.mass, info.id);
     } catch (InstantiationException | IllegalAccessException
         | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
       e.printStackTrace();
