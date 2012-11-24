@@ -216,7 +216,7 @@ public class SceneWindow extends GFrame {
   
   @Override
   public void mouseWheelMoved(MouseEvent e) {
-    super.mouseWheelMoved(e);
+    super.mouseWheelMoved(e); 
     cameraPos.z = Math.max(Math.abs(cameraPos.z - e.getWheelRotation() * ZOOM_RATE), ZOOM_RATE);
     renderer3D.updateMatrices();
   } 

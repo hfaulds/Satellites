@@ -40,7 +40,10 @@ public class ClientConnection extends NetworkConnection {
         ActorUpdateMsg actorInfo = (ActorUpdateMsg) msg;
         Actor actor = scene.findActor(actorInfo.id);
         
+        System.out.println("Something moved " + actorInfo.id + " class ");// + scene.findActor(actorInfo.id).getClass());
+        
         if(actor != null) {
+          System.out.println("Actor found " + actor.id + " class ");
           actor._update(actorInfo);
         }
       }

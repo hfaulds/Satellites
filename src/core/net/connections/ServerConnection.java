@@ -42,7 +42,9 @@ public class ServerConnection extends NetworkConnection {
       this.addMsgListener(new MsgListener() {
         @Override
         public void msgReceived(Object msg, Connection connection) {
-          ((Player)connection).updateActor((PlayerUpdateMsg)msg);
+          Player player = (Player)connection;
+          System.out.println("Server felt moved " + player.actor.id);
+          player.updateActor((PlayerUpdateMsg)msg);
         }
         @Override
         public Class<?> getMsgClass() {

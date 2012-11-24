@@ -25,6 +25,8 @@ public class ServerListener extends NetworkListener {
     scene.addController(player.controller);
 
     List<ActorCreateMsg> actorInfoList = ActorCreateMsg.actorInfoList(scene);
+    System.out.println(actorInfoList.toString());
+    System.out.println(player.actor.id);
     connection.sendTCP(new SceneCreateMsg(actorInfoList, player.actor.id));
   }
   

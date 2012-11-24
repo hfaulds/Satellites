@@ -45,4 +45,9 @@ public class ActorCreateMsg {
     
     return infoList;
   }
+  
+  @Override
+  public String toString() {
+    return "id " + id + "  actorClass " + actorClass.toString() + "\n";
+  }
 }
