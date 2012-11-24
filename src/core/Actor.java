@@ -72,7 +72,7 @@ public abstract class Actor {
   }
   
   protected Actor(Actor parent, Vector2D position, Rotation rotation, double mass, Mesh mesh, boolean visible, int id, int owner) {
-    this(parent, position, rotation, mass, mesh, true, NEXT_ID(), owner, new Material());
+    this(parent, position, rotation, mass, mesh, true, id, owner, new Material());
   }
 
   protected Actor(Actor parent, Vector2D position, Rotation rotation, double mass, Mesh mesh, boolean visible, int id, int owner, Material material) {
@@ -84,6 +84,7 @@ public abstract class Actor {
     this.velocity = new Vector2D();
     this.mesh = mesh;
     this.id = id;
+    System.out.println(" IAMA " + this.getClass() + " ID " + id);
     this.owner = owner;
     this.visible = visible;
     this.material = material;

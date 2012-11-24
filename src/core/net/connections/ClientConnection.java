@@ -26,25 +26,25 @@ public class ClientConnection extends NetworkConnection {
 
   public void connect(InetAddress address) throws IOException {
     setupKryo(client);
-    setuMsgListeners(scene);
+    setupMsgListeners(scene);
     client.start();
     client.connect(TIMEOUT, address, TCP_PORT, UDP_PORT);
     client.addListener(listener);
     super.setAddress(address);
   }
 
-  private void setuMsgListeners(final Scene scene) {
+  private void setupMsgListeners(final Scene scene) {
     this.addMsgListener(new MsgListener() {
       @Override
       public void msgReceived(Object msg, Connection connection) {
         ActorUpdateMsg actorInfo = (ActorUpdateMsg) msg;
         Actor actor = scene.findActor(actorInfo.id);
         
-        System.out.println("Something moved " + actorInfo.id + " class ");// + scene.findActor(actorInfo.id).getClass());
-        
         if(actor != null) {
-          System.out.println("Actor found " + actor.id + " class ");
           actor._update(actorInfo);
+        } else {
+          for(Actor actor2 : scene.actors)
+            System.out.println("     " + actor2.id);
         }
       }
 

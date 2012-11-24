@@ -20,7 +20,7 @@ public class GFrame extends GComponent implements GLEventListener {
   private final GLWindow window = GLWindow.create(new GLCapabilities(GLProfile.getDefault()));
   
   private final Renderer2D renderer2D = new Renderer2D();
-  private final FPSAnimator animator = new FPSAnimator(window, 80);
+  private final FPSAnimator animator = new FPSAnimator(window, 60);
 
   public GFrame(GComponent parent, String title, int width, int height) {
     super(parent, width, height);

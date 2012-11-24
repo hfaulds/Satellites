@@ -69,18 +69,22 @@ public class Scene extends MouseAdapter {
     player.add(new ShipDirection(player));
     player.add(new ShipHealth(player));
     player.add(new ShipAim(player, input));
-    queueAddActor(player);
   }
   
   public void populate(List<ActorCreateMsg> actorInfo, int playerID, Connection connection) {
     for(ActorCreateMsg info : actorInfo) {
       Actor actor = Actor.fromInfo(info);
-      if(info.id == playerID) {
+      
+      
+      if(info.id == playerID ) {
         addController(new ClientShipController(actor, connection));
         setPlayer((ShipActor)actor);
       }
+      
+      
       queueAddActor(actor);
     }
+    
   }
   
   public Actor findActor(int id) {
