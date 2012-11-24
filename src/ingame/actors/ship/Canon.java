@@ -14,19 +14,21 @@ public class Canon extends Actor {
   public static final Mesh MESH = MeshLoader.loadMesh("Canon-Mk2.obj");
   public static final Vector2D OFFSET = new Vector2D(0, 0.26142); //0.26142
   
-  public Canon(Actor parent) {
-    super(parent, parent.position, parent.rotation, 0, MESH);
+  private final Rotation aimRotation;
+  private final Rotation shipRotation;
+  
+  public Canon(Vector2D position, Rotation aimRotation, Rotation shipRotation) {
+    super(position, aimRotation, 0, MESH);
+    this.aimRotation = aimRotation;
+    this.shipRotation = shipRotation;
   }
   
   @Override
   public void render(GL2 gl, GLU glu) {
-    Rotation aimRot = parent.rotation;
-    double shipAngle = parent.parent.rotation.toDegrees();
-    
     gl.glTranslated(position.x, position.y, Vector2D.Z);
-    gl.glRotated(shipAngle, aimRot.x, aimRot.y, aimRot.z);
+    gl.glRotated(shipRotation.toDegrees(), aimRotation.x, aimRotation.y, aimRotation.z);
     gl.glTranslated(OFFSET.x, OFFSET.y, Vector2D.Z);
-    gl.glRotated(aimRot.toDegrees() - shipAngle, aimRot.x, aimRot.y, aimRot.z);
+    gl.glRotated(aimRotation.toDegrees() - shipRotation.toDegrees(), aimRotation.x, aimRotation.y, aimRotation.z);
     
     gl.glCallList(listID);
   }

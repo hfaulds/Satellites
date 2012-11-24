@@ -24,9 +24,11 @@ public class ShipDirection extends Actor {
   private final int end    = mid + (int)(CIRCLE_SAMPLES * LINE_LENGTH);
   
   private int listID;
+  private ShipActor parent;
 
   public ShipDirection(ShipActor parent) {
-    super(parent, new Vector2D(), new Rotation(), 0, new Mesh());
+    super(new Vector2D(), new Rotation(), 0, new Mesh());
+    this.parent = parent;
   }
   
   @Override

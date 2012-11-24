@@ -31,7 +31,6 @@ public abstract class Actor {
   public final Box boundingbox;
   public final Material material;
 
-  public final Actor parent;
   public final List<Actor> subactors = new ArrayList<Actor>();
   
   public final Vector2D position;
@@ -48,35 +47,23 @@ public abstract class Actor {
   /* CONSTRUCTORS */
   
   protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, boolean visible, int id, int owner) {
-    this(null, position, rotation, mass, mesh, visible, id, owner);
+    this(position, rotation, mass, mesh, visible, id, owner, new Material());
   }
 
   protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh) {
-    this(null, position, rotation, mass, mesh, -1);
+    this(position, rotation, mass, mesh, -1);
   }
   
   protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, int owner) {
-    this(null, position, rotation, mass, mesh, owner);
+    this(position, rotation, mass, mesh, true, NEXT_ID(), owner, new Material());
   }
+  
+  public Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, Material material) {
+    this(position, rotation, mass, mesh, true, NEXT_ID(), -1, material);
+  }
+  
 
-  protected Actor(Actor parent, Vector2D position, Rotation rotation, double mass, Mesh mesh) {
-    this(parent, position, rotation, mass, mesh, -1);
-  }
-  
-  protected Actor(Actor parent, Vector2D position, Rotation rotation, double mass, Mesh mesh, int owner) {
-    this(parent, position, rotation, mass, mesh, true, NEXT_ID(), owner);
-  }
-  
-  public Actor(Actor parent, Vector2D position, Rotation rotation, double mass, Mesh mesh, Material material) {
-    this(parent, position, rotation, mass, mesh, true, NEXT_ID(), -1, material);
-  }
-  
-  protected Actor(Actor parent, Vector2D position, Rotation rotation, double mass, Mesh mesh, boolean visible, int id, int owner) {
-    this(parent, position, rotation, mass, mesh, true, id, owner, new Material());
-  }
-
-  protected Actor(Actor parent, Vector2D position, Rotation rotation, double mass, Mesh mesh, boolean visible, int id, int owner, Material material) {
-    this.parent = parent;
+  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, boolean visible, int id, int owner, Material material) {
     this.position = position;
     this.rotation = rotation;
     this.boundingbox = Box.createBoundingBox(mesh, this.position);

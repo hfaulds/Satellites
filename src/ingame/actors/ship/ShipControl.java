@@ -23,9 +23,11 @@ public class ShipControl extends Actor {
   public static final float LINE_WIDTH			= 3.5f;
 
   private int listID;
+  private ShipActor parent;
   
   public ShipControl(ShipActor parent) {
-    super(parent, new Vector2D(), new Rotation(), 0, new Mesh());
+    super(new Vector2D(), new Rotation(), 0, new Mesh());
+    this.parent = parent;
   }
   
   @Override

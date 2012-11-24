@@ -23,9 +23,9 @@ public class ShipAim extends Actor {
   
   private PlayerInputController controller;
 
-  public ShipAim(ShipActor parent, PlayerInputController controller) {
-    super(parent, parent.position, new Rotation(), 0, new Mesh());
-    add(new Canon(this));
+  public ShipAim(ShipActor ship, PlayerInputController controller) {
+    super(ship.position, new Rotation(), 0, new Mesh());
+    add(new Canon(position, rotation, ship.rotation));
     this.controller = controller;
   }
   

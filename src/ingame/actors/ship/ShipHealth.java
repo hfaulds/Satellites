@@ -25,9 +25,12 @@ public class ShipHealth extends Actor {
 
   private final int startHealth = SEGMENTS * 7 / 8;
   private final int startShield = SEGMENTS * 3 / 8;
+  
+  private ShipActor parent;
 
   public ShipHealth(ShipActor parent) {
-    super(parent, new Vector2D(), new Rotation(), 0, new Mesh());
+    super(new Vector2D(), new Rotation(), 0, new Mesh());
+    this.parent = parent;
   }
   
   @Override
@@ -36,8 +39,6 @@ public class ShipHealth extends Actor {
   @Override
   public void render(GL2 gl, GLU glu) {
     gl.glDisable(GL2.GL_LIGHTING);
-
-    ShipActor parent = (ShipActor)super.parent;
     
     gl.glTranslated(parent.position.x, parent.position.y, Vector2D.Z);
     int health = startHealth + parent.health / SEGMENT_RATIO;

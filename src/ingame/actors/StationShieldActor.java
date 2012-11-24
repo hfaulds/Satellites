@@ -12,8 +12,11 @@ public class StationShieldActor extends Actor {
   private static final double MASS = 0;
   private static final Mesh MESH   = MeshLoader.loadMesh("Station-Mk2-Shield.obj");
   
-  protected StationShieldActor(Actor parent) {
-    super(parent, parent.position, parent.rotation, MASS, MESH, MATERIAL);
+  public final StationActor station;
+  
+  protected StationShieldActor(StationActor station) {
+    super(station.position, station.rotation, MASS, MESH, MATERIAL);
+    this.station = station;
   }
   
 }

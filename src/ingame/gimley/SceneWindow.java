@@ -81,7 +81,6 @@ public class SceneWindow extends GFrame {
 
   private PlayerInventory setupInventory(final Scene scene) {
     final PlayerInventory inventory = new PlayerInventory(this, scene.player);
-    inventory.setVisible(false);
     return inventory;
   }
 
@@ -114,7 +113,7 @@ public class SceneWindow extends GFrame {
         public void collisionStart(Collision collision) {
           if(collision.a == scene.player) {
             stationDockRequest.setVisible(true);
-            stationDisplay.setStation((StationActor)((StationShieldActor)collision.b).parent);
+            stationDisplay.setStation((StationActor)((StationShieldActor)collision.b).station);
           }
         }
         @Override
