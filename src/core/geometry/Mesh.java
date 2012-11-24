@@ -2,10 +2,14 @@ package core.geometry;
 
 import javax.media.opengl.GL2;
 
+import core.render.material.Material;
+
 public class Mesh {
 
   public final Vector3D[] vertices;
   public final Triangle[] triangles;
+  
+  public Material material = new Material();
   
   public Mesh() {
     this(new Vector3D[]{new Vector3D()}, new Triangle[0]);
@@ -30,5 +34,10 @@ public class Mesh {
       }
       gl.glEnd();
     }
+  }
+
+  public Mesh setMaterial(Material material) {
+    this.material = material;
+    return this;
   }
 }

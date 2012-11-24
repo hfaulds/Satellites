@@ -14,7 +14,6 @@ import core.geometry.Rotation;
 import core.geometry.Vector2D;
 import core.net.msg.ActorCreateMsg;
 import core.net.msg.ActorUpdateMsg;
-import core.render.material.Material;
 
 public abstract class Actor {
 
@@ -28,7 +27,6 @@ public abstract class Actor {
   
   public final Mesh mesh;
   public final Box boundingbox;
-  public final Material material;
 
   public final List<Actor> subactors = new ArrayList<Actor>();
   
@@ -45,20 +43,11 @@ public abstract class Actor {
 
   /* CONSTRUCTORS */
   
-  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, boolean visible, int id) {
-    this(position, rotation, mass, mesh, visible, id, new Material());
-  }
-  
   protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh) {
-    this(position, rotation, mass, mesh, true, NEXT_ID(), new Material());
+    this(position, rotation, mass, mesh, true, NEXT_ID());
   }
-  
-  public Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, Material material) {
-    this(position, rotation, mass, mesh, true, NEXT_ID(), material);
-  }
-  
 
-  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, boolean visible, int id, Material material) {
+  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, boolean visible, int id) {
     this.position = position;
     this.rotation = rotation;
     this.boundingbox = Box.createBoundingBox(mesh, this.position);
@@ -67,7 +56,6 @@ public abstract class Actor {
     this.mesh = mesh;
     this.id = id;
     this.visible = visible;
-    this.material = material;
     ID_COUNT = Math.max(ID_COUNT, id);
   }
 
@@ -92,9 +80,9 @@ public abstract class Actor {
     listID = gl.glGenLists(1);
     gl.glNewList(listID, GL2.GL_COMPILE);
     {
-      material.startRender(gl);
+      mesh.material.startRender(gl);
       mesh.render(gl);
-      material.stopRender(gl);
+      mesh.material.stopRender(gl);
     }
     gl.glEndList();
 
