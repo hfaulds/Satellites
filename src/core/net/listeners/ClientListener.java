@@ -18,7 +18,6 @@ public class ClientListener extends NetworkListener {
       @Override
       public void msgReceived(Object msg, Connection connection) {
         SceneCreateMsg sceneInfo = (SceneCreateMsg)msg;
-        System.out.println(sceneInfo.actorInfoList.toString())  ;
         ClientListener.this.connection = connection;
         scene.populate(sceneInfo.actorInfoList, sceneInfo.playerID, connection);
       }

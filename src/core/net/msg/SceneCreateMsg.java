@@ -14,7 +14,6 @@ public class SceneCreateMsg {
   }
   
   public SceneCreateMsg() {
-    this.actorInfoList = new ArrayList<ActorCreateMsg>();
-    this.playerID = 0;
+    this(new ArrayList<ActorCreateMsg>(), 0);
   }
 }

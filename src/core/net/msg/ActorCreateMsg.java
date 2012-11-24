@@ -15,21 +15,19 @@ public class ActorCreateMsg {
   public final Vector2D position;
   public final Rotation rotation;
   public final int id;
-  public final int owner;
   public final double mass;
   public final Class<? extends Actor> actorClass;
   public final boolean visible;
   
   public ActorCreateMsg() {
-    this(new Vector2D(), new Rotation(), true, 0, 0, 0, Actor.class);
+    this(new Vector2D(), new Rotation(), true, 0, 0, Actor.class);
   }
   
-  public ActorCreateMsg(Vector2D position, Rotation rotation, boolean visible, int id, int owner, double mass, Class<? extends Actor> actorClass) {
+  public ActorCreateMsg(Vector2D position, Rotation rotation, boolean visible, int id, double mass, Class<? extends Actor> actorClass) {
     this.position = position;
     this.rotation = rotation;
     this.visible = visible;
     this.id = id;
-    this.owner = owner;
     this.mass = mass;
     this.actorClass = actorClass;
   }

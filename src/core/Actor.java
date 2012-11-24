@@ -23,7 +23,6 @@ public abstract class Actor {
   private static int ID_COUNT = 0;
   
   public final int id;
-  public final int owner;
   
   private boolean visible = true;
   
@@ -46,24 +45,20 @@ public abstract class Actor {
 
   /* CONSTRUCTORS */
   
-  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, boolean visible, int id, int owner) {
-    this(position, rotation, mass, mesh, visible, id, owner, new Material());
-  }
-
-  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh) {
-    this(position, rotation, mass, mesh, -1);
+  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, boolean visible, int id) {
+    this(position, rotation, mass, mesh, visible, id, new Material());
   }
   
-  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, int owner) {
-    this(position, rotation, mass, mesh, true, NEXT_ID(), owner, new Material());
+  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh) {
+    this(position, rotation, mass, mesh, true, NEXT_ID(), new Material());
   }
   
   public Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, Material material) {
-    this(position, rotation, mass, mesh, true, NEXT_ID(), -1, material);
+    this(position, rotation, mass, mesh, true, NEXT_ID(), material);
   }
   
 
-  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, boolean visible, int id, int owner, Material material) {
+  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, boolean visible, int id, Material material) {
     this.position = position;
     this.rotation = rotation;
     this.boundingbox = Box.createBoundingBox(mesh, this.position);
@@ -71,7 +66,6 @@ public abstract class Actor {
     this.velocity = new Vector2D();
     this.mesh = mesh;
     this.id = id;
-    this.owner = owner;
     this.visible = visible;
     this.material = material;
     ID_COUNT = Math.max(ID_COUNT, id);
@@ -155,7 +149,7 @@ public abstract class Actor {
 
   @SuppressWarnings("unchecked")
   public ActorCreateMsg getCreateMsg() {
-    return new ActorCreateMsg(position, rotation, visible, id, owner, mass, (Class<Actor>) getClass());
+    return new ActorCreateMsg(position, rotation, visible, id, mass, (Class<Actor>) getClass());
   }
   
   public ActorUpdateMsg getUpdateMsg() {
@@ -173,8 +167,8 @@ public abstract class Actor {
 
   public static Actor fromInfo(ActorCreateMsg info) {
     try {
-      Constructor<? extends Actor> constructor = info.actorClass.getConstructor(Vector2D.class, Rotation.class, double.class, boolean.class, int.class, int.class);
-      return constructor.newInstance(info.position, info.rotation, info.mass, info.visible, info.id, info.owner);
+      Constructor<? extends Actor> constructor = info.actorClass.getConstructor(Vector2D.class, Rotation.class, double.class, boolean.class, int.class);
+      return constructor.newInstance(info.position, info.rotation, info.mass, info.visible, info.id);
     } catch (InstantiationException | IllegalAccessException
         | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
       e.printStackTrace();
