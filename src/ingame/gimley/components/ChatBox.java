@@ -51,8 +51,8 @@ public class ChatBox extends GPanel {
 
   @Override
   public void render(GL2 gl, int width, int height) {
-    renderMessages(gl);
     super.render(gl, width, height);
+    renderMessages(gl);
   }
 
   private void renderMessages(GL2 gl) {

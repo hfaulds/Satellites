@@ -232,11 +232,13 @@ public class SceneWindow extends GFrame {
   
   @Override
   public void keyPressed(KeyEvent e) {
+    super.keyPressed(e);
     scene.input.keyPressed(e);
   }
   
   @Override
   public void keyReleased(KeyEvent e) {
+    super.keyReleased(e);
     scene.input.keyReleased(e);
   }
   
