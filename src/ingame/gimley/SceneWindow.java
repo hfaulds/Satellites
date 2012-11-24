@@ -1,8 +1,7 @@
 package ingame.gimley;
 
-import ingame.actors.ShipActor;
 import ingame.actors.StationActor;
-import ingame.actors.StationShieldActor;
+import ingame.collisions.ShipStationShieldCollisionHandler;
 import ingame.controllers.PlayerInputController;
 import ingame.gimley.components.ChatBox;
 import ingame.gimley.components.FPSCounter;
@@ -20,8 +19,6 @@ import com.jogamp.newt.event.MouseEvent;
 import core.Actor;
 import core.Scene;
 import core.SceneUpdater;
-import core.collisions.Collision;
-import core.collisions.CollisionListener;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
 import core.geometry.Vector3D;
@@ -102,28 +99,11 @@ public class SceneWindow extends GFrame {
     return chatBox;
   }
 
-  @SuppressWarnings("unchecked")
   private void setupStationUI(final StationDockRequest stationDockRequest, final StationDisplay stationDisplay, final Scene scene, final NetworkConnection connection) {
     stationDockRequest.setVisible(false);
     stationDisplay.setVisible(false);
     
-    updater.addCollisionListener(
-      new CollisionListener(new Class[]{ShipActor.class, StationShieldActor.class}) {
-        @Override
-        public void collisionStart(Collision collision) {
-          if(collision.a == scene.player) {
-            stationDockRequest.setVisible(true);
-            stationDisplay.setStation((StationActor)((StationShieldActor)collision.b).station);
-          }
-        }
-        @Override
-        public void collisionEnd(Collision collision) {
-          if(collision.a == scene.player) {
-            stationDockRequest.setVisible(false);
-          }
-        }
-      }
-    );
+    updater.addCollisionListener(new ShipStationShieldCollisionHandler(stationDisplay, stationDockRequest, scene));
     
     stationDockRequest.dock.addActionListener(new ActionListener() {
       @Override
