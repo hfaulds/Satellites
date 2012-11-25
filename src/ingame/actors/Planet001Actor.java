@@ -14,7 +14,7 @@ public class Planet001Actor extends Actor {
   private static final Material MATERIAL  = new Material(BLUE, BLUE, BLUE, BLUE, 127);
   private static final Mesh     MESH      = MeshLoader.loadMesh("Planet 1000.obj").setMaterial(MATERIAL);
   
-  public static final int MASS = 10; 
+  public static final int       MASS      = 10000; 
 
   public Planet001Actor(Vector2D position, Rotation rotation, double mass, int id) {
     super(position, rotation, mass, MESH, id);

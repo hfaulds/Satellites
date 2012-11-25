@@ -2,6 +2,7 @@ package core.net.connections;
 
 
 import ingame.actors.Planet001Actor;
+import ingame.actors.PlayerShipActor;
 import ingame.actors.ProjectileActor;
 import ingame.actors.ShipActor;
 import ingame.actors.StationActor;
@@ -88,12 +89,11 @@ public class ServerConnection extends NetworkConnection {
       }
     });
     
-    ShipActor player = new ShipActor(0, 0);
-    scene.setPlayer(player);
+    PlayerShipActor player = scene.makePlayer(new ShipActor(0, 0));
     scene.queueAddActor(player);
     scene.addController(new ServerShipController(player, this));
     
-    Planet001Actor planet = new Planet001Actor(17, 17);
+    Planet001Actor planet = new Planet001Actor(50, 50);
     scene.queueAddActor(planet);
     scene.addController(new ServerActorController(planet, this));
     

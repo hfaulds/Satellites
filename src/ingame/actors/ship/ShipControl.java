@@ -20,7 +20,7 @@ public class ShipControl extends Actor {
   public static final int CIRCLE_SAMPLES        = 40;
   public static final double CIRCLE_INCREMENT   = 2*Math.PI/CIRCLE_SAMPLES;
   
-  public static final float LINE_WIDTH			= 3.5f;
+  public static final float LINE_WIDTH			    = 3.5f;
 
   private int listID;
   private ShipActor parent;

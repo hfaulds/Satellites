@@ -1,11 +1,8 @@
 package core;
 
+import ingame.actors.PlayerShipActor;
 import ingame.actors.PointLightActor;
 import ingame.actors.ShipActor;
-import ingame.actors.ship.ShipAim;
-import ingame.actors.ship.ShipControl;
-import ingame.actors.ship.ShipDirection;
-import ingame.actors.ship.ShipHealth;
 import ingame.controllers.ClientShipController;
 import ingame.controllers.PlayerInputController;
 
@@ -23,7 +20,7 @@ import core.net.msg.ActorCreateMsg;
 public class Scene extends MouseAdapter {
 
   public final String username;
-  public ShipActor player;
+  public PlayerShipActor player;
   
   public final PlayerInputController input = new PlayerInputController();
 
@@ -62,13 +59,11 @@ public class Scene extends MouseAdapter {
     }
   }
 
-  public void setPlayer(ShipActor player) {
-    this.player = player;
+  public PlayerShipActor makePlayer(ShipActor ship) {
+    PlayerShipActor player = new PlayerShipActor(ship, input);
     input.setActor(player);
-    player.add(new ShipControl(player));
-    player.add(new ShipDirection(player));
-    player.add(new ShipHealth(player));
-    player.add(new ShipAim(player, input));
+    this.player = player;
+    return player;
   }
   
   public void populate(List<ActorCreateMsg> actorInfo, int playerID, Connection connection) {
@@ -78,13 +73,12 @@ public class Scene extends MouseAdapter {
       
       if(info.id == playerID ) {
         addController(new ClientShipController(actor, connection));
-        setPlayer((ShipActor)actor);
+        actor = makePlayer((ShipActor)actor);
       }
       
       
       queueAddActor(actor);
     }
-    
   }
   
   public Actor findActor(int id) {

@@ -39,6 +39,7 @@ public class PlayerInputController implements Controller {
   public long timeTillNextFire = 0;
   
   public void setActor(Actor actor) {
+    System.out.println(actor);
     this.actor = actor;
   }
   
@@ -55,11 +56,11 @@ public class PlayerInputController implements Controller {
     
     if(actor != null) {
       if(accelMag != 0) {
-        Vector2D acceleration = START_DIRECTION.rotate(actor.rotation.mag)._mult(accelMag * ACCELERATION);
+        Vector2D acceleration = START_DIRECTION.rotate(actor.rotation.mag)._mult(dt * accelMag * ACCELERATION);
         actor.velocity._add(acceleration);
       }
       if(spinMag != 0) {
-        double spin = spinMag * SPIN;
+        double spin = dt * spinMag * SPIN;
         actor.spin._add(spin); 
       }
     }

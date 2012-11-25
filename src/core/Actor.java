@@ -31,10 +31,10 @@ public abstract class Actor {
   public final List<Actor> subactors = new ArrayList<Actor>();
   
   public final Vector2D position;
-  public final Vector2D velocity;
+  public Vector2D velocity;
   
   public final Rotation rotation;
-  public final Rotation spin = new Rotation();
+  public Rotation spin = new Rotation();
 
   public final double mass;
 
@@ -60,7 +60,7 @@ public abstract class Actor {
 
 
 
-  public void add(Actor actor) {
+  protected void add(Actor actor) {
     subactors.add(actor); 
   }
   

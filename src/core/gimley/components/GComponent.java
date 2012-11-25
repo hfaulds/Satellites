@@ -198,4 +198,8 @@ public abstract class GComponent implements MouseListener {
     this.mouseListeners.add(listener);
   }
 
+  public void minimise() {
+    
+  }
+
 }

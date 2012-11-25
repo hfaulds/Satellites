@@ -23,12 +23,12 @@ public class GTopBar extends GComponent {
     this(parent, title, true, false);
   }
 
-  public GTopBar(final GComponent parent, String title, boolean bMinimise, boolean bClose) {
+  public GTopBar(final GComponent parent, String title, boolean canMinimise, boolean bClose) {
     super(parent, new Vector2D(0, parent.height), parent.width, HEIGHT);
     parent.height += HEIGHT;
     this.title = title;
     
-    if(bMinimise) {
+    if(canMinimise) {
       add(minimise);
       if(!bClose) {
         minimise.position.x += 11;
@@ -42,6 +42,7 @@ public class GTopBar extends GComponent {
     minimise.addActionListener(new ActionListener() {
       @Override
       public void action(ActionEvent action) {
+        parent.minimise();
       }
     });
 
