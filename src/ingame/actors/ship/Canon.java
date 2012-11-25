@@ -21,6 +21,7 @@ public class Canon extends Actor {
     super(position, aimRotation, 0, MESH);
     this.aimRotation = aimRotation;
     this.shipRotation = shipRotation;
+    this.collideable = false;
   }
   
   @Override

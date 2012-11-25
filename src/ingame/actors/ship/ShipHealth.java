@@ -31,6 +31,7 @@ public class ShipHealth extends Actor {
   public ShipHealth(ShipActor parent) {
     super(new Vector2D(), new Rotation(), 0, new Mesh());
     this.parent = parent;
+    this.collideable = false;
   }
   
   @Override

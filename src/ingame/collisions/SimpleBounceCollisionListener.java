@@ -1,14 +1,19 @@
 package ingame.collisions;
 
 import ingame.actors.Planet001Actor;
+import ingame.actors.PlayerShipActor;
 import ingame.actors.StationActor;
+import core.collisions.ClassPair;
 import core.collisions.Collision;
 import core.collisions.CollisionListener;
 
-public class PlanetStationCollisionListener extends CollisionListener {
+public class SimpleBounceCollisionListener extends CollisionListener {
 
-  public PlanetStationCollisionListener() {
-    super(new ClassPair(StationActor.class, Planet001Actor.class));
+  public SimpleBounceCollisionListener() {
+    super(
+        new ClassPair(PlayerShipActor.class, Planet001Actor.class), 
+        new ClassPair(StationActor.class, Planet001Actor.class)
+        );
   }
 
   @Override
@@ -19,7 +24,6 @@ public class PlanetStationCollisionListener extends CollisionListener {
 
   @Override
   public void collisionEnd(Collision collision) {
-    // TODO Auto-generated method stub
     
   }
 

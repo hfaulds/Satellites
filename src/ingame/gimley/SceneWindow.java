@@ -77,7 +77,7 @@ public class SceneWindow extends GFrame {
     stationDockRequest.setVisible(false);
     stationDisplay.setVisible(false);
     
-    updater.addCollisionListener(new ShipStationShieldCollisionListener(stationDisplay, stationDockRequest, scene));
+    updater.addCollisionListener(new ShipStationShieldCollisionListener(stationDisplay, stationDockRequest));
     
     stationDockRequest.dock.addActionListener(new StationDockActionListener(scene, stationDockRequest, connection, stationDisplay));
     stationDisplay.undock.addActionListener(new StationUndockActionListener(stationDisplay, connection, scene));

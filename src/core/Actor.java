@@ -40,6 +40,8 @@ public abstract class Actor {
 
   protected int listID;
 
+  public boolean collideable;
+
 
   /* CONSTRUCTORS */
   
@@ -55,6 +57,7 @@ public abstract class Actor {
     this.velocity = new Vector2D();
     this.mesh = mesh;
     this.id = id;
+    this.collideable = true;
     ID_COUNT = Math.max(ID_COUNT, id);
   }
 

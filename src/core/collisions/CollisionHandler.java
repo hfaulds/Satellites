@@ -16,18 +16,20 @@ public class CollisionHandler {
   
   public void tick() {
     synchronized(collisions) {
-      
       Iterator<Entry<Collision, Boolean>> iterator = collisions.entrySet().iterator();
       
       while (iterator.hasNext()) {
           Entry<Collision, Boolean> entry = iterator.next();
           if(!entry.getValue()) {
             Collision collision = entry.getKey();
+            
             for(CollisionListener listener : listeners) {
-              if(listener.isListeningFor(collision.a, collision.b)) {
-                listener.collisionEnd(listener.correctOrder(collision));
+              ClassPair pair = listener.getClassPairMatching(collision.a, collision.b);
+              if(pair != null) {
+                listener.collisionEnd(collision, pair);
               }
             }
+            
             iterator.remove();
           }
       }
@@ -41,8 +43,9 @@ public class CollisionHandler {
   
   private void addCollisionEntry(Collision collision) {
     for(CollisionListener listener : listeners) {
-      if(listener.isListeningFor(collision.a, collision.b)) {
-        listener.collisionStart(listener.correctOrder(collision));
+      ClassPair pair = listener.getClassPairMatching(collision.a, collision.b);
+      if(pair != null) {
+        listener.collisionStart(collision, pair);
       }
     }
     collisions.put(collision, true);

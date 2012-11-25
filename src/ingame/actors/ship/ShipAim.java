@@ -27,6 +27,7 @@ public class ShipAim extends Actor {
     super(ship.position, new Rotation(), 0, new Mesh());
     add(new Canon(position, rotation, ship.rotation));
     this.controller = controller;
+    this.collideable = false;
   }
   
   @Override

@@ -1,8 +1,10 @@
 package ingame.collisions;
 
+import ingame.actors.PlayerShipActor;
 import ingame.actors.ProjectileActor;
 import ingame.actors.ShipActor;
 import core.SceneUpdater;
+import core.collisions.ClassPair;
 import core.collisions.Collision;
 import core.collisions.CollisionListener;
 
@@ -11,7 +13,7 @@ public class ShipProjectileCollisionListener extends CollisionListener {
   private final SceneUpdater updater;
 
   public ShipProjectileCollisionListener(SceneUpdater updater) {
-    super(new ClassPair(ProjectileActor.class, ShipActor.class));
+    super(new ClassPair(ProjectileActor.class, ShipActor.class), new ClassPair(ProjectileActor.class, PlayerShipActor.class));
     this.updater = updater;
   }
  

@@ -28,6 +28,7 @@ public class ShipControl extends Actor {
   public ShipControl(ShipActor parent) {
     super(new Vector2D(), new Rotation(), 0, new Mesh());
     this.parent = parent;
+    this.collideable = false;
   }
   
   @Override

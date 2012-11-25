@@ -1,8 +1,7 @@
 package core;
 
-import ingame.collisions.PlanetStationCollisionListener;
-import ingame.collisions.ShipPlanetCollisionListener;
 import ingame.collisions.ShipProjectileCollisionListener;
+import ingame.collisions.SimpleBounceCollisionListener;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -26,8 +25,7 @@ public class SceneUpdater {
   public SceneUpdater(Scene scene) {
     this.scene = scene;
     this.addCollisionListener(new ShipProjectileCollisionListener(this));
-    this.addCollisionListener(new PlanetStationCollisionListener());
-    this.addCollisionListener(new ShipPlanetCollisionListener());
+    this.addCollisionListener(new SimpleBounceCollisionListener());
   }
   
   public void addCollisionListener(CollisionListener listener) {
@@ -86,7 +84,7 @@ public class SceneUpdater {
   }
 
   private boolean collisionExists(Actor a, Actor b) {
-    return Box.boxesIntersect(a.boundingbox, b.boundingbox);
+    return a.collideable && b.collideable && Box.boxesIntersect(a.boundingbox, b.boundingbox);
   }
 
 }

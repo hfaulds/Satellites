@@ -29,6 +29,7 @@ public class ShipDirection extends Actor {
   public ShipDirection(ShipActor parent) {
     super(new Vector2D(), new Rotation(), 0, new Mesh());
     this.parent = parent;
+    this.collideable = false;
   }
   
   @Override
