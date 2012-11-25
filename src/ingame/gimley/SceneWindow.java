@@ -1,6 +1,5 @@
 package ingame.gimley;
 
-import ingame.actors.StationActor;
 import ingame.collisions.ShipStationShieldCollisionListener;
 import ingame.controllers.PlayerInputController;
 import ingame.gimley.components.ChatBox;
@@ -8,26 +7,21 @@ import ingame.gimley.components.FPSCounter;
 import ingame.gimley.components.PlayerInventory;
 import ingame.gimley.components.StationDisplay;
 import ingame.gimley.components.StationDockRequest;
+import ingame.gimley.listeners.ChatMsgListener;
+import ingame.gimley.listeners.StationDockActionListener;
+import ingame.gimley.listeners.StationUndockActionListener;
 import ingame.gimley.routers.WindowRouter;
 
 import javax.media.opengl.GL2;
 
-import com.esotericsoftware.kryonet.Connection;
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.MouseEvent;
 
-import core.Actor;
 import core.Scene;
 import core.SceneUpdater;
-import core.geometry.Rotation;
 import core.geometry.Vector2D;
 import core.gimley.GFrame;
-import core.gimley.actions.ActionEvent;
-import core.gimley.listeners.ActionListener;
-import core.net.MsgListener;
 import core.net.connections.NetworkConnection;
-import core.net.msg.ChatMsg;
-import core.net.msg.ShipDockMsg;
 import core.render.Renderer3D;
 
 public class SceneWindow extends GFrame {
@@ -39,7 +33,7 @@ public class SceneWindow extends GFrame {
   private final SceneUpdater updater;
   private final Renderer3D renderer3D;
   
-  private double cameraZoom     = ZOOM_DEFAULT;
+  private double cameraZoom      = ZOOM_DEFAULT;
   private Vector2D startMousePos = new Vector2D();
   private Vector2D endMousePos   = new Vector2D();
   
@@ -66,33 +60,16 @@ public class SceneWindow extends GFrame {
     setupStationUI(stationDockRequest, stationDisplay, scene, connection);
     
     add(setupChatBox(scene, connection));
-    add(setupInventory(scene));
+    add(new PlayerInventory(this, scene.player));
     add(new FPSCounter(this, new Vector2D(5, -20)));
     add(stationDockRequest);
     add(stationDisplay);
   }
 
 
-  private PlayerInventory setupInventory(final Scene scene) {
-    final PlayerInventory inventory = new PlayerInventory(this, scene.player);
-    return inventory;
-  }
-
   private ChatBox setupChatBox(Scene scene, NetworkConnection connection) {
     final ChatBox chatBox = new ChatBox(this, new Vector2D(15, 15), connection);
-    
-    connection.addMsgListener(new MsgListener() {
-      @Override
-      public void msgReceived(Object msg, Connection reply) {
-        chatBox.displayMessage((ChatMsg) msg);
-      }
-
-      @Override
-      public Class<?> getMsgClass() {
-        return ChatMsg.class;
-      }
-    });
-    
+    connection.addMsgListener(new ChatMsgListener(chatBox));
     return chatBox;
   }
 
@@ -102,40 +79,8 @@ public class SceneWindow extends GFrame {
     
     updater.addCollisionListener(new ShipStationShieldCollisionListener(stationDisplay, stationDockRequest, scene));
     
-    stationDockRequest.dock.addActionListener(new ActionListener() {
-      @Override
-      public void action(ActionEvent action) {
-        scene.input.setActor(null);
-        
-        Actor player = scene.player;
-        StationActor station = stationDisplay.getStation();
-        
-        player.velocity._set(new Vector2D());
-        player.spin._set(new Rotation());
-        player.position._set(station.position.add(new Vector2D(20, 0)));
-        player.setVisible(false);
-        
-        connection.sendMsg(new ShipDockMsg(player.id, ShipDockMsg.DOCKING));
-        
-        stationDockRequest.setVisible(false);
-        stationDisplay.setVisible(true);
-        subcomponents.setFocus(stationDisplay);
-      }
-    });
-    
-    stationDisplay.undock.addActionListener(new ActionListener() {
-      @Override
-      public void action(ActionEvent action) {
-        Actor player = scene.player;
-        connection.sendMsg(new ShipDockMsg(player.id, ShipDockMsg.UNDOCKING));
-
-        stationDisplay.setVisible(false);
-        player.setVisible(true);
-        
-        scene.input.setActor(player);
-      }
-    });
-    
+    stationDockRequest.dock.addActionListener(new StationDockActionListener(scene, stationDockRequest, connection, stationDisplay));
+    stationDisplay.undock.addActionListener(new StationUndockActionListener(stationDisplay, connection, scene));
   }
 
   
@@ -149,8 +94,7 @@ public class SceneWindow extends GFrame {
   @Override
   public void render(GL2 gl, int width, int height) {
     updater.tick();
-    
-      renderer3D.render(gl, scene.player.position, cameraZoom, (double)width/height);
+    renderer3D.render(gl, scene.player.position, cameraZoom, (double)width/height);
   }
   
 
