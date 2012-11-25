@@ -10,7 +10,6 @@ import javax.media.opengl.glu.GLU;
 import core.Actor;
 import core.Scene;
 import core.geometry.Vector2D;
-import core.geometry.Vector3D;
 
 
 public class Renderer3D {
@@ -85,12 +84,12 @@ public class Renderer3D {
     }
   }
   
-  public void render(GL2 gl, Vector3D camera, double ratio) {
+  public void render(GL2 gl, Vector2D position, double zoom, double ratio) {
     gl.glMatrixMode(GL2.GL_PROJECTION);
     gl.glLoadIdentity();
     
     glu.gluPerspective(45, ratio, 1, 1000);
-    glu.gluLookAt(camera.x, camera.y, camera.z, camera.x, camera.y, 0, 0, 1, 0);
+    glu.gluLookAt(position.x, position.y, zoom, position.x, position.y, 0, 0, 1, 0);
 
     if(bUpdateMatrices)
       updateMatrices(gl);

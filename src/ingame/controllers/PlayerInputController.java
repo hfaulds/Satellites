@@ -39,7 +39,6 @@ public class PlayerInputController implements Controller {
   public long timeTillNextFire = 0;
   
   public void setActor(Actor actor) {
-    System.out.println(actor);
     this.actor = actor;
   }
   

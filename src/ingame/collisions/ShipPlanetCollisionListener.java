@@ -13,7 +13,6 @@ public class ShipPlanetCollisionListener extends CollisionListener {
 
   @Override
   public void collisionStart(Collision collision) {
-    System.out.println("ASDASDASD");
     collision.a.velocity._mult(-1);
     collision.b.velocity._mult(-1);
   }

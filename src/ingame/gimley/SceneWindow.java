@@ -21,7 +21,6 @@ import core.Scene;
 import core.SceneUpdater;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
-import core.geometry.Vector3D;
 import core.gimley.GFrame;
 import core.gimley.actions.ActionEvent;
 import core.gimley.listeners.ActionListener;
@@ -35,16 +34,14 @@ public class SceneWindow extends GFrame {
 
   private static final int ZOOM_RATE    = 10;
   private static final int ZOOM_DEFAULT = 20;
-  private static final int PAN_BUTTON   = MouseEvent.BUTTON3;
   
   private final Scene scene;
   private final SceneUpdater updater;
   private final Renderer3D renderer3D;
   
-  private Vector3D cameraPos     = new Vector3D(0, 0, ZOOM_DEFAULT);
+  private double cameraZoom     = ZOOM_DEFAULT;
   private Vector2D startMousePos = new Vector2D();
   private Vector2D endMousePos   = new Vector2D();
-  private boolean bPanning       = false;
   
   public SceneWindow(final Scene scene, final NetworkConnection connection) {
     super(null, scene.username, 800, 800);
@@ -153,13 +150,7 @@ public class SceneWindow extends GFrame {
   public void render(GL2 gl, int width, int height) {
     updater.tick();
     
-    if(bPanning) {
-      //System.out.println(endMousePos);
-      Vector2D direction = endMousePos.sub(startMousePos).divide(1000);
-      cameraPos._add(new Vector3D(direction));
-    }
-
-    renderer3D.render(gl, cameraPos, (double)width/height);
+      renderer3D.render(gl, scene.player.position, cameraZoom, (double)width/height);
   }
   
 
@@ -180,14 +171,13 @@ public class SceneWindow extends GFrame {
   @Override
   public void mousePressed(Vector2D mouse, MouseEvent e) {
     super.mousePressed(mouse, e);
-    bPanning = e.getButton() == PAN_BUTTON;
     endMousePos._set(startMousePos._set(mouse));
   }
   
   @Override
   public void mouseReleased(Vector2D mouse, MouseEvent e) {
     super.mouseReleased(mouse, e);
-    bPanning = false;
+
     if(e.getButton() == PlayerInputController.FIRE_BUTTON) {
       scene.input.mouseReleased(mouse);
     }
@@ -196,7 +186,7 @@ public class SceneWindow extends GFrame {
   @Override
   public void mouseWheelMoved(MouseEvent e) {
     super.mouseWheelMoved(e); 
-    cameraPos.z = Math.max(Math.abs(cameraPos.z - e.getWheelRotation() * ZOOM_RATE), ZOOM_RATE);
+    cameraZoom = Math.max(Math.abs(cameraZoom - e.getWheelRotation() * ZOOM_RATE), ZOOM_RATE);
     renderer3D.updateMatrices();
   } 
 
