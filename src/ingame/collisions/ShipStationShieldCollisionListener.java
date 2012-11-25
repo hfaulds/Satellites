@@ -9,15 +9,14 @@ import core.Scene;
 import core.collisions.Collision;
 import core.collisions.CollisionListener;
 
-public class ShipStationShieldCollisionHandler extends
+public class ShipStationShieldCollisionListener extends
     CollisionListener {
   private final StationDisplay stationDisplay;
   private final StationDockRequest stationDockRequest;
   private final Scene scene;
 
-  @SuppressWarnings("unchecked")
-  public ShipStationShieldCollisionHandler(StationDisplay stationDisplay, StationDockRequest stationDockRequest, Scene scene) {
-    super(new Class[]{ShipActor.class, StationShieldActor.class});
+  public ShipStationShieldCollisionListener(StationDisplay stationDisplay, StationDockRequest stationDockRequest, Scene scene) {
+    super(new ClassPair(ShipActor.class, StationShieldActor.class));
     this.stationDisplay = stationDisplay;
     this.stationDockRequest = stationDockRequest;
     this.scene = scene;

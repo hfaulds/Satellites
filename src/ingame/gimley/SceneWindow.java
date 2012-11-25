@@ -1,7 +1,7 @@
 package ingame.gimley;
 
 import ingame.actors.StationActor;
-import ingame.collisions.ShipStationShieldCollisionHandler;
+import ingame.collisions.ShipStationShieldCollisionListener;
 import ingame.controllers.PlayerInputController;
 import ingame.gimley.components.ChatBox;
 import ingame.gimley.components.FPSCounter;
@@ -103,7 +103,7 @@ public class SceneWindow extends GFrame {
     stationDockRequest.setVisible(false);
     stationDisplay.setVisible(false);
     
-    updater.addCollisionListener(new ShipStationShieldCollisionHandler(stationDisplay, stationDockRequest, scene));
+    updater.addCollisionListener(new ShipStationShieldCollisionListener(stationDisplay, stationDockRequest, scene));
     
     stationDockRequest.dock.addActionListener(new ActionListener() {
       @Override

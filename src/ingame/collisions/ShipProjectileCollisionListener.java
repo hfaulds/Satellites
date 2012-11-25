@@ -6,14 +6,12 @@ import core.SceneUpdater;
 import core.collisions.Collision;
 import core.collisions.CollisionListener;
 
-public class ShipProjectileCollisionHandle extends
-    CollisionListener {
+public class ShipProjectileCollisionListener extends CollisionListener {
   
   private final SceneUpdater updater;
 
-  @SuppressWarnings("unchecked")
-  public ShipProjectileCollisionHandle(SceneUpdater updater) {
-    super(new Class[]{ProjectileActor.class, ShipActor.class});
+  public ShipProjectileCollisionListener(SceneUpdater updater) {
+    super(new ClassPair(ProjectileActor.class, ShipActor.class));
     this.updater = updater;
   }
  

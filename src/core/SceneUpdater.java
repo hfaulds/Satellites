@@ -1,6 +1,8 @@
 package core;
 
-import ingame.collisions.ShipProjectileCollisionHandle;
+import ingame.collisions.PlanetStationCollisionListener;
+import ingame.collisions.ShipPlanetCollisionListener;
+import ingame.collisions.ShipProjectileCollisionListener;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -23,7 +25,9 @@ public class SceneUpdater {
   
   public SceneUpdater(Scene scene) {
     this.scene = scene;
-    this.addCollisionListener(new ShipProjectileCollisionHandle(this));
+    this.addCollisionListener(new ShipProjectileCollisionListener(this));
+    this.addCollisionListener(new PlanetStationCollisionListener());
+    this.addCollisionListener(new ShipPlanetCollisionListener());
   }
   
   public void addCollisionListener(CollisionListener listener) {
