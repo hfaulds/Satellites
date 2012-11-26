@@ -18,7 +18,6 @@ public class Renderer3D {
   
   private final Scene scene;
   
-  private boolean bUpdateMatrices          = true;
   private static double[] modelMatrix      = new double[16];
   private static double[] projectionMatrix = new double[16];
   private static int[] viewportMatrix      = new int[4];
@@ -57,7 +56,7 @@ public class Renderer3D {
       gl.glEnable(lightID);
     }
     
-    initActors(gl);
+    initNewActors(gl);
     gl.glEnable(GL2.GL_LIGHTING);
   }
 
@@ -72,7 +71,7 @@ public class Renderer3D {
     }
   }
 
-  private void initActors(GL2 gl) {
+  private void initNewActors(GL2 gl) {
     synchronized(scene.actors) {
       while(scene.actorqueue.size() > 0) {
         gl.glPushMatrix();
@@ -84,22 +83,31 @@ public class Renderer3D {
     }
   }
   
-  public void render(GL2 gl, Vector2D position, double zoom, double ratio) {
+  public void render(GL2 gl, Camera camera) {
     gl.glMatrixMode(GL2.GL_PROJECTION);
     gl.glLoadIdentity();
     
-    glu.gluPerspective(45, ratio, 1, 1000);
-    glu.gluLookAt(position.x, position.y, zoom, position.x, position.y, 0, 0, 1, 0);
+    glu.gluPerspective(45, camera.ratio, 1, 1000);
+    
+    Vector2D position = camera.getPosition();
+    glu.gluLookAt(position.x, 
+                  position.y, 
+                  camera.zoom, 
+                  position.x, 
+                  position.y, 
+                  0, 0, 1, 0);
 
-    if(bUpdateMatrices)
+    if(camera.bZoom) {
       updateMatrices(gl);
+      camera.bZoom = false;
+    }
     
     gl.glMatrixMode(GL2.GL_MODELVIEW);
     gl.glLoadIdentity();
     
     gl.glEnable(GL.GL_MULTISAMPLE);
     
-    initActors(gl);
+    initNewActors(gl);
     renderActors(gl);
   }
 
@@ -108,11 +116,6 @@ public class Renderer3D {
     gl.glGetIntegerv(GL2.GL_VIEWPORT, viewportMatrix, 0);
     gl.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, modelMatrix, 0);
     gl.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projectionMatrix, 0);
-    bUpdateMatrices = false;
-  }
-  
-  public void updateMatrices() {
-    bUpdateMatrices = true;
   }
   
   public static Vector2D project(Vector2D position) {

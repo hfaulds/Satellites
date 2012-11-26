@@ -22,18 +22,17 @@ import core.SceneUpdater;
 import core.geometry.Vector2D;
 import core.gimley.GFrame;
 import core.net.connections.NetworkConnection;
+import core.render.Camera;
 import core.render.Renderer3D;
 
 public class SceneWindow extends GFrame {
-
-  private static final int ZOOM_RATE    = 10;
-  private static final int ZOOM_DEFAULT = 20;
   
   private final Scene scene;
   private final SceneUpdater updater;
+  
+  private final Camera camera;
   private final Renderer3D renderer3D;
   
-  private double cameraZoom      = ZOOM_DEFAULT;
   private Vector2D startMousePos = new Vector2D();
   private Vector2D endMousePos   = new Vector2D();
   
@@ -41,8 +40,10 @@ public class SceneWindow extends GFrame {
     super(null, scene.username, 800, 800);
     
     this.scene = scene;
+    this.camera = new Camera(scene.player.position, width, height);
     this.renderer3D = new Renderer3D(scene);
     this.updater = new SceneUpdater(scene);
+
     
     addWindowListener(new WindowRouter(this, scene, connection));
     setupComponents(scene, connection);
@@ -77,10 +78,10 @@ public class SceneWindow extends GFrame {
     stationDockRequest.setVisible(false);
     stationDisplay.setVisible(false);
     
-    updater.addCollisionListener(new ShipStationShieldCollisionListener(stationDisplay, stationDockRequest));
-    
     stationDockRequest.dock.addActionListener(new StationDockActionListener(scene, stationDockRequest, connection, stationDisplay));
     stationDisplay.undock.addActionListener(new StationUndockActionListener(stationDisplay, connection, scene));
+    
+    updater.addCollisionListener(new ShipStationShieldCollisionListener(stationDisplay, stationDockRequest));
   }
 
   
@@ -94,7 +95,7 @@ public class SceneWindow extends GFrame {
   @Override
   public void render(GL2 gl, int width, int height) {
     updater.tick();
-    renderer3D.render(gl, scene.player.position, cameraZoom, (double)width/height);
+    renderer3D.render(gl, camera);
   }
   
 
@@ -129,9 +130,8 @@ public class SceneWindow extends GFrame {
   
   @Override
   public void mouseWheelMoved(MouseEvent e) {
-    super.mouseWheelMoved(e); 
-    cameraZoom = Math.max(Math.abs(cameraZoom - e.getWheelRotation() * ZOOM_RATE), ZOOM_RATE);
-    renderer3D.updateMatrices();
+    super.mouseWheelMoved(e);
+    camera.zoomOut(e.getWheelRotation());
   } 
 
   @Override
