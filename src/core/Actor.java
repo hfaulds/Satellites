@@ -41,6 +41,8 @@ public abstract class Actor {
   protected int listID;
 
   public boolean collideable;
+  
+  public boolean bCanMove = true;
 
 
   /* CONSTRUCTORS */
@@ -71,10 +73,21 @@ public abstract class Actor {
   /* TICK */
 
   public void tick(long dt) {
-    this.position._add(velocity.mult(dt));
-    this.rotation._add(spin.mult(dt));
+    if(bCanMove) {
+      this.position._add(velocity.mult(dt));
+      this.rotation._add(spin.mult(dt));
+    }
+  }
+
+  public void freeze() {
+    this.velocity = new Vector2D();
+    this.spin = new Rotation();
+    bCanMove = false;
   }
   
+  public void unFreeze() {
+    bCanMove = true;
+  }
   
   /* RENDERING */
   
@@ -131,7 +144,7 @@ public abstract class Actor {
   }
 
   public Vector2D gravForceFrom(Actor actor) {
-	return gravForceFrom(actor, new Vector2D());
+    return gravForceFrom(actor, new Vector2D());
   }
   
   

@@ -1,6 +1,5 @@
 package ingame.controllers;
 
-
 import ingame.actors.ProjectileActor;
 
 import java.util.List;
@@ -12,7 +11,6 @@ import core.Actor;
 import core.Controller;
 import core.geometry.Vector2D;
 import core.net.connections.NetworkConnection;
-import core.render.Renderer3D;
 
 public class PlayerInputController implements Controller {
 
@@ -95,9 +93,9 @@ public class PlayerInputController implements Controller {
     }
   }
   
-  public void mouseMoved(Vector2D mouse) {
+  public void mouseMoved(Vector2D mouse, int width, int height) {
     if(actor != null) {
-      aimDirection = mouse.sub(Renderer3D.project(actor.position))._normalize();
+      aimDirection = mouse.sub(new Vector2D(width, height).divide(2))._normalize();
     }
   }
 
@@ -105,7 +103,6 @@ public class PlayerInputController implements Controller {
   public void mouseReleased(Vector2D click) {
     if(actor != null && timeTillNextFire <= 0) {
       if(connection != null) {
-        aimDirection = click.sub(Renderer3D.project(actor.position))._normalize();
         Vector2D position = actor.position.add(aimDirection.mult(2));
         ProjectileActor projectile = new ProjectileActor(position, aimDirection, actor.velocity, actor);
         

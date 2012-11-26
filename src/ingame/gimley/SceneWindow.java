@@ -78,7 +78,7 @@ public class SceneWindow extends GFrame {
     stationDockRequest.setVisible(false);
     stationDisplay.setVisible(false);
     
-    stationDockRequest.dock.addActionListener(new StationDockActionListener(scene, stationDockRequest, connection, stationDisplay));
+    stationDockRequest.dock.addActionListener(new StationDockActionListener(scene.player, stationDockRequest, connection, stationDisplay));
     stationDisplay.undock.addActionListener(new StationUndockActionListener(stationDisplay, connection, scene));
     
     updater.addCollisionListener(new ShipStationShieldCollisionListener(stationDisplay, stationDockRequest));
@@ -110,7 +110,7 @@ public class SceneWindow extends GFrame {
   public void mouseDragged(Vector2D start, Vector2D end, Vector2D offset, MouseEvent e) {
     super.mouseDragged(start, end, offset, e);
     endMousePos._set(end);
-    scene.input.mouseMoved(end);
+    scene.input.mouseMoved(end, width, height);
   }
   
   @Override
@@ -137,7 +137,7 @@ public class SceneWindow extends GFrame {
   @Override
   public void mouseMoved(Vector2D mouse) {
     super.mouseMoved(mouse);
-    scene.input.mouseMoved(mouse);
+    scene.input.mouseMoved(mouse, width, height);
   }
   
   

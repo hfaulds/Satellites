@@ -1,7 +1,7 @@
 package ingame.gimley.listeners;
 
+import ingame.actors.PlayerShipActor;
 import ingame.gimley.components.StationDisplay;
-import core.Actor;
 import core.Scene;
 import core.gimley.actions.ActionEvent;
 import core.gimley.listeners.ActionListener;
@@ -23,12 +23,11 @@ public class StationUndockActionListener implements ActionListener {
 
   @Override
   public void action(ActionEvent action) {
-    Actor player = scene.player;
+    PlayerShipActor player = scene.player;
     connection.sendMsg(new ShipDockMsg(player.id, ShipDockMsg.UNDOCKING));
 
     stationDisplay.setVisible(false);
-    player.setVisible(true);
     
-    scene.input.setActor(player);
+    player.undock(stationDisplay.getStation());
   }
 }
