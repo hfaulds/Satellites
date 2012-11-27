@@ -17,10 +17,6 @@ public class Renderer3D {
   private static final GLU glu = new GLU();
   
   private final Scene scene;
-  
-  private static double[] modelMatrix      = new double[16];
-  private static double[] projectionMatrix = new double[16];
-  private static int[] viewportMatrix      = new int[4];
 
   public Renderer3D(Scene scene) {
     this.scene = scene;
@@ -96,11 +92,6 @@ public class Renderer3D {
                   position.x, 
                   position.y, 
                   0, 0, 1, 0);
-
-    if(camera.bZoom) {
-      updateMatrices(gl);
-      camera.bZoom = false;
-    }
     
     gl.glMatrixMode(GL2.GL_MODELVIEW);
     gl.glLoadIdentity();
@@ -111,23 +102,5 @@ public class Renderer3D {
     renderActors(gl);
   }
 
-
-  private void updateMatrices(final GL2 gl) {
-    gl.glGetIntegerv(GL2.GL_VIEWPORT, viewportMatrix, 0);
-    gl.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, modelMatrix, 0);
-    gl.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projectionMatrix, 0);
-  }
-  
-  public static Vector2D project(Vector2D position) {
-    double[] player = new double[4];
-    
-    glu.gluProject(position.x, position.y, Vector2D.Z, 
-        modelMatrix, 0,
-        projectionMatrix, 0, 
-        viewportMatrix, 0,
-        player, 0);
-    
-    return new Vector2D(player[0], player[1]);
-  }
   
 }
