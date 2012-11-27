@@ -1,6 +1,7 @@
 package ingame.actors;
 
 import core.Actor;
+import core.ActorInfo;
 import core.geometry.Mesh;
 import core.geometry.MeshLoader;
 import core.geometry.Rotation;
@@ -15,11 +16,11 @@ public class ProjectileActor extends Actor {
   private static Mesh         MESH    = MeshLoader.loadMesh("Projectile-Mk2.obj");
 
   public ProjectileActor(Vector2D position, Rotation rotation, double mass, int id) {
-    super(position, rotation, mass, MESH, id);
+    super(new ActorInfo(position, rotation, mass, MESH, id));
   }
   
   public ProjectileActor(Vector2D position, Vector2D direction, Vector2D shipVelocity, Actor owner) {
-    super(position, Rotation.XRotFromVector(direction), MASS, MESH);
-    this.velocity._set(shipVelocity.add(direction._mult(SPEED)));
+    super(new ActorInfo(position, Rotation.XRotFromVector(direction), MASS, MESH));
+    this.velocity._set(shipVelocity.add(direction._multiply(SPEED)));
   }
 }

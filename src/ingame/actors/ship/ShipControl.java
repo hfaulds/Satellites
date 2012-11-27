@@ -7,6 +7,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import core.Actor;
+import core.ActorInfo;
 import core.geometry.Mesh;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
@@ -26,7 +27,7 @@ public class ShipControl extends Actor {
   private ShipActor parent;
   
   public ShipControl(ShipActor parent) {
-    super(new Vector2D(), new Rotation(), 0, new Mesh());
+    super(new ActorInfo(new Vector2D(), new Rotation(), 0, new Mesh()));
     this.parent = parent;
     this.collideable = false;
   }

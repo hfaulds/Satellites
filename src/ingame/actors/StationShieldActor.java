@@ -1,6 +1,7 @@
 package ingame.actors;
 
 import core.Actor;
+import core.ActorInfo;
 import core.geometry.Mesh;
 import core.geometry.MeshLoader;
 import core.render.material.Colour;
@@ -18,7 +19,7 @@ public class StationShieldActor extends Actor {
   public final StationActor station;
   
   protected StationShieldActor(StationActor station) {
-    super(station.position, station.rotation, MASS, MESH);
+    super(new ActorInfo(station.position, station.rotation, MASS, MESH));
     this.station = station;
   }
   

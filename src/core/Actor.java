@@ -9,7 +9,6 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import core.geometry.Box;
-import core.geometry.Mesh;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
 import core.net.msg.ActorCreateMsg;
@@ -18,49 +17,36 @@ import core.net.msg.ActorUpdateMsg;
 public abstract class Actor {
 
   public static final double G = 0.000001;
-  
-  private static int ID_COUNT = 0;
-  
-  public final int id;
-  
-  private boolean visible = true;
-  
-  public final Mesh mesh;
-  public final Box boundingbox;
-
-  public final List<Actor> subactors = new ArrayList<Actor>();
-  
-  public final Vector2D position;
-  public Vector2D velocity;
-  
-  public final Rotation rotation;
-  public Rotation spin = new Rotation();
 
   public final double mass;
+  public boolean moveable = true;
+  
+  public final Vector2D position;
+  public final Vector2D velocity = new Vector2D();
+  
+  public final Rotation rotation;
+  public final Rotation spin = new Rotation();
+  
+  public final int id;
 
-  protected int listID;
+  public final List<Actor> subactors = new ArrayList<Actor>();
 
+  public ActorRenderer renderer;
+  public final Box boundingbox;
   public boolean collideable;
   
-  public boolean bCanMove = true;
-
 
   /* CONSTRUCTORS */
   
-  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh) {
-    this(position, rotation, mass, mesh, NEXT_ID());
-  }
-
-  protected Actor(Vector2D position, Rotation rotation, double mass, Mesh mesh, int id) {
-    this.position = position;
-    this.rotation = rotation;
-    this.boundingbox = Box.createBoundingBox(mesh, this.position);
-    this.mass = mass;
-    this.velocity = new Vector2D();
-    this.mesh = mesh;
-    this.id = id;
+  protected Actor(ActorInfo info) {
+    this.position = info.position;
+    this.rotation = info.rotation;
+    this.mass = info.mass;
+    this.boundingbox = Box.createBoundingBox(info.mesh, this.position);
+    this.renderer = new ActorRenderer(info.mesh);
+    this.id = info.id;
     this.collideable = true;
-    ID_COUNT = Math.max(ID_COUNT, id);
+    ActorInfo.INCREMENT_TOTAL_ACTORS(id);
   }
 
 
@@ -73,55 +59,38 @@ public abstract class Actor {
   /* TICK */
 
   public void tick(long dt) {
-    if(bCanMove) {
+    if(moveable) {
       this.position._add(velocity.mult(dt));
       this.rotation._add(spin.mult(dt));
     }
   }
 
   public void freeze() {
-    this.velocity = new Vector2D();
-    this.spin = new Rotation();
-    bCanMove = false;
+    this.velocity._set(0,0);
+    this.spin.mag = 0;
+    moveable = false;
   }
   
   public void unFreeze() {
-    bCanMove = true;
+    moveable = true;
   }
   
   /* RENDERING */
   
   public void init(GL2 gl, GLU glu) {
-    listID = gl.glGenLists(1);
-    gl.glNewList(listID, GL2.GL_COMPILE);
-    {
-      mesh.material.startRender(gl);
-      mesh.render(gl);
-      mesh.material.stopRender(gl);
-    }
-    gl.glEndList();
-
+    renderer.init(gl, glu);
+    
     for(Actor actor : subactors) {
-      gl.glPushMatrix();
       actor.init(gl, glu);
-      gl.glPopMatrix();
     }
   }
 
   public void render(GL2 gl, GLU glu) {
-    if(visible) {
+    renderer.render(gl, position, rotation);
+    for(Actor actor : subactors) {
       gl.glPushMatrix();
-      gl.glTranslated(position.x, position.y, Vector2D.Z);
-      gl.glRotated(rotation.toDegrees(), rotation.x, rotation.y, rotation.z);
-      gl.glCallList(listID);      
+      actor.render(gl, glu);
       gl.glPopMatrix();
-      
-      for(Actor actor : subactors) {
-        gl.glPushMatrix();
-        actor.render(gl, glu);
-        gl.glPopMatrix();
-      }
-      
     }
   }
 
@@ -137,10 +106,8 @@ public abstract class Actor {
   
   public Vector2D gravForceFrom(Actor actor, Vector2D offset) {
     Vector2D direction = actor.position.sub(this.position.add(offset));
-    
-    double f_mag = G * this.mass * actor.mass / Math.pow(direction.magnitude(), 2);
-    
-    return direction._normalize().mult(f_mag);
+    double forceMagnitude = G * this.mass * actor.mass / Math.pow(direction.magnitude(), 2);
+    return direction._normalize().mult(forceMagnitude);
   }
 
   public Vector2D gravForceFrom(Actor actor) {
@@ -164,8 +131,8 @@ public abstract class Actor {
     this.rotation._set(info.rotation);
   }
 
-  public void setVisible(boolean visible) {
-    this.visible = visible;
+  public void setVisible(boolean visibility) {
+    this.renderer.setVisible(visibility);
   }
 
   public static Actor fromInfo(ActorCreateMsg info) {
@@ -178,12 +145,6 @@ public abstract class Actor {
       System.exit(0);
       return null;
     }
-  }
-  
-  /* IDs */
-  
-  private static int NEXT_ID() {
-    return ID_COUNT + 1;
   }
 
  }

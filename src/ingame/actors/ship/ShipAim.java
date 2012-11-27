@@ -7,6 +7,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import core.Actor;
+import core.ActorInfo;
 import core.geometry.Mesh;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
@@ -24,8 +25,8 @@ public class ShipAim extends Actor {
   private PlayerInputController controller;
 
   public ShipAim(ShipActor ship, PlayerInputController controller) {
-    super(ship.position, new Rotation(), 0, new Mesh());
-    add(new Canon(position, rotation, ship.rotation));
+    super(new ActorInfo(ship.position, new Rotation(), 0, new Mesh()));
+    add(new ShipCanon(position, rotation, ship.rotation));
     this.controller = controller;
     this.collideable = false;
   }

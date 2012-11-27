@@ -17,10 +17,6 @@ public class Vector2D {
     this(other.x, other.y);
   }
   
-  public Vector2D(Vector3D other) {
-    this(other.x, other.y);
-  }
-  
   public Vector2D(double x, double y) {
     this.x = x;
     this.y = y;
@@ -32,6 +28,12 @@ public class Vector2D {
   public Vector2D _set(Vector2D other) {
     this.x = other.x;
     this.y = other.y;
+    return this;
+  }
+  
+  public Vector2D _set(int x, int y) {
+    this.x = x;
+    this.y = y;
     return this;
   }
 
@@ -55,7 +57,7 @@ public class Vector2D {
   }
 
   
-  public Vector2D _mult(double n) {
+  public Vector2D _multiply(double n) {
     this.x *= n;
     this.y *= n;
     return this;
@@ -146,5 +148,6 @@ public class Vector2D {
     //TODO : UNDERSTAND THIS
     return new Vector2D(0,-1).rotate(rotation.mag);
   }
+
 
 }

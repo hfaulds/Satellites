@@ -5,6 +5,7 @@ import ingame.items.AmmoItem;
 import java.util.LinkedList;
 
 import core.Actor;
+import core.ActorInfo;
 import core.Item;
 import core.geometry.Mesh;
 import core.geometry.MeshLoader;
@@ -38,11 +39,11 @@ public class ShipActor extends Actor {
   }};
 
   public ShipActor(Vector2D position, Rotation rotation, double mass, int id) {
-    super(position, rotation, mass, MESH, id);
+    super(new ActorInfo(position, rotation, mass, MESH, id));
   }
   
   public ShipActor(double x, double y) {
-    super(new Vector2D(x,y), new Rotation(), MASS, MESH);
+    super(new ActorInfo(new Vector2D(x,y), new Rotation(), MASS, MESH));
   }
 
   public void damage(int damage) {

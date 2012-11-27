@@ -53,7 +53,7 @@ public class PlayerInputController implements Controller {
     
     if(actor != null) {
       if(accelMag != 0) {
-        Vector2D acceleration = START_DIRECTION.rotate(actor.rotation.mag)._mult(dt * accelMag * ACCELERATION);
+        Vector2D acceleration = START_DIRECTION.rotate(actor.rotation.mag)._multiply(dt * accelMag * ACCELERATION);
         actor.velocity._add(acceleration);
       }
       if(spinMag != 0) {

@@ -18,8 +18,8 @@ public class SimpleBounceCollisionListener extends CollisionListener {
 
   @Override
   public void collisionStart(Collision collision) {
-    collision.a.velocity._mult(-1);
-    collision.b.velocity._mult(-1);
+    collision.a.velocity._multiply(-1);
+    collision.b.velocity._multiply(-1);
   }
 
   @Override

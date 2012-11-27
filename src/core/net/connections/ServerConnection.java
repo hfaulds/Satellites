@@ -77,7 +77,7 @@ public class ServerConnection extends NetworkConnection {
         ActorCreateMsg actorInfo = (ActorCreateMsg) msg;
         if(actorInfo.actorClass.equals(ProjectileActor.class)) {
           ProjectileActor projectile = (ProjectileActor) Actor.fromInfo(actorInfo);
-          projectile.velocity._set(Vector2D.fromRotation(projectile.rotation)._mult(ProjectileActor.SPEED));
+          projectile.velocity._set(Vector2D.fromRotation(projectile.rotation)._multiply(ProjectileActor.SPEED));
           scene.queueAddActor(projectile);
           scene.addController(new ServerActorController(projectile, ServerConnection.this));
         }
