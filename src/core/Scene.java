@@ -16,12 +16,10 @@ import com.esotericsoftware.kryonet.Connection;
 
 import core.geometry.Vector3D;
 import core.net.msg.ActorCreateMsg;
+import core.net.msg.SceneCreateMsg;
 
 public class Scene extends MouseAdapter {
 
-  public final String username;
-  public PlayerShipActor player;
-  
   public final PlayerInputController input = new PlayerInputController();
 
   public final List<Actor>       actors = new ArrayList<Actor>();
@@ -30,11 +28,6 @@ public class Scene extends MouseAdapter {
 
   public final Queue<Actor> actorqueue = new LinkedList<Actor>();
 
-  
-  public Scene(String username) {
-    this.username = username;
-  }
-  
   public void addController(Controller controller) {
     synchronized(controllers) {
       controllers.add(controller);
@@ -61,21 +54,18 @@ public class Scene extends MouseAdapter {
 
   public PlayerShipActor makePlayer(ShipActor ship) {
     PlayerShipActor player = new PlayerShipActor(ship, input);
-    input.setActor(player);
-    this.player = player;
+    input.setPlayer(player);
     return player;
   }
   
-  public void populate(List<ActorCreateMsg> actorInfo, int playerID, Connection connection) {
-    for(ActorCreateMsg info : actorInfo) {
-      Actor actor = Actor.fromInfo(info);
+  public void populate(SceneCreateMsg info, Connection connection) {
+    for(ActorCreateMsg actorInfo : info.actorInfoList) {
+      Actor actor = Actor.fromInfo(actorInfo);
       
-      
-      if(info.id == playerID ) {
+      if(actorInfo.id == info.playerID ) {
         addController(new ClientShipController(actor, connection));
         actor = makePlayer((ShipActor)actor);
       }
-      
       
       queueAddActor(actor);
     }

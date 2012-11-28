@@ -2,7 +2,6 @@ package ingame.gimley.listeners;
 
 import ingame.actors.PlayerShipActor;
 import ingame.gimley.components.StationDisplay;
-import core.Scene;
 import core.gimley.actions.ActionEvent;
 import core.gimley.listeners.ActionListener;
 import core.net.connections.NetworkConnection;
@@ -12,18 +11,17 @@ public class StationUndockActionListener implements ActionListener {
   
   private final StationDisplay stationDisplay;
   private final NetworkConnection connection;
-  private final Scene scene;
+  private final PlayerShipActor player;
 
   public StationUndockActionListener(StationDisplay stationDisplay,
-      NetworkConnection connection, Scene scene) {
+      NetworkConnection connection, PlayerShipActor player) {
     this.stationDisplay = stationDisplay;
     this.connection = connection;
-    this.scene = scene;
+    this.player = player;
   }
 
   @Override
   public void action(ActionEvent action) {
-    PlayerShipActor player = scene.player;
     connection.sendMsg(new ShipDockMsg(player.id, ShipDockMsg.UNDOCKING));
 
     stationDisplay.setVisible(false);

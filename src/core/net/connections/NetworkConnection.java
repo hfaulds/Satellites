@@ -30,6 +30,7 @@ public abstract class NetworkConnection {
   public static final int UDP_PORT = 45444;
   
   protected final Scene scene;
+  public final String username;
   protected final NetworkListener listener;
 
   private InetAddress address;
@@ -40,8 +41,9 @@ public abstract class NetworkConnection {
   public abstract void fireProjectile(ProjectileActor projectile);
 
   
-  public NetworkConnection(Scene scene, NetworkListener listener) {
+  public NetworkConnection(Scene scene, String username, NetworkListener listener) {
     this.scene = scene;
+    this.username = username;
     this.listener = listener;
   }
   
@@ -129,9 +131,5 @@ public abstract class NetworkConnection {
     }
 
     return classes;
-  }
-  
-  public String getUsername() {
-    return scene.username;
   }
 }

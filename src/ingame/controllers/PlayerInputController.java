@@ -1,5 +1,6 @@
 package ingame.controllers;
 
+import ingame.actors.PlayerShipActor;
 import ingame.actors.ProjectileActor;
 
 import java.util.List;
@@ -31,13 +32,13 @@ public class PlayerInputController implements Controller {
 
   public Vector2D aimDirection = START_DIRECTION;
   
-  public Actor actor;
+  public PlayerShipActor player;
 
   private NetworkConnection connection;
   public long timeTillNextFire = 0;
   
-  public void setActor(Actor actor) {
-    this.actor = actor;
+  public void setPlayer(PlayerShipActor player) {
+    this.player = player;
   }
   
   public void setConnection(NetworkConnection connection) {
@@ -51,14 +52,14 @@ public class PlayerInputController implements Controller {
       timeTillNextFire -= dt;
     }
     
-    if(actor != null) {
+    if(player != null) {
       if(accelMag != 0) {
-        Vector2D acceleration = START_DIRECTION.rotate(actor.rotation.mag)._multiply(dt * accelMag * ACCELERATION);
-        actor.velocity._add(acceleration);
+        Vector2D acceleration = START_DIRECTION.rotate(player.rotation.mag)._multiply(dt * accelMag * ACCELERATION);
+        player.velocity._add(acceleration);
       }
       if(spinMag != 0) {
         double spin = dt * spinMag * SPIN;
-        actor.spin._add(spin); 
+        player.spin._add(spin); 
       }
     }
   }
@@ -94,17 +95,17 @@ public class PlayerInputController implements Controller {
   }
   
   public void mouseMoved(Vector2D mouse, int width, int height) {
-    if(actor != null) {
+    if(player != null) {
       aimDirection = mouse.sub(new Vector2D(width, height).divide(2))._normalize();
     }
   }
 
   
-  public void mouseReleased(Vector2D click) {
-    if(actor != null && timeTillNextFire <= 0) {
+  public void mouseReleased(Vector2D click, MouseEvent e) {
+    if(e.getButton() == PlayerInputController.FIRE_BUTTON && player != null && timeTillNextFire <= 0) {
       if(connection != null) {
-        Vector2D position = actor.position.add(aimDirection.mult(2));
-        ProjectileActor projectile = new ProjectileActor(position, aimDirection, actor.velocity, actor);
+        Vector2D position = player.position.add(aimDirection.mult(2));
+        ProjectileActor projectile = new ProjectileActor(position, aimDirection, player.velocity, player);
         
         connection.fireProjectile(projectile);
         
@@ -115,7 +116,7 @@ public class PlayerInputController implements Controller {
 
   @Override
   public void destroy() {
-    this.actor = null;
+    this.player = null;
   }
   
 }

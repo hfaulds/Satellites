@@ -15,9 +15,11 @@ public class StationDockRequest extends GComponent {
   private static final int WIDTH = 275;
   
   public final GButton dock = new GButton(this, new Vector2D(200, 5), 65, 25, "DOCK");
+  
   public StationDockRequest(GComponent parent) {
     super(parent, new Vector2D(0, 725), WIDTH, HEIGHT);
     add(dock);
+    setVisible(false);
   }
 
   @Override

@@ -29,8 +29,8 @@ public class ServerConnection extends NetworkConnection {
   private final Server server = createServer();
   private boolean online = false;
   
-  public ServerConnection(Scene scene) {
-    super(scene, new ServerListener(scene));
+  public ServerConnection(Scene scene, String username) {
+    super(scene, username, new ServerListener(scene));
   }
 
   public boolean create() {

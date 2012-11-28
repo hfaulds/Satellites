@@ -1,5 +1,7 @@
 package ingame.gimley.components;
 
+import ingame.gimley.listeners.ChatMsgListener;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class ChatBox extends GPanel {
       public void action(ActionEvent action) {
         if(action instanceof InputEntered) {
           InputEntered inputAction = (InputEntered) action;
-          ChatMsg msg = new ChatMsg(inputAction.input, connection.getUsername());
+          ChatMsg msg = new ChatMsg(inputAction.input, connection.username);
           displayMessage(msg);
           connection.sendMsg(msg);
         }
@@ -79,5 +81,11 @@ public class ChatBox extends GPanel {
   
   public void keyReleased(KeyEvent e) {
     input.keyReleased(e);
+  }
+
+  public static ChatBox createChatBox(GComponent parent, NetworkConnection connection) {
+    ChatBox chatBox = new ChatBox(parent, new Vector2D(15, 15), connection);
+    connection.addMsgListener(new ChatMsgListener(chatBox));
+    return chatBox;
   }
 }

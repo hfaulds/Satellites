@@ -60,9 +60,7 @@ public class Renderer3D {
     gl.glEnable(GL2.GL_NORMALIZE);
     synchronized(scene.actors) {
       for(Actor actor : scene.actors) {
-        gl.glPushMatrix();
           actor.render(gl, glu);
-        gl.glPopMatrix();
       }
     }
   }

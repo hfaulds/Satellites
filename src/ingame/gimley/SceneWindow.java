@@ -1,13 +1,12 @@
 package ingame.gimley;
 
+import ingame.actors.PlayerShipActor;
 import ingame.collisions.ShipStationShieldCollisionListener;
-import ingame.controllers.PlayerInputController;
 import ingame.gimley.components.ChatBox;
 import ingame.gimley.components.FPSCounter;
 import ingame.gimley.components.PlayerInventory;
 import ingame.gimley.components.StationDisplay;
 import ingame.gimley.components.StationDockRequest;
-import ingame.gimley.listeners.ChatMsgListener;
 import ingame.gimley.listeners.StationDockActionListener;
 import ingame.gimley.listeners.StationUndockActionListener;
 import ingame.gimley.routers.WindowRouter;
@@ -37,53 +36,45 @@ public class SceneWindow extends GFrame {
   private Vector2D endMousePos   = new Vector2D();
   
   public SceneWindow(final Scene scene, final NetworkConnection connection) {
-    super(null, scene.username, 800, 800);
-    
+    super(null, connection.username, 800, 800);
+
+    PlayerShipActor player = scene.input.player;
     this.scene = scene;
-    this.camera = new Camera(scene.player.position, width, height);
+    this.camera = new Camera(player.position, width, height);
     this.renderer3D = new Renderer3D(scene);
     this.updater = new SceneUpdater(scene);
-
-    
-    addWindowListener(new WindowRouter(this, scene, connection));
-    setupComponents(scene, connection);
-    
-    setVisible(true);
+    this.setupComponents(player, connection);
+    this.addWindowListener(new WindowRouter(this, scene, connection));
+    this.setVisible(true);
   }
   
   
   /* Components */
 
-  private void setupComponents(final Scene scene, final NetworkConnection connection) {
+  private void setupComponents(PlayerShipActor player, NetworkConnection connection) {
+    
+    add(ChatBox.createChatBox(this, connection));
+    add(PlayerInventory.createPlayerInventory(this, player));
+    add(new FPSCounter(this, new Vector2D(5, -20)));
+    
+
     StationDockRequest stationDockRequest = new StationDockRequest(this);
     StationDisplay stationDisplay = new StationDisplay(this);
+    setupStationUI(connection, player, stationDockRequest, stationDisplay);
     
-    setupStationUI(stationDockRequest, stationDisplay, scene, connection);
-    
-    add(setupChatBox(scene, connection));
-    add(new PlayerInventory(this, scene.player));
-    add(new FPSCounter(this, new Vector2D(5, -20)));
     add(stationDockRequest);
     add(stationDisplay);
   }
 
 
-  private ChatBox setupChatBox(Scene scene, NetworkConnection connection) {
-    final ChatBox chatBox = new ChatBox(this, new Vector2D(15, 15), connection);
-    connection.addMsgListener(new ChatMsgListener(chatBox));
-    return chatBox;
-  }
-
-  private void setupStationUI(final StationDockRequest stationDockRequest, final StationDisplay stationDisplay, final Scene scene, final NetworkConnection connection) {
-    stationDockRequest.setVisible(false);
-    stationDisplay.setVisible(false);
-    
-    stationDockRequest.dock.addActionListener(new StationDockActionListener(scene.player, stationDockRequest, connection, stationDisplay));
-    stationDisplay.undock.addActionListener(new StationUndockActionListener(stationDisplay, connection, scene));
+  private void setupStationUI(NetworkConnection connection,
+      PlayerShipActor player, StationDockRequest stationDockRequest,
+      StationDisplay stationDisplay) {
+    stationDisplay.undock.addActionListener(new StationUndockActionListener(stationDisplay, connection, player));
+    stationDockRequest.dock.addActionListener(new StationDockActionListener(player, stationDockRequest, connection, stationDisplay));
     
     updater.addCollisionListener(new ShipStationShieldCollisionListener(stationDisplay, stationDockRequest));
   }
-
   
   /* Rendering */
   
@@ -110,34 +101,42 @@ public class SceneWindow extends GFrame {
   public void mouseDragged(Vector2D start, Vector2D end, Vector2D offset, MouseEvent e) {
     super.mouseDragged(start, end, offset, e);
     endMousePos._set(end);
-    scene.input.mouseMoved(end, width, height);
+    if(sceneHasFocus()) {
+      scene.input.mouseMoved(end, width, height);
+    }
   }
   
   @Override
   public void mousePressed(Vector2D mouse, MouseEvent e) {
     super.mousePressed(mouse, e);
-    endMousePos._set(startMousePos._set(mouse));
+    if(sceneHasFocus()) {
+      endMousePos._set(startMousePos._set(mouse));
+    }
   }
   
   @Override
   public void mouseReleased(Vector2D mouse, MouseEvent e) {
     super.mouseReleased(mouse, e);
 
-    if(e.getButton() == PlayerInputController.FIRE_BUTTON) {
-      scene.input.mouseReleased(mouse);
+    if(sceneHasFocus()) {
+      scene.input.mouseReleased(mouse, e);
     }
   }
   
   @Override
   public void mouseWheelMoved(MouseEvent e) {
     super.mouseWheelMoved(e);
-    camera.zoomOut(e.getWheelRotation());
-  } 
+    if(sceneHasFocus()) {
+      camera.zoomOut(e.getWheelRotation());
+    }
+  }
 
   @Override
   public void mouseMoved(Vector2D mouse) {
     super.mouseMoved(mouse);
-    scene.input.mouseMoved(mouse, width, height);
+    if(sceneHasFocus()) {
+      scene.input.mouseMoved(mouse, width, height);
+    }
   }
   
   
@@ -146,13 +145,21 @@ public class SceneWindow extends GFrame {
   @Override
   public void keyPressed(KeyEvent e) {
     super.keyPressed(e);
-    scene.input.keyPressed(e);
+    if(sceneHasFocus()) {
+      scene.input.keyPressed(e);
+    }
   }
   
   @Override
   public void keyReleased(KeyEvent e) {
     super.keyReleased(e);
-    scene.input.keyReleased(e);
+    if(sceneHasFocus()) {
+      scene.input.keyReleased(e);
+    }
   }
-  
+
+  private boolean sceneHasFocus() {
+    return this.subcomponents.getFocus() == this;
+  } 
+
 }

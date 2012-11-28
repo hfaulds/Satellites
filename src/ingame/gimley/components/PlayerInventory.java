@@ -2,6 +2,7 @@ package ingame.gimley.components;
 
 import com.jogamp.newt.event.MouseEvent;
 
+import ingame.actors.PlayerShipActor;
 import ingame.actors.ShipActor;
 import core.geometry.Vector2D;
 import core.gimley.components.GComponent;
@@ -37,6 +38,12 @@ public class PlayerInventory extends GComponent {
 
   public void addItem(ItemIcon icon) {
     inventory.addItem(icon);
+  }
+
+  public static PlayerInventory createPlayerInventory(GComponent parent,PlayerShipActor player) {
+    PlayerInventory inventory = new PlayerInventory(parent, player);
+    inventory.setVisible(false);
+    return inventory;
   }
 
 }

@@ -62,8 +62,8 @@ public class PreGameGUI extends GUI {
     join.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        Scene scene = new Scene(username);
-        ClientConnection connection = new ClientConnection(scene);
+        Scene scene = new Scene();
+        ClientConnection connection = new ClientConnection(scene, username);
         scene.input.setConnection(connection);
         if(SelectServerDialog.showDialog(content, connection)) {
           freezeButtons();
@@ -81,8 +81,8 @@ public class PreGameGUI extends GUI {
     create.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        final Scene scene = new Scene(username);
-        ServerConnection connection = new ServerConnection(scene);
+        final Scene scene = new Scene();
+        ServerConnection connection = new ServerConnection(scene, username);
         scene.input.setConnection(connection);
         if(CreateServerDialog.showDialog(content, connection)) {
           freezeButtons();

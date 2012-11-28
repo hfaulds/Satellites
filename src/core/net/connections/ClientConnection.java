@@ -20,8 +20,8 @@ public class ClientConnection extends NetworkConnection {
 
   private final Client client = new Client();
   
-  public ClientConnection(Scene scene) {
-    super(scene, new ClientListener(scene));
+  public ClientConnection(Scene scene, String username) {
+    super(scene, username, new ClientListener(scene));
   }
 
   public void connect(InetAddress address) throws IOException {
