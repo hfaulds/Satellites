@@ -1,6 +1,8 @@
 package ingame.gimley.components;
 
 
+import ingame.gimley.components.icons.ItemIcon;
+
 import java.util.LinkedList;
 
 import javax.media.opengl.GL2;

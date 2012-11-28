@@ -1,4 +1,4 @@
-package ingame.gimley.components;
+package ingame.gimley.components.icons;
 
 import javax.media.opengl.GL2;
 

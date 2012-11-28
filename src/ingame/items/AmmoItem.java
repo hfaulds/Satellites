@@ -1,6 +1,6 @@
 package ingame.items;
 
-import ingame.gimley.components.ItemIcon;
+import ingame.gimley.components.icons.ItemIcon;
 import core.Item;
 
 public class AmmoItem implements Item {

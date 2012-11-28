@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import core.Actor;
 import core.ActorInfo;
 import core.Item;
+import core.Weapon;
 import core.geometry.Mesh;
 import core.geometry.MeshLoader;
 import core.geometry.Rotation;
@@ -27,6 +28,11 @@ public class ShipActor extends Actor {
 
   public int health = MAX_HEALTH;
   public int shield = MAX_SHIELD;
+
+  @SuppressWarnings("serial")
+  public final LinkedList<Weapon> weapons = new LinkedList<Weapon>() {{
+    //add(new Weapon());
+  }};
   
   @SuppressWarnings("serial")
   private final LinkedList<Item> inventory = new LinkedList<Item>() {{

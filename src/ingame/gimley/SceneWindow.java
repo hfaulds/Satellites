@@ -7,6 +7,7 @@ import ingame.gimley.components.FPSCounter;
 import ingame.gimley.components.PlayerInventory;
 import ingame.gimley.components.StationDisplay;
 import ingame.gimley.components.StationDockRequest;
+import ingame.gimley.components.icons.WeaponBar;
 import ingame.gimley.listeners.StationDockActionListener;
 import ingame.gimley.listeners.StationUndockActionListener;
 import ingame.gimley.routers.WindowRouter;
@@ -53,9 +54,10 @@ public class SceneWindow extends GFrame {
 
   private void setupComponents(PlayerShipActor player, NetworkConnection connection) {
     
+    add(new FPSCounter(this, new Vector2D(5, -20)));
     add(ChatBox.createChatBox(this, connection));
     add(PlayerInventory.createPlayerInventory(this, player));
-    add(new FPSCounter(this, new Vector2D(5, -20)));
+    add(new WeaponBar(this, player));
     
 
     StationDockRequest stationDockRequest = new StationDockRequest(this);

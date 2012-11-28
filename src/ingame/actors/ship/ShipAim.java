@@ -1,6 +1,7 @@
 package ingame.actors.ship;
 
 import ingame.actors.ShipActor;
+import ingame.actors.weapons.Canon001;
 import ingame.controllers.PlayerInputController;
 
 import javax.media.opengl.GL2;
@@ -26,7 +27,7 @@ public class ShipAim extends Actor {
 
   public ShipAim(ShipActor ship, PlayerInputController controller) {
     super(new ActorInfo(ship.position, new Rotation(), 0, new Mesh()));
-    add(new ShipCanon(position, rotation, ship.rotation));
+    add(new Canon001(position, rotation, ship.rotation));
     this.controller = controller;
     this.collideable = false;
   }
