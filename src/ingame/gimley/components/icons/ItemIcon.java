@@ -27,10 +27,10 @@ public class ItemIcon extends GComponent {
 
   @Override
   public void render(GL2 gl, int width, int height) {
-    gl.glColor4fv(colour.toFloat(), 0);
     
     Vector2D screenPosition = this.getScreenPosition();
-    
+
+    gl.glColor4fv(colour.toFloat(), 0);
     Renderer2D.drawFillRect(gl, 
         screenPosition.x, 
         screenPosition.y, 

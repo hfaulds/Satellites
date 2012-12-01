@@ -7,7 +7,7 @@ import ingame.gimley.components.FPSCounter;
 import ingame.gimley.components.PlayerInventory;
 import ingame.gimley.components.StationDisplay;
 import ingame.gimley.components.StationDockRequest;
-import ingame.gimley.components.icons.WeaponBar;
+import ingame.gimley.components.WeaponBar;
 import ingame.gimley.listeners.StationDockActionListener;
 import ingame.gimley.listeners.StationUndockActionListener;
 import ingame.gimley.routers.WindowRouter;

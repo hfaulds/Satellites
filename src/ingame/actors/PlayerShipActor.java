@@ -1,11 +1,12 @@
 package ingame.actors;
 
-import core.geometry.Vector2D;
 import ingame.actors.ship.ShipAim;
 import ingame.actors.ship.ShipControl;
 import ingame.actors.ship.ShipDirection;
 import ingame.actors.ship.ShipHealth;
+import ingame.actors.weapons.Weapon;
 import ingame.controllers.PlayerInputController;
+import core.geometry.Vector2D;
 
 public class PlayerShipActor extends ShipActor {
 
@@ -15,6 +16,10 @@ public class PlayerShipActor extends ShipActor {
     this.add(new ShipDirection(this));
     this.add(new ShipHealth(this));
     this.add(new ShipAim(this, input));
+    
+    for(Weapon weapon : weapons) {
+      weapon.setInput(input);
+    }
   }
 
   public void dock(StationActor station) {
