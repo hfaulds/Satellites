@@ -1,6 +1,6 @@
 package ingame.gimley;
 
-import ingame.actors.PlayerShipActor;
+import ingame.actors.player.PlayerShipActor;
 import ingame.collisions.ShipStationShieldCollisionListener;
 import ingame.gimley.components.ChatBox;
 import ingame.gimley.components.FPSCounter;

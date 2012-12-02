@@ -1,4 +1,4 @@
-package ingame.actors.ship;
+package ingame.actors.player;
 
 
 import ingame.actors.ShipActor;
@@ -13,9 +13,9 @@ import core.geometry.Rotation;
 import core.geometry.Vector2D;
 import core.render.material.Colour;
 
-public class ShipHealth extends Actor {
+public class PlayerHealth extends Actor {
 
-  private static final double HEALTH_RADIUS     = ShipControl.CONTROL_RADIUS + .2;
+  private static final double HEALTH_RADIUS     = (double) 2 + .2;
   private static final int SEGMENT_RATIO        = 10;
   private static final double HEALTH_WIDTH      = 0.2;
   private static final Colour HEALTH_COLOUR     = new Colour(1,0,0);
@@ -29,7 +29,7 @@ public class ShipHealth extends Actor {
   
   private ShipActor parent;
 
-  public ShipHealth(ShipActor parent) {
+  public PlayerHealth(ShipActor parent) {
     super(new ActorInfo(new Vector2D(), new Rotation(), 0, new Mesh()));
     this.parent = parent;
     this.collideable = false;

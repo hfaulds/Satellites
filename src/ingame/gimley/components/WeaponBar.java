@@ -1,6 +1,6 @@
 package ingame.gimley.components;
 
-import ingame.actors.PlayerShipActor;
+import ingame.actors.player.PlayerShipActor;
 import ingame.actors.weapons.Weapon;
 import ingame.gimley.components.icons.WeaponIcon;
 

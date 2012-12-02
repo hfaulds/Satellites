@@ -1,8 +1,8 @@
 package ingame.collisions;
 
-import ingame.actors.PlayerShipActor;
 import ingame.actors.ProjectileActor;
 import ingame.actors.ShipActor;
+import ingame.actors.player.PlayerShipActor;
 import core.SceneUpdater;
 import core.collisions.ClassPair;
 import core.collisions.Collision;

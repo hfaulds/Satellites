@@ -1,8 +1,8 @@
 package ingame.controllers;
 
-import ingame.actors.NullPlayer;
-import ingame.actors.PlayerShipActor;
 import ingame.actors.ProjectileActor;
+import ingame.actors.player.NullPlayer;
+import ingame.actors.player.PlayerShipActor;
 import ingame.actors.weapons.Weapon;
 
 import java.util.List;

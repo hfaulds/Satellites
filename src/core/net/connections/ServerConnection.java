@@ -2,10 +2,10 @@ package core.net.connections;
 
 
 import ingame.actors.Planet001Actor;
-import ingame.actors.PlayerShipActor;
 import ingame.actors.ProjectileActor;
 import ingame.actors.ShipActor;
 import ingame.actors.StationActor;
+import ingame.actors.player.PlayerShipActor;
 import ingame.controllers.ServerActorController;
 import ingame.controllers.ServerShipController;
 

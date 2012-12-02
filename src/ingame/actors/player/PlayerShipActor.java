@@ -1,9 +1,7 @@
-package ingame.actors;
+package ingame.actors.player;
 
-import ingame.actors.ship.ShipAim;
-import ingame.actors.ship.ShipControl;
-import ingame.actors.ship.ShipDirection;
-import ingame.actors.ship.ShipHealth;
+import ingame.actors.ShipActor;
+import ingame.actors.StationActor;
 import ingame.actors.weapons.Weapon;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
@@ -13,15 +11,13 @@ public class PlayerShipActor extends ShipActor {
   public static final Vector2D START_DIRECTION = new Vector2D(0, 1);
 
   private Weapon currentWeapon = weapons.get(0);
-  
   private final Vector2D aimDirection = START_DIRECTION;
   
   public PlayerShipActor(ShipActor player) {
     super(player.position, player.rotation, player.mass, player.id);
-    this.add(new ShipControl(this));
-    this.add(new ShipDirection(this));
-    this.add(new ShipHealth(this));
-    this.add(new ShipAim(this));
+    this.add(new PlayerDirection(this));
+    this.add(new PlayerHealth(this));
+    this.add(new PlayerAim(this));
   }
   
   protected PlayerShipActor() {

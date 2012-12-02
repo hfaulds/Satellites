@@ -1,7 +1,7 @@
 package ingame.gimley.listeners;
 
-import ingame.actors.PlayerShipActor;
 import ingame.actors.StationActor;
+import ingame.actors.player.PlayerShipActor;
 import ingame.gimley.components.StationDisplay;
 import ingame.gimley.components.StationDockRequest;
 import core.gimley.actions.ActionEvent;

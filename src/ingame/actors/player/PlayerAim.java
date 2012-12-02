@@ -1,6 +1,5 @@
-package ingame.actors.ship;
+package ingame.actors.player;
 
-import ingame.actors.PlayerShipActor;
 import ingame.actors.weapons.Weapon;
 
 import javax.media.opengl.GL2;
@@ -12,9 +11,9 @@ import core.geometry.Mesh;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
 
-public class ShipAim extends Actor {
+public class PlayerAim extends Actor {
 
-  public static final double CONTROL_RADIUS     = ShipControl.CONTROL_RADIUS + .65;
+  public static final double CONTROL_RADIUS     = (double) 2 + 1.5;
   private static final int CIRCLE_SAMPLES       = 300;
   private static final double CIRCLE_INCREMENT  = 2*Math.PI/CIRCLE_SAMPLES;
   private static final float LINE_WIDTH         = 2.5f;
@@ -24,7 +23,7 @@ public class ShipAim extends Actor {
   
   private final PlayerShipActor player;
   
-  public ShipAim(PlayerShipActor player) {
+  public PlayerAim(PlayerShipActor player) {
     super(new ActorInfo(player.position, new Rotation(), 0, new Mesh()));
     this.collideable = false;
     this.player = player;

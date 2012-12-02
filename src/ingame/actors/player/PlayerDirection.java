@@ -1,4 +1,4 @@
-package ingame.actors.ship;
+package ingame.actors.player;
 
 
 import ingame.actors.ShipActor;
@@ -12,11 +12,11 @@ import core.geometry.Mesh;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
 
-public class ShipDirection extends Actor {
+public class PlayerDirection extends Actor {
 
-  public static final double CONTROL_RADIUS     = ShipControl.CONTROL_RADIUS + .5;
-  private static final int CIRCLE_SAMPLES       = ShipControl.CIRCLE_SAMPLES;
-  private static final double CIRCLE_INCREMENT  = ShipControl.CIRCLE_INCREMENT;
+  public static final double CONTROL_RADIUS     = (double) 2 + .75;
+  private static final int CIRCLE_SAMPLES       = 40;
+  private static final double CIRCLE_INCREMENT  = 2*Math.PI/40;
   private static final float LINE_WIDTH			= 2.5f;
   private static final double LINE_LENGTH       = 0.1;
 
@@ -27,7 +27,7 @@ public class ShipDirection extends Actor {
   private int listID;
   private ShipActor parent;
 
-  public ShipDirection(ShipActor parent) {
+  public PlayerDirection(ShipActor parent) {
     super(new ActorInfo(new Vector2D(), new Rotation(), 0, new Mesh()));
     this.parent = parent;
     this.collideable = false;

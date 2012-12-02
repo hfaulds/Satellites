@@ -1,8 +1,8 @@
 package ingame.collisions;
 
 import ingame.actors.Planet001Actor;
-import ingame.actors.PlayerShipActor;
 import ingame.actors.StationActor;
+import ingame.actors.player.PlayerShipActor;
 import core.collisions.ClassPair;
 import core.collisions.Collision;
 import core.collisions.CollisionListener;

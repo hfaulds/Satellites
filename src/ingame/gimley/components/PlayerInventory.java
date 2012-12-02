@@ -1,10 +1,11 @@
 package ingame.gimley.components;
 
+import ingame.actors.ShipActor;
+import ingame.actors.player.PlayerShipActor;
+import ingame.gimley.components.icons.ItemIcon;
+
 import com.jogamp.newt.event.MouseEvent;
 
-import ingame.actors.PlayerShipActor;
-import ingame.actors.ShipActor;
-import ingame.gimley.components.icons.ItemIcon;
 import core.geometry.Vector2D;
 import core.gimley.components.GComponent;
 import core.gimley.components.GTopBar;
