@@ -65,10 +65,11 @@ public class PreGameGUI extends GUI {
     join.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        Scene scene = new Scene();
-        ClientConnection connection = new ClientConnection(scene, username);
         
+        final Scene scene = new Scene();
+        final ClientConnection connection = new ClientConnection(scene, username);
         final PlayerInputController input = new PlayerInputController(connection);
+        
         scene.addController(input);
         scene.addNewPlayerListener(new NewPlayerListener() {
           @Override
@@ -76,10 +77,11 @@ public class PreGameGUI extends GUI {
             input.setPlayer(player);
           }
         });
+        SceneWindow window = new SceneWindow(scene, input, connection);
         
         if(SelectServerDialog.showDialog(content, connection)) {
           freezeButtons();
-          new SceneWindow(scene, input, connection);
+          window.setVisible(true);
           unfreezeButtons();
         }
       }
@@ -94,9 +96,9 @@ public class PreGameGUI extends GUI {
       @Override
       public void actionPerformed(ActionEvent e) {
         final Scene scene = new Scene();
-        ServerConnection connection = new ServerConnection(scene, username);
-
+        final ServerConnection connection = new ServerConnection(scene, username);
         final PlayerInputController input = new PlayerInputController(connection);
+        
         scene.addController(input);
         scene.addNewPlayerListener(new NewPlayerListener() {
           @Override
@@ -105,11 +107,11 @@ public class PreGameGUI extends GUI {
           }
         });
         
-        connection.setupScene(scene);
-        
         if(CreateServerDialog.showDialog(content, connection)) {
           freezeButtons();
-          new SceneWindow(scene, input, connection);
+          SceneWindow window = new SceneWindow(scene, input, connection);
+          window.setVisible(true);
+          connection.setupScene(scene);
           unfreezeButtons();
         }
       }

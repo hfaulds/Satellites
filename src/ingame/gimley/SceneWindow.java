@@ -18,19 +18,21 @@ import javax.media.opengl.GL2;
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.MouseEvent;
 
+import core.NewPlayerListener;
 import core.Scene;
 import core.SceneUpdater;
 import core.geometry.Vector2D;
 import core.gimley.GFrame;
 import core.net.connections.NetworkConnection;
 import core.render.Camera;
+import core.render.NullCamera;
 import core.render.Renderer3D;
 
 public class SceneWindow extends GFrame {
   
   private final SceneUpdater updater;
   
-  private final Camera camera;
+  private Camera camera = new NullCamera(width, height);
   private final Renderer3D renderer3D;
   
   private Vector2D startMousePos = new Vector2D();
@@ -40,21 +42,24 @@ public class SceneWindow extends GFrame {
   public SceneWindow(final Scene scene, PlayerInputController input, final NetworkConnection connection) {
     super(null, connection.username, 800, 800);
     this.input = input;
-    PlayerShipActor player = input.player;
 
-    this.camera = new Camera(player.position, width, height);
+    scene.addNewPlayerListener(new NewPlayerListener() {
+      @Override
+      public void newPlayer(PlayerShipActor player) {
+        camera = new Camera(player.position, width, height);
+        setupComponents(player, connection);
+      }
+    });
+    
     this.renderer3D = new Renderer3D(scene);
     this.updater = new SceneUpdater(scene);
-    this.setupComponents(player, connection);
     this.addWindowListener(new WindowRouter(this, scene, connection));
-    this.setVisible(true);
   }
   
   
   /* Components */
 
   private void setupComponents(PlayerShipActor player, NetworkConnection connection) {
-    
     add(new FPSCounter(this, new Vector2D(5, -20)));
     add(ChatBox.createChatBox(this, connection));
     add(PlayerInventory.createPlayerInventory(this, player));

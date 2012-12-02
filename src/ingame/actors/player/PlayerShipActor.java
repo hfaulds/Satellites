@@ -5,6 +5,7 @@ import ingame.actors.StationActor;
 import ingame.actors.weapons.Weapon;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
+import core.net.msg.ActorCreateMsg;
 
 public class PlayerShipActor extends ShipActor {
 
@@ -49,5 +50,11 @@ public class PlayerShipActor extends ShipActor {
   public Vector2D getAimDirection() {
     return this.aimDirection;
   }
+
+  @Override
+  public ActorCreateMsg getCreateMsg() {
+    return new ActorCreateMsg(position, rotation, id, mass, ShipActor.class);
+  }
+  
 
 }

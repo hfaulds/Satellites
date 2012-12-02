@@ -25,7 +25,7 @@ public class Scene extends MouseAdapter {
 
   public final Queue<Actor> actorqueue = new LinkedList<Actor>();
 
-  private NewPlayerListener newPlayerListener;
+  private List<NewPlayerListener> newPlayerListeners = new LinkedList<NewPlayerListener>();
 
   public void addController(Controller controller) {
     synchronized(controllers) {
@@ -53,7 +53,10 @@ public class Scene extends MouseAdapter {
 
   public PlayerShipActor makePlayer(ShipActor ship) {
     PlayerShipActor player = new PlayerShipActor(ship);
-    newPlayerListener.newPlayer(player);
+    for(NewPlayerListener listener : newPlayerListeners) {
+      System.out.println("listener " + listener.toString());
+      listener.newPlayer(player);
+    }
     return player;
   }
   
@@ -86,6 +89,6 @@ public class Scene extends MouseAdapter {
   }
 
   public void addNewPlayerListener(NewPlayerListener newPlayerListener) {
-    this.newPlayerListener = newPlayerListener;
+    this.newPlayerListeners .add(newPlayerListener);
   }
 }
