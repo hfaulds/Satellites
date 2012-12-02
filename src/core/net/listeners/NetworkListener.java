@@ -22,7 +22,7 @@ public class NetworkListener extends Listener {
   public void received(Connection connection, Object info) {
     synchronized(listeners) {
       for(MsgListener listener : listeners) {
-        if(info.getClass().equals( listener.getMsgClass())) {
+        if(info.getClass().equals(listener.getMsgClass())) {
           listener.msgReceived(info, connection);
         }
       }

@@ -29,6 +29,7 @@ public class PlayerInputController implements Controller {
   private double spinMag  = 0;
 
   public PlayerShipActor player = new NullPlayer();
+  
   private final NetworkConnection connection;
   
   public PlayerInputController(NetworkConnection connection) {

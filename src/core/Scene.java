@@ -54,7 +54,6 @@ public class Scene extends MouseAdapter {
   public PlayerShipActor makePlayer(ShipActor ship) {
     PlayerShipActor player = new PlayerShipActor(ship);
     for(NewPlayerListener listener : newPlayerListeners) {
-      System.out.println("listener " + listener.toString());
       listener.newPlayer(player);
     }
     return player;
@@ -65,8 +64,8 @@ public class Scene extends MouseAdapter {
       Actor actor = Actor.fromInfo(actorInfo);
       
       if(actorInfo.id == info.playerID ) {
-        addController(new ClientShipController(actor, connection));
         actor = makePlayer((ShipActor)actor);
+        addController(new ClientShipController(actor, connection));
       }
       
       queueAddActor(actor);

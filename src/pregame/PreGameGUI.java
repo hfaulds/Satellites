@@ -75,14 +75,13 @@ public class PreGameGUI extends GUI {
           @Override
           public void newPlayer(PlayerShipActor player) {
             input.setPlayer(player);
+            SceneWindow window = new SceneWindow(scene, input, player, connection);
+            window.setVisible(true);
           }
         });
-        SceneWindow window = new SceneWindow(scene, input, connection);
         
         if(SelectServerDialog.showDialog(content, connection)) {
           freezeButtons();
-          window.setVisible(true);
-          unfreezeButtons();
         }
       }
 
@@ -104,13 +103,13 @@ public class PreGameGUI extends GUI {
           @Override
           public void newPlayer(PlayerShipActor player) {
             input.setPlayer(player);
+            SceneWindow window = new SceneWindow(scene, input, player, connection);
+            window.setVisible(true);
           }
         });
         
         if(CreateServerDialog.showDialog(content, connection)) {
           freezeButtons();
-          SceneWindow window = new SceneWindow(scene, input, connection);
-          window.setVisible(true);
           connection.setupScene(scene);
           unfreezeButtons();
         }
