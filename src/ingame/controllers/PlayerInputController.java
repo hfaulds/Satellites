@@ -95,20 +95,17 @@ public class PlayerInputController implements Controller {
   }
   
   public void mouseMoved(Vector2D mouse, int width, int height) {
-    if(player != null) {
-      aimDirection = mouse.sub(new Vector2D(width, height).divide(2))._normalize();
-    }
+    aimDirection = mouse.sub(new Vector2D(width, height).divide(2))._normalize();
   }
 
   
   public void mouseReleased(Vector2D click, MouseEvent e) {
     if(e.getButton() == PlayerInputController.FIRE_BUTTON && player != null && timeTillNextFire <= 0) {
-      if(connection != null) {
+      if(connection != null && player.getCurrentWeapon().fire()) {
         Vector2D position = player.position.add(aimDirection.mult(2));
         ProjectileActor projectile = new ProjectileActor(position, aimDirection, player.velocity, player);
-        
+      
         connection.fireProjectile(projectile);
-        
         timeTillNextFire = GUN_COOLDOWN;
       }
     }

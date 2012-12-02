@@ -31,20 +31,20 @@ public class ShipActor extends Actor {
   public static double HEIGHT  = 0.1;
 
   @SuppressWarnings("serial")
-  public final LinkedList<Weapon> weapons = new LinkedList<Weapon>() {{
-    add(new Canon001(position, new Vector2D(0, 0.26142), rotation));
-  }};
-  
-  @SuppressWarnings("serial")
   private final LinkedList<Item> inventory = new LinkedList<Item>() {{
-    add(new AmmoItem("aaasdfasdf"));
-    add(new AmmoItem("basdfasdfb"));
-    add(new AmmoItem("casdfasdfc"));
-    add(new AmmoItem("dasdfasdfd"));
-    add(new AmmoItem("esadfasdfe"));
-    add(new AmmoItem("ffsdafasdf"));
+    add(new AmmoItem("aaasdfasdf", 10));
+    add(new AmmoItem("basdfasdfb", 10));
+    add(new AmmoItem("casdfasdfc", 10));
+    add(new AmmoItem("dasdfasdfd", 10));
+    add(new AmmoItem("esadfasdfe", 10));
+    add(new AmmoItem("ffsdafasdf", 10));
   }};
 
+  @SuppressWarnings("serial")
+  public final LinkedList<Weapon> weapons = new LinkedList<Weapon>() {{
+    add(new Canon001(position, new Vector2D(0, 0.26142), rotation, (AmmoItem) inventory.get(0)));
+  }};
+  
   public ShipActor(Vector2D position, Rotation rotation, double mass, int id) {
     super(new ActorInfo(position, rotation, mass, MESH, id));
     for(Weapon weapon : weapons) {

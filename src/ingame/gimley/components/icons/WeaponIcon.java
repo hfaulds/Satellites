@@ -53,6 +53,15 @@ public class WeaponIcon extends GComponent {
         screenPosition.y + this.height - nameHeight - 5,
         GLUT.BITMAP_HELVETICA_10,
         weapon.getName());
+    
+
+    int ammoQuantity = weapon.getAmmo().getQuantity();
+    double quantityWidth = Renderer2D.getTextSize(gl, Integer.toString(ammoQuantity)).x;
+    
+    Renderer2D.drawText(gl, 
+        screenPosition.x + this.width - quantityWidth - 5,
+        screenPosition.y + 5,
+        Integer.toString(ammoQuantity));
   }
 
 }

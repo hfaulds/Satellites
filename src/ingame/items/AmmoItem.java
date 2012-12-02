@@ -8,14 +8,16 @@ public class AmmoItem implements Item {
   private final ItemIcon icon = new ItemIcon(this);
 
   private final String name;
+  private int quantity = 0;
   
-  public AmmoItem(String name) {
+  public AmmoItem(String name, int quantity) {
     this.name = name;
+    this.quantity = quantity;
   }
 
   @Override
   public ItemIcon getIcon() {
-    return icon ;
+    return icon;
   }
 
   @Override
@@ -25,7 +27,16 @@ public class AmmoItem implements Item {
 
   @Override
   public int getQuantity() {
-    return 1;
+    return quantity;
+  }
+
+  public boolean remove(int amount) {
+    if(quantity >= amount) {
+      quantity -= amount;
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

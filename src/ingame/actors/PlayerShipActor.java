@@ -10,6 +10,8 @@ import core.geometry.Vector2D;
 
 public class PlayerShipActor extends ShipActor {
 
+  private Weapon currentWeapon = weapons.get(0);
+
   public PlayerShipActor(ShipActor player, PlayerInputController input) {
     super(player.position, player.rotation, player.mass, player.id);
     this.add(new ShipControl(this));
@@ -31,6 +33,10 @@ public class PlayerShipActor extends ShipActor {
     this.position._set(station.position.add(new Vector2D(20, 0)));
     this.setVisible(true);
     this.unFreeze();
+  }
+
+  public Weapon getCurrentWeapon() {
+    return currentWeapon ;
   }
 
 }
