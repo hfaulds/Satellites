@@ -53,7 +53,7 @@ public class Scene extends MouseAdapter {
   }
 
   public PlayerShipActor makePlayer(ShipActor ship) {
-    PlayerShipActor player = new PlayerShipActor(ship, input);
+    PlayerShipActor player = new PlayerShipActor(ship);
     input.setPlayer(player);
     return player;
   }

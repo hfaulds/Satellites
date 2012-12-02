@@ -1,7 +1,9 @@
 package ingame.controllers;
 
+import ingame.actors.NullPlayer;
 import ingame.actors.PlayerShipActor;
 import ingame.actors.ProjectileActor;
+import ingame.actors.weapons.Weapon;
 
 import java.util.List;
 
@@ -15,27 +17,20 @@ import core.net.connections.NetworkConnection;
 
 public class PlayerInputController implements Controller {
 
-  private static final Vector2D START_DIRECTION = new Vector2D(0, -1);
-  public static final long GUN_COOLDOWN = 1000;
-  
+  private static final int FIRE_BUTTON = MouseEvent.BUTTON1;
   private static final int KEY_FORWARD = 'W';
   private static final int KEY_LEFT    = 'A';
   private static final int KEY_RIGHT   = 'D';
   
   private static final double ACCELERATION = 0.00001;
-  private static final double SPIN         = 0.00001;
+  private static final double SPIN         = 0.000005;
 
-  public static int FIRE_BUTTON = MouseEvent.BUTTON1;
-  
   private double accelMag = 0;
   private double spinMag  = 0;
 
-  public Vector2D aimDirection = START_DIRECTION;
-  
-  public PlayerShipActor player;
+  public PlayerShipActor player = new NullPlayer();
 
   private NetworkConnection connection;
-  public long timeTillNextFire = 0;
   
   public void setPlayer(PlayerShipActor player) {
     this.player = player;
@@ -47,20 +42,18 @@ public class PlayerInputController implements Controller {
   
   @Override
   public void tick(long dt, List<Actor> actors) {
-    
-    if(timeTillNextFire > 0) {
-      timeTillNextFire -= dt;
+    for(Weapon weapon : player.weapons) {
+      weapon.tick(dt);
     }
     
-    if(player != null) {
-      if(accelMag != 0) {
-        Vector2D acceleration = START_DIRECTION.rotate(player.rotation.mag)._multiply(dt * accelMag * ACCELERATION);
-        player.velocity._add(acceleration);
-      }
-      if(spinMag != 0) {
-        double spin = dt * spinMag * SPIN;
-        player.spin._add(spin); 
-      }
+    if(accelMag != 0) {
+      Vector2D acceleration = new Vector2D(0, -1).rotate(player.rotation.mag)._multiply(dt * accelMag * ACCELERATION);
+      player.velocity._add(acceleration);
+    }
+    
+    if(spinMag != 0) {
+      double spin = dt * spinMag * SPIN;
+      player.spin._add(spin); 
     }
   }
 
@@ -95,19 +88,17 @@ public class PlayerInputController implements Controller {
   }
   
   public void mouseMoved(Vector2D mouse, int width, int height) {
-    aimDirection = mouse.sub(new Vector2D(width, height).divide(2))._normalize();
+    player.setAimDirection(mouse.sub(new Vector2D(width, height).divide(2))._normalize());
   }
 
-  
   public void mouseReleased(Vector2D click, MouseEvent e) {
-    if(e.getButton() == PlayerInputController.FIRE_BUTTON && player != null && timeTillNextFire <= 0) {
-      if(connection != null && player.getCurrentWeapon().fire()) {
-        Vector2D position = player.position.add(aimDirection.mult(2));
-        ProjectileActor projectile = new ProjectileActor(position, aimDirection, player.velocity, player);
-      
-        connection.fireProjectile(projectile);
-        timeTillNextFire = GUN_COOLDOWN;
-      }
+    if(e.getButton() == PlayerInputController.FIRE_BUTTON && 
+        connection != null && 
+        player.getCurrentWeapon().fire()) 
+    {
+      Vector2D position = player.position.add(player.getAimDirection().mult(2));
+      ProjectileActor projectile = new ProjectileActor(position, player.getAimDirection(), player.velocity, player);
+      connection.fireProjectile(projectile);
     }
   }
 

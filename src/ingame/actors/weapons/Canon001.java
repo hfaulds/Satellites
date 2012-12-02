@@ -8,6 +8,7 @@ import core.geometry.Vector2D;
 
 public class Canon001 extends Weapon {
 
+  public static final long COOLDOWN = 1000;
   public static final Mesh MESH = MeshLoader.loadMesh("Canon-Mk2.obj");
   
   public Canon001(Vector2D position, Vector2D mountPoint, Rotation shipRotation, AmmoItem ammo) {
@@ -17,6 +18,11 @@ public class Canon001 extends Weapon {
   @Override
   public String getName() {
     return "Canon";
+  }
+
+  @Override
+  public long getCoolDown() {
+    return COOLDOWN;
   }
  
 }

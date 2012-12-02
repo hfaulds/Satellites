@@ -1,7 +1,7 @@
 package ingame.actors.ship;
 
-import ingame.actors.ShipActor;
-import ingame.controllers.PlayerInputController;
+import ingame.actors.PlayerShipActor;
+import ingame.actors.weapons.Weapon;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
@@ -22,20 +22,21 @@ public class ShipAim extends Actor {
 
   private final int mid = - CIRCLE_SAMPLES / 4;
   
-  private PlayerInputController controller;
-
-  public ShipAim(ShipActor ship, PlayerInputController controller) {
-    super(new ActorInfo(ship.position, new Rotation(), 0, new Mesh()));
-    this.controller = controller;
+  private final PlayerShipActor player;
+  
+  public ShipAim(PlayerShipActor player) {
+    super(new ActorInfo(player.position, new Rotation(), 0, new Mesh()));
     this.collideable = false;
+    this.player = player;
   }
   
   @Override
   public void render(GL2 gl, GLU glu) {
-    this.rotation.mag = Rotation.XRotFromVector(controller.aimDirection).mag;
+    this.rotation.mag = Rotation.XRotFromVector(player.getAimDirection()).mag;
     
-    double l = PlayerInputController.GUN_COOLDOWN - controller.timeTillNextFire;
-    double length = l / PlayerInputController.GUN_COOLDOWN;
+    Weapon currentWeapon = player.getCurrentWeapon();
+    double l = currentWeapon.getCoolDown() - currentWeapon.getTimeTillNextFire();
+    double length = l / currentWeapon.getCoolDown();
     
     int start = mid - (int)(CIRCLE_SAMPLES * LINE_LENGTH * length);
     int end   = mid + (int)(CIRCLE_SAMPLES * LINE_LENGTH * length);
