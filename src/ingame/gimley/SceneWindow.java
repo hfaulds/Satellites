@@ -2,6 +2,7 @@ package ingame.gimley;
 
 import ingame.actors.player.PlayerShipActor;
 import ingame.collisions.ShipStationShieldCollisionListener;
+import ingame.controllers.PlayerInputController;
 import ingame.gimley.components.ChatBox;
 import ingame.gimley.components.FPSCounter;
 import ingame.gimley.components.PlayerInventory;
@@ -27,7 +28,6 @@ import core.render.Renderer3D;
 
 public class SceneWindow extends GFrame {
   
-  private final Scene scene;
   private final SceneUpdater updater;
   
   private final Camera camera;
@@ -35,12 +35,13 @@ public class SceneWindow extends GFrame {
   
   private Vector2D startMousePos = new Vector2D();
   private Vector2D endMousePos   = new Vector2D();
+  private PlayerInputController input;
   
-  public SceneWindow(final Scene scene, final NetworkConnection connection) {
+  public SceneWindow(final Scene scene, PlayerInputController input, final NetworkConnection connection) {
     super(null, connection.username, 800, 800);
+    this.input = input;
+    PlayerShipActor player = input.player;
 
-    PlayerShipActor player = scene.input.player;
-    this.scene = scene;
     this.camera = new Camera(player.position, width, height);
     this.renderer3D = new Renderer3D(scene);
     this.updater = new SceneUpdater(scene);
@@ -104,7 +105,7 @@ public class SceneWindow extends GFrame {
     super.mouseDragged(start, end, offset, e);
     endMousePos._set(end);
     if(sceneHasFocus()) {
-      scene.input.mouseMoved(end, width, height);
+      input.mouseMoved(end, width, height);
     }
   }
   
@@ -121,7 +122,7 @@ public class SceneWindow extends GFrame {
     super.mouseReleased(mouse, e);
 
     if(sceneHasFocus()) {
-      scene.input.mouseReleased(mouse, e);
+      input.mouseReleased(mouse, e);
     }
   }
   
@@ -137,7 +138,7 @@ public class SceneWindow extends GFrame {
   public void mouseMoved(Vector2D mouse) {
     super.mouseMoved(mouse);
     if(sceneHasFocus()) {
-      scene.input.mouseMoved(mouse, width, height);
+      input.mouseMoved(mouse, width, height);
     }
   }
   
@@ -148,7 +149,7 @@ public class SceneWindow extends GFrame {
   public void keyPressed(KeyEvent e) {
     super.keyPressed(e);
     if(sceneHasFocus()) {
-      scene.input.keyPressed(e);
+      input.keyPressed(e);
     }
   }
   
@@ -156,7 +157,7 @@ public class SceneWindow extends GFrame {
   public void keyReleased(KeyEvent e) {
     super.keyReleased(e);
     if(sceneHasFocus()) {
-      scene.input.keyReleased(e);
+      input.keyReleased(e);
     }
   }
 

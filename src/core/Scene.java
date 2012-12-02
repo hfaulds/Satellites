@@ -4,7 +4,6 @@ import ingame.actors.PointLightActor;
 import ingame.actors.ShipActor;
 import ingame.actors.player.PlayerShipActor;
 import ingame.controllers.ClientShipController;
-import ingame.controllers.PlayerInputController;
 
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
@@ -20,13 +19,13 @@ import core.net.msg.SceneCreateMsg;
 
 public class Scene extends MouseAdapter {
 
-  public final PlayerInputController input = new PlayerInputController();
-
   public final List<Actor>       actors = new ArrayList<Actor>();
   public final List<Controller>  controllers = new ArrayList<Controller>();
   public final PointLightActor[] lights = {new PointLightActor(), new PointLightActor(new Vector3D(-10, 10, 10))};
 
   public final Queue<Actor> actorqueue = new LinkedList<Actor>();
+
+  private NewPlayerListener newPlayerListener;
 
   public void addController(Controller controller) {
     synchronized(controllers) {
@@ -54,7 +53,7 @@ public class Scene extends MouseAdapter {
 
   public PlayerShipActor makePlayer(ShipActor ship) {
     PlayerShipActor player = new PlayerShipActor(ship);
-    input.setPlayer(player);
+    newPlayerListener.newPlayer(player);
     return player;
   }
   
@@ -84,5 +83,9 @@ public class Scene extends MouseAdapter {
     for(Controller controller : controllers)
       controller.destroy();
     controllers.clear();
+  }
+
+  public void addNewPlayerListener(NewPlayerListener newPlayerListener) {
+    this.newPlayerListener = newPlayerListener;
   }
 }

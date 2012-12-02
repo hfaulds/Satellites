@@ -89,6 +89,9 @@ public class ServerConnection extends NetworkConnection {
       }
     });
     
+  }
+
+  public void setupScene(final Scene scene) {
     PlayerShipActor player = scene.makePlayer(new ShipActor(0, 0));
     scene.queueAddActor(player);
     scene.addController(new ServerShipController(player, this));

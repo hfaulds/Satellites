@@ -14,7 +14,6 @@ import core.Actor;
 import core.Controller;
 import core.geometry.Vector2D;
 import core.net.connections.NetworkConnection;
-import core.net.connections.NullConnection;
 
 public class PlayerInputController implements Controller {
 
@@ -30,14 +29,14 @@ public class PlayerInputController implements Controller {
   private double spinMag  = 0;
 
   public PlayerShipActor player = new NullPlayer();
-  private NetworkConnection connection = new NullConnection();
+  private final NetworkConnection connection;
   
+  public PlayerInputController(NetworkConnection connection) {
+    this.connection = connection;
+  }
+
   public void setPlayer(PlayerShipActor player) {
     this.player = player;
-  }
-  
-  public void setConnection(NetworkConnection connection) {
-    this.connection = connection;
   }
   
   @Override

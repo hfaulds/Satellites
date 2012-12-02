@@ -1,6 +1,8 @@
 package pregame;
 
 
+import ingame.actors.player.PlayerShipActor;
+import ingame.controllers.PlayerInputController;
 import ingame.gimley.SceneWindow;
 
 import java.awt.Component;
@@ -17,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 
 import pregame.dialog.CreateServerDialog;
 import pregame.dialog.SelectServerDialog;
+import core.NewPlayerListener;
 import core.Scene;
 import core.net.connections.ClientConnection;
 import core.net.connections.ServerConnection;
@@ -64,10 +67,19 @@ public class PreGameGUI extends GUI {
       public void actionPerformed(ActionEvent e) {
         Scene scene = new Scene();
         ClientConnection connection = new ClientConnection(scene, username);
-        scene.input.setConnection(connection);
+        
+        final PlayerInputController input = new PlayerInputController(connection);
+        scene.addController(input);
+        scene.addNewPlayerListener(new NewPlayerListener() {
+          @Override
+          public void newPlayer(PlayerShipActor player) {
+            input.setPlayer(player);
+          }
+        });
+        
         if(SelectServerDialog.showDialog(content, connection)) {
           freezeButtons();
-          new SceneWindow(scene, connection);
+          new SceneWindow(scene, input, connection);
           unfreezeButtons();
         }
       }
@@ -83,10 +95,21 @@ public class PreGameGUI extends GUI {
       public void actionPerformed(ActionEvent e) {
         final Scene scene = new Scene();
         ServerConnection connection = new ServerConnection(scene, username);
-        scene.input.setConnection(connection);
+
+        final PlayerInputController input = new PlayerInputController(connection);
+        scene.addController(input);
+        scene.addNewPlayerListener(new NewPlayerListener() {
+          @Override
+          public void newPlayer(PlayerShipActor player) {
+            input.setPlayer(player);
+          }
+        });
+        
+        connection.setupScene(scene);
+        
         if(CreateServerDialog.showDialog(content, connection)) {
           freezeButtons();
-          new SceneWindow(scene, connection);
+          new SceneWindow(scene, input, connection);
           unfreezeButtons();
         }
       }
