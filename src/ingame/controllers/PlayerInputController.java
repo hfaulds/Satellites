@@ -14,6 +14,7 @@ import core.Actor;
 import core.Controller;
 import core.geometry.Vector2D;
 import core.net.connections.NetworkConnection;
+import core.net.connections.NullConnection;
 
 public class PlayerInputController implements Controller {
 
@@ -29,8 +30,7 @@ public class PlayerInputController implements Controller {
   private double spinMag  = 0;
 
   public PlayerShipActor player = new NullPlayer();
-
-  private NetworkConnection connection;
+  private NetworkConnection connection = new NullConnection();
   
   public void setPlayer(PlayerShipActor player) {
     this.player = player;
@@ -92,8 +92,7 @@ public class PlayerInputController implements Controller {
   }
 
   public void mouseReleased(Vector2D click, MouseEvent e) {
-    if(e.getButton() == PlayerInputController.FIRE_BUTTON && 
-        connection != null && 
+    if(e.getButton() == PlayerInputController.FIRE_BUTTON &&
         player.getCurrentWeapon().fire()) 
     {
       Vector2D position = player.position.add(player.getAimDirection().mult(2));
