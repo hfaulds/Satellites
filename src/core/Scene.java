@@ -63,7 +63,7 @@ public class Scene extends MouseAdapter {
     for(ActorCreateMsg actorInfo : info.actorInfoList) {
       Actor actor = Actor.fromInfo(actorInfo);
       
-      if(actorInfo.id == info.playerID ) {
+      if(actorInfo.id == info.playerID) {
         actor = makePlayer((ShipActor)actor);
         addController(new ClientShipController(actor, connection));
       }
