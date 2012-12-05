@@ -25,15 +25,15 @@ public class WeaponBar extends GComponent {
   @Override
   public void init(GL2 gl, int width, int height) {
     for(Weapon weapon : player.weapons) {
-      add(new WeaponIcon(this, weapon));
+      add(new WeaponIcon(this, new Vector2D(WIDTH/2 - WeaponIcon.SIZE/2, 0), weapon));
     }
   }
 
   @Override
   public void render(GL2 gl, int width, int height) {
-    gl.glColor4d(0.5, 0.5, 0.5, 0.3);
+    gl.glColor4d(0.2, 0.2, 0.2, 1);
     Renderer2D.drawFillRect(gl, position.x, position.y, this.width, this.height);
-
+    
     super.render(gl, width, height);
   }
 }

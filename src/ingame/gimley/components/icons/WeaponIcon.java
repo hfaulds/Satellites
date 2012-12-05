@@ -21,8 +21,8 @@ public class WeaponIcon extends GComponent {
   private final Colour outlineColour = new Colour(1,1,1,1);
   private final Colour textColour = new Colour(1,1,1,1);
 
-  public WeaponIcon(GComponent parent, Weapon weapon) {
-    super(parent, new Vector2D(), SIZE, SIZE);
+  public WeaponIcon(GComponent parent, Vector2D position, Weapon weapon) {
+    super(parent, position, SIZE, SIZE);
     this.weapon = weapon;
   }
   
@@ -55,13 +55,13 @@ public class WeaponIcon extends GComponent {
         weapon.getName());
     
 
-    int ammoQuantity = weapon.getAmmo().getQuantity();
-    double quantityWidth = Renderer2D.getTextSize(gl, Integer.toString(ammoQuantity)).x;
+    String ammoQuantity = weapon.getAmmo().getQuantityString();
+    double quantityWidth = Renderer2D.getTextSize(gl, ammoQuantity).x;
     
     Renderer2D.drawText(gl, 
         screenPosition.x + this.width - quantityWidth - 5,
         screenPosition.y + 5,
-        Integer.toString(ammoQuantity));
+        ammoQuantity);
   }
 
 }

@@ -3,7 +3,7 @@ package ingame.gimley.components;
 
 import ingame.gimley.components.icons.ItemIcon;
 
-import java.util.LinkedList;
+import java.util.List;
 
 import javax.media.opengl.GL2;
 
@@ -17,13 +17,13 @@ import core.render.Renderer2D;
 
 public class InventoryPanel extends GComponent {
   
-  private final LinkedList<Item> inventory;
+  private final List<Item> inventory;
   
-  public InventoryPanel(GComponent parent, Vector2D position, LinkedList<Item> inventory, int width, int height) {
+  public InventoryPanel(GComponent parent, Vector2D position, List<Item> list, int width, int height) {
     super(parent, new Vector2D(), width, height);
-    this.inventory = inventory;
+    this.inventory = list;
     
-    for(Item item : inventory) {
+    for(Item item : list) {
       final ItemIcon icon = item.getIcon();
       add(icon);
       icon.addActionListener(new ActionListener() {

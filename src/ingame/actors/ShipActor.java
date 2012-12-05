@@ -5,6 +5,7 @@ import ingame.actors.weapons.Weapon;
 import ingame.items.AmmoItem;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import core.Actor;
 import core.ActorInfo;
@@ -24,25 +25,24 @@ public class ShipActor extends Actor {
 
   public static final Mesh MESH = MeshLoader.loadMesh("Ship-Mk2.obj");
   
-  private static double MASS   = 0.001;
+  private static double MASS  = 0.001;
   
-  public static double WIDTH   = 0.02;
-  public static double LENGTH  = 1.0;
-  public static double HEIGHT  = 0.1;
+  public static double WIDTH  = 0.02;
+  public static double LENGTH = 1.0;
+  public static double HEIGHT = 0.1;
 
-  @SuppressWarnings("serial")
-  private final LinkedList<Item> inventory = new LinkedList<Item>() {{
-    add(new AmmoItem("aaasdfasdf", 10));
-    add(new AmmoItem("basdfasdfb", 10));
-    add(new AmmoItem("casdfasdfc", 10));
-    add(new AmmoItem("dasdfasdfd", 10));
-    add(new AmmoItem("esadfasdfe", 10));
-    add(new AmmoItem("ffsdafasdf", 10));
-  }};
+  private final Inventory inventory = new Inventory(new Item[]{
+    new AmmoItem("aaasdfasdf", 10),
+    new AmmoItem("basdfasdfb", 10),
+    new AmmoItem("casdfasdfc", 10),
+    new AmmoItem("dasdfasdfd", 10),
+    new AmmoItem("esadfasdfe", 10),
+    new AmmoItem("ffsdafasdf", 10)
+  });
 
   @SuppressWarnings("serial")
   public final LinkedList<Weapon> weapons = new LinkedList<Weapon>() {{
-    add(new Canon001(position, new Vector2D(0, 0.26142), rotation, (AmmoItem) inventory.get(0)));
+    add(new Canon001(position, new Vector2D(0, 0.26142), rotation, inventory.getAmmoItem()));
   }};
   
   public ShipActor(Vector2D position, Rotation rotation, double mass, int id) {
@@ -67,7 +67,7 @@ public class ShipActor extends Actor {
     }
   }
   
-  public LinkedList<Item> getInventory() {
-    return inventory;
+  public List<Item> getInventory() {
+    return inventory.getItems();
   }
 }

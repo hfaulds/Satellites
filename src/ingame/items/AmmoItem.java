@@ -30,6 +30,11 @@ public class AmmoItem implements Item {
     return quantity;
   }
 
+  @Override
+  public String getQuantityString() {
+    return Integer.toString(quantity);
+  }
+
   public boolean remove(int amount) {
     if(quantity >= amount) {
       quantity -= amount;

@@ -19,7 +19,7 @@ import javax.swing.border.EmptyBorder;
 
 import pregame.dialog.CreateServerDialog;
 import pregame.dialog.SelectServerDialog;
-import core.NewPlayerListener;
+import core.ScenePlayerListener;
 import core.Scene;
 import core.net.connections.ClientConnection;
 import core.net.connections.ServerConnection;
@@ -71,9 +71,9 @@ public class PreGameGUI extends GUI {
         final PlayerInputController input = new PlayerInputController(connection);
         
         scene.addController(input);
-        scene.addNewPlayerListener(new NewPlayerListener() {
+        scene.addNewPlayerListener(new ScenePlayerListener() {
           @Override
-          public void newPlayer(PlayerShipActor player) {
+          public void playerActorChanged(PlayerShipActor player) {
             input.setPlayer(player);
             SceneWindow window = new SceneWindow(scene, input, player, connection);
             window.setVisible(true);
@@ -99,9 +99,9 @@ public class PreGameGUI extends GUI {
         final PlayerInputController input = new PlayerInputController(connection);
         
         scene.addController(input);
-        scene.addNewPlayerListener(new NewPlayerListener() {
+        scene.addNewPlayerListener(new ScenePlayerListener() {
           @Override
-          public void newPlayer(PlayerShipActor player) {
+          public void playerActorChanged(PlayerShipActor player) {
             input.setPlayer(player);
             SceneWindow window = new SceneWindow(scene, input, player, connection);
             window.setVisible(true);
