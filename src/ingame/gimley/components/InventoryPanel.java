@@ -1,7 +1,7 @@
 package ingame.gimley.components;
 
 
-import ingame.gimley.icons.ItemIcon;
+import ingame.gimley.icons.InventoryItemIcon;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,22 +15,23 @@ import core.gimley.actions.ItemMoved;
 import core.gimley.components.GComponent;
 import core.gimley.listeners.ActionListener;
 import core.render.Renderer2D;
+import core.render.material.Colour;
 
 public class InventoryPanel extends GComponent {
   
-  private final List<ItemIcon> icons = new LinkedList<ItemIcon>();
+  private final List<InventoryItemIcon> icons = new LinkedList<InventoryItemIcon>();
   
   public InventoryPanel(GComponent parent, Vector2D position, List<Item> invetory, int width, int height) {
     super(parent, new Vector2D(), width, height);
     for(Item item : invetory) {
-      icons.add(new ItemIcon(item));
+      icons.add(new InventoryItemIcon(item, new Colour(1,1,1,1)));
     }
     updateIconPositions();
   }
 
   @Override
   public void init(GL2 gl, int width, int height) {
-    for(final ItemIcon icon : icons) {
+    for(final InventoryItemIcon icon : icons) {
       icon.addActionListener(new ActionListener() {
 
         @Override
@@ -50,10 +51,10 @@ public class InventoryPanel extends GComponent {
   
   
   public void updateIconPositions() {
-    int maxItemsX = this.width / ItemIcon.SIZE;
+    int maxItemsX = this.width / InventoryItemIcon.SIZE;
     
     for(int i=0; i < icons.size(); i++) {
-      ItemIcon icon = icons.get(i);
+      InventoryItemIcon icon = icons.get(i);
       
       int x = ((i % maxItemsX) * icon.width) + 4;
       int y = this.height - (((i / maxItemsX) + 1) * icon.height) - 2;
@@ -72,10 +73,10 @@ public class InventoryPanel extends GComponent {
     if(position.x > width || position.y > height)
       return -1;
     
-    int xIndex = (int)(localPosition.x / ItemIcon.SIZE);
-    int yIndex = (int)(localPosition.y / ItemIcon.SIZE);
+    int xIndex = (int)(localPosition.x / InventoryItemIcon.SIZE);
+    int yIndex = (int)(localPosition.y / InventoryItemIcon.SIZE);
 
-    int maxItemsX = this.width / ItemIcon.SIZE;
+    int maxItemsX = this.width / InventoryItemIcon.SIZE;
     return xIndex + (yIndex * maxItemsX);
   }
 

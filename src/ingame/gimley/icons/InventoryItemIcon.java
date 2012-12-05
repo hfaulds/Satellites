@@ -12,17 +12,18 @@ import core.gimley.listeners.ActionListener;
 import core.render.Renderer2D;
 import core.render.material.Colour;
 
-public class ItemIcon extends GComponent {
+public class InventoryItemIcon extends GComponent {
 
   public static final int SIZE = 75;
 
-  private final Colour fillColour = new Colour(1,1,1,1);
+  private final Colour fillColour;
   private final Colour outlineColour = new Colour(0.5,0.5,0.5,1);
   private final Colour textColour = new Colour(1,1,1,1);
   public final Item item;
 
-  public ItemIcon(Item item) {
+  public InventoryItemIcon(Item item, Colour fillColour) {
     super(null, new Vector2D(), SIZE, SIZE);
+    this.fillColour = fillColour;
     this.item = item;
   }
 
