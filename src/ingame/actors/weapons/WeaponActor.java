@@ -15,7 +15,7 @@ import core.geometry.Mesh;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
 
-public abstract class Weapon extends Actor {
+public abstract class WeaponActor extends Actor {
 
   private final Rotation shipRotation;
 
@@ -26,7 +26,7 @@ public abstract class Weapon extends Actor {
 
   private long timeTillNextFire;
   
-  public Weapon(Vector2D position, Vector2D mountPoint, Rotation shipRotation, Mesh mesh, AmmoItem ammo) {
+  public WeaponActor(Vector2D position, Vector2D mountPoint, Rotation shipRotation, Mesh mesh, AmmoItem ammo) {
     super(new ActorInfo(position, new Rotation(), 0, mesh));
     this.mountPoint = mountPoint;
     this.shipRotation = shipRotation;

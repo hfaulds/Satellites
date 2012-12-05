@@ -1,8 +1,9 @@
 package ingame.gimley.components;
 
 
-import ingame.gimley.components.icons.ItemIcon;
+import ingame.gimley.icons.ItemIcon;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.media.opengl.GL2;
@@ -17,15 +18,19 @@ import core.render.Renderer2D;
 
 public class InventoryPanel extends GComponent {
   
-  private final List<Item> inventory;
+  private final List<ItemIcon> icons = new LinkedList<ItemIcon>();
   
-  public InventoryPanel(GComponent parent, Vector2D position, List<Item> list, int width, int height) {
+  public InventoryPanel(GComponent parent, Vector2D position, List<Item> invetory, int width, int height) {
     super(parent, new Vector2D(), width, height);
-    this.inventory = list;
-    
-    for(Item item : list) {
-      final ItemIcon icon = item.getIcon();
-      add(icon);
+    for(Item item : invetory) {
+      icons.add(new ItemIcon(item));
+    }
+    updateIconPositions();
+  }
+
+  @Override
+  public void init(GL2 gl, int width, int height) {
+    for(final ItemIcon icon : icons) {
       icon.addActionListener(new ActionListener() {
 
         @Override
@@ -33,43 +38,22 @@ public class InventoryPanel extends GComponent {
           ItemMoved event = (ItemMoved) obj;
           int index = getIconIndexAt(event.location);
           if(index > 0) {
-            moveItem(icon, index);
+            //moveItem(icon, index);
           }
           updateIconPositions();
         }
         
       });
-      
+      add(icon);
     }
-    
-    updateIconPositions();
   }
   
-  protected void moveItem(ItemIcon icon, int newIndex) {
-    int currentIndex = inventory.indexOf(icon.item);
-
-    if(newIndex != currentIndex) {
-      inventory.remove(icon.item);
-      
-      if(newIndex > inventory.size()) {
-        inventory.add(icon.item);
-      } else {
-        inventory.add(newIndex, icon.item);
-      }
-    }
-  }
-
-  public void addItem(ItemIcon icon) {
-    super.add(icon);
-    inventory.add(icon.item);
-    updateIconPositions();
-  }
   
   public void updateIconPositions() {
     int maxItemsX = this.width / ItemIcon.SIZE;
     
-    for(int i=0; i < inventory.size(); i++) {
-      ItemIcon icon = inventory.get(i).getIcon();
+    for(int i=0; i < icons.size(); i++) {
+      ItemIcon icon = icons.get(i);
       
       int x = ((i % maxItemsX) * icon.width) + 4;
       int y = this.height - (((i / maxItemsX) + 1) * icon.height) - 2;
@@ -94,11 +78,7 @@ public class InventoryPanel extends GComponent {
     int maxItemsX = this.width / ItemIcon.SIZE;
     return xIndex + (yIndex * maxItemsX);
   }
-  
-  public void removeItem(ItemIcon icon) {
-    super.remove(icon);
-    inventory.remove(icon.item);
-  }
+
   
   @Override
   public void render(GL2 gl, int width, int height) {

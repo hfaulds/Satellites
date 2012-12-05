@@ -1,6 +1,6 @@
 package ingame.actors.player;
 
-import ingame.actors.weapons.Weapon;
+import ingame.actors.weapons.WeaponActor;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
@@ -33,7 +33,7 @@ public class PlayerAim extends Actor {
   public void render(GL2 gl, GLU glu) {
     this.rotation.mag = Rotation.XRotFromVector(player.getAimDirection()).mag;
     
-    Weapon currentWeapon = player.getCurrentWeapon();
+    WeaponActor currentWeapon = player.getCurrentWeapon();
     double l = currentWeapon.getCoolDown() - currentWeapon.getTimeTillNextFire();
     double length = l / currentWeapon.getCoolDown();
     

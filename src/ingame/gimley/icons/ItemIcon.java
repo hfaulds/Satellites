@@ -1,4 +1,4 @@
-package ingame.gimley.components.icons;
+package ingame.gimley.icons;
 
 import javax.media.opengl.GL2;
 
@@ -16,8 +16,9 @@ public class ItemIcon extends GComponent {
 
   public static final int SIZE = 75;
 
-  private final Colour colour = new Colour(1,1,1,1);
-
+  private final Colour fillColour = new Colour(1,1,1,1);
+  private final Colour outlineColour = new Colour(0.5,0.5,0.5,1);
+  private final Colour textColour = new Colour(1,1,1,1);
   public final Item item;
 
   public ItemIcon(Item item) {
@@ -27,18 +28,17 @@ public class ItemIcon extends GComponent {
 
   @Override
   public void render(GL2 gl, int width, int height) {
-    
     Vector2D screenPosition = this.getScreenPosition();
 
-    gl.glColor4fv(colour.toFloat(), 0);
+    gl.glColor4fv(fillColour.toFloat(), 0);
     Renderer2D.drawFillRect(gl, 
         screenPosition.x, 
         screenPosition.y, 
-        this.width, 
+        this.width,
         this.height, 
         5);
-    
-    gl.glColor4d(0.5,0.5,0.5,1);
+
+    gl.glColor4fv(outlineColour.toFloat(), 0);
     Renderer2D.drawLineRect(gl, 
         screenPosition.x, 
         screenPosition.y, 
@@ -46,15 +46,17 @@ public class ItemIcon extends GComponent {
         this.height, 
         1, 
         5);
-    
+
+    gl.glColor4fv(textColour.toFloat(), 0);
     double nameHeight = Renderer2D.getTextSize(gl, item.getName()).y;
     Renderer2D.drawText(gl,
         screenPosition.x + 5,
         screenPosition.y + this.height - nameHeight - 5,
         item.getName());
 
-    double quantityWidth = Renderer2D.getTextSize(gl, Integer.toString(item.getQuantity())).x;
-    
+
+    String ammoQuantity = item.getQuantityString();
+    double quantityWidth = Renderer2D.getTextSize(gl, ammoQuantity).x;
     Renderer2D.drawText(gl, 
         screenPosition.x + this.width - quantityWidth - 5,
         screenPosition.y + 5,

@@ -1,8 +1,8 @@
 package ingame.gimley.components;
 
 import ingame.actors.player.PlayerShipActor;
-import ingame.actors.weapons.Weapon;
-import ingame.gimley.components.icons.WeaponIcon;
+import ingame.actors.weapons.WeaponActor;
+import ingame.gimley.icons.WeaponIcon;
 
 import javax.media.opengl.GL2;
 
@@ -24,7 +24,7 @@ public class WeaponBar extends GComponent {
   
   @Override
   public void init(GL2 gl, int width, int height) {
-    for(Weapon weapon : player.weapons) {
+    for(WeaponActor weapon : player.weapons) {
       add(new WeaponIcon(this, new Vector2D(WIDTH/2 - WeaponIcon.SIZE/2, 0), weapon));
     }
   }

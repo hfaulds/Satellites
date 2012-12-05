@@ -1,6 +1,6 @@
-package ingame.gimley.components.icons;
+package ingame.gimley.icons;
 
-import ingame.actors.weapons.Weapon;
+import ingame.actors.weapons.WeaponActor;
 
 import javax.media.opengl.GL2;
 
@@ -15,13 +15,13 @@ public class WeaponIcon extends GComponent {
 
   public static final int SIZE = 40;
   
-  private final Weapon weapon;
+  private final WeaponActor weapon;
   
-  private final Colour fillColour = new Colour(.5,.5,.5,1);
+  private final Colour fillColour = new Colour(0.7,.2,.2,1);
   private final Colour outlineColour = new Colour(1,1,1,1);
   private final Colour textColour = new Colour(1,1,1,1);
 
-  public WeaponIcon(GComponent parent, Vector2D position, Weapon weapon) {
+  public WeaponIcon(GComponent parent, Vector2D position, WeaponActor weapon) {
     super(parent, position, SIZE, SIZE);
     this.weapon = weapon;
   }
@@ -39,10 +39,10 @@ public class WeaponIcon extends GComponent {
 
     gl.glColor4fv(outlineColour.toFloat(), 0);
     Renderer2D.drawLineRect(gl, 
-        screenPosition.x, 
-        screenPosition.y, 
-        this.width, 
-        this.height, 
+        screenPosition.x,
+        screenPosition.y,
+        this.width,
+        this.height,
         1, 
         5);
 

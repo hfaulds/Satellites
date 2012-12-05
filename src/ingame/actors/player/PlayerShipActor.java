@@ -2,7 +2,7 @@ package ingame.actors.player;
 
 import ingame.actors.ShipActor;
 import ingame.actors.StationActor;
-import ingame.actors.weapons.Weapon;
+import ingame.actors.weapons.WeaponActor;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
 import core.net.msg.ActorCreateMsg;
@@ -11,7 +11,7 @@ public class PlayerShipActor extends ShipActor {
 
   public static final Vector2D START_DIRECTION = new Vector2D(0, 1);
 
-  private Weapon currentWeapon = weapons.get(0);
+  private WeaponActor currentWeapon = weapons.get(0);
   private final Vector2D aimDirection = START_DIRECTION;
   
   public PlayerShipActor(ShipActor player) {
@@ -36,13 +36,13 @@ public class PlayerShipActor extends ShipActor {
     this.unFreeze();
   }
 
-  public Weapon getCurrentWeapon() {
+  public WeaponActor getCurrentWeapon() {
     return currentWeapon ;
   }
 
   public void setAimDirection(Vector2D direction) {
     this.aimDirection._set(direction);
-    for(Weapon weapon : this.weapons) {
+    for(WeaponActor weapon : this.weapons) {
       weapon.rotation.mag = Rotation.XRotFromVector(direction).mag;
     }
   }

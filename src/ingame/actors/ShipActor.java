@@ -1,7 +1,7 @@
 package ingame.actors;
 
 import ingame.actors.weapons.Canon001;
-import ingame.actors.weapons.Weapon;
+import ingame.actors.weapons.WeaponActor;
 import ingame.items.AmmoItem;
 
 import java.util.LinkedList;
@@ -9,6 +9,7 @@ import java.util.List;
 
 import core.Actor;
 import core.ActorInfo;
+import core.Inventory;
 import core.Item;
 import core.geometry.Mesh;
 import core.geometry.MeshLoader;
@@ -41,20 +42,20 @@ public class ShipActor extends Actor {
   });
 
   @SuppressWarnings("serial")
-  public final LinkedList<Weapon> weapons = new LinkedList<Weapon>() {{
+  public final LinkedList<WeaponActor> weapons = new LinkedList<WeaponActor>() {{
     add(new Canon001(position, new Vector2D(0, 0.26142), rotation, inventory.getAmmoItem()));
   }};
   
   public ShipActor(Vector2D position, Rotation rotation, double mass, int id) {
     super(new ActorInfo(position, rotation, mass, MESH, id));
-    for(Weapon weapon : weapons) {
+    for(WeaponActor weapon : weapons) {
       add(weapon);
     }
   }
   
   public ShipActor(double x, double y) {
     super(new ActorInfo(new Vector2D(x,y), new Rotation(), MASS, MESH));
-    for(Weapon weapon : weapons) {
+    for(WeaponActor weapon : weapons) {
       add(weapon);
     }
   }

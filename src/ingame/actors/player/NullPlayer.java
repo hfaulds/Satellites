@@ -2,7 +2,7 @@ package ingame.actors.player;
 
 import ingame.actors.StationActor;
 import ingame.actors.weapons.NullWeapon;
-import ingame.actors.weapons.Weapon;
+import ingame.actors.weapons.WeaponActor;
 import core.geometry.Vector2D;
 
 public class NullPlayer extends PlayerShipActor {
@@ -16,7 +16,7 @@ public class NullPlayer extends PlayerShipActor {
   }
 
   @Override
-  public Weapon getCurrentWeapon() {
+  public WeaponActor getCurrentWeapon() {
     return new NullWeapon();
   }
 

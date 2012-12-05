@@ -3,7 +3,7 @@ package ingame.controllers;
 import ingame.actors.ProjectileActor;
 import ingame.actors.player.NullPlayer;
 import ingame.actors.player.PlayerShipActor;
-import ingame.actors.weapons.Weapon;
+import ingame.actors.weapons.WeaponActor;
 
 import java.util.List;
 
@@ -42,7 +42,7 @@ public class PlayerInputController implements Controller {
   
   @Override
   public void tick(long dt, List<Actor> actors) {
-    for(Weapon weapon : player.weapons) {
+    for(WeaponActor weapon : player.weapons) {
       weapon.tick(dt);
     }
     

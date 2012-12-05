@@ -1,11 +1,8 @@
 package ingame.items;
 
-import ingame.gimley.components.icons.ItemIcon;
 import core.Item;
 
 public class AmmoItem implements Item {
-
-  private final ItemIcon icon = new ItemIcon(this);
 
   private final String name;
   private int quantity = 0;
@@ -13,11 +10,6 @@ public class AmmoItem implements Item {
   public AmmoItem(String name, int quantity) {
     this.name = name;
     this.quantity = quantity;
-  }
-
-  @Override
-  public ItemIcon getIcon() {
-    return icon;
   }
 
   @Override

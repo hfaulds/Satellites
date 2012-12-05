@@ -15,7 +15,7 @@ import core.gimley.listeners.MouseListener;
 
 public abstract class GComponent implements MouseListener {
 
-  public GComponent parent;
+  public final GComponent parent;
   public final GComponentList subcomponents;
 
   public int width;

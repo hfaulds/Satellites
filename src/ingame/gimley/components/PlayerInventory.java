@@ -2,7 +2,6 @@ package ingame.gimley.components;
 
 import ingame.actors.ShipActor;
 import ingame.actors.player.PlayerShipActor;
-import ingame.gimley.components.icons.ItemIcon;
 
 import com.jogamp.newt.event.MouseEvent;
 
@@ -32,14 +31,6 @@ public class PlayerInventory extends GComponent {
       }
     });
     add(topbar);
-  }
-
-  public void removeItem(ItemIcon icon) {
-    inventory.removeItem(icon);
-  }
-
-  public void addItem(ItemIcon icon) {
-    inventory.addItem(icon);
   }
 
   public static PlayerInventory createPlayerInventory(GComponent parent,PlayerShipActor player) {

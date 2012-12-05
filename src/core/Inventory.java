@@ -1,4 +1,4 @@
-package ingame.actors;
+package core;
 
 import ingame.items.AmmoItem;
 import ingame.items.NullAmmoItem;
@@ -6,7 +6,6 @@ import ingame.items.NullAmmoItem;
 import java.util.LinkedList;
 import java.util.List;
 
-import core.Item;
 
 public class Inventory {
   
