@@ -5,7 +5,6 @@ import ingame.actors.ShipActor;
 import ingame.actors.player.PlayerShipActor;
 import ingame.controllers.ClientShipController;
 
-import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,7 +16,7 @@ import core.geometry.Vector3D;
 import core.net.msg.ingame.ActorCreateMsg;
 import core.net.msg.ingame.SceneCreateMsg;
 
-public class Scene extends MouseAdapter {
+public class Scene {
 
   public final List<Actor>       actors = new ArrayList<Actor>();
   public final List<Controller>  controllers = new ArrayList<Controller>();
@@ -39,6 +38,8 @@ public class Scene extends MouseAdapter {
     }
   }
 
+  
+  
   public void queueAddActor(Actor actor) {
     synchronized(actors) {
       actorqueue.add(actor);
@@ -65,11 +66,11 @@ public class Scene extends MouseAdapter {
     return player;
   }
   
-  public void populate(SceneCreateMsg info, Connection connection) {
-    for(ActorCreateMsg actorInfo : info.actorInfoList) {
+  public void populate(SceneCreateMsg msg, Connection connection) {
+    for(ActorCreateMsg actorInfo : msg.actorInfoList) {
       Actor actor = Actor.fromInfo(actorInfo);
       
-      if(actorInfo.id == info.playerID) {
+      if(actorInfo.id == msg.playerID) {
         actor = makePlayer((ShipActor)actor);
         addController(new ClientShipController(actor, connection));
       }

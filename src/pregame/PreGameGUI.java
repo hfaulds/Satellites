@@ -73,9 +73,9 @@ public class PreGameGUI extends GUI {
         scene.addNewPlayerListener(new ScenePlayerListener() {
           @Override
           public void playerActorChanged(PlayerShipActor player) {
-            input.setPlayer(player);
             SceneWindow window = new SceneWindow(scene, input, player, connection);
             window.setVisible(true);
+            input.setPlayer(player);
           }
         });
         

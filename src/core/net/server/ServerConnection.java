@@ -12,6 +12,7 @@ import core.Scene;
 import core.net.NetworkConnection;
 import core.net.msg.MsgListener;
 import core.net.server.msglisteners.ActorCreateMsgListener;
+import core.net.server.msglisteners.LoginMsgListener;
 import core.net.server.msglisteners.PlayerUpdateMsgListener;
 import core.net.server.msglisteners.ShipDockMsgListener;
 
@@ -59,6 +60,7 @@ public class ServerConnection extends NetworkConnection {
   }
 
   private void setupMsgListeners(final Scene scene) {
+    listener.addPregameMsgListener(new LoginMsgListener(scene));
     this.addMsgListener(new PlayerUpdateMsgListener());
     this.addMsgListener(new ShipDockMsgListener(this));
     this.addMsgListener(new ActorCreateMsgListener(this, scene));
@@ -77,7 +79,10 @@ public class ServerConnection extends NetworkConnection {
 
   @Override
   public void sendMsg(Object msg) {
-    server.sendToAllUDP(msg);
+    for(Connection connection : server.getConnections()) {
+      if(((PlayerConnection)connection).isAuthenticated())
+        connection.sendTCP(msg);
+    }
   }
 
   @Override

@@ -36,28 +36,29 @@ public class SceneUpdater {
     long dt = System.currentTimeMillis() - lastFrame;
     
     List<Actor> actors = scene.actors;
-    
-    synchronized(actors) {
-      synchronized(scene.controllers) {
-        for(Controller controller : scene.controllers) {
+    synchronized(scene.controllers) {
+      for(Controller controller : scene.controllers) {
+        synchronized(scene.actors){ 
           controller.tick(dt, actors);
         }
       }
     }
     
-    int numActors = actors.size();
-    for(int i=0; i < numActors; i++) {
-      for(int j=i+1; j < numActors; j++) {
-        Actor a = actors.get(i);
-        Actor b = actors.get(j);
-        findCollision(a, b);
+    synchronized(actors) {
+      int numActors = actors.size();
+      for(int i=0; i < numActors; i++) {
+        for(int j=i+1; j < numActors; j++) {
+          Actor a = actors.get(i);
+          Actor b = actors.get(j);
+          findCollision(a, b);
+        }
       }
-    }
-    
-    collisionHandler.tick();
-    
-    for(Actor actor : actorRemoveQueue) {
-      scene.removeActor(actor);
+      
+      collisionHandler.tick();
+      
+      for(Actor actor : actorRemoveQueue) {
+        scene.removeActor(actor);
+      }
     }
     
     lastFrame = System.currentTimeMillis();

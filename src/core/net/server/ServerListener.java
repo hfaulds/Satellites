@@ -7,16 +7,13 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
 import core.Scene;
-import core.db.User;
 import core.net.msg.MsgListener;
-import core.net.msg.ingame.ActorCreateMsg;
-import core.net.msg.ingame.SceneCreateMsg;
-import core.net.msg.pregame.LoginMsg;
 
 public class ServerListener extends Listener {
 
   private final Scene scene;
   private final List<MsgListener> listeners = new LinkedList<MsgListener>();
+  private final List<MsgListener> pregameListeners = new LinkedList<MsgListener>();
   
   public ServerListener(Scene scene) {
     this.scene = scene;
@@ -28,38 +25,31 @@ public class ServerListener extends Listener {
     }
   }
   
+  public void addPregameMsgListener(MsgListener listener) {
+    synchronized(pregameListeners) {
+      pregameListeners.add(listener);
+    }
+  }
+  
   @Override
   public void received(Connection connection, Object info) {
     PlayerConnection player = (PlayerConnection)connection;
     
     synchronized(listeners) {
-
       if(player.isAuthenticated()) {
-        for(MsgListener listener : listeners) {
-          if(info.getClass().equals(listener.getMsgClass())) {
-            listener.msgReceived(info, connection);
-          }
-        }
-      } else if(info instanceof LoginMsg) {
-        LoginMsg msg = (LoginMsg) info;
-        String username = msg.username;
-        User user = User.findByUsername(username);
-        if(user != null) {
-          authenticatePlayer(player);
-        }
+        callListeners(connection, info, listeners);
+      } else {
+        callListeners(connection, info, pregameListeners);
       }
-      
     }
   }
-  
-  
-  public void authenticatePlayer(PlayerConnection player) {
-    player.setAuthenticated(true);
-    scene.queueAddActor(player.actor);
-    scene.addController(player.controller);
 
-    List<ActorCreateMsg> actorInfoList = ActorCreateMsg.actorInfoList(scene);
-    player.sendTCP(new SceneCreateMsg(actorInfoList, player.actor.id));
+  private void callListeners(Connection connection, Object info, List<MsgListener> listeners) {
+    for(MsgListener listener : listeners) {
+      if(info.getClass().equals(listener.getMsgClass())) {
+        listener.msgReceived(info, connection);
+      }
+    }
   }
   
   @Override
