@@ -6,7 +6,7 @@ import com.esotericsoftware.kryonet.Connection;
 
 import core.Actor;
 import core.Controller;
-import core.net.msg.PlayerUpdateMsg;
+import core.net.msg.ingame.PlayerUpdateMsg;
 
 public class ClientShipController implements Controller {
 

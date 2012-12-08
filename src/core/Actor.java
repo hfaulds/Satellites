@@ -11,8 +11,8 @@ import javax.media.opengl.glu.GLU;
 import core.geometry.Box;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
-import core.net.msg.ActorCreateMsg;
-import core.net.msg.ActorUpdateMsg;
+import core.net.msg.ingame.ActorCreateMsg;
+import core.net.msg.ingame.ActorUpdateMsg;
 
 public abstract class Actor {
 

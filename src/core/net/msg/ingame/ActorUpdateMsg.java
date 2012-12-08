@@ -1,4 +1,4 @@
-package core.net.msg;
+package core.net.msg.ingame;
 
 import core.geometry.Rotation;
 import core.geometry.Vector2D;

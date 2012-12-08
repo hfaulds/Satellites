@@ -1,8 +1,13 @@
 package pregame;
 
 
+import ingame.actors.Planet001Actor;
+import ingame.actors.ShipActor;
+import ingame.actors.StationActor;
 import ingame.actors.player.PlayerShipActor;
 import ingame.controllers.PlayerInputController;
+import ingame.controllers.ServerActorController;
+import ingame.controllers.ServerShipController;
 import ingame.gimley.SceneWindow;
 
 import java.awt.Component;
@@ -110,7 +115,17 @@ public class PreGameGUI extends GUI {
         
         if(CreateServerDialog.showDialog(content, connection)) {
           freezeButtons();
-          connection.setupScene(scene);
+          PlayerShipActor player1 = scene.makePlayer(new ShipActor(0, 0));
+          scene.queueAddActor(player1);
+          scene.addController(new ServerShipController(player1, connection));
+          
+          Planet001Actor planet = new Planet001Actor(50, 50);
+          scene.queueAddActor(planet);
+          scene.addController(new ServerActorController(planet, connection));
+          
+          StationActor station = new StationActor(-35, 17);
+          scene.queueAddActor(station);
+          scene.addController(new ServerActorController(station, connection));
           unfreezeButtons();
         }
       }

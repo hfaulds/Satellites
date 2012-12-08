@@ -4,8 +4,8 @@ import ingame.gimley.components.ChatBox;
 
 import com.esotericsoftware.kryonet.Connection;
 
-import core.net.MsgListener;
-import core.net.msg.ChatMsg;
+import core.net.msg.MsgListener;
+import core.net.msg.ingame.ChatMsg;
 
 public class ChatMsgListener implements MsgListener {
   

@@ -1,4 +1,4 @@
-package core.net;
+package core.net.msg;
 
 import com.esotericsoftware.kryonet.Connection;
 

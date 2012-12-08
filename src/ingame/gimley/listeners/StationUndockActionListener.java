@@ -5,7 +5,7 @@ import ingame.gimley.components.StationDisplay;
 import core.gimley.actions.ActionEvent;
 import core.gimley.listeners.ActionListener;
 import core.net.connections.NetworkConnection;
-import core.net.msg.ShipDockMsg;
+import core.net.msg.ingame.ShipDockMsg;
 
 public class StationUndockActionListener implements ActionListener {
   

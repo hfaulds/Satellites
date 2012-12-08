@@ -10,30 +10,52 @@ import com.esotericsoftware.kryonet.Connection;
 
 import core.Actor;
 import core.Scene;
-import core.net.MsgListener;
 import core.net.listeners.ClientListener;
-import core.net.msg.ActorCreateMsg;
-import core.net.msg.ActorUpdateMsg;
-import core.net.msg.ShipDockMsg;
+import core.net.msg.MsgListener;
+import core.net.msg.ingame.ActorCreateMsg;
+import core.net.msg.ingame.ActorUpdateMsg;
+import core.net.msg.ingame.SceneCreateMsg;
+import core.net.msg.ingame.ShipDockMsg;
+import core.net.msg.pregame.LoginMsg;
 
 public class ClientConnection extends NetworkConnection {
 
   private final Client client = new Client();
+  private final ClientListener listener;
   
   public ClientConnection(Scene scene, String username) {
-    super(scene, username, new ClientListener(scene));
+    super(scene, username);
+    this.listener = new ClientListener(scene);
   }
 
   public void connect(InetAddress address) throws IOException {
-    setupKryo(client);
+    registerMsgClasses(client);
     setupMsgListeners(scene);
+    client.addListener(listener);
     client.start();
     client.connect(TIMEOUT, address, TCP_PORT, UDP_PORT);
-    client.addListener(listener);
+    client.sendTCP(new LoginMsg("player"));
     super.setAddress(address);
+  }
+  
+  public void addMsgListener(MsgListener msgListener) {
+    this.listener.addMsgListener(msgListener);
   }
 
   private void setupMsgListeners(final Scene scene) {
+    this.addMsgListener(new MsgListener() {
+      @Override
+      public void msgReceived(Object msg, Connection connection) {
+        SceneCreateMsg sceneInfo = (SceneCreateMsg)msg;
+        scene.populate(sceneInfo, connection);
+      }
+
+      @Override
+      public Class<?> getMsgClass() {
+        return SceneCreateMsg.class;
+      }
+    });
+    
     this.addMsgListener(new MsgListener() {
       @Override
       public void msgReceived(Object msg, Connection connection) {
@@ -99,9 +121,8 @@ public class ClientConnection extends NetworkConnection {
 
   @Override
   public void sendMsg(Object msg) {
-    ClientListener listener = (ClientListener) this.listener;
-    if(listener != null && listener.isConnected()) {
-      listener.connection.sendUDP(msg);
+    if(client.isConnected()) {
+      client.sendUDP(msg);
     }
   }
 

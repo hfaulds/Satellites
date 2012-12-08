@@ -14,8 +14,8 @@ import java.util.Queue;
 import com.esotericsoftware.kryonet.Connection;
 
 import core.geometry.Vector3D;
-import core.net.msg.ActorCreateMsg;
-import core.net.msg.SceneCreateMsg;
+import core.net.msg.ingame.ActorCreateMsg;
+import core.net.msg.ingame.SceneCreateMsg;
 
 public class Scene extends MouseAdapter {
 

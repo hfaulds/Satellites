@@ -1,42 +1,50 @@
 package core.net.listeners;
 
+import java.util.LinkedList;
+import java.util.List;
 
 import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
 
 import core.Scene;
-import core.net.MsgListener;
-import core.net.msg.SceneCreateMsg;
+import core.net.msg.MsgListener;
 
-public class ClientListener extends NetworkListener {
+public class ClientListener extends Listener {
 
+  private final List<MsgListener> listeners = new LinkedList<MsgListener>();
+  
   private final Scene scene;
-  public Connection connection;
   
   public ClientListener(final Scene scene) {
     this.scene = scene;
-    this.addMsgListener(new MsgListener() {
-      @Override
-      public void msgReceived(Object msg, Connection connection) {
-        SceneCreateMsg sceneInfo = (SceneCreateMsg)msg;
-        ClientListener.this.connection = connection;
-        scene.populate(sceneInfo, connection);
+  }
+  
+  public void addMsgListener(MsgListener listener) {
+    synchronized(listeners) {
+      listeners.add(listener);
+    }
+  }
+  
+  @Override
+  public void received(Connection connection, Object info) {
+    synchronized(listeners) {
+      for(MsgListener listener : listeners) {
+        if(info.getClass().equals(listener.getMsgClass())) {
+          listener.msgReceived(info, connection);
+        }
       }
-
-      @Override
-      public Class<?> getMsgClass() {
-        return SceneCreateMsg.class;
-      }
-    });
+    }
+  }
+  
+  @Override
+  public void connected(Connection connection) {
+    System.out.println("Client connected");
   }
   
   @Override
   public void disconnected(Connection connection) {
     scene.actors.clear();
     scene.controllers.clear();
-    this.connection = null;
   }
   
-  public boolean isConnected() {
-    return connection != null;
-  }
 }

@@ -5,7 +5,7 @@ import ingame.actors.StationActor;
 import ingame.actors.weapons.WeaponActor;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
-import core.net.msg.ActorCreateMsg;
+import core.net.msg.ingame.ActorCreateMsg;
 
 public class PlayerShipActor extends ShipActor {
 

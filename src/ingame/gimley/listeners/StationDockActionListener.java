@@ -7,7 +7,7 @@ import ingame.gimley.components.StationDockRequest;
 import core.gimley.actions.ActionEvent;
 import core.gimley.listeners.ActionListener;
 import core.net.connections.NetworkConnection;
-import core.net.msg.ShipDockMsg;
+import core.net.msg.ingame.ShipDockMsg;
 
 public class StationDockActionListener implements ActionListener {
 

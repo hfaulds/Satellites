@@ -20,8 +20,7 @@ import core.Actor;
 import core.Scene;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
-import core.net.MsgListener;
-import core.net.listeners.NetworkListener;
+import core.net.msg.MsgListener;
 
 public abstract class NetworkConnection {
   
@@ -31,24 +30,19 @@ public abstract class NetworkConnection {
   
   protected final Scene scene;
   public final String username;
-  protected final NetworkListener listener;
 
   private InetAddress address;
   
   public abstract void disconnect();
   public abstract boolean isOnline();
+  public abstract void addMsgListener(MsgListener msgListener);
   public abstract void sendMsg(Object msg);
   public abstract void fireProjectile(ProjectileActor projectile);
 
   
-  public NetworkConnection(Scene scene, String username, NetworkListener listener) {
+  public NetworkConnection(Scene scene, String username) {
     this.scene = scene;
     this.username = username;
-    this.listener = listener;
-  }
-  
-  public void addMsgListener(MsgListener listener) {
-    this.listener.addMsgListener(listener);
   }
   
   private InetAddress getIP() {
@@ -67,18 +61,24 @@ public abstract class NetworkConnection {
     }
   }
 
-  protected void setupKryo(EndPoint endPoint) {
+  protected void registerMsgClasses(EndPoint endPoint) {
     Kryo kryo = endPoint.getKryo();
   
     kryo.register(Vector2D.class);
     kryo.register(Rotation.class);
     
     try {
-      for(Class<?> klass : getClasses("core.net.msg"))
+      for(Class<?> klass : getClasses("core.net.msg.ingame")) {
         kryo.register(klass);
+      }
+
+      for(Class<?> klass : getClasses("core.net.msg.pregame")) {
+        kryo.register(klass);
+      }
       
-      for(Class<?> klass : getClasses("ingame.actors"))
+      for(Class<?> klass : getClasses("ingame.actors")) {
         kryo.register(klass);
+      }
       
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
