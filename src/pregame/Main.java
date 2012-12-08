@@ -1,3 +1,4 @@
+package pregame;
 
 
 
@@ -7,9 +8,6 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import pregame.GUI;
-import pregame.GUIEventListener;
-import pregame.LoginGUI;
 
 
 public class Main {

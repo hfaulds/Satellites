@@ -44,6 +44,12 @@ public class Scene extends MouseAdapter {
       actorqueue.add(actor);
     }
   }
+  
+  public void forceAddActor(Actor actor) {
+    synchronized(actors) {
+      actors.add(actor);
+    }
+  }
 
   public void removeActor(Actor actor) {
     synchronized(actors) {
@@ -88,6 +94,6 @@ public class Scene extends MouseAdapter {
   }
 
   public void addNewPlayerListener(ScenePlayerListener newPlayerListener) {
-    this.newPlayerListeners .add(newPlayerListener);
+    this.newPlayerListeners.add(newPlayerListener);
   }
 }
