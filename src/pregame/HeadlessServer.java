@@ -6,6 +6,12 @@ import ingame.controllers.ServerActorController;
 
 import java.util.Scanner;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
+
 import core.Scene;
 import core.SceneUpdater;
 import core.net.server.ServerConnection;
@@ -22,15 +28,22 @@ public class HeadlessServer implements Runnable {
     System.out.println("Server Initializing");
     this.scene = new Scene();
     this.updater = new SceneUpdater(scene);
-    this.connection = new ServerConnection(scene, "");
+    
+    Configuration configuration = new Configuration().configure();
+    ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();        
+    SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+    Session session = sessionFactory.openSession();
+    
+    this.connection = new ServerConnection(scene, session, "");
     
     Planet001Actor planet = new Planet001Actor(50, 50);
-    scene.queueAddActor(planet);
+    scene.forceAddActor(planet);
     scene.addController(new ServerActorController(planet, connection));
-    
+
     StationActor station = new StationActor(-35, 17);
-    scene.queueAddActor(station);
+    scene.forceAddActor(station);
     scene.addController(new ServerActorController(station, connection));
+    
   }
 
   private void stop() {

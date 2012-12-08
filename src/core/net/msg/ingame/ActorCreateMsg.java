@@ -33,11 +33,15 @@ public class ActorCreateMsg {
   public static List<ActorCreateMsg> actorInfoList(Scene scene) {
     List<ActorCreateMsg> infoList = new ArrayList<ActorCreateMsg>();
     
-    for(Actor actor: scene.actors)
-      infoList.add(actor.getCreateMsg());
+    synchronized(scene.actors) {
+      for(Actor actor: scene.actors)
+        infoList.add(actor.getCreateMsg());
+    }
 
-    for(Actor actor: scene.actorqueue)
-      infoList.add(actor.getCreateMsg());
+    synchronized(scene.actorqueue) {
+      for(Actor actor: scene.actorqueue)
+        infoList.add(actor.getCreateMsg());
+    }
     
     return infoList;
   }

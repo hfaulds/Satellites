@@ -5,6 +5,8 @@ import ingame.controllers.ServerActorController;
 
 import java.io.IOException;
 
+import org.hibernate.Session;
+
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 
@@ -23,9 +25,12 @@ public class ServerConnection extends NetworkConnection {
   private boolean online = false;
   private ServerListener listener;
 
-  public ServerConnection(Scene scene, String username) {
+  private final Session session;
+
+  public ServerConnection(Scene scene, Session session, String username) {
     super(scene, username);
     this.listener = new ServerListener(scene);
+    this.session = session;
   }
 
   private Server createServer() {
@@ -40,7 +45,7 @@ public class ServerConnection extends NetworkConnection {
   public boolean create() {
     try {
       super.registerMsgClasses(server);
-      setupMsgListeners(scene);
+      setupMsgListeners(scene, session);
       
       server.start();
       server.bind(TCP_PORT, UDP_PORT);
@@ -59,8 +64,8 @@ public class ServerConnection extends NetworkConnection {
     listener.addMsgListener(msgListener);
   }
 
-  private void setupMsgListeners(final Scene scene) {
-    listener.addPregameMsgListener(new LoginMsgListener(scene));
+  private void setupMsgListeners(Scene scene, Session session) {
+    listener.addPregameMsgListener(new LoginMsgListener(scene, session));
     this.addMsgListener(new PlayerUpdateMsgListener());
     this.addMsgListener(new ShipDockMsgListener(this));
     this.addMsgListener(new ActorCreateMsgListener(this, scene));

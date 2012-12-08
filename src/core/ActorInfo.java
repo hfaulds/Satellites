@@ -6,7 +6,7 @@ import core.geometry.Vector2D;
 
 public class ActorInfo {
   
-  private static int ID_COUNT = 0;
+  private static int ID_COUNT = 1;
   
   public Vector2D position;
   public Rotation rotation;
@@ -24,6 +24,7 @@ public class ActorInfo {
     this.mass = mass;
     this.mesh = mesh;
     this.id = id;
+    INCREMENT_TOTAL_ACTORS_BEYOND(id);
   }
   
   /* IDs */
@@ -32,7 +33,7 @@ public class ActorInfo {
     return ID_COUNT + 1;
   }
 
-  public static void INCREMENT_TOTAL_ACTORS(int id) {
+  private static void INCREMENT_TOTAL_ACTORS_BEYOND(int id) {
     ID_COUNT = Math.max(ID_COUNT, id);
   }
 }

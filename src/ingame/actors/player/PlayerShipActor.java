@@ -20,10 +20,6 @@ public class PlayerShipActor extends ShipActor {
     this.add(new PlayerHealth(this));
     this.add(new PlayerAim(this));
   }
-  
-  protected PlayerShipActor() {
-    super(0, 0);
-  }
 
   public void dock(StationActor station) {
     this.freeze();

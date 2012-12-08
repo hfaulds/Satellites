@@ -38,7 +38,7 @@ public class SceneUpdater {
     List<Actor> actors = scene.actors;
     synchronized(scene.controllers) {
       for(Controller controller : scene.controllers) {
-        synchronized(scene.actors){ 
+        synchronized(scene.actors) { 
           controller.tick(dt, actors);
         }
       }

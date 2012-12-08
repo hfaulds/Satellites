@@ -1,7 +1,9 @@
-package core.net.msg.ingame;
+package core.net.msg.pregame;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import core.net.msg.ingame.ActorCreateMsg;
 
 public class SceneCreateMsg {
   

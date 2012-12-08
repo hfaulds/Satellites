@@ -46,15 +46,25 @@ public class ShipActor extends Actor {
     add(new Canon001(position, new Vector2D(0, 0.26142), rotation, inventory.getAmmoItem()));
   }};
   
+  
+  
+  
+  
+  
+  
+  
   public ShipActor(Vector2D position, Rotation rotation, double mass, int id) {
     super(new ActorInfo(position, rotation, mass, MESH, id));
-    for(WeaponActor weapon : weapons) {
-      add(weapon);
-    }
+    addWeapons();
   }
+
   
   public ShipActor(double x, double y) {
     super(new ActorInfo(new Vector2D(x,y), new Rotation(), MASS, MESH));
+    addWeapons();
+  }
+  
+  private void addWeapons() {
     for(WeaponActor weapon : weapons) {
       add(weapon);
     }

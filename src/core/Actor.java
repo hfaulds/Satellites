@@ -46,7 +46,6 @@ public abstract class Actor {
     this.renderer = new ActorRenderer(info.mesh);
     this.id = info.id;
     this.collideable = true;
-    ActorInfo.INCREMENT_TOTAL_ACTORS(id);
   }
 
 

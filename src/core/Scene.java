@@ -14,7 +14,7 @@ import com.esotericsoftware.kryonet.Connection;
 
 import core.geometry.Vector3D;
 import core.net.msg.ingame.ActorCreateMsg;
-import core.net.msg.ingame.SceneCreateMsg;
+import core.net.msg.pregame.SceneCreateMsg;
 
 public class Scene {
 
@@ -58,7 +58,7 @@ public class Scene {
     }
   }
 
-  public PlayerShipActor makePlayer(ShipActor ship) {
+  public PlayerShipActor createPlayer(ShipActor ship) {
     PlayerShipActor player = new PlayerShipActor(ship);
     for(ScenePlayerListener listener : newPlayerListeners) {
       listener.playerActorChanged(player);
@@ -70,13 +70,15 @@ public class Scene {
     for(ActorCreateMsg actorInfo : msg.actorInfoList) {
       Actor actor = Actor.fromInfo(actorInfo);
       
-      if(actorInfo.id == msg.playerID) {
-        actor = makePlayer((ShipActor)actor);
+      if(actor.id == msg.playerID) {
+        PlayerShipActor player = createPlayer((ShipActor)actor);
         addController(new ClientShipController(actor, connection));
+        queueAddActor(player);
+      } else {
+        queueAddActor(actor);
       }
-      
-      queueAddActor(actor);
     }
+    
   }
   
   public Actor findActor(int id) {
