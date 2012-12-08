@@ -21,6 +21,7 @@ public class HeadlessServer implements Runnable {
   private SceneUpdater updater;
   private ServerConnection connection;
   private Scene scene;
+  private Session session;
 
   private volatile boolean running = true;
 
@@ -32,7 +33,7 @@ public class HeadlessServer implements Runnable {
     Configuration configuration = new Configuration().configure();
     ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();        
     SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-    Session session = sessionFactory.openSession();
+    this.session = sessionFactory.openSession();
     
     this.connection = new ServerConnection(scene, session, "");
     
@@ -43,11 +44,11 @@ public class HeadlessServer implements Runnable {
     StationActor station = new StationActor(-35, 17);
     scene.forceAddActor(station);
     scene.addController(new ServerActorController(station, connection));
-    
   }
 
   private void stop() {
     running = false;
+    session.close();
   }
 
   @Override

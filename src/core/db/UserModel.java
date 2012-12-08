@@ -8,7 +8,6 @@ public class UserModel {
     session.beginTransaction();
     User user = (User)session.get(User.class, username);
     session.getTransaction().commit();
-    session.close();
     return user;
   }
 }

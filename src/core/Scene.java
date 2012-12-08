@@ -3,7 +3,6 @@ package core;
 import ingame.actors.PointLightActor;
 import ingame.actors.ShipActor;
 import ingame.actors.player.PlayerShipActor;
-import ingame.controllers.ClientShipController;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -72,7 +71,6 @@ public class Scene {
       
       if(actor.id == msg.playerID) {
         PlayerShipActor player = createPlayer((ShipActor)actor);
-        addController(new ClientShipController(actor, connection));
         queueAddActor(player);
       } else {
         queueAddActor(actor);

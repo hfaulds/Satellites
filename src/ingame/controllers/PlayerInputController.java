@@ -14,6 +14,7 @@ import core.Actor;
 import core.Controller;
 import core.geometry.Vector2D;
 import core.net.NetworkConnection;
+import core.net.msg.ingame.PlayerUpdateMsg;
 
 public class PlayerInputController implements Controller {
 
@@ -54,6 +55,10 @@ public class PlayerInputController implements Controller {
     if(spinMag != 0) {
       double spin = dt * spinMag * SPIN;
       player.spin._add(spin); 
+    }
+    
+    if(!(player instanceof NullPlayer)) {
+      connection.sendMsg(new PlayerUpdateMsg(player.velocity, player.spin));
     }
   }
 

@@ -10,7 +10,7 @@ public class PlayerUpdateMsgListener implements MsgListener {
   
   @Override
   public void msgReceived(Object msg, Connection connection) {
-    PlayerConnection player = (PlayerConnection) connection;
+    PlayerConnection player = (PlayerConnection)connection;
     player.updateActor((PlayerUpdateMsg) msg);
   }
 

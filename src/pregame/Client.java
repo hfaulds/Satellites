@@ -1,21 +1,17 @@
 package pregame;
 
-
-
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-
-
-public class Main {
+public class Client {
   
   private JFrame frame = new JFrame();
   private GUI gui = new LoginGUI();
   
-  public Main() {
+  public Client() {
     this.switchGUI(new LoginGUI());
     
 
@@ -69,7 +65,7 @@ public class Main {
   public static void main(String ... args) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
-        new Main();
+        new Client();
       }
     });
   }
