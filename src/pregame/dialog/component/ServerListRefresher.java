@@ -8,7 +8,7 @@ import pregame.dialog.SelectServerDialog;
 
 import com.esotericsoftware.kryonet.Client;
 
-import core.net.connections.NetworkConnection;
+import core.net.NetworkConnection;
 
 public class ServerListRefresher implements Runnable {
   

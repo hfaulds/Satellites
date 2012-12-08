@@ -16,7 +16,7 @@ import core.gimley.components.GComponent;
 import core.gimley.components.GPanel;
 import core.gimley.components.GTextInput;
 import core.gimley.listeners.ActionListener;
-import core.net.connections.NetworkConnection;
+import core.net.NetworkConnection;
 import core.net.msg.ingame.ChatMsg;
 import core.render.Renderer2D;
 

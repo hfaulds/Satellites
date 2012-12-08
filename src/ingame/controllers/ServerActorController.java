@@ -6,7 +6,7 @@ import java.util.List;
 import core.Actor;
 import core.Controller;
 import core.geometry.Vector2D;
-import core.net.connections.ServerConnection;
+import core.net.server.ServerConnection;
 
 
 public class ServerActorController implements Controller {

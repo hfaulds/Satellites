@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import core.net.connections.ServerConnection;
+import core.net.server.ServerConnection;
 
 
 @SuppressWarnings("serial")

@@ -1,4 +1,4 @@
-package core.net.connections;
+package core.net.server;
 
 import ingame.actors.ShipActor;
 import ingame.controllers.ServerShipController;

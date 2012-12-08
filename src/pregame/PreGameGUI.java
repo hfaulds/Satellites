@@ -1,13 +1,8 @@
 package pregame;
 
 
-import ingame.actors.Planet001Actor;
-import ingame.actors.ShipActor;
-import ingame.actors.StationActor;
 import ingame.actors.player.PlayerShipActor;
 import ingame.controllers.PlayerInputController;
-import ingame.controllers.ServerActorController;
-import ingame.controllers.ServerShipController;
 import ingame.gimley.SceneWindow;
 
 import java.awt.Component;
@@ -22,12 +17,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import pregame.dialog.CreateServerDialog;
 import pregame.dialog.SelectServerDialog;
-import core.ScenePlayerListener;
 import core.Scene;
-import core.net.connections.ClientConnection;
-import core.net.connections.ServerConnection;
+import core.ScenePlayerListener;
+import core.db.User;
+import core.net.client.ClientConnection;
 
 
 @SuppressWarnings("serial")
@@ -72,7 +66,7 @@ public class PreGameGUI extends GUI {
       public void actionPerformed(ActionEvent e) {
         
         final Scene scene = new Scene();
-        final ClientConnection connection = new ClientConnection(scene, username);
+        final ClientConnection connection = new ClientConnection(scene, new User(username, "test"));
         final PlayerInputController input = new PlayerInputController(connection);
         
         scene.addController(input);
@@ -96,40 +90,6 @@ public class PreGameGUI extends GUI {
   }
   
   private JButton createCreateButton(final JPanel content) {
-    create.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        final Scene scene = new Scene();
-        final ServerConnection connection = new ServerConnection(scene, username);
-        final PlayerInputController input = new PlayerInputController(connection);
-        
-        scene.addController(input);
-        scene.addNewPlayerListener(new ScenePlayerListener() {
-          @Override
-          public void playerActorChanged(PlayerShipActor player) {
-            input.setPlayer(player);
-            SceneWindow window = new SceneWindow(scene, input, player, connection);
-            window.setVisible(true);
-          }
-        });
-        
-        if(CreateServerDialog.showDialog(content, connection)) {
-          freezeButtons();
-          PlayerShipActor player1 = scene.makePlayer(new ShipActor(0, 0));
-          scene.queueAddActor(player1);
-          scene.addController(new ServerShipController(player1, connection));
-          
-          Planet001Actor planet = new Planet001Actor(50, 50);
-          scene.queueAddActor(planet);
-          scene.addController(new ServerActorController(planet, connection));
-          
-          StationActor station = new StationActor(-35, 17);
-          scene.queueAddActor(station);
-          scene.addController(new ServerActorController(station, connection));
-          unfreezeButtons();
-        }
-      }
-    });
     create.setAlignmentX(Component.CENTER_ALIGNMENT);
     return create;
   }
@@ -156,13 +116,6 @@ public class PreGameGUI extends GUI {
     return exit;
   }
 
-  private void unfreezeButtons() {
-    this.join.setEnabled(true);
-    this.create.setEnabled(true);
-    this.settings.setEnabled(true);
-    this.exit.setEnabled(true);
-  }
-  
   private void freezeButtons() {
     this.join.setEnabled(false);
     this.create.setEnabled(false);

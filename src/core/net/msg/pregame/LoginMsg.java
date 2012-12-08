@@ -1,5 +1,7 @@
 package core.net.msg.pregame;
 
+import core.db.User;
+
 public class LoginMsg {
   
   public final String username;
@@ -8,8 +10,8 @@ public class LoginMsg {
     this.username = null;
   }
   
-  public LoginMsg(String username) {
-    this.username = username;
+  public LoginMsg(User user) {
+    this.username = user.getUsername();
   }
   
 }

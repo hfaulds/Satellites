@@ -1,4 +1,4 @@
-package core.net.connections;
+package core.net;
 
 
 import ingame.actors.ProjectileActor;

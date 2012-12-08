@@ -1,4 +1,4 @@
-package core.net.connections;
+package core.net.server;
 
 import ingame.actors.ProjectileActor;
 import ingame.controllers.ServerActorController;
@@ -8,18 +8,17 @@ import java.io.IOException;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 
-import core.Actor;
 import core.Scene;
-import core.geometry.Vector2D;
-import core.net.listeners.ServerListener;
+import core.net.NetworkConnection;
 import core.net.msg.MsgListener;
-import core.net.msg.ingame.ActorCreateMsg;
-import core.net.msg.ingame.PlayerUpdateMsg;
-import core.net.msg.ingame.ShipDockMsg;
+import core.net.server.msglisteners.ActorCreateMsgListener;
+import core.net.server.msglisteners.PlayerUpdateMsgListener;
+import core.net.server.msglisteners.ShipDockMsgListener;
 
 public class ServerConnection extends NetworkConnection {
 
   private final Server server = createServer();
+  
   private boolean online = false;
   private ServerListener listener;
 
@@ -60,50 +59,9 @@ public class ServerConnection extends NetworkConnection {
   }
 
   private void setupMsgListeners(final Scene scene) {
-    this.addMsgListener(new MsgListener() {
-      @Override
-      public void msgReceived(Object msg, Connection connection) {
-        PlayerConnection player = (PlayerConnection) connection;
-        player.updateActor((PlayerUpdateMsg) msg);
-      }
-
-      @Override
-      public Class<?> getMsgClass() {
-        return PlayerUpdateMsg.class;
-      }
-    });
-    this.addMsgListener(new MsgListener() {
-      @Override
-      public void msgReceived(Object msg, Connection connection) {
-        sendMsg((ShipDockMsg) msg);
-      }
-
-      @Override
-      public Class<?> getMsgClass() {
-        return ShipDockMsg.class;
-      }
-    });
-    this.addMsgListener(new MsgListener() {
-      @Override
-      public void msgReceived(Object msg, Connection reply) {
-        ActorCreateMsg actorInfo = (ActorCreateMsg) msg;
-        if (actorInfo.actorClass.equals(ProjectileActor.class)) {
-          ProjectileActor projectile = (ProjectileActor) Actor
-              .fromInfo(actorInfo);
-          projectile.velocity._set(Vector2D.fromRotation(projectile.rotation)
-              ._multiply(ProjectileActor.SPEED));
-          scene.queueAddActor(projectile);
-          scene.addController(new ServerActorController(projectile,
-              ServerConnection.this));
-        }
-      }
-
-      @Override
-      public Class<?> getMsgClass() {
-        return ActorCreateMsg.class;
-      }
-    });
-
+    this.addMsgListener(new PlayerUpdateMsgListener());
+    this.addMsgListener(new ShipDockMsgListener(this));
+    this.addMsgListener(new ActorCreateMsgListener(this, scene));
   }
 
 

@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 import core.Scene;
 import core.SceneUpdater;
-import core.net.connections.ServerConnection;
+import core.net.server.ServerConnection;
 
 public class HeadlessServer implements Runnable {
 

@@ -8,7 +8,7 @@ import java.net.UnknownHostException;
 import javax.swing.JOptionPane;
 
 import pregame.dialog.SelectServerDialog;
-import core.net.connections.ClientConnection;
+import core.net.client.ClientConnection;
 
 
 public class ServerConnector implements Runnable {

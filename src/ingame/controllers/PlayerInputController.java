@@ -13,7 +13,7 @@ import com.jogamp.newt.event.MouseEvent;
 import core.Actor;
 import core.Controller;
 import core.geometry.Vector2D;
-import core.net.connections.NetworkConnection;
+import core.net.NetworkConnection;
 
 public class PlayerInputController implements Controller {
 

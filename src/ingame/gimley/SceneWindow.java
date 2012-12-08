@@ -21,7 +21,7 @@ import core.Scene;
 import core.SceneUpdater;
 import core.geometry.Vector2D;
 import core.gimley.GFrame;
-import core.net.connections.NetworkConnection;
+import core.net.NetworkConnection;
 import core.render.Camera;
 import core.render.Renderer3D;
 

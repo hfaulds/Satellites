@@ -6,7 +6,7 @@ import com.jogamp.newt.event.WindowAdapter;
 import com.jogamp.newt.event.WindowEvent;
 
 import core.Scene;
-import core.net.connections.NetworkConnection;
+import core.net.NetworkConnection;
 
 public class WindowRouter extends WindowAdapter {
 
