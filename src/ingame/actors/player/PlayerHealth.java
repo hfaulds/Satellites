@@ -30,7 +30,7 @@ public class PlayerHealth extends Actor {
   private ShipActor parent;
 
   public PlayerHealth(ShipActor parent) {
-    super(new ActorInfo(new Vector2D(), new Rotation(), 0, new Mesh()));
+    super(new ActorInfo(new Vector2D(), new Rotation(), 0, new Mesh(), -1));
     this.parent = parent;
     this.collideable = false;
   }

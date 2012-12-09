@@ -25,11 +25,12 @@ public class ActorCreateMsgListener implements MsgListener {
   @Override
   public void msgReceived(Object msg, Connection reply) {
     ActorCreateMsg actorInfo = (ActorCreateMsg) msg;
+    
     if (actorInfo.actorClass.equals(ProjectileActor.class)) {
       ProjectileActor projectile = (ProjectileActor) Actor.fromMsg(actorInfo);
       projectile.velocity._set(Vector2D.fromRotation(projectile.rotation)._multiply(ProjectileActor.SPEED));
       
-      scene.queueAddActor(projectile);
+      scene.forceAddActor(projectile);
       scene.addController(new ServerActorController(projectile, this.serverConnection));
     }
   }

@@ -40,7 +40,6 @@ public class LoginMsgListener implements MsgListener {
     
     
     if(user != null && !serverConnection.userLoggedIn(loginMsg.username)) {
-      player.setAuthenticated(loginMsg.username);
       
       Actor playerActor = user.getActor();
       ServerActorController playerController = new ServerActorController(playerActor, serverConnection);
@@ -49,9 +48,13 @@ public class LoginMsgListener implements MsgListener {
       player.setController(playerController);
       scene.forceAddActor(playerActor);
       scene.addController(playerController);
-  
+
+      serverConnection.sendMsg(playerActor.getCreateMsg());
+      
       List<ActorCreateMsg> actorInfoList = ActorCreateMsg.actorInfoList(scene);
       player.sendTCP(new SceneCreateMsg(actorInfoList, playerActor.id));
+      
+      player.setAuthenticated(loginMsg.username);
     } else {
       player.close();
     }

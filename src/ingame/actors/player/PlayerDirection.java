@@ -28,7 +28,7 @@ public class PlayerDirection extends Actor {
   private ShipActor parent;
 
   public PlayerDirection(ShipActor parent) {
-    super(new ActorInfo(new Vector2D(), new Rotation(), 0, new Mesh()));
+    super(new ActorInfo(new Vector2D(), new Rotation(), 0, new Mesh(), -1));
     this.parent = parent;
     this.collideable = false;
   }

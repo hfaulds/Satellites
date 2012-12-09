@@ -24,7 +24,7 @@ public class PlayerAim extends Actor {
   private final PlayerShipActor player;
   
   public PlayerAim(PlayerShipActor player) {
-    super(new ActorInfo(player.position, new Rotation(), 0, new Mesh()));
+    super(new ActorInfo(player.position, new Rotation(), 0, new Mesh(), -1));
     this.collideable = false;
     this.player = player;
   }

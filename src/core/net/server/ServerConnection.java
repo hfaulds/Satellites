@@ -84,6 +84,7 @@ public class ServerConnection extends NetworkConnection {
 
   @Override
   public void sendMsg(Object msg) {
+      
     for(Connection connection : server.getConnections()) {
       if(((PlayerConnection)connection).isAuthenticated())
         connection.sendTCP(msg);
