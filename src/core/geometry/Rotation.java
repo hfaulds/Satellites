@@ -16,7 +16,7 @@ public class Rotation {
     this(other.x, other.y, other.z, other.mag);
   }
 
-  private Rotation(double x, double y, double z, double mag) {
+  public Rotation(double x, double y, double z, double mag) {
     this.x = x;
     this.y = y;
     this.z = z;

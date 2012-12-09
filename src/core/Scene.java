@@ -67,7 +67,7 @@ public class Scene {
   
   public void populate(SceneCreateMsg msg, Connection connection) {
     for(ActorCreateMsg actorInfo : msg.actorInfoList) {
-      Actor actor = Actor.fromInfo(actorInfo);
+      Actor actor = Actor.fromMsg(actorInfo);
       
       if(actor.id == msg.playerID) {
         PlayerShipActor player = createPlayer((ShipActor)actor);

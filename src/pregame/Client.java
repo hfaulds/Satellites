@@ -6,6 +6,10 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import pregame.gui.GUI;
+import pregame.gui.GUIEventListener;
+import pregame.gui.LoginGUI;
+
 public class Client {
   
   private JFrame frame = new JFrame();

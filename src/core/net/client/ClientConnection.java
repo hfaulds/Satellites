@@ -8,7 +8,7 @@ import java.net.InetAddress;
 import com.esotericsoftware.kryonet.Client;
 
 import core.Scene;
-import core.db.User;
+import core.db.entities.UserEntity;
 import core.net.NetworkConnection;
 import core.net.client.msglisteners.ActorCreateMsgListener;
 import core.net.client.msglisteners.ActorUpdateMsgListener;
@@ -21,7 +21,7 @@ public class ClientConnection extends NetworkConnection {
   private final Client client = new Client();
   private final ClientListener listener;
   
-  public ClientConnection(Scene scene, User user) {
+  public ClientConnection(Scene scene, UserEntity user) {
     super(scene, user.getUsername());
     this.listener = new ClientListener(scene, user);
   }

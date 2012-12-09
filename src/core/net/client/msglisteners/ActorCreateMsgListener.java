@@ -21,7 +21,7 @@ public class ActorCreateMsgListener implements MsgListener {
   public void msgReceived(Object msg, Connection connection) {
     ActorCreateMsg actorInfo = (ActorCreateMsg) msg;
     if(actorInfo.actorClass.equals(ProjectileActor.class)) {
-      scene.queueAddActor(Actor.fromInfo(actorInfo));
+      scene.queueAddActor(Actor.fromMsg(actorInfo));
     }
   }
 

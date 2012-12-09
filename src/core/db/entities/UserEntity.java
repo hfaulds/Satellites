@@ -1,4 +1,4 @@
-package core.db;
+package core.db.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "USERS")
-public class User {
+public class UserEntity {
   
   @Id
   @Column(name = "username")
@@ -16,11 +16,11 @@ public class User {
   @Column(name = "password")
   private String password;
 
-  public User() {
-    
+  public UserEntity() {
+    this("","");
   }
   
-  public User(String username, String password) {
+  public UserEntity(String username, String password) {
      this.username = username;
      this.password = password;
   }

@@ -7,8 +7,8 @@ import org.hibernate.Session;
 import com.esotericsoftware.kryonet.Connection;
 
 import core.Scene;
-import core.db.User;
-import core.db.UserModel;
+import core.db.entities.UserEntity;
+import core.db.models.UserModel;
 import core.net.msg.MsgListener;
 import core.net.msg.ingame.ActorCreateMsg;
 import core.net.msg.pregame.LoginMsg;
@@ -29,7 +29,7 @@ public class LoginMsgListener implements MsgListener {
   public void msgReceived(Object msg, Connection connection) {
     LoginMsg loginMsg = (LoginMsg) msg;
     PlayerConnection player = (PlayerConnection) connection;
-    User user = UserModel.findByUsername(loginMsg.username, session);
+    UserEntity user = UserModel.findByUsername(loginMsg.username, session);
     
     if(user != null) {
       player.setAuthenticated(true);

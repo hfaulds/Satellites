@@ -1,4 +1,4 @@
-package pregame;
+package pregame.gui;
 
 
 import ingame.actors.player.PlayerShipActor;
@@ -20,7 +20,7 @@ import javax.swing.border.EmptyBorder;
 import pregame.dialog.SelectServerDialog;
 import core.Scene;
 import core.ScenePlayerListener;
-import core.db.User;
+import core.db.entities.UserEntity;
 import core.net.client.ClientConnection;
 
 
@@ -66,7 +66,7 @@ public class PreGameGUI extends GUI {
       public void actionPerformed(ActionEvent e) {
         
         final Scene scene = new Scene();
-        final ClientConnection connection = new ClientConnection(scene, new User(username, "test"));
+        final ClientConnection connection = new ClientConnection(scene, new UserEntity(username, "test"));
         final PlayerInputController input = new PlayerInputController(connection);
         
         scene.addController(input);

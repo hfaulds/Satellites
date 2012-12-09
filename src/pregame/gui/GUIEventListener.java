@@ -1,4 +1,4 @@
-package pregame;
+package pregame.gui;
 
 
 public interface GUIEventListener {

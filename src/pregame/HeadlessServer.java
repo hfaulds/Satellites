@@ -1,9 +1,5 @@
 package pregame;
 
-import ingame.actors.Planet001Actor;
-import ingame.actors.StationActor;
-import ingame.controllers.ServerActorController;
-
 import java.util.Scanner;
 
 import org.hibernate.Session;
@@ -14,6 +10,7 @@ import org.hibernate.service.ServiceRegistryBuilder;
 
 import core.Scene;
 import core.SceneUpdater;
+import core.db.models.MapModel;
 import core.net.server.ServerConnection;
 
 public class HeadlessServer implements Runnable {
@@ -26,24 +23,18 @@ public class HeadlessServer implements Runnable {
   private volatile boolean running = true;
 
   public HeadlessServer() {
-    System.out.println("Server Initializing");
-    this.scene = new Scene();
-    this.updater = new SceneUpdater(scene);
-    
     Configuration configuration = new Configuration().configure();
     ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();        
     SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
     this.session = sessionFactory.openSession();
     
-    this.connection = new ServerConnection(scene, session, "");
     
-    Planet001Actor planet = new Planet001Actor(50, 50);
-    scene.forceAddActor(planet);
-    scene.addController(new ServerActorController(planet, connection));
-
-    StationActor station = new StationActor(-35, 17);
-    scene.forceAddActor(station);
-    scene.addController(new ServerActorController(station, connection));
+    System.out.println("Server Initializing");
+    this.scene = MapModel.findByName("default", session).toScene();
+    this.updater = new SceneUpdater(scene);
+    
+    
+    this.connection = new ServerConnection(scene, session, "");
   }
 
   private void stop() {

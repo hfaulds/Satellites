@@ -9,7 +9,7 @@ import core.geometry.Vector2D;
 
 public class StationActor extends Actor {
   
-  private static final double MASS = 1000;
+  public static final int MASS = 1000;
   private static final Mesh MESH   = MeshLoader.loadMesh("Station-Mk2.obj");
   
   public StationActor(Vector2D position, Rotation rotation, double mass, int id) {

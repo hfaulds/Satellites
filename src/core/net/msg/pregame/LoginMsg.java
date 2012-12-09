@@ -1,6 +1,6 @@
 package core.net.msg.pregame;
 
-import core.db.User;
+import core.db.entities.UserEntity;
 
 public class LoginMsg {
   
@@ -10,7 +10,7 @@ public class LoginMsg {
     this.username = null;
   }
   
-  public LoginMsg(User user) {
+  public LoginMsg(UserEntity user) {
     this.username = user.getUsername();
   }
   

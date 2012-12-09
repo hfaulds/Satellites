@@ -134,7 +134,7 @@ public abstract class Actor {
     this.renderer.setVisible(visibility);
   }
 
-  public static Actor fromInfo(ActorCreateMsg info) {
+  public static Actor fromMsg(ActorCreateMsg info) {
     try {
       Constructor<? extends Actor> constructor = info.actorClass.getConstructor(Vector2D.class, Rotation.class, double.class, int.class);
       return constructor.newInstance(info.position, info.rotation, info.mass, info.id);
