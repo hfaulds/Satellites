@@ -36,7 +36,7 @@ public class ServerConnection extends NetworkConnection {
   private Server createServer() {
     Server server = new Server() {
       protected Connection newConnection() {
-        return new PlayerConnection(ServerConnection.this);
+        return new PlayerConnection();
       }
     };
     return server;
@@ -65,7 +65,7 @@ public class ServerConnection extends NetworkConnection {
   }
 
   private void setupMsgListeners(Scene scene, Session session) {
-    listener.addPregameMsgListener(new LoginMsgListener(scene, session));
+    listener.addPregameMsgListener(new LoginMsgListener(scene, session, this));
     this.addMsgListener(new PlayerUpdateMsgListener());
     this.addMsgListener(new ShipDockMsgListener(this));
     this.addMsgListener(new ActorCreateMsgListener(this, scene));

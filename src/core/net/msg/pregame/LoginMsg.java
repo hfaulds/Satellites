@@ -1,17 +1,18 @@
 package core.net.msg.pregame;
 
-import core.db.entities.UserEntity;
 
 public class LoginMsg {
   
   public final String username;
+  public final String password;
   
   public LoginMsg() {
-    this.username = null;
+    this("","");
   }
   
-  public LoginMsg(UserEntity user) {
-    this.username = user.getUsername();
+  public LoginMsg(String username, String password) {
+    this.username = username;
+    this.password = password;
   }
   
 }

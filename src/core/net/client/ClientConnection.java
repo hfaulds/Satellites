@@ -8,22 +8,22 @@ import java.net.InetAddress;
 import com.esotericsoftware.kryonet.Client;
 
 import core.Scene;
-import core.db.entities.UserEntity;
 import core.net.NetworkConnection;
 import core.net.client.msglisteners.ActorCreateMsgListener;
 import core.net.client.msglisteners.ActorUpdateMsgListener;
 import core.net.client.msglisteners.SceneCreateMsgListener;
 import core.net.client.msglisteners.ShipDockMsgListener;
 import core.net.msg.MsgListener;
+import core.net.msg.pregame.LoginMsg;
 
 public class ClientConnection extends NetworkConnection {
 
   private final Client client = new Client();
   private final ClientListener listener;
   
-  public ClientConnection(Scene scene, UserEntity user) {
-    super(scene, user.getUsername());
-    this.listener = new ClientListener(scene, user);
+  public ClientConnection(Scene scene, LoginMsg login) {
+    super(scene, login.username);
+    this.listener = new ClientListener(scene, login);
   }
 
   public void connect(InetAddress address) throws IOException {

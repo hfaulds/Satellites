@@ -20,8 +20,8 @@ import javax.swing.border.EmptyBorder;
 import pregame.dialog.SelectServerDialog;
 import core.Scene;
 import core.ScenePlayerListener;
-import core.db.entities.UserEntity;
 import core.net.client.ClientConnection;
+import core.net.msg.pregame.LoginMsg;
 
 
 @SuppressWarnings("serial")
@@ -66,7 +66,7 @@ public class PreGameGUI extends GUI {
       public void actionPerformed(ActionEvent e) {
         
         final Scene scene = new Scene();
-        final ClientConnection connection = new ClientConnection(scene, new UserEntity(username, "test"));
+        final ClientConnection connection = new ClientConnection(scene, new LoginMsg(username, "test"));
         final PlayerInputController input = new PlayerInputController(connection);
         
         scene.addController(input);

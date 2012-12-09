@@ -22,8 +22,8 @@
 		<property name="hibernate.connection.password">
 		</property>
    
-		<mapping class="core.db.entities.UserEntity"/>
 		<mapping class="core.db.entities.ActorEntity"/>
+		<mapping class="core.db.entities.UserEntity"/>
 		<mapping class="core.db.entities.MapEntity"/>
 		
 	</session-factory>

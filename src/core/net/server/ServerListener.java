@@ -55,8 +55,8 @@ public class ServerListener extends Listener {
   @Override
   public void disconnected(Connection connection) {
     PlayerConnection clientConnection = (PlayerConnection)connection;
-    scene.removeController(clientConnection.controller);
-    scene.removeActor(clientConnection.actor);
+    scene.removeController(clientConnection.getController());
+    scene.removeActor(clientConnection.getActor());
   }
  
 }

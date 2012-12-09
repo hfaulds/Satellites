@@ -1,11 +1,14 @@
 package core.net.server.msglisteners;
 
+import ingame.controllers.ServerActorController;
+
 import java.util.List;
 
 import org.hibernate.Session;
 
 import com.esotericsoftware.kryonet.Connection;
 
+import core.Actor;
 import core.Scene;
 import core.db.entities.UserEntity;
 import core.db.models.UserModel;
@@ -14,15 +17,19 @@ import core.net.msg.ingame.ActorCreateMsg;
 import core.net.msg.pregame.LoginMsg;
 import core.net.msg.pregame.SceneCreateMsg;
 import core.net.server.PlayerConnection;
+import core.net.server.ServerConnection;
 
 public class LoginMsgListener implements MsgListener {
 
   private final Scene scene;
   private final Session session;
-  
-  public LoginMsgListener(Scene scene, Session session) {
+
+  private ServerConnection serverConnection;  
+
+  public LoginMsgListener(Scene scene, Session session, ServerConnection connection) {
     this.scene = scene;
     this.session = session;
+    this.serverConnection = connection;
   }
 
   @Override
@@ -31,13 +38,20 @@ public class LoginMsgListener implements MsgListener {
     PlayerConnection player = (PlayerConnection) connection;
     UserEntity user = UserModel.findByUsername(loginMsg.username, session);
     
+    
     if(user != null) {
       player.setAuthenticated(true);
-      scene.forceAddActor(player.actor);
-      scene.addController(player.controller);
+      
+      Actor playerActor = user.getActor();
+      ServerActorController playerController = new ServerActorController(playerActor, serverConnection);
+      
+      player.setActor(playerActor);
+      player.setController(playerController);
+      scene.forceAddActor(playerActor);
+      scene.addController(playerController);
   
       List<ActorCreateMsg> actorInfoList = ActorCreateMsg.actorInfoList(scene);
-      player.sendTCP(new SceneCreateMsg(actorInfoList, player.actor.id));
+      player.sendTCP(new SceneCreateMsg(actorInfoList, playerActor.id));
     } else {
       player.close();
     }

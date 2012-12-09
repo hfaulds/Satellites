@@ -26,7 +26,7 @@ public class ShipActor extends Actor {
 
   public static final Mesh MESH = MeshLoader.loadMesh("Ship-Mk2.obj");
   
-  private static double MASS  = 0.001;
+  public static final int MASS  = 1;
   
   public static double WIDTH  = 0.02;
   public static double LENGTH = 1.0;

@@ -1,5 +1,7 @@
 package pregame;
+
 import ingame.actors.Planet001Actor;
+import ingame.actors.ShipActor;
 import ingame.actors.StationActor;
 
 import org.hibernate.Session;
@@ -35,7 +37,16 @@ public class CreateScema {
     session.save(actors[1]);
     
     session.save(new MapEntity("default", actors));
-    session.save(new UserEntity("test", "test"));
+    
+
+    ActorEntity playerActor = new ActorEntity(ShipActor.class, new Vector2D(), new Rotation(), ShipActor.MASS);
+    session.save(playerActor);
+    session.save(new UserEntity("test", "test", playerActor));
+    
+
+    ActorEntity playerActor2 = new ActorEntity(ShipActor.class, new Vector2D(0,20), new Rotation(), ShipActor.MASS);
+    session.save(playerActor2);
+    session.save(new UserEntity("test2", "test", playerActor2));
     
     session.getTransaction().commit();
     session.close();

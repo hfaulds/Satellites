@@ -7,7 +7,6 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
 import core.Scene;
-import core.db.entities.UserEntity;
 import core.net.msg.MsgListener;
 import core.net.msg.pregame.LoginMsg;
 
@@ -16,11 +15,11 @@ public class ClientListener extends Listener {
   private final List<MsgListener> listeners = new LinkedList<MsgListener>();
   
   private final Scene scene;
-  private final UserEntity user;
+  private final LoginMsg login;
   
-  public ClientListener(Scene scene, UserEntity user) {
+  public ClientListener(Scene scene, LoginMsg login) {
     this.scene = scene;
-    this.user = user;
+    this.login = login;
   }
   
   public void addMsgListener(MsgListener listener) {
@@ -42,7 +41,7 @@ public class ClientListener extends Listener {
   
   @Override
   public void connected(Connection connection) {
-    connection.sendTCP(new LoginMsg(user));
+    connection.sendTCP(login);
   }
   
   @Override
