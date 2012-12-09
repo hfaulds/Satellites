@@ -29,8 +29,8 @@ public class ActorInfo {
   
   /* IDs */
   
-  private static int NEXT_ID() {
-    return ID_COUNT + 1;
+  public static int NEXT_ID() {
+    return ID_COUNT++;
   }
 
   private static void INCREMENT_TOTAL_ACTORS_BEYOND(int id) {

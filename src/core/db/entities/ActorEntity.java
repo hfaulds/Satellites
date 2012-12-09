@@ -8,14 +8,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import core.Actor;
+import core.ActorInfo;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
-import core.net.msg.ingame.ActorCreateMsg;
 
 @Entity
 @Table(name = "ACTORS")
 public class ActorEntity {
   
+  @SuppressWarnings("unused")
   @Id
   @GeneratedValue(strategy=GenerationType.AUTO)
   private int id;
@@ -56,7 +57,7 @@ public class ActorEntity {
   }
 
   public Actor toActor() {
-    return Actor.fromMsg(new ActorCreateMsg(new Vector2D(xPos, yPos), new Rotation(xRot, yRot, zRot, magRot), mass , id, actorClass));
+    return Actor.fromInfo(actorClass, new Vector2D(xPos, yPos), new Rotation(xRot, yRot, zRot, magRot), (double)mass , ActorInfo.NEXT_ID());
   }
   
 }

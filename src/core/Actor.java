@@ -134,16 +134,20 @@ public abstract class Actor {
     this.renderer.setVisible(visibility);
   }
 
-  public static Actor fromMsg(ActorCreateMsg info) {
+  public static Actor fromInfo(Class<? extends Actor> actorClass, Vector2D position, Rotation rotation, double mass, int id) {
     try {
-      Constructor<? extends Actor> constructor = info.actorClass.getConstructor(Vector2D.class, Rotation.class, double.class, int.class);
-      return constructor.newInstance(info.position, info.rotation, info.mass, info.id);
+      Constructor<? extends Actor> constructor = actorClass.getConstructor(Vector2D.class, Rotation.class, double.class, int.class);
+      return constructor.newInstance(position, rotation, mass, id);
     } catch (InstantiationException | IllegalAccessException
         | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
       e.printStackTrace();
       System.exit(0);
       return null;
     }
+  }
+  
+  public static Actor fromMsg(ActorCreateMsg info) {
+    return fromInfo(info.actorClass, info.position, info.rotation, info.mass, info.id);
   }
 
  }

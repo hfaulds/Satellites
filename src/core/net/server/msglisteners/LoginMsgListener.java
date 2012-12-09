@@ -39,8 +39,8 @@ public class LoginMsgListener implements MsgListener {
     UserEntity user = UserModel.findByUsername(loginMsg.username, session);
     
     
-    if(user != null) {
-      player.setAuthenticated(true);
+    if(user != null && !serverConnection.userLoggedIn(loginMsg.username)) {
+      player.setAuthenticated(loginMsg.username);
       
       Actor playerActor = user.getActor();
       ServerActorController playerController = new ServerActorController(playerActor, serverConnection);

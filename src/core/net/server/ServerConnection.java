@@ -96,4 +96,13 @@ public class ServerConnection extends NetworkConnection {
     scene.addController(new ServerActorController(projectile, this));
   }
 
+  public boolean userLoggedIn(String username) {
+    for(Connection connection : server.getConnections()) {
+      PlayerConnection player = ((PlayerConnection)connection);
+      if(player.isAuthenticated() && player.getUsername().equals(username))
+        return true;
+    }
+    return false;
+  }
+
 }
