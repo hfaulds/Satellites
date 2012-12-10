@@ -160,3 +160,5 @@ pip-log.txt
 .DS_Store
 
 *.db
+
+satellites.h2.db
