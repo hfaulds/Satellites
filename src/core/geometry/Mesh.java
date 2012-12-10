@@ -10,14 +10,16 @@ public class Mesh {
   public final Triangle[] triangles;
   
   public Material material = new Material();
+  public final String name;
   
   public Mesh() {
-    this(new Vector3D[]{new Vector3D()}, new Triangle[0]);
+    this(new Vector3D[]{new Vector3D()}, new Triangle[0],"");
   }
   
-  public Mesh(Vector3D[] vertices, Triangle[] triangles) {
+  public Mesh(Vector3D[] vertices, Triangle[] triangles, String name) {
     this.vertices = vertices;
     this.triangles = triangles;
+    this.name = name;
   }
 
   public void render(GL2 gl) {

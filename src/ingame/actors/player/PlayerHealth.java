@@ -8,7 +8,6 @@ import javax.media.opengl.glu.GLU;
 
 import core.Actor;
 import core.ActorInfo;
-import core.geometry.Mesh;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
 import core.render.material.Colour;
@@ -30,7 +29,7 @@ public class PlayerHealth extends Actor {
   private ShipActor parent;
 
   public PlayerHealth(ShipActor parent) {
-    super(new ActorInfo(new Vector2D(), new Rotation(), 0, new Mesh(), -1));
+    super(new ActorInfo(new Vector2D(), new Rotation(), 0, "", -1));
     this.parent = parent;
     this.collideable = false;
   }

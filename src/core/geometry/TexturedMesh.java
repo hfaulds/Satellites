@@ -9,8 +9,8 @@ public class TexturedMesh extends Mesh {
 
   private final Material material;
 
-  public TexturedMesh(Vector3D[] vertices, Triangle[] triangles, Material material) {
-    super(vertices, triangles);
+  public TexturedMesh(Vector3D[] vertices, Triangle[] triangles, String name, Material material) {
+    super(vertices, triangles, name);
     this.material = material;
   }
   

@@ -11,8 +11,6 @@ import core.Actor;
 import core.ActorInfo;
 import core.Inventory;
 import core.Item;
-import core.geometry.Mesh;
-import core.geometry.MeshLoader;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
 
@@ -24,8 +22,6 @@ public class ShipActor extends Actor {
   public int health = MAX_HEALTH;
   public int shield = MAX_SHIELD;
 
-  public static final Mesh MESH = MeshLoader.loadMesh("Ship-Mk2.obj");
-  
   public static final int MASS  = 1;
   
   public static double WIDTH  = 0.02;
@@ -53,17 +49,11 @@ public class ShipActor extends Actor {
   
   
   
-  public ShipActor(Vector2D position, Rotation rotation, double mass, int id) {
-    super(new ActorInfo(position, rotation, mass, MESH, id));
+  public ShipActor(Vector2D position, Rotation rotation, double mass, int id, String mesh) {
+    super(new ActorInfo(position, rotation, mass, mesh, id));
     addWeapons();
   }
 
-  
-  public ShipActor(double x, double y) {
-    super(new ActorInfo(new Vector2D(x,y), new Rotation(), MASS, MESH));
-    addWeapons();
-  }
-  
   private void addWeapons() {
     for(WeaponActor weapon : weapons) {
       add(weapon);

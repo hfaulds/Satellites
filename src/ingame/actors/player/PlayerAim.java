@@ -7,7 +7,6 @@ import javax.media.opengl.glu.GLU;
 
 import core.Actor;
 import core.ActorInfo;
-import core.geometry.Mesh;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
 
@@ -24,7 +23,7 @@ public class PlayerAim extends Actor {
   private final PlayerShipActor player;
   
   public PlayerAim(PlayerShipActor player) {
-    super(new ActorInfo(player.position, new Rotation(), 0, new Mesh(), -1));
+    super(new ActorInfo(player.position, new Rotation(), 0, "", -1));
     this.collideable = false;
     this.player = player;
   }

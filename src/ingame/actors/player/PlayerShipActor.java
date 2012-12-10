@@ -15,7 +15,7 @@ public class PlayerShipActor extends ShipActor {
   private final Vector2D aimDirection = START_DIRECTION;
   
   public PlayerShipActor(ShipActor player) {
-    super(player.position, player.rotation, player.mass, player.id);
+    super(player.position, player.rotation, player.mass, player.id, player.renderer.mesh.name);
     this.add(new PlayerDirection(this));
     this.add(new PlayerHealth(this));
     this.add(new PlayerAim(this));
@@ -49,7 +49,7 @@ public class PlayerShipActor extends ShipActor {
 
   @Override
   public ActorCreateMsg getCreateMsg() {
-    return new ActorCreateMsg(position, rotation, id, mass, ShipActor.class);
+    return new ActorCreateMsg(position, rotation, id, mass, ShipActor.class, "Ship-Mk2.obj");
   }
   
 

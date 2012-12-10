@@ -1,6 +1,6 @@
 package pregame;
 
-import ingame.actors.Planet001Actor;
+import ingame.actors.PlanetActor;
 import ingame.actors.ShipActor;
 import ingame.actors.StationActor;
 
@@ -29,8 +29,8 @@ public class CreateScema {
     session.beginTransaction();
 
     ActorEntity[] actors = new ActorEntity[] {
-        new ActorEntity(Planet001Actor.class, new Vector2D(50,50), new Rotation(), Planet001Actor.MASS),
-        new ActorEntity(StationActor.class, new Vector2D(-35, 17), new Rotation(), StationActor.MASS)
+        new ActorEntity(PlanetActor.class, new Vector2D(50,50), new Rotation(), 10000, "Planet 1000.obj"),
+        new ActorEntity(StationActor.class, new Vector2D(-35, 17), new Rotation(), StationActor.MASS, "Station-Mk2.obj")
     };
     
     session.save(actors[0]);
@@ -39,12 +39,12 @@ public class CreateScema {
     session.save(new MapEntity("default", actors));
     
 
-    ActorEntity playerActor = new ActorEntity(ShipActor.class, new Vector2D(), new Rotation(), ShipActor.MASS);
+    ActorEntity playerActor = new ActorEntity(ShipActor.class, new Vector2D(), new Rotation(), ShipActor.MASS, "Ship-Mk2.obj");
     session.save(playerActor);
     session.save(new UserEntity("test", "test", playerActor));
     
 
-    ActorEntity playerActor2 = new ActorEntity(ShipActor.class, new Vector2D(0,20), new Rotation(), ShipActor.MASS);
+    ActorEntity playerActor2 = new ActorEntity(ShipActor.class, new Vector2D(0,20), new Rotation(), ShipActor.MASS, "Ship-Mk2.obj");
     session.save(playerActor2);
     session.save(new UserEntity("test2", "test", playerActor2));
     

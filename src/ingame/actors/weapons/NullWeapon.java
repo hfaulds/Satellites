@@ -1,13 +1,12 @@
 package ingame.actors.weapons;
 
-import core.geometry.Mesh;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
 
 public class NullWeapon extends WeaponActor {
 
   public NullWeapon() {
-    super(new Vector2D(), new Vector2D(), new Rotation(), new Mesh(), null);
+    super(new Vector2D(), new Vector2D(), new Rotation(), "", null);
   }
 
   @Override

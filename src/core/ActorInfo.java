@@ -1,6 +1,7 @@
 package core;
 
 import core.geometry.Mesh;
+import core.geometry.MeshLoader;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
 
@@ -14,15 +15,15 @@ public class ActorInfo {
   public Mesh mesh;
   public int id;
   
-  public ActorInfo(Vector2D position, Rotation rotation, double mass, Mesh mesh) {
+  public ActorInfo(Vector2D position, Rotation rotation, double mass, String mesh) {
     this(position, rotation, mass, mesh, NEXT_ID());
   }
 
-  public ActorInfo(Vector2D position, Rotation rotation, double mass, Mesh mesh, int id) {
+  public ActorInfo(Vector2D position, Rotation rotation, double mass, String mesh, int id) {
     this.position = position;
     this.rotation = rotation;
     this.mass = mass;
-    this.mesh = mesh;
+    this.mesh = MeshLoader.loadMesh(mesh);
     this.id = id;
     INCREMENT_TOTAL_ACTORS_BEYOND(id);
   }

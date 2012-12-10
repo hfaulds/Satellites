@@ -121,7 +121,7 @@ public abstract class Actor {
 
   @SuppressWarnings("unchecked")
   public ActorCreateMsg getCreateMsg() {
-    return new ActorCreateMsg(position, rotation, id, mass, (Class<Actor>) getClass());
+    return new ActorCreateMsg(position, rotation, id, mass, (Class<Actor>) getClass(), renderer.mesh.name);
   }
   
   public ActorUpdateMsg getUpdateMsg() {
@@ -137,10 +137,10 @@ public abstract class Actor {
     }
   }
 
-  public static Actor fromInfo(Class<? extends Actor> actorClass, Vector2D position, Rotation rotation, double mass, int id) {
+  public static Actor fromInfo(Class<? extends Actor> actorClass, Vector2D position, Rotation rotation, double mass, int id, String mesh) {
     try {
-      Constructor<? extends Actor> constructor = actorClass.getConstructor(Vector2D.class, Rotation.class, double.class, int.class);
-      return constructor.newInstance(position, rotation, mass, id);
+      Constructor<? extends Actor> constructor = actorClass.getConstructor(Vector2D.class, Rotation.class, double.class, int.class, String.class);
+      return constructor.newInstance(position, rotation, mass, id, mesh);
     } catch (InstantiationException | IllegalAccessException
         | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
       e.printStackTrace();
@@ -150,7 +150,7 @@ public abstract class Actor {
   }
   
   public static Actor fromMsg(ActorCreateMsg info) {
-    return fromInfo(info.actorClass, info.position, info.rotation, info.mass, info.id);
+    return fromInfo(info.actorClass, info.position, info.rotation, info.mass, info.id, info.mesh);
   }
 
  }

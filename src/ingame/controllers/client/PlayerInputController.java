@@ -102,7 +102,7 @@ public class PlayerInputController implements Controller {
         player.getCurrentWeapon().fire()) 
     {
       Vector2D position = player.position.add(player.getAimDirection().mult(2));
-      ProjectileActor projectile = new ProjectileActor(position, player.getAimDirection(), player.velocity, player);
+      ProjectileActor projectile = new ProjectileActor(position, player.getAimDirection(), player.velocity);
       connection.fireProjectile(projectile);
     }
   }

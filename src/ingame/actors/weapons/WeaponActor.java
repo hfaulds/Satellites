@@ -11,7 +11,6 @@ import javax.media.opengl.glu.GLU;
 
 import core.Actor;
 import core.ActorInfo;
-import core.geometry.Mesh;
 import core.geometry.Rotation;
 import core.geometry.Vector2D;
 
@@ -26,7 +25,7 @@ public abstract class WeaponActor extends Actor {
 
   private long timeTillNextFire;
   
-  public WeaponActor(Vector2D position, Vector2D mountPoint, Rotation shipRotation, Mesh mesh, AmmoItem ammo) {
+  public WeaponActor(Vector2D position, Vector2D mountPoint, Rotation shipRotation, String mesh, AmmoItem ammo) {
     super(new ActorInfo(position, new Rotation(), 0, mesh));
     this.mountPoint = mountPoint;
     this.shipRotation = shipRotation;

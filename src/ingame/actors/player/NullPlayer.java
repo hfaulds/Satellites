@@ -10,7 +10,7 @@ import core.geometry.Vector2D;
 public class NullPlayer extends PlayerShipActor {
 
   public NullPlayer() {
-    super(new ShipActor(new Vector2D(), new Rotation(), 0, 0));
+    super(new ShipActor(new Vector2D(), new Rotation(), 0, 0, ""));
   }
 
   @Override

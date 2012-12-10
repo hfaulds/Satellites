@@ -40,12 +40,15 @@ public class ActorEntity {
 
   @Column(name = "mass")
   private int mass;
+  
+  @Column(name = "mesh")
+  private String mesh;
 
   public ActorEntity(){
    
   }
   
-  public ActorEntity(Class<? extends Actor> actorClass, Vector2D position, Rotation rotation, int mass) {
+  public ActorEntity(Class<? extends Actor> actorClass, Vector2D position, Rotation rotation, int mass, String mesh) {
     this.actorClass = actorClass;
     this.xPos = position.x;
     this.yPos = position.y;
@@ -54,10 +57,11 @@ public class ActorEntity {
     this.zRot = rotation.z;
     this.magRot = rotation.mag;
     this.mass = mass;
+    this.mesh = mesh;
   }
 
   public Actor toActor() {
-    return Actor.fromInfo(actorClass, new Vector2D(xPos, yPos), new Rotation(xRot, yRot, zRot, magRot), (double)mass , ActorInfo.NEXT_ID());
+    return Actor.fromInfo(actorClass, new Vector2D(xPos, yPos), new Rotation(xRot, yRot, zRot, magRot), (double)mass , ActorInfo.NEXT_ID(), mesh);
   }
   
 }

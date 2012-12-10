@@ -1,6 +1,6 @@
 package ingame.collisions;
 
-import ingame.actors.Planet001Actor;
+import ingame.actors.PlanetActor;
 import ingame.actors.StationActor;
 import ingame.actors.player.PlayerShipActor;
 import core.collisions.ClassPair;
@@ -11,8 +11,8 @@ public class SimpleBounceCollisionListener extends CollisionListener {
 
   public SimpleBounceCollisionListener() {
     super(
-        new ClassPair(PlayerShipActor.class, Planet001Actor.class), 
-        new ClassPair(StationActor.class, Planet001Actor.class)
+        new ClassPair(PlayerShipActor.class, PlanetActor.class), 
+        new ClassPair(StationActor.class, PlanetActor.class)
         );
   }
 
