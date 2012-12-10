@@ -162,3 +162,5 @@ pip-log.txt
 *.db
 
 satellites.h2.db
+
+satellites.lock.db
