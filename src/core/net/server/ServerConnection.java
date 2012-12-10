@@ -1,7 +1,7 @@
 package core.net.server;
 
 import ingame.actors.ProjectileActor;
-import ingame.controllers.ServerActorController;
+import ingame.controllers.server.ServerActorController;
 
 import java.io.IOException;
 import java.util.List;

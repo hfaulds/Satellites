@@ -1,4 +1,4 @@
-package ingame.controllers;
+package ingame.controllers.server;
 
 
 import java.util.List;

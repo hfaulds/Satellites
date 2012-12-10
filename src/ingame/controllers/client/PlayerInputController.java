@@ -1,4 +1,4 @@
-package ingame.controllers;
+package ingame.controllers.client;
 
 import ingame.actors.ProjectileActor;
 import ingame.actors.player.NullPlayer;

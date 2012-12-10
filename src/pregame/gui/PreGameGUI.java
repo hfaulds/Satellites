@@ -2,7 +2,7 @@ package pregame.gui;
 
 
 import ingame.actors.player.PlayerShipActor;
-import ingame.controllers.PlayerInputController;
+import ingame.controllers.client.PlayerInputController;
 import ingame.gimley.SceneWindow;
 
 import java.awt.Component;

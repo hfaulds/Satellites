@@ -1,6 +1,6 @@
 package core.net.server.msglisteners;
 
-import ingame.controllers.ServerShipController;
+import ingame.controllers.server.ServerShipController;
 
 import org.hibernate.Session;
 

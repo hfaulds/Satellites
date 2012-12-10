@@ -1,7 +1,7 @@
 package core.net.server.msglisteners;
 
 import ingame.actors.ProjectileActor;
-import ingame.controllers.ServerActorController;
+import ingame.controllers.server.ServerActorController;
 
 import com.esotericsoftware.kryonet.Connection;
 

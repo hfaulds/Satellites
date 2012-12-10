@@ -1,5 +1,7 @@
 package pregame;
 
+import ingame.controllers.server.ServerActorController;
+
 import java.util.Scanner;
 
 import org.hibernate.Session;
@@ -8,6 +10,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 
+import core.Actor;
 import core.Scene;
 import core.SceneUpdater;
 import core.db.models.MapModel;
@@ -31,10 +34,14 @@ public class HeadlessServer implements Runnable {
     
     System.out.println("Server Initializing");
     this.scene = MapModel.findByName("default", session).toScene();
-    this.updater = new SceneUpdater(scene);
-    
-    
+
     this.connection = new ServerConnection(scene, session, "");
+    
+    for(Actor actor : scene.actors) {
+      scene.addController(new ServerActorController(actor, connection));
+    }
+    
+    this.updater = new SceneUpdater(scene);
   }
 
   private void stop() {

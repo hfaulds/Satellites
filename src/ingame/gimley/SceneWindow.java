@@ -2,7 +2,7 @@ package ingame.gimley;
 
 import ingame.actors.player.PlayerShipActor;
 import ingame.collisions.ShipStationShieldCollisionListener;
-import ingame.controllers.PlayerInputController;
+import ingame.controllers.client.PlayerInputController;
 import ingame.gimley.components.FPSCounter;
 import ingame.gimley.components.PlayerInventory;
 import ingame.gimley.components.StationDisplay;

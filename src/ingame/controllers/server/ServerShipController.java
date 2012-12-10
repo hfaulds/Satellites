@@ -1,4 +1,4 @@
-package ingame.controllers;
+package ingame.controllers.server;
 
 import ingame.actors.ShipActor;
 
