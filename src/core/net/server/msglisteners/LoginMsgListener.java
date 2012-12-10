@@ -2,32 +2,24 @@ package core.net.server.msglisteners;
 
 import ingame.controllers.ServerActorController;
 
-import java.util.List;
-
 import org.hibernate.Session;
 
 import com.esotericsoftware.kryonet.Connection;
 
 import core.Actor;
-import core.Scene;
 import core.db.entities.UserEntity;
 import core.db.models.UserModel;
 import core.net.msg.MsgListener;
-import core.net.msg.ingame.ActorCreateMsg;
 import core.net.msg.pregame.LoginMsg;
-import core.net.msg.pregame.SceneCreateMsg;
 import core.net.server.PlayerConnection;
 import core.net.server.ServerConnection;
 
 public class LoginMsgListener implements MsgListener {
 
-  private final Scene scene;
   private final Session session;
+  private final ServerConnection serverConnection;  
 
-  private ServerConnection serverConnection;  
-
-  public LoginMsgListener(Scene scene, Session session, ServerConnection connection) {
-    this.scene = scene;
+  public LoginMsgListener(Session session, ServerConnection connection) {
     this.session = session;
     this.serverConnection = connection;
   }
@@ -43,23 +35,16 @@ public class LoginMsgListener implements MsgListener {
       Actor playerActor = user.getActor();
       ServerActorController playerController = new ServerActorController(playerActor, serverConnection);
       
+      player.setUsername(loginMsg.username);
       player.setActor(playerActor);
       player.setController(playerController);
       
-      scene.forceAddActor(playerActor);
-      scene.addController(playerController);
-
-      serverConnection.sendMsg(playerActor.getCreateMsg());
-      
-      List<ActorCreateMsg> actorInfoList = ActorCreateMsg.actorInfoList(scene);
-      player.sendTCP(new SceneCreateMsg(actorInfoList, playerActor.id));
-      
-      player.setAuthenticated(loginMsg.username);
+      serverConnection.addPlayer(this, loginMsg, player);
     } else {
       player.close();
     }
   }
-  
+
   @Override
   public boolean handlesMsg(Object info) {
     return info instanceof LoginMsg;

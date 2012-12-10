@@ -4,15 +4,20 @@ import ingame.actors.ProjectileActor;
 import ingame.controllers.ServerActorController;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.hibernate.Session;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 
+import core.Actor;
 import core.Scene;
 import core.net.NetworkConnection;
 import core.net.msg.MsgListener;
+import core.net.msg.ingame.ActorCreateMsg;
+import core.net.msg.pregame.LoginMsg;
+import core.net.msg.pregame.SceneCreateMsg;
 import core.net.server.msglisteners.ActorCreateMsgListener;
 import core.net.server.msglisteners.LoginMsgListener;
 import core.net.server.msglisteners.PlayerUpdateMsgListener;
@@ -65,7 +70,7 @@ public class ServerConnection extends NetworkConnection {
   }
 
   private void setupMsgListeners(Scene scene, Session session) {
-    listener.addPregameMsgListener(new LoginMsgListener(scene, session, this));
+    listener.addPregameMsgListener(new LoginMsgListener(session, this));
     this.addMsgListener(new PlayerUpdateMsgListener());
     this.addMsgListener(new ShipDockMsgListener(this));
     this.addMsgListener(new ActorCreateMsgListener(this, scene));
@@ -104,6 +109,20 @@ public class ServerConnection extends NetworkConnection {
         return true;
     }
     return false;
+  }
+
+  public void addPlayer(LoginMsgListener loginMsgListener, LoginMsg loginMsg, PlayerConnection player) {
+    Actor playerActor = player.getActor();
+    
+    scene.forceAddActor(playerActor);
+    scene.addController(player.getController());
+  
+    sendMsg(playerActor.getCreateMsg());
+    
+    List<ActorCreateMsg> actorInfoList = ActorCreateMsg.actorInfoList(scene);
+    player.sendTCP(new SceneCreateMsg(actorInfoList, playerActor.id));
+    
+    player.setAuthenticated(true);
   }
 
 }

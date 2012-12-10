@@ -23,9 +23,8 @@ public class PlayerConnection extends Connection {
     return authenticated;
   }
 
-  public void setAuthenticated(String username) {
-    this.authenticated = true;
-    this.username = username;
+  public void setAuthenticated(boolean authenticated) {
+    this.authenticated = authenticated;
   }
 
   public void setActor(Actor actor) {
@@ -46,6 +45,10 @@ public class PlayerConnection extends Connection {
   
   public String getUsername() {
     return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
   }
   
 }
