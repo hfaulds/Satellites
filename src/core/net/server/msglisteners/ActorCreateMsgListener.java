@@ -34,9 +34,9 @@ public class ActorCreateMsgListener implements MsgListener {
       scene.addController(new ServerActorController(projectile, this.serverConnection));
     }
   }
-
+  
   @Override
-  public Class<?> getMsgClass() {
-    return ActorCreateMsg.class;
+  public boolean handlesMsg(Object info) {
+    return info instanceof ActorCreateMsg;
   }
 }

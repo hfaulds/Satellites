@@ -21,7 +21,8 @@ public class ChatMsgListener implements MsgListener {
   }
 
   @Override
-  public Class<?> getMsgClass() {
-    return ChatMsg.class;
+  public boolean handlesMsg(Object info) {
+    return info instanceof ChatMsg;
   }
+  
 }

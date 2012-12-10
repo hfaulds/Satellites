@@ -12,6 +12,7 @@ import core.net.msg.MsgListener;
 public class ServerListener extends Listener {
 
   private final Scene scene;
+  
   private final List<MsgListener> listeners = new LinkedList<MsgListener>();
   private final List<MsgListener> pregameListeners = new LinkedList<MsgListener>();
   
@@ -46,7 +47,7 @@ public class ServerListener extends Listener {
 
   private void callListeners(Connection connection, Object info, List<MsgListener> listeners) {
     for(MsgListener listener : listeners) {
-      if(info.getClass().equals(listener.getMsgClass())) {
+      if(listener.handlesMsg(info)) {
         listener.msgReceived(info, connection);
       }
     }
@@ -55,8 +56,8 @@ public class ServerListener extends Listener {
   @Override
   public void disconnected(Connection connection) {
     PlayerConnection clientConnection = (PlayerConnection)connection;
-    scene.removeController(clientConnection.getController());
     scene.removeActor(clientConnection.getActor());
+    scene.removeController(clientConnection.getController());
   }
  
 }

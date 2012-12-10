@@ -21,7 +21,7 @@ public class SceneCreateMsgListener implements MsgListener {
   }
 
   @Override
-  public Class<?> getMsgClass() {
-    return SceneCreateMsg.class;
+  public boolean handlesMsg(Object info) {
+    return info instanceof SceneCreateMsg;
   }
 }

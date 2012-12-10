@@ -26,7 +26,7 @@ public class ActorUpdateMsgListener implements MsgListener {
   }
 
   @Override
-  public Class<?> getMsgClass() {
-    return ActorUpdateMsg.class;
+  public boolean handlesMsg(Object info) {
+    return info instanceof ActorUpdateMsg;
   }
 }

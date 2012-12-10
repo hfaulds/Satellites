@@ -36,51 +36,57 @@ public class SceneUpdater {
     long dt = System.currentTimeMillis() - lastFrame;
     
     List<Actor> actors = scene.actors;
-    synchronized(scene.controllers) {
-      for(Controller controller : scene.controllers) {
-        synchronized(scene.actors) { 
-          controller.tick(dt, actors);
-        }
-      }
+    synchronized(actors) {
+      tickControllers(dt, actors);
     }
     
     synchronized(actors) {
-      int numActors = actors.size();
-      for(int i=0; i < numActors; i++) {
-        for(int j=i+1; j < numActors; j++) {
-          Actor a = actors.get(i);
-          Actor b = actors.get(j);
-          findCollision(a, b);
-        }
-      }
-      
-      collisionHandler.tick();
-      
-      for(Actor actor : actorRemoveQueue) {
-        scene.removeActor(actor);
-      }
+      handleCollisions(actors);
     }
     
     lastFrame = System.currentTimeMillis();
   }
 
+  private void tickControllers(long dt, List<Actor> actors) {
+    synchronized(scene.controllers) {
+      for(Controller controller : scene.controllers) {
+        controller.tick(dt, actors);
+      }
+    }
+  }
+
+  private void handleCollisions(List<Actor> actors) {
+    int numActors = actors.size();
+    
+    for(int i=0; i < numActors; i++) {
+      for(int j=i+1; j < numActors; j++) {
+        Actor a = actors.get(i);
+        Actor b = actors.get(j);
+        findCollision(a, b);
+      }
+    }
+    
+    collisionHandler.tick();
+    
+    for(Actor actor : actorRemoveQueue) {
+      scene.removeActor(actor);
+    }
+  }
+
   private void findCollision(Actor a, Actor b) {
-    //TODO: Do not like this
+
     if(collisionExists(a, b)) {
       collisionHandler.addOrUpdateCollision(new Collision(a, b));
     }
 
-    if(a.subactors.size() > 0) {
-      for(Actor a2 : a.subactors) {
-        findCollision(a2, b);
-      }
+    for(Actor a2 : a.subactors) {
+      findCollision(a2, b);
+    }
+  
+    for(Actor b2 : b.subactors) {
+      findCollision(a, b2);
     }
     
-    if(b.subactors.size() > 0) {
-      for(Actor b2 : b.subactors) {
-        findCollision(a, b2);
-      }
-    }
   }
 
   private boolean collisionExists(Actor a, Actor b) {

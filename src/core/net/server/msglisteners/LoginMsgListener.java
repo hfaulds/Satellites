@@ -40,12 +40,12 @@ public class LoginMsgListener implements MsgListener {
     
     
     if(user != null && !serverConnection.userLoggedIn(loginMsg.username)) {
-      
       Actor playerActor = user.getActor();
       ServerActorController playerController = new ServerActorController(playerActor, serverConnection);
       
       player.setActor(playerActor);
       player.setController(playerController);
+      
       scene.forceAddActor(playerActor);
       scene.addController(playerController);
 
@@ -59,10 +59,10 @@ public class LoginMsgListener implements MsgListener {
       player.close();
     }
   }
-
+  
   @Override
-  public Class<?> getMsgClass() {
-    return LoginMsg.class;
+  public boolean handlesMsg(Object info) {
+    return info instanceof LoginMsg;
   }
 
 }

@@ -32,7 +32,7 @@ public class ClientListener extends Listener {
   public void received(Connection connection, Object info) {
     synchronized(listeners) {
       for(MsgListener listener : listeners) {
-        if(info.getClass().equals(listener.getMsgClass())) {
+        if(listener.handlesMsg(info)) {
           listener.msgReceived(info, connection);
         }
       }

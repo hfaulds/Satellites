@@ -20,7 +20,7 @@ public class ShipDockMsgListener implements MsgListener {
   }
 
   @Override
-  public Class<?> getMsgClass() {
-    return ShipDockMsg.class;
+  public boolean handlesMsg(Object info) {
+    return info instanceof ShipDockMsg;
   }
 }
