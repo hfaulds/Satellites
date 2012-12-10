@@ -54,12 +54,13 @@ public class PlayerInputController implements Controller {
     
     if(spinMag != 0) {
       double spin = dt * spinMag * SPIN;
-      player.spin._add(spin); 
+      player.spin._add(spin);
     }
     
     if(!(player instanceof NullPlayer)) {
       connection.sendMsg(new PlayerUpdateMsg(player.velocity, player.spin));
     }
+    player.tick(dt);
   }
 
   public void keyPressed(KeyEvent e) {

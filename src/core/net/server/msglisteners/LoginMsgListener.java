@@ -1,6 +1,6 @@
 package core.net.server.msglisteners;
 
-import ingame.controllers.ServerActorController;
+import ingame.controllers.ServerShipController;
 
 import org.hibernate.Session;
 
@@ -33,7 +33,7 @@ public class LoginMsgListener implements MsgListener {
     
     if(user != null && !serverConnection.userLoggedIn(loginMsg.username)) {
       Actor playerActor = user.getActor();
-      ServerActorController playerController = new ServerActorController(playerActor, serverConnection);
+      ServerShipController playerController = new ServerShipController(playerActor, serverConnection);
       
       player.setUsername(loginMsg.username);
       player.setActor(playerActor);

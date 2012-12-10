@@ -16,7 +16,9 @@ import core.net.msg.ingame.ActorUpdateMsg;
 
 public abstract class Actor {
 
-  public static final double G = 0.000001;
+  private static final double SYNC_ROTATION_THRESHOLD = 0.3;
+  private static final int SYNC_DISTANCE_THRESHOLD = 2;
+  private static final double G = 0.000001;
 
   public final double mass;
   public boolean moveable = true;
@@ -28,12 +30,11 @@ public abstract class Actor {
   public final Rotation spin = new Rotation();
   
   public final int id;
-
   public final List<Actor> subactors = new ArrayList<Actor>();
 
   public ActorRenderer renderer;
   public final Box boundingbox;
-  public boolean collideable;
+  public boolean collideable = true;
   
 
   /* CONSTRUCTORS */
@@ -45,14 +46,8 @@ public abstract class Actor {
     this.boundingbox = Box.createBoundingBox(info.mesh, this.position);
     this.renderer = new ActorRenderer(info.mesh);
     this.id = info.id;
-    this.collideable = true;
   }
 
-
-
-  protected void add(Actor actor) {
-    subactors.add(actor); 
-  }
   
   
   /* TICK */
@@ -75,6 +70,10 @@ public abstract class Actor {
   }
   
   /* RENDERING */
+
+  public void setVisible(boolean visibility) {
+    this.renderer.setVisible(visibility);
+  }
   
   public void init(GL2 gl, GLU glu) {
     renderer.init(gl, glu);
@@ -93,6 +92,10 @@ public abstract class Actor {
     }
   }
 
+  protected void add(Actor actor) {
+    subactors.add(actor); 
+  }
+  
   /* FORCES */
   
   public void applyForce(Vector2D force) {
@@ -126,12 +129,12 @@ public abstract class Actor {
   }
 
   public void _update(ActorUpdateMsg info) {
-    this.position._set(info.position);
-    this.rotation._set(info.rotation);
-  }
-
-  public void setVisible(boolean visibility) {
-    this.renderer.setVisible(visibility);
+    if(this.position.distanceTo(info.position) > SYNC_DISTANCE_THRESHOLD) {
+      this.position._set(info.position);
+    }
+    if(info.rotation.mag > SYNC_ROTATION_THRESHOLD) {
+      this.rotation._set(info.rotation);
+    }
   }
 
   public static Actor fromInfo(Class<? extends Actor> actorClass, Vector2D position, Rotation rotation, double mass, int id) {
